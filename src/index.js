@@ -1,7 +1,7 @@
 import './css/tlogDocsTemplate.scss';
 import TlogDocsService from './tlog-docs-template/tlogDocsService';
 
-DocumentViewer = class DocumentViewer {
+window.DocumentViewer = class DocumentViewer {
     constructor() {
         this._tlogDocsService = new TlogDocsService({
             isUS: false,
