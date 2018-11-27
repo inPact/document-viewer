@@ -12,7 +12,7 @@ export default class TemplateBuilderService {
         options.moment = moment; //TODO: add importation of "moment" in every file and remove this
         this._isUS = options.isUS === undefined ? true : options.isUS;
         this._local = options.local || 'he-IL';
-        this.$translate = new TlogDocsTranslateService({local: this._local});
+        this.$translate = new TlogDocsTranslateService({ local: this._local });
 
         this.$billService = new BillService(options);
         this.$createVatTemplateService = new CreateVatTemplateService(options);
@@ -215,8 +215,8 @@ export default class TemplateBuilderService {
         var tplOrderDateTime = this._doc.createElement('div');
         tplOrderDateTime.id = "tplOrderDateTime";
         tplOrderDateTime.classList.add('mystyle');
-        // var tplOrderTitle = _doc.createElement('div');
-        // tplOrderTitle.id = "tplOrderTitle";
+        var tplOrderTitle = _doc.createElement('div');
+        tplOrderTitle.id = "tplOrderTitle";
         var tplOrderType = this._doc.createElement('div');
         tplOrderType.id = "tplOrderType";
         tplOrderType.setAttribute('style', 'text-align:center;')
@@ -225,11 +225,10 @@ export default class TemplateBuilderService {
         var tplOrderServerClients = this._doc.createElement('div');
         tplOrderServerClients.id = "tplOrderServerClients";
         //create array for the appendChildren function
-        var orderBasicInfoArray = [tplOrderCustomer, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients,];
+        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients,];
 
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
-
 
         var tplOrderHeaderReturn = this.appendChildren(tplOrderHeader, filledInfoArray)
 
@@ -274,13 +273,13 @@ export default class TemplateBuilderService {
             }
                 break;
             //Asked to take this down temporary
-            // case 'tplOrderTitle': {
-            //     if (_docObj.title) {
-            //         htmlElement.innerHTML = _docObj.title;
-            //         htmlElement.setAttribute('class', 'med-chars');
-            //     }
-            // }
-            //     break;
+            case 'tplOrderTitle': {
+                if (_docObj.title) {
+                    htmlElement.innerHTML = _docObj.title;
+                    htmlElement.setAttribute('class', 'med-chars');
+                }
+            }
+                break;
             case 'tplOrderType': {
                 if (printData.variables.ORDER_TYPE && printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {
                     var typeTranslate = this.$translate.getText("ORDER_TYPE")

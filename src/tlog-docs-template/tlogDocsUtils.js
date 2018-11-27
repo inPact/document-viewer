@@ -15,7 +15,7 @@ export default class TlogDocsUtils {
         if (value && value !== undefined) {
             return value.toFixed(num);
         }
-        return "--";
+        return "0.00";
     }
 
     currencyFraction(val, showZero) {
