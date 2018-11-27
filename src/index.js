@@ -1,3 +1,4 @@
+import './css/tlogDocsTemplate.scss';
 import TlogDocsService from './tlog-docs-template/tlogDocsService';
 window.DocumentViewer = class DocumentViewer {
 
