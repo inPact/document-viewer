@@ -24,7 +24,6 @@ class DocumentViewer {
 
 if(module) {
     module.exports = DocumentViewer;
-}
-else {
+} else {
     window.DocumentViewer = DocumentViewer;
 }
