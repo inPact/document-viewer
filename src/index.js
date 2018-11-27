@@ -1,7 +1,7 @@
 import './css/tlogDocsTemplate.scss';
 import TlogDocsService from './tlog-docs-template/tlogDocsService';
 
-class DocumentViewer {
+window.DocumentViewer = class DocumentViewer {
     constructor() {
         this._tlogDocsService = new TlogDocsService({
             isUS: false,
@@ -20,10 +20,4 @@ class DocumentViewer {
     getHTMLDocumentWithoutTlog(document, options) {
         return this._tlogDocsService.getHTMLDocumentWithoutTlog(document, options);
     }
-}
-
-if(module) {
-    module.exports = DocumentViewer;
-} else {
-    window.DocumentViewer = DocumentViewer;
 }
