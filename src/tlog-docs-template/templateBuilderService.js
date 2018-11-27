@@ -1,125 +1,46 @@
-// 'use strict'
-// const $translate = require('./tlogDocsTranslate');
-// const $addTaxData = require('./addTaxDataService');
-// const $createCreditSlipService = require('./createCreditSlipService');
-// const $createVatTemplateService = require('./createVatTemplateService');
-// const $deliveryNoteTransactionService = require('./deliveryNoteTransactionService');
-// const $billService = require('./deliveryNoteTransactionService')
-
 import BillService from './billService';
 import AddTaxDataService from './addTaxDataService';
 import CreateVatTemplateService from './createVatTemplateService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import DeliveryNoteTransactionDataService from './deliveryNoteTransactionService';
 import CreateCreditSlipService from './createCreditSlipService';
+import moment from 'moment';
 
-// let TemplateBuilderService = (function () {
 export default class TemplateBuilderService {
 
-    // var $translate;
-    // var $utils;
-    // var $addTaxData;
-    // var $createCreditSlipService;
-    // var $createVatTemplateService;
-    // var $deliveryNoteTransactionService
+    constructor(options = {}) {
+        options.moment = moment; //TODO: add importation of "moment" in every file and remove this
+        this._isUS = options.isUS === undefined ? true : options.isUS;
+        this._local = options.local || 'he-IL';
+        this.$translate = new TlogDocsTranslateService({local: this._local});
 
-    constructor(options) {
-        this._options = options;
-        this._docData;
-        this._docObj;
-        this._printData;
-        this._isUS;
-        this._doc;
-        this._local;
-
-        this._configure(options);
-
-
-        this.$translate = new TlogDocsTranslateService({
-            local: options.local
-        });
-
-        if (options && options.local) {
-            this._local = options.local
-
-        }
-        else {
-            this._local = 'he-IL';
-        }
-        this.$billService = new BillService(this._options);
-        this.$createVatTemplateService = new CreateVatTemplateService(this._options)
+        this.$billService = new BillService(options);
+        this.$createVatTemplateService = new CreateVatTemplateService(options);
         this.$createCreditSlipService = new CreateCreditSlipService();
-        this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(this._options);
+        this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
         this.$addTaxData = new AddTaxDataService();
-
-        // $utils = new TlogDocsUtils();
-
-        var cssStyling = `
-        .templateDiv{
-            background-color:white;
-        }
-        `
-        var doc = document.implementation.createHTMLDocument("BillTemplate");
-
-        this._doc = doc;
-
-        var styleTag = this._doc.createElement('style');
-        styleTag.id = 'styleTag'
-        this._doc.head.appendChild(styleTag);
-        var styleContent = this._doc.createTextNode(cssStyling)
-
-        styleTag.appendChild(styleContent);
     }
 
-    _configure(options) {
-        debugger;
-        if (options.local) this._options.local = options.local;
-        if (options.isUS !== undefined) {
-            this._options.isUS = options.isUS;
-            this._isUS = options.isUS;
-            if (options.local === 'en-US') {
-                this._options.isUS = true;
-            }
-        };
-
-        if (options.moment) {
-            moment = options.moment;
-        }
-        else {
-            moment = window.moment;
-        }
-
+    _createRootElement() {
+        let rootElement = document.implementation.createHTMLDocument("BillTemplate");
+        let styleElement = rootElement.createElement('style');
+        rootElement.head.appendChild(styleElement);
+        let styleTextNode = rootElement.createTextNode(`.templateDiv{background-color:white;}`);
+        styleElement.appendChild(styleTextNode);
+        return rootElement;
     }
 
-    //create document for export 
-    createHTMLFromPrintDATA(docObj, printDataObj) {
+    createHTMLFromPrintDATA(documentInfo, document) {
+        this._doc = this._createRootElement();
+        this._docObj = documentInfo;
+        this._docData = document;
 
-        // Setting UP
-        let isRefund = docObj.isRefund;
+        this._printData = this.$billService.resolvePrintData(document.printData, this._isUS);
+        this._printData.isRefund = documentInfo.isRefund;
 
-        // setting global variables
-        this._docObj = docObj;
-        this._dicData = printDataObj;
-
-        //bill servuce for converting prnt data to collections, variables and data
-        this._printData = this.$billService.resolvePrintData(printDataObj.printData, this._isUS)
-        this._printData.isRefund = isRefund;
-
-
-        //create basic document template the function create doc template returns a docTemplate with all its children
-        var docTemplate = this.createDocTemplate(docObj);
-        this._doc.body.appendChild(docTemplate);
-
-        //******************  setting styling Try - delete when finished  ******************//
-        // var htmlString = docTemplate.outerHTML;
-        // _doc.getElementById('templateDiv').style.fontFamily = "Courier New, Courier, monospace";
-        //******************************************************//
-
-        // sending the doc
-        var docToAdd = this._doc;
-        var htmlString = new XMLSerializer().serializeToString(docToAdd);
-        return htmlString
-
+        let template = this.createDocTemplate(documentInfo);
+        this._doc.body.appendChild(template);
+        return (new XMLSerializer()).serializeToString(this._doc);
     }
 
     createDocTemplate(docObjChosen) {
@@ -161,7 +82,7 @@ export default class TemplateBuilderService {
                 tplOrderPaymentData.id = 'tplOrderPaymentData';
                 tplOrderPaymentData.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
 
-            };
+            }
 
             // var tplOrderPaymentData = createOrderPaymentData(_printData);
             var tplOrderTotals = this.createTotalsData(this._printData);
@@ -315,6 +236,7 @@ export default class TemplateBuilderService {
         return tplOrderHeaderReturn;
 
     }
+
     placeOrderHeaderData(printData, array, filledInfoArray) {
         array.forEach(element => {
             var singleElement = this.fillOrderHeaderData(printData, element)
@@ -380,7 +302,7 @@ export default class TemplateBuilderService {
             }
                 break;
             case 'tplOrderServerClients': {
-                if (!(this._dicData.documentType === "invoice") && !(this._dicData.documentType === "deliveryNote")) {
+                if (!(this._docData.documentType === "invoice") && !(this._docData.documentType === "deliveryNote")) {
                     var waiterTranslate = this.$translate.getText("Server")
                     var dinersTranslate = this.$translate.getText("Diners")
                     var firstName = printData.variables.F_NAME && printData.variables.F_NAME !== null ? printData.variables.F_NAME : '';
@@ -453,11 +375,11 @@ export default class TemplateBuilderService {
 
         tplOrderPaymentData.appendChild(paymentDataDiv);
 
-        if (this._docObj && !(this._dicData.documentType === "deliveryNote")) {
+        if (this._docObj && !(this._docData.documentType === "deliveryNote")) {
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
         }
-        else if (this._docObj && this._dicData.documentType === "deliveryNote") {
+        else if (this._docObj && this._docData.documentType === "deliveryNote") {
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
             var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData(printData, this._doc);
@@ -634,14 +556,16 @@ export default class TemplateBuilderService {
         // let data = _billService.resolveItems(printData.variables, printData.collections);
 
         var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData);
-        if (taxDataDiv !== null) { tplOrderTotals.appendChild(taxDataDiv); }
+        if (taxDataDiv !== null) {
+            tplOrderTotals.appendChild(taxDataDiv);
+        }
 
-        if (this._docObj && (this._dicData.documentType ===
+        if (this._docObj && (this._docData.documentType ===
             ('invoice' || 'CreditCardPayment' || 'CreditCardRefund' || 'CashPayment' || 'GiftCard' || 'CashRefund' || 'ChequePayment' || 'ChequeRefund'))) {
             var vatTemplateDiv = this.$createVatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);
         }
-        else if (this._docObj && (this._dicData.documentType === 'deliveryNote')) {
+        else if (this._docObj && (this._docData.documentType === 'deliveryNote')) {
             return tplOrderTotals
         }
         else {
@@ -688,11 +612,11 @@ export default class TemplateBuilderService {
 
         // let data = _billService.resolveItems(printData.variables, printData.collections);
 
-        if (this._docObj && this._dicData.documentType === "deliveryNote") {
+        if (this._docObj && this._docData.documentType === "deliveryNote") {
             return tplOrderPaymentsDiv;
         }
 
-        else if (this._docObj && this._dicData.documentType === "invoice") {
+        else if (this._docObj && this._docData.documentType === "invoice") {
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
@@ -705,7 +629,7 @@ export default class TemplateBuilderService {
                 var cashPayment = this.createCashPaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(cashPayment);
             }
-            else if (this._docObj.docPaymentType === "ChequePayment" || this.docObj.docPaymentType === "ChequeRefund") {
+            else if (this._docObj.docPaymentType === "ChequePayment" || this._docObj.docPaymentType === "ChequeRefund") {
                 var chequePayment = this.createChequePaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(chequePayment);
             }

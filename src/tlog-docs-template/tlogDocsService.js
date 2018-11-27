@@ -349,11 +349,11 @@ export default class TlogDocsService {
 
     }
 
-    getHTMLDocument(docObj, document) {
-        return this.$templateBuilder.createHTMLFromPrintDATA(docObj, document);
+    getHTMLDocument(documentInfo, document) {
+        return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document);
     }
 
-    getHTMLDocumentWithoutTlog(document, options) {
+    getHTMLDocumentWithoutTlog(document) {
         let documentInfo = {isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1};
 
         switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
