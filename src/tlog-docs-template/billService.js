@@ -126,7 +126,7 @@ export default class BillService {
                         oth.push(item)
                     } else {
 
-                        if (offer.OFFER_PRICE && offer.OFFER_QTY === 1) { // if the offer amount is 0 not need to show 
+                        if (offer.OFFER_PRICE && offer.OFFER_QTY > 0) { // if the offer amount is 0 not need to show 
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
                             items.push(item);
                         }

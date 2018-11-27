@@ -142,7 +142,7 @@ export default class CreateVatTemplateService {
             }
             vat.TOTAL_EX_VAT = printData.variables.TOTAL_EX_VAT;
             vat.TOTAL_INCLUDED_TAX = printData.variables.TOTAL_INCLUDED_TAX;
-            vat.VAT_PERCENT = printData.variables.VAT_PERCENT;
+            vat.VAT_PERCENT = this.twoDecimals(printData.variables.VAT_PERCENT);
             vat.TOTAL_IN_VAT = printData.variables.TOTAL_IN_VAT;
             vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
             vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
