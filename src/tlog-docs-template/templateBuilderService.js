@@ -9,7 +9,7 @@ import moment from 'moment';
 export default class TemplateBuilderService {
 
     constructor(options = {}) {
-        options.moment = moment; //TODO: add importation of "moment" in every file and remove this
+        options.moment = window.moment || moment; //TODO: add importation of "moment" in every file and remove this
         this._isUS = options.isUS === undefined ? true : options.isUS;
         this._local = options.local || 'he-IL';
         this.$translate = new TlogDocsTranslateService({ local: this._local });
