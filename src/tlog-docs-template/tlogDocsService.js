@@ -6,6 +6,7 @@
 import TemplateBuilderService from './templateBuilderService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import BillService from './billService';
+import _ from 'lodash';
 
 // const TlogDocsService = (function () {
 export default class TlogDocsService {
@@ -56,7 +57,8 @@ export default class TlogDocsService {
         if (options.isUS !== undefined) {
             this._options.isUS = options.isUS;
             this._isUS = options.isUS;
-        };
+        }
+        ;
 
         if (options.moment) {
             moment = options.moment;
@@ -294,7 +296,6 @@ export default class TlogDocsService {
     // }
 
 
-
     filterOmittedPayments(payments) {
 
         let omittedOrders = [];
@@ -348,54 +349,33 @@ export default class TlogDocsService {
 
     }
 
-    getHTMLDocument(docObj, printData) {
-        var template;
-
-        //_printData = printData;
-
-        // let documentType = printData.documentType;
-
-
-        template = this.$templateBuilder.createHTMLFromPrintDATA(docObj, printData)
-
-        return template;
+    getHTMLDocument(docObj, document) {
+        return this.$templateBuilder.createHTMLFromPrintDATA(docObj, document);
     }
 
     getHTMLDocumentWithoutTlog(document, options) {
-        console.log('document: '+ document);
-        let template;
-        let docObj = {};
-        docObj.isRefund = document.documentType.toUpperCase().indexOf('REFUND') > -1;
-        docObj.docPaymentType;
-        if (document.printData.collections.PAYMENT_LIST[0]) {
-            switch (document.printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE) {
-                case 'cash':
-                    docObj.docPaymentType = 'CashPayment'
-                    break;
-                case 'creditCard':
-                    docObj.docPaymentType = 'CreditCardPayment'
-                    break;
-                case 'giftCard':
-                    docObj.docPaymentType = 'GiftCardPayment'
-                    break;
-                case 'cheque':
-                    docObj.docPaymentType = 'ChequePayment'
-                    break;
-                case 'chargeAccount':
-                    docObj.docPaymentType = 'ChargeAccountPayment'
-                    break;
-            }
+        let documentInfo = {isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1};
+
+        switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
+            case 'cash':
+                documentInfo.docPaymentType = 'CashPayment';
+                break;
+            case 'creditCard':
+                documentInfo.docPaymentType = 'CreditCardPayment';
+                break;
+            case 'giftCard':
+                documentInfo.docPaymentType = 'GiftCardPayment';
+                break;
+            case 'cheque':
+                documentInfo.docPaymentType = 'ChequePayment';
+                break;
+            case 'chargeAccount':
+                documentInfo.docPaymentType = 'ChargeAccountPayment';
+                break;
         }
 
-        document.printData.variables.DOCUMENT_NO ? docObj.documentNumber = document.printData.variables.DOCUMENT_NO : document.printData.variables.DOCUMENT_NO
-
-        let printData = document.printData;
-
-        template = this.getHTMLDocument(docObj, printData)
-
-
-        return template;
-
+        documentInfo.documentNumber = _.get(document, 'printData.variables.DOCUMENT_NO');
+        return this.getHTMLDocument(documentInfo, document);
     }
 
     // TlogDocsService.prototype.getDocs = (tlog, billData, isClosedOrder) => getDocs(tlog, billData, isClosedOrder);
