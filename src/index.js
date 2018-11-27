@@ -22,7 +22,9 @@ class DocumentViewer {
     }
 }
 
-if(window)
-    window.DocumentViewer = DocumentViewer;
-else
+if(module) {
     module.exports = DocumentViewer;
+}
+else {
+    window.DocumentViewer = DocumentViewer;
+}
