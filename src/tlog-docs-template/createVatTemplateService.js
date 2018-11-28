@@ -1,77 +1,18 @@
-// 'use strict'
-// let CreateVatTemplateService = (function () {
-
-// const $translate = require('./tlogDocsTranslate');
-// const $utils = reuire('./tlogDocsUtils.js');
-
-
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 
 export default class CreateVatTemplateService {
-
-    // var $translate;
-    // var $utils;
-    // var _options = {};
-    // var _local;
-    // var _isUS;
-    // var _doc;
-
     constructor(options) {
-
-        this._options = {};
-        this._configure(options)
-
-        this._local;
-        this._isUS;
-        this._doc;
-
-        this.$translate = new TlogDocsTranslateService({
-            local: options.local
-        });
-
+        this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new TlogDocsUtils();
-
-        if (options && options.local) {
-            this._local = options.local
-
-        }
-        else {
-            this._local = 'he-IL';
-        }
     }
 
     isNegative(number) {
         return this.$utils.isNegative(number)
     }
 
-    formatDateIL(stringDate) {
-        return this.$utils.formatDateIL(stringDate);
-    }
-
-    formatDateUS(stringDate) {
-        return this.$utils.formatDateUS(stringDate);
-    }
     twoDecimals(number) {
         return this.$utils.twoDecimals(number);
-    }
-    _configure(options) {
-        if (options.local) { this._options.local = options.local; }
-        if (options.isUS !== undefined) {
-            this._options.isUS = options.isUS;
-            this._isUS = options.isUS;
-            if (options.local === 'en-US') {
-                this._options.isUS = true;
-            }
-        };
-
-        if (options.moment) {
-            moment = options.moment;
-        }
-        else {
-            moment = window.moment;
-        }
-
     }
 
     createVatTemplate(printData, doc) {
@@ -222,15 +163,5 @@ export default class CreateVatTemplateService {
 
         vatDataTemplate.appendChild(vatDataDiv);
         return vatDataTemplate;
-
     }
-
-
-
-
-    // CreateVatTemplateService.prototype.createVatTemplate = (printData, doc) => createVatTemplate(printData, doc);
-
-    // return CreateVatTemplateService;
-
-    // }) ();
 }

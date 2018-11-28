@@ -1,70 +1,25 @@
-// 'use strict'
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import CreateVatTemplateService from './createVatTemplateService';
 
-// let DeliveryNoteTransactionDataService = (function () {
 export default class DeliveryNoteTransactionDataService {
-
-    // var $createVatTemplateService;
-    // var $translate;
-    // var $utils;
-    // var _options = {};
-    // var _local;
-    // var _isUS;
-    // var _doc;
-
     constructor(options) {
-        this._options = {};
-        this._local;
-        this._isUS;
-        this._doc;
-
-        this._configure(options);
-
-        this.$translate = new TlogDocsTranslateService({
-            local: options.local
-        });
-        this.$createVatTemplateService = new CreateVatTemplateService(options)
+        this._isUS = options.isUS;
+        this.$translate = new TlogDocsTranslateService(options);
+        this.$createVatTemplateService = new CreateVatTemplateService(options);
         this.$utils = new TlogDocsUtils();
-
-        if (options && options.local) {
-            this._local = options.local
-
-        }
-        else {
-            this._local = 'he-IL';
-        }
     }
 
     isNegative(number) {
         return this.$utils.isNegative(number)
     }
+
     formatDateIL(stringDate) {
         return this.$utils.formatDateIL(stringDate);
     }
 
     formatDateUS(stringDate) {
         return this.$utils.formatDateUS(stringDate);
-    }
-
-    _configure(options) {
-        if (options.local) this._options.local = options.local;
-        if (options.isUS !== undefined) {
-            this._options.isUS = options.isUS;
-            this._isUS = options.isUS;
-            if (options.local === 'en-US') {
-                this._options.isUS = true;
-            }
-        };
-
-        if (options.moment) {
-            moment = options.moment;
-        }
-        else {
-            moment = window.moment;
-        }
-
     }
 
     createDeliveryNoteTransactionData(printData, doc) {
@@ -212,9 +167,4 @@ export default class DeliveryNoteTransactionDataService {
         deliveryNoteTransactionDiv.appendChild(dNoteChargeAccntDiv);
         return deliveryNoteTransactionDiv;
     }
-
-    // DeliveryNoteTransactionDataService.prototype.createDeliveryNoteTransactionData = (printData, doc) => createDeliveryNoteTransactionData(printData, doc);
-
-    // return DeliveryNoteTransactionDataService;
-    // })();
 }

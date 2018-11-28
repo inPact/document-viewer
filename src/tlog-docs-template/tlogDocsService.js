@@ -1,35 +1,17 @@
-// 'use strict'
-// const $translate = require('./tlogDocsTranslate');
-// const $templateBuilder = require('./templateBuilderService');
-
-
 import TemplateBuilderService from './templateBuilderService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import BillService from './billService';
 import _ from 'lodash';
 
-// const TlogDocsService = (function () {
 export default class TlogDocsService {
 
     constructor(options) {
         this._options = options;
-        this._isUS;
-        this._tlog;
         this._configure(options);
 
-        this.$templateBuilder = new TemplateBuilderService(this._options)
-        this.$translate = new TlogDocsTranslateService({
-            local: options.local
-        });
+        this.$templateBuilder = new TemplateBuilderService(this._options);
+        this.$translate = new TlogDocsTranslateService({local: options.local});
     }
-
-    // $translate;
-    // $templateBuilder;
-
-    //var  _options = {}
-    //var  _utils;
-    // var _tlog;
-
 
     Enums() {
         return {
@@ -58,16 +40,6 @@ export default class TlogDocsService {
             this._options.isUS = options.isUS;
             this._isUS = options.isUS;
         }
-        ;
-
-        if (options.moment) {
-            moment = options.moment;
-        }
-        else {
-            moment = window.moment;
-        }
-
-        //utils = new OfficeDocsUtils();
     }
 
     //Create the Buttons
@@ -289,13 +261,6 @@ export default class TlogDocsService {
 
     }
 
-    // let getPrintDocs = function (tlog) {
-    //     _docsArray = printDocsCreator(tlog);
-    //     docsArray = _docsArray;
-    //     return docsArray;
-    // }
-
-
     filterOmittedPayments(payments) {
 
         let omittedOrders = [];
@@ -377,15 +342,4 @@ export default class TlogDocsService {
         documentInfo.documentNumber = _.get(document, 'printData.variables.DOCUMENT_NO');
         return this.getHTMLDocument(documentInfo, document);
     }
-
-    // TlogDocsService.prototype.getDocs = (tlog, billData, isClosedOrder) => getDocs(tlog, billData, isClosedOrder);
-    // TlogDocsService.prototype.getTemplate = (docObj, printData) => getTemplate(docObj, printData);
-    // TlogDocsService.prototype.getHTMLDocument = (document, options) => getHTMLDocument(document, options);
-
-
-    // return TlogDocsService;
-
 }
-
-// })();
-

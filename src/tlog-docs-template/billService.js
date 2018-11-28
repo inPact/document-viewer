@@ -1,48 +1,14 @@
-// 'use strict'
-
-// const $translate = require('./tlogDocsTranslate');
-// const $utils = require('./tlogDocsUtils');
-
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
+import moment from 'moment';
 
-// let BillService = (function () {
 export default class BillService {
-
-    // var $translate;
-    // var _options = {}
-    // var _isUS;
-    // var $utils;
-
     constructor(options) {
-
-        this._options = {}
-        this._isUS;
-
-        this._configure(options);
+        this._isUS = options.isUS === undefined ? true : options.isUS;
         this.$utils = new TlogDocsUtils();
-        this.$translate = new TlogDocsTranslateService({
-            local: options.local
-        });
-
+        this.$translate = new TlogDocsTranslateService({local: options.local});
     }
 
-    _configure(options) {
-        if (options.local) this._options.local = options.local;
-        if (options.isUS !== undefined) {
-            this._options.isUS = options.isUS;
-            this._isUS = options.isUS;
-        };
-
-        if (options.moment) {
-            moment = options.moment;
-        }
-        else {
-            moment = window.moment;
-        }
-
-        //utils = new OfficeDocsUtils();
-    }
     Enums() {
         return {
             PaymentTypes: {
@@ -51,7 +17,6 @@ export default class BillService {
                 ChargeAccountPayment: 'ChargeAccountPayment',
                 CashPayment: 'CashPayment',
                 ChequePayment: 'ChequePayment',
-                CreditCardPayment: 'CreditCardPayment',
                 ChargeAccountRefund: 'ChargeAccountRefund',
                 CashRefund: 'CashRefund',
                 ChequeRefund: 'ChequeRefund',
@@ -638,23 +603,6 @@ export default class BillService {
         let printByOrder = this.resolvePrintByOrder(variables);
         let waiterDiners = this.resolveWaiterDiners(variables);
 
-
         return new DataBill(collections, variables, data, printByOrder, waiterDiners);
     }
 }
-    // BillService.prototype.resolvePrintData = (printData, isUS) => resolvePrintData(printData, isUS);
-    // BillService.prototype.resolveChecksData = (printData, isUS) => resolveChecksData(printData, isUS);
-
-    // resolve checks
-
-    //** REMOVE */
-    // BillService.prototype.resolveItems = (variables, collections) => resolveItems(variables, collections);
-    // BillService.prototype.resolveTotals = (variables, collections) => resolveTotals(variables, collections);
-    // BillService.prototype.resolvePayments = (variables, collections) => resolvePayments(variables, collections);
-    // BillService.prototype.resolveTaxes = (variables, collections) => resolveTaxes(variables, collections);
-    // BillService.prototype.resolvePaymentName = (variables, collections) => resolvePaymentName(variables, collections);
-    //** REMOVE * /
-
-//     return BillService;
-
-// }());

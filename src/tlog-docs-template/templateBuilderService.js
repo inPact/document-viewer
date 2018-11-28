@@ -4,12 +4,9 @@ import CreateVatTemplateService from './createVatTemplateService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import DeliveryNoteTransactionDataService from './deliveryNoteTransactionService';
 import CreateCreditSlipService from './createCreditSlipService';
-import moment from 'moment';
 
 export default class TemplateBuilderService {
-
     constructor(options = {}) {
-        options.moment = window.moment || moment; //TODO: add importation of "moment" in every file and remove this
         this._isUS = options.isUS === undefined ? true : options.isUS;
         this._local = options.local || 'he-IL';
         this.$translate = new TlogDocsTranslateService({ local: this._local });
@@ -44,12 +41,10 @@ export default class TemplateBuilderService {
     }
 
     createDocTemplate(docObjChosen) {
-        //create a template for the document and give it id 
         var docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');
 
-        //set language and locals
         if (this._local == 'he-IL') {
             docTemplate.classList += ' rtl'
             docTemplate.classList.remove('ltr')
@@ -59,7 +54,6 @@ export default class TemplateBuilderService {
             docTemplate.classList.remove('rtl')
         }
 
-        //create document header
         var templateHeader = this.createHeader(this._printData);
         docTemplate.appendChild(templateHeader);
 
@@ -215,7 +209,7 @@ export default class TemplateBuilderService {
         var tplOrderDateTime = this._doc.createElement('div');
         tplOrderDateTime.id = "tplOrderDateTime";
         tplOrderDateTime.classList.add('mystyle');
-        var tplOrderTitle = _doc.createElement('div');
+        var tplOrderTitle = this._doc.createElement('div');
         tplOrderTitle.id = "tplOrderTitle";
         var tplOrderType = this._doc.createElement('div');
         tplOrderType.id = "tplOrderType";
@@ -274,8 +268,8 @@ export default class TemplateBuilderService {
                 break;
             //Asked to take this down temporary
             case 'tplOrderTitle': {
-                if (_docObj.title) {
-                    htmlElement.innerHTML = _docObj.title;
+                if (this._docObj.title) {
+                    htmlElement.innerHTML = this._docObj.title;
                     htmlElement.setAttribute('class', 'med-chars');
                 }
             }

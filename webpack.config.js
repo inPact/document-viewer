@@ -41,5 +41,6 @@ module.exports = {
     },
     plugins: [
         extractPlugin
-    ]
+    ],
+    //mode: 'development'
 };
