@@ -138,38 +138,6 @@ export default class TlogDocsService {
                                 }
                             }
                         })
-                        // billData.collections.PAYMENT_LIST.forEach(payment => {
-                        //     var paymentForSignature;
-
-                        //     var typeTitle = "";
-                        //     if (payment.P_TENDER_TYPE === 'creditCard') typeTitle = $translate.getText('CreditSlip');
-                        //     if (payment.P_TENDER_TYPE === 'giftCard') typeTitle = $translate.getText('GiftCardCreditSlip');
-
-                        //     if (payment.P_TENDER_TYPE === 'creditCard' || payment.P_TENDER_TYPE === 'giftCard') {
-                        //         _tlog.order[0].allDocuments.forEach(doc => {
-                        //             doc.payments.forEach(p => {
-                        //                 if (p._id === payment.P_ID) {
-                        //                     paymentForSignature = p;
-                        //                 }
-                        //             }
-                        //             )
-                        //         })
-                        //         payment.PAYMENT_NUMBER = `${tlog.order[0].number}/${payment.NUMBER}`;
-                        //         orderSelection.push({
-                        //             tlogId: tlog._id,
-                        //             id: payment.P_ID,
-                        //             type: payment.P_TENDER_TYPE,
-                        //             title: typeTitle + "-" + payment.PAYMENT_NUMBER,
-                        //             ep: `documents/v2/${payment._id}/printdata`,
-                        //             md: {
-                        //                 paymentId: payment.P_ID,
-                        //                 signature: paymentForSignature.customerSignature ? paymentForSignature.customerSignature.data : null
-                        //             },
-                        //             docPaymentType: (payment.P_TENDER_TYPE ? payment.P_TENDER_TYPE : ''),
-                        //             isRefund: payment.P_TENDER_TYPE.includes('Refund')
-                        //         });
-                        //     }
-                        // })
                     }
                 }
             }

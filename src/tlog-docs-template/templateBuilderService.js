@@ -19,7 +19,7 @@ export default class TemplateBuilderService {
     }
 
     _createRootElement() {
-        let rootElement = document.implementation.createHTMLDocument("BillTemplate");
+        let rootElement = document.implementation.createHTMLDocument();
         return rootElement;
     }
 
