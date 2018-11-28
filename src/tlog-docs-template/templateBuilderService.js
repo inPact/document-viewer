@@ -20,10 +20,6 @@ export default class TemplateBuilderService {
 
     _createRootElement() {
         let rootElement = document.implementation.createHTMLDocument("BillTemplate");
-        let styleElement = rootElement.createElement('style');
-        rootElement.head.appendChild(styleElement);
-        let styleTextNode = rootElement.createTextNode(`.templateDiv{background-color:white;}`);
-        styleElement.appendChild(styleTextNode);
         return rootElement;
     }
 
