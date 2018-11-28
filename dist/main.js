@@ -5,7 +5,7 @@ element.id = 'MainElement';
 element.style.width = '400px';
 element.style.direction = 'rtl';
 
-let html = (new DocumentViewer()).getHTMLDocumentWithoutTlog(sampleDocument);
+let html = (new DocumentViewer()).getDocumentHtml(sampleDocument);
 element.insertAdjacentHTML('beforeend', html);
 document.body.appendChild(element);
 
