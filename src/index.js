@@ -3,6 +3,8 @@ import TlogDocsService from './tlog-docs-template/tlogDocsService';
 
 window.DocumentViewer = class DocumentViewer {
     constructor(options = {}) {
+        options.locale = options.locale || 'he-IL';
+
         this._tlogDocsService = new TlogDocsService({
             local: options.locale,
             isUS: options.locale === 'en-US'
