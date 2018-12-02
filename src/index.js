@@ -2,8 +2,11 @@ import './css/tlogDocsTemplate.scss';
 import TlogDocsService from './tlog-docs-template/tlogDocsService';
 
 window.DocumentViewer = class DocumentViewer {
-    constructor() {
-        this._tlogDocsService = new TlogDocsService({isUS: false, local: 'he-IL'});
+    constructor(options = {}) {
+        this._tlogDocsService = new TlogDocsService({
+            local: options.locale,
+            isUS: options.locale === 'en-US'
+        });
     }
 
     getDocumentsInfoFromTlog(tlog, printData) {
