@@ -1,4 +1,5 @@
 .basicTemplate {
+  text-align: center;
   background-color: white;
   font-family: "Courier New", Courier, monospace;
   padding: 5px 15px 5px 15px; }
@@ -6,10 +7,10 @@
 .basicTemplate .header-div {
   padding: 10px; }
 
-.basicTemplate .ltr {
+.basicTemplate.ltr {
   direction: ltr !important; }
 
-.basicTemplate .rtl {
+.basicTemplate.rtl {
   direction: rtl !important; }
 
 .basicTemplate .header-border {
