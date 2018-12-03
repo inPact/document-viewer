@@ -6,7 +6,7 @@ export default class BillService {
     constructor(options) {
         this._isUS = options.isUS === undefined ? true : options.isUS;
         this.$utils = new TlogDocsUtils();
-        this.$translate = new TlogDocsTranslateService({local: options.local});
+        this.$translate = new TlogDocsTranslateService({ local: options.local });
     }
 
     Enums() {
@@ -95,9 +95,15 @@ export default class BillService {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
                             items.push(item);
                         }
-
                         if (offer.OPEN_PRICE) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
+                            items.push(item);
+                        }
+                        if (isReturnOrder) {
+                            item.amount = _utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
+                            items.push(item);
+                        } else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null) { // if the offer amount is 0 not need to show 
+                            item.amount = _utils.toFixedSafe(offer.OFFER_CALC_AMT, 2)
                             items.push(item);
                         }
                     }
