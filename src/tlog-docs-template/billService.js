@@ -100,10 +100,10 @@ export default class BillService {
                             items.push(item);
                         }
                         if (isReturnOrder) {
-                            item.amount = _utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         } else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null) { // if the offer amount is 0 not need to show 
-                            item.amount = _utils.toFixedSafe(offer.OFFER_CALC_AMT, 2)
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2)
                             items.push(item);
                         }
                     }
