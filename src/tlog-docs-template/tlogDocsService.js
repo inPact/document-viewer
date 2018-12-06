@@ -64,7 +64,6 @@ export default class TlogDocsService {
                 tlog.order[0].allDocuments.length > 0 &&
                 tlog.order[0].allDocuments[0].payments.length > 0 &&
                 tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false;
-
             if (checkGiftcardExists) {
                 orderSelection.push({
                     tlogId: tlog._id,
@@ -75,7 +74,6 @@ export default class TlogDocsService {
                     isRefund: false,
                     isFullOrderBill: true,
                     isGiftCardBill: true
-
                 });
             }
             else {
@@ -147,7 +145,6 @@ export default class TlogDocsService {
                                             docPaymentType: (payment.tenderType ? payment.tenderType : ''),
                                             isRefund: payment.tenderType.toUpperCase().includes('REFUND'),
                                             isGiftCardBill: false
-
                                         });
                                     }
                                 })
