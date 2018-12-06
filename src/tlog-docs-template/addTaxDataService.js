@@ -1,14 +1,15 @@
-// 'use strict'
-// let AddTaxDataService = (function () {
-// const $utils = require('./tlogDocsUtils')
 
 
 import TlogDocsUtils from './tlogDocsUtils';
 
 export default class {
 
-    constructor(){
+    constructor(options) {
         this.$utils = new TlogDocsUtils();
+        this._doc;
+        this.taxExemptDiv;
+        this.inclusiveTaxDiv;
+        this.taxDataDiv = null;
     }
 
 
@@ -16,77 +17,91 @@ export default class {
         return this.$utils.isNegative(number)
     }
 
-    addTaxDataFunc(printData) {
-        var taxDataDiv = null;
+    addTaxDataFunc(printData, doc) {
+        this._doc = doc;
 
         if (
             (printData.data.taxes.InclusiveTaxes.length > 0 || printData.data.taxes.InclusiveTaxes[0] !== undefined) ||
             (printData.data.taxes.ExemptedTaxes.length > 0 || printData.data.taxes.ExemptedTaxes[0] !== undefined)
         ) {
 
-            taxDataDiv = _doc.createElement('div');
-            taxDataDiv.id = 'taxDataDiv';
+            this.taxDataDiv = this._doc.createElement('div');
+            this.taxDataDiv.id = 'taxDataDiv';
 
             if (printData.data.totals && printData.data.totals.length > 0) {
                 printData.data.totals.forEach(total => {
-                    var totalItemDiv = _doc.createElement('div');
-                    totalItemDiv.id = 'totalItemDiv';
+                    let totalItemDiv = this._doc.createElement('div');
+                    totalItemDiv.classList += 'totalItemDiv';
                     totalItemDiv.innerHTML = "<div class='itemDiv'>" +
                         "<div class='total-name'>" + (total.name ? total.name : " ") + total.rate + "%" + "</div>" + " " +
                         "<div class='total-amount " + this.isNegative(total.amount) + "'>" + (total.amount ? Number(total.amount).toFixed(2) : " ") + "</div>" +
                         "</div>"
-                    taxDataDiv.appendChild(totalItemDiv)
-                }
-                )
+                    this.taxDataDiv.appendChild(totalItemDiv)
+                })
             }
 
             if (printData.data.payments && printData.data.payments.length > 0) {
                 printData.data.payments.forEach(payment => {
-                    var paymentItemDiv = _doc.createElement('div');
-                    paymentItemDiv.id = 'paymentItemDiv';
+                    let paymentItemDiv = this._doc.createElement('div');
+                    paymentItemDiv.classList += 'paymentItemDiv';
                     paymentItemDiv.innerHTML = "<div class='itemDiv'>" +
-                        "<div class='payment-name'>" + (payment.name ? payment.name : " ") + "</div>" + " " +
-                        "<div class='payment-amount " + this.isNegative(payment.amount) + "'>" + (payment.amount ? Number(payment.amount).toFixed(2) : " ") + "</div>" +
-                        "</div><div class='itemDiv'>" + payment.holderName + "</div > ";
+                        "<div class='total-name'>" + (payment.name ? payment.name : " ") + "</div>" + " " +
+                        "<div class='total-amount " + this.isNegative(payment.amount) + "'>" + (payment.amount ? Number(payment.amount).toFixed(2) : " ") + "</div>" +
+                        "</div><div class='itemDiv'>" + (payment.holderName ? ('&nbsp;' + payment.holderName) : '') + "</div > ";
 
-                    taxDataDiv.appendChild(paymentItemDiv)
+                    this.taxDataDiv.appendChild(paymentItemDiv)
                 })
             }
 
-            if (printData.data.taxes.InclusiveTaxes && printData.data.taxes.InclusiveTaxes.length > 0 ||
-                printData.data.taxes.ExemptedTaxes && printData.data.taxes.ExemptedTaxes.length > 0) {
-                if (printData.data.taxes.InclusiveTaxes.length > 0) {
-                    printData.data.taxes.InclusiveTaxes.forEach(incTax => {
-                        var incTaxItemDiv = _doc.createElement('div');
-                        incTaxItemDiv.id = 'incTaxItemDiv';
-                        incTaxItemDiv.innerHTML = "<div class='itemDiv'>" +
-                            "<div class='incTax-name'>" + (incTax.name ? incTax.name : " ") + "</div>" + " " +
-                            "<div class='incTax-amount " + this.isNegative(incTax.amount) + "'>" + (incTax.amount ? Number(incTax.amount).toFixed(2) : " ") + "</div>" +
 
-                            taxDataDiv.appendChild(incTaxItemDiv)
-                    })
-                }
-                if (printData.data.taxes.ExemptedTaxes.length > 0) {
-                    printData.data.taxes.ExemptedTaxes.forEach(exmTax => {
-                        var exmTaxItemDiv = _doc.createElement('div');
-                        exmTaxItemDiv.id = 'exmTaxItemDiv';
-                        exmTaxItemDiv.innerHTML = "<div class='itemDiv'>" +
-                            "<div class='incTax-name'>" + (exmTax.name ? exmTax.name : " ") + "</div>" + " " +
-                            "<div class='incTax-amount " + this.isNegative(exmTax.amount) + "'>" + (exmTax.amount ? Number(exmTax.amount).toFixed(2) : " ") + "</div>" +
+            this.taxExemptDiv = this.createTaxExemptFunc(printData, this._doc);
 
-                            taxDataDiv.appendChild(exmTaxItemDiv)
-                    })
-                }
-            }
-            return taxDataDiv;
+            this.inclusiveTaxDiv = this.createInclusiveTaxFunc(printData, this._doc)
+
+            if (this.taxExemptDiv !== null) this.taxDataDiv.appendChild(this.taxExemptDiv);
+            if (this.inclusiveTaxDiv !== null) this.taxDataDiv.appendChild(this.inclusiveTaxDiv);
+
+            return this.taxDataDiv;
+
         }
 
         return null;
     }
+
+
+    createTaxExemptFunc(printData, doc) {
+        let exmTaxItemsDiv = doc.createElement('div')
+        if (printData.data.taxes.ExemptedTaxes.length > 0) {
+            printData.data.taxes.ExemptedTaxes.forEach(exmTax => {
+                let exmTaxItemDiv = doc.createElement('div');
+                exmTaxItemDiv.classList += 'exmTaxItemDiv';
+                exmTaxItemDiv.innerHTML = "<div class='itemDiv'>" +
+                    "<div class='total-name'>" + (exmTax.amount ? '&nbsp;' : "") + (exmTax.name ? exmTax.name : " ") + "</div>" + " " +
+                    "<div class='total-amount " + this.isNegative(exmTax.amount) + "'>" + "&nbsp;" + (exmTax.amount ? Number(exmTax.amount).toFixed(2) : " ") + "</div>" + "</div>"
+                exmTaxItemsDiv.appendChild(exmTaxItemDiv)
+
+
+            })
+            return exmTaxItemsDiv;
+        }
+        return null;
+    }
+
+    createInclusiveTaxFunc(printData, doc) {
+        let inclusiveItemsDiv = doc.createElement('div')
+        if (printData.data.taxes.InclusiveTaxes.length > 0) {
+            printData.data.taxes.InclusiveTaxes.forEach(incTax => {
+                let incTaxItemDiv = doc.createElement('div');
+                incTaxItemDiv.classList += 'incTaxItemDiv';
+                incTaxItemDiv.innerHTML = "<div class='itemDiv'>" +
+                    "<div class='total-name'>" + (incTax.name ? incTax.name : " ") + "</div>" + " " +
+                    "<div class='total-amount " + this.isNegative(incTax.amount) + "'> &nbsp;" + (incTax.amount ? Number(incTax.amount).toFixed(2) : " ") + "</div>" + "</div>"
+                inclusiveItemsDiv.appendChild(incTaxItemDiv)
+            })
+            return inclusiveItemsDiv;
+
+        }
+        return null;
+    }
+
 }
-    // AddTaxDataService.prototype.addTaxDataFunc = (printData) => addTaxDataFunc(printData);
-
-
-
-    // return AddTaxDataService;
-// })();

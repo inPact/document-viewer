@@ -10,7 +10,7 @@ export default class TlogDocsService {
         this._configure(options);
 
         this.$templateBuilder = new TemplateBuilderService(this._options);
-        this.$translate = new TlogDocsTranslateService({local: options.local});
+        this.$translate = new TlogDocsTranslateService({ local: options.local });
     }
 
     Enums() {
@@ -59,45 +59,66 @@ export default class TlogDocsService {
             });
         }
         else {
-            orderSelection.push({
-                tlogId: tlog._id,
-                id: tlog._id,
-                type: tlog._type,
-                title: this.$translate.getText('order') + ' ' + tlog.number,
-                ep: `tlogs/${tlog._id}/bill`,
-                isRefund: false,
-                isFullOrderBill: true,
-            });
+            var checkGiftcardExists = tlog.order &&
+                tlog.order.length > 0 &&
+                tlog.order[0].allDocuments.length > 0 &&
+                tlog.order[0].allDocuments[0].payments.length > 0 &&
+                tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false;
 
-            if (tlog.order[0].clubMembers && tlog.order[0].clubMembers.length) {
+            if (checkGiftcardExists) {
                 orderSelection.push({
                     tlogId: tlog._id,
                     id: tlog._id,
                     type: tlog._type,
-                    title: this.$translate.getText('clubMembers'),
-                    ep: `documents/v2/${doc._id}/printdata`,
-                    isRefund: false
+                    title: this.$translate.getText('order') + ' ' + tlog.number,
+                    ep: `tlogs/${tlog._id}/bill`,
+                    isRefund: false,
+                    isFullOrderBill: true,
+                    isGiftCardBill: true
+
                 });
             }
-            if (tlog.order[0].checks && tlog.order[0].checks.length > 1) {
+            else {
+                orderSelection.push({
+                    tlogId: tlog._id,
+                    id: tlog._id,
+                    type: tlog._type,
+                    title:this.$translate.getText('order') + ' ' + tlog.number,
+                    ep: `tlogs/${tlog._id}/bill`,
+                    isRefund: false,
+                    isFullOrderBill: true,
+                });
 
-
-                //set check in split check to 'orderOptions' (the option btns on the PopupBill)
-                tlog.order[0].checks.forEach(check => {
-
-                    let paymentId = check.payments[0].paymentId;
+                if (tlog.order[0].clubMembers && tlog.order[0].clubMembers.length) {
                     orderSelection.push({
                         tlogId: tlog._id,
-                        id: check._id,
-                        type: 'check',
-                        title: this.$translate.getText('CHECK') + ` ${check.number}`, //this.$translate.getText('CHECK') + ` ${check.variables.CHECK_NO}`,
-                        ep: `tlogs/${tlog._id}/checks`,
-                        md: {
-                            paymentId: paymentId,
-                            checkNumber: check.number
-                        }
+                        id: tlog._id,
+                        type: tlog._type,
+                        title: this.$translate.getText('clubMembers'),
+                        ep: `documents/v2/${doc._id}/printdata`,
+                        isRefund: false
                     });
-                });
+                }
+                if (tlog.order[0].checks && tlog.order[0].checks.length > 1) {
+
+
+                    //set check in split check to 'orderOptions' (the option btns on the PopupBill)
+                    tlog.order[0].checks.forEach(check => {
+                        let hasPaymentList = check.payments.length > 0 ? true : false;
+                        let paymentId = hasPaymentList ? check.payments[0].paymentId : '';
+                        orderSelection.push({
+                            tlogId: tlog._id,
+                            id: check._id,
+                            type: 'check',
+                            title: this.$translate.getText('CHECK') + ` ${check.number}`, //this.$translate.getText('CHECK') + ` ${check.variables.CHECK_NO}`,
+                            ep: `tlogs/${tlog._id}/checks`,
+                            md: {
+                                paymentId: paymentId,
+                                checkNumber: check.number
+                            }
+                        });
+                    });
+                }
             }
 
             if (this._isUS) {
@@ -105,37 +126,31 @@ export default class TlogDocsService {
                     if (tlog.order[0].allDocuments && tlog.order[0].allDocuments.length > 0) {
                         var _tlog = tlog;
                         tlog.order[0].allDocuments.forEach(document => {
-                            if (document.payments.length > 0 && document.payments[0]) {
-                                var payment = document.payments[0];
-                                var paymentForSignature;
+                            if (document.payments.length > 0) {
+                                document.payments.forEach(payment => {
 
-                                var typeTitle = "";
-                                if (payment.tenderType === 'creditCard') typeTitle = this.$translate.getText('CreditSlip');
-                                if (payment.tenderType === 'giftCard') typeTitle = this.$translate.getText('GiftCardCreditSlip');
+                                    var typeTitle = "";
+                                    if (payment.tenderType === 'creditCard') typeTitle = this.$translate.getText('CreditSlip');
+                                    if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); document.id = document.id + 'giftCard' }
+                                    if (payment.tenderType === 'creditCard' || payment.tenderType === 'giftCard') {
+                                        payment.number = `${tlog.order[0].number}/${payment.number}`;
+                                        orderSelection.push({
+                                            tlogId: tlog._id,
+                                            id: document.id,
+                                            type: payment.tenderType,
+                                            title: typeTitle + "-" + payment.number,
+                                            ep: `documents/v2/${payment._id}/printdata`,
+                                            md: {
+                                                paymentId: payment._id,
+                                                signature: payment && payment.customerSignature ? payment.customerSignature.data : null
+                                            },
+                                            docPaymentType: (payment.tenderType ? payment.tenderType : ''),
+                                            isRefund: payment.tenderType.toUpperCase().includes('REFUND'),
+                                            isGiftCardBill: false
 
-                                if (payment.tenderType === 'creditCard' || payment.tenderType === 'giftCard') {
-                                    _tlog.order[0].allDocuments.forEach(doc => {
-                                        doc.payments.forEach(p => {
-                                            if (p._id === payment._id) {
-                                                paymentForSignature = p;
-                                            }
-                                        })
-                                    })
-                                    payment.number = `${tlog.order[0].number}/${payment.number}`;
-                                    orderSelection.push({
-                                        tlogId: tlog._id,
-                                        id: document.id,
-                                        type: payment.tenderType,
-                                        title: typeTitle + "-" + payment.number,
-                                        ep: `documents/v2/${payment._id}/printdata`,
-                                        md: {
-                                            paymentId: payment._id,
-                                            signature: paymentForSignature && paymentForSignature.customerSignature ? paymentForSignature.customerSignature.data : null
-                                        },
-                                        docPaymentType: (payment.tenderType ? payment.tenderType : ''),
-                                        isRefund: payment.tenderType.toUpperCase().includes('REFUND')
-                                    });
-                                }
+                                        });
+                                    }
+                                })
                             }
                         })
                     }
@@ -287,7 +302,7 @@ export default class TlogDocsService {
     }
 
     getHTMLDocumentWithoutTlog(document) {
-        let documentInfo = {isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1};
+        let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
 
         switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
             case 'cash':

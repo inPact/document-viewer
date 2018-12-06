@@ -4,18 +4,22 @@ import CreateVatTemplateService from './createVatTemplateService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import DeliveryNoteTransactionDataService from './deliveryNoteTransactionService';
 import CreateCreditSlipService from './createCreditSlipService';
-
+import CreateGiftCardSlipService from './createGiftCardSlipService'
 export default class TemplateBuilderService {
     constructor(options = {}) {
         this._isUS = options.isUS === undefined ? true : options.isUS;
         this._local = options.local || 'he-IL';
-        this.$translate = new TlogDocsTranslateService({ local: this._local });
+        this._isGiftCardBill;
+        this._isTaxExempt;
 
+
+        this.$translate = new TlogDocsTranslateService({ local: this._local });
         this.$billService = new BillService(options);
         this.$createVatTemplateService = new CreateVatTemplateService(options);
-        this.$createCreditSlipService = new CreateCreditSlipService();
+        this.$createCreditSlipService = new CreateCreditSlipService(options);
+        this.$createGiftCardSlipService = new CreateGiftCardSlipService(options);
         this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
-        this.$addTaxData = new AddTaxDataService();
+        this.$addTaxData = new AddTaxDataService(options);
     }
 
     _createRootElement() {
@@ -58,11 +62,25 @@ export default class TemplateBuilderService {
             checkInIL = true;
         }
 
-        var isCreditSlip = (docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL)
 
+        this._isGiftCardBill = docObjChosen.isGiftCardBill ? true : false;
+        this._isTaxExempt = this._printData.data.isTaxExempt;
+
+        var isMediaExchange = (this._printData.variables.ORDER_TYPE === "MEDIAEXCHANGE");
+        var isCreditSlip = (docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL)
+        var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this._isUS);
+
+        if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
+            var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen);
+            docTemplate.appendChild(mediaExchangeDiv)
+        }
         if (isCreditSlip !== null && isCreditSlip) {
             var tplCreditSlipTemplate = this.$createCreditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
             docTemplate.appendChild(tplCreditSlipTemplate);
+        }
+        else if (isGiftCardSlip) {
+            var tplGiftCardSlipTemplate = this.$createGiftCardSlipService.createGiftCardSlip(this._printData, docObjChosen, this._doc);
+            docTemplate.appendChild(tplGiftCardSlipTemplate);
         }
         else {
 
@@ -75,7 +93,7 @@ export default class TemplateBuilderService {
             }
 
             // var tplOrderPaymentData = createOrderPaymentData(_printData);
-            var tplOrderTotals = this.createTotalsData(this._printData);
+            var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
             var tplOrderPayments = this.createPaymentsData(this._printData);
 
             // tplOrderPaymentData.id = 'tplOrderPaymentData';
@@ -88,13 +106,41 @@ export default class TemplateBuilderService {
             tplOrderPayments.hasChildNodes() ? tplOrderPayments.classList += ' body-div tpl-body-div' : '';
 
             //set body main divs
-
             if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
                 docTemplate.appendChild(tplOrderPaymentData);
             }
             tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
             tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
 
+            //if gift card
+            if (this._isGiftCardBill) {
+                if (this._isUS) {
+                    var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
+                    var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
+
+                    if (inclusiveTaxesDiv !== null) docTemplate.appendChild(inclusiveTaxesDiv)
+                    if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
+                }
+            }
+
+            //if tax exempt
+            if (this._isTaxExempt) {
+                if (this._isUS) {
+                    var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
+                    if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
+
+                }
+            }
+
+            if (this._printData.variables.CUSTOMER_MESSAGE) {
+                var customerMessageDiv = this.createCustomerMessage(this._printData, this._doc);
+                if (customerMessageDiv !== null) docTemplate.appendChild(customerMessageDiv)
+            }
+
+        }
+
+        if (this._printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
+            docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
         return docTemplate;
     }
@@ -275,7 +321,7 @@ export default class TemplateBuilderService {
                     var typeTranslate = this.$translate.getText("ORDER_TYPE")
                     var orderType = "ORDER_TYPES_" + printData.variables.ORDER_TYPE;
                     var typeDataTranslate = this.$translate.getText(orderType);
-                    htmlElement.innerHTML = "<div class='centralize' style='justify-content:center;'><span>" + typeTranslate + "</span>" + "&nbsp;" + "<span>" + typeDataTranslate + "</span > " + "&nbsp;" + " <span> #" + printData.variables.ORDER_NO + "</span ></div > "
+                    htmlElement.innerHTML = "<div class='centralize' style='justify-content:center;'>" + this.orderWordsByLocale(typeTranslate, typeDataTranslate, printData.variables.ORDER_NO) + "</div > "
                     htmlElement.setAttribute('class', 'med-chars');
 
                 }
@@ -319,25 +365,22 @@ export default class TemplateBuilderService {
             tplOrderInfoText.appendChild(allOrderOthTextDiv);
         }
         //check if this is a retrun order and prints if it is
-        if (printData.data.isReturnOrder) {
-            var isReturnOrderTextDiv = this._doc.createElement('div');
-            isReturnOrderTextDiv.id = "isReturnOrderTextDiv";
-            isReturnOrderTextDiv.innerHTML = this.$translate.getText('RETURN_TRANSACTION');
-            tplOrderInfoText.appendChild(isReturnOrderTextDiv);
-            //return order comment
-            if (printData.variables.RETURN_COMMENT) {
-                var returnOrderCommentDiv = this._doc.createElement('div');
-                returnOrderCommentDiv.id = "returnOrderCommentDiv";
-                returnOrderCommentDiv.innerHTML = printData.variables.RETURN_COMMENT;
-                tplOrderInfoText.appendChild(returnOrderCommentDiv);
-            }
+
+        if (printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
+            tplOrderInfoText.appendChild(this.createReturnOrderText(printData));
         }
+
         //check if this is order is tax exempted  and prints if it is
         if (printData.data.isTaxExempt) {
+            var taxExemptText = this._doc.createElement('div');
+            taxExemptText.id = 'taxExemptText';
+            taxExemptText.innerHTML = "<div class='bigBold'>" + this.$translate.getText('EXEMPTED_TAX') + "</div>"
+            tplOrderInfoText.appendChild(taxExemptText);
+
             if (printData.variables.TAX_EXEMPTION_CODE) {
                 var isTaxExemptCodeDiv = this._doc.createElement('div');
                 isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
-                isTaxExemptCodeDiv.innerHTML = printData.variables.TAX_EXEMPTION_CODE;
+                isTaxExemptCodeDiv.innerHTML = "<div class='bold'>" + printData.variables.TAX_EXEMPTION_CODE; + "</div>"
                 tplOrderInfoText.appendChild(isTaxExemptCodeDiv);
             }
             if (printData.variables.TAX_EXEMPTION_COMMENT) {
@@ -380,26 +423,47 @@ export default class TemplateBuilderService {
     fillItemsData(htmlElement, data, printData) {
 
         if (!printData.isRefund) {
-            data.items.forEach(item => {
+            data.items.forEach((item, index) => {
 
-                var itemDiv = this._doc.createElement('div');
-                if (item.isOffer) {
-                    itemDiv.classList.add("bold");
-                    item.space = "";
+                //in case it is return order, we don't want to show return of item the did not cost anything
+                if (!(data.isReturnOrder && this._docData.documentType === 'orderBill' && (!item.amount || item.amount === '0.00'))) {
+
+                    var orderdOfferListExists = printData.collections.ORDERED_OFFERS_LIST.length > 0 ? true : false;
+                    var offerUnits = orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index].OFFER_UNITS ? printData.collections.ORDERED_OFFERS_LIST[index].OFFER_UNITS : null;
+                    var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
+                    var weightWordTranslate = this.$translate.getText('weight');
+
+                    var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
+                    var weightUnitTranslate = this.$translate.getText(weightUnit)
+                    var itemDiv = this._doc.createElement('div');
+                    if (item.isOffer) {
+                        itemDiv.classList.add("bold");
+                        item.space = "";
+                    }
+                    else if (!item.isOffer) {
+                        itemDiv.classList.add("itemDiv");
+                        item.qty = '&nbsp;&nbsp;';
+                        item.space = "&emsp;";
+                    }
+                    itemDiv.innerHTML = "<div class='itemDiv'>" +
+                        "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
+                        "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
+                        "<div class='total-amount " + this.isNegative(item.amount) + "'>" + (item.amount ? item.amount : "") + "</div>" +
+                        "</div>"
+
+                    var weightDiv = this._doc.createElement('div');
+                    weightDiv.classList += "weightDiv";
+                    if (isWeightItem) {
+                        weightDiv.innerHTML = "<div class='itemDiv'>" +
+                            "<div class='item-qty'>" + " " + "</div>" + " " +
+                            "<div class='item-name'>" + item.space + "" + (weightWordTranslate) + " (" + weightUnitTranslate + ")" + "</div>" + " " +
+                            "<div class='total-amount'>" + (offerUnits ? offerUnits : "") + "</div>" +
+                            "</div>"
+
+                        itemDiv.appendChild(weightDiv);
+                    }
+                    htmlElement.appendChild(itemDiv);
                 }
-                else if (!item.isOffer) {
-                    itemDiv.classList.add("itemDiv");
-                    item.qty = '&nbsp;&nbsp;';
-                    item.space = "&emsp;";
-                }
-                itemDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
-                    "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
-                    "<div class='total-amount " + this.isNegative(item.amount) + "'>" + (item.amount ? item.amount : "") + "</div>" +
-                    "</div>"
-
-                htmlElement.appendChild(itemDiv);
-
             })
         }
 
@@ -411,14 +475,12 @@ export default class TemplateBuilderService {
             if (othItem.isOffer) {
                 othItemDiv.classList.add("bold");
                 othItem.space = "";
-
             }
             else if (!othItem.isOffer) {
                 othItem.id = "singleOthDiv"
                 othItem.qty = '&nbsp;&nbsp;';
                 othItem.space = "&emsp;";
             }
-
 
             othItemDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='item-qty'>" + (othItem.qty ? othItem.qty : " ") + "</div>" + " " +
@@ -486,11 +548,21 @@ export default class TemplateBuilderService {
             var approvalText = this.$translate.getText(creditData.CONFIRMATION_NUMBER ? 'APPROVAL_NO' : "");
             var cashBackText = this.$translate.getText(printData.variables.CHANGE ? 'TOTAL_CASHBACK' : "");
 
+            var cashBackDiv = this._doc.createElement('div');
+            if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
+                cashBackDiv.innerHTML = "<div class='changeDiv'>" +
+                    "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
+                    "<div class='total-amount'>" + (printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : " ") + "</div>"
+                    + "</div >"
+            }
+            creditDataDiv.appendChild(cashBackDiv);
+
             var lastFourDiv = this._doc.createElement('div');
             if (lastFourText) {
                 lastFourDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (lastFourText ? lastFourText : " ")
-                    + " " + (creditData.LAST_4 ? creditData.LAST_4 : " ") + "</div>"
+                    "<div class='total-name'>" + (lastFourText ? lastFourText : " ") + "</div>"
+                    + " " + "<div class='number-data'>" + (creditData.LAST_4 ? creditData.LAST_4 : " ") + "</div>" + "</div>"
+
             }
             creditDataDiv.appendChild(lastFourDiv);
 
@@ -502,7 +574,7 @@ export default class TemplateBuilderService {
                 dateTimeResult = this.formatDateIL(dateTimeStr);
             }
             transactionTimeDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + " " + (transactTimeText ? dateTimeResult : "") + "</div>" +
+                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + "</div>" + "<div class='number-data'>" + (transactTimeText ? dateTimeResult : "") + "</div>" +
                 "</div>"
 
             creditDataDiv.appendChild(transactionTimeDiv);
@@ -510,39 +582,32 @@ export default class TemplateBuilderService {
             var transactNumDiv = this._doc.createElement('div');
             if (creditData.PROVIDER_TRANS_ID) {
                 transactNumDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (transactNumText ? transactNumText : " ") +
-                    " " + (creditData.PROVIDER_TRANS_ID ? creditData.PROVIDER_TRANS_ID : " ") + "</div>" + "</div>"
+                    "<div class='total-name'>" + (transactNumText ? transactNumText : " ") + "</div>" +
+                    "<div class='number-data'>" + (creditData.PROVIDER_TRANS_ID ? creditData.PROVIDER_TRANS_ID : " ") + "</div>" + "</div>"
             }
             creditDataDiv.appendChild(transactNumDiv);
 
             var approvalDiv = this._doc.createElement('div');
             if (creditData.CONFIRMATION_NUMBER) {
                 approvalDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (approvalText ? approvalText : " ") + " " + (creditData.CONFIRMATION_NUMBER ? creditData.CONFIRMATION_NUMBER : " ") + "</div>" + "</div>"
-
-                creditDataDiv.appendChild(approvalDiv);
-
+                    "<div class='total-name'>" + (approvalText ? approvalText : " ") + "</div>" +
+                    "<div class='number-data'>" + (creditData.CONFIRMATION_NUMBER ? creditData.CONFIRMATION_NUMBER : " ") + "</div>" + "</div>"
             }
+            creditDataDiv.appendChild(approvalDiv);
 
-            var cashBackDiv = this._doc.createElement('div');
-            if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
-                cashBackDiv.innerHTML = "<div class='changeDiv'>" +
-                    "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
-                    "<div class='total-amount'>" + (printData.collections.PAYMENT_LIST[0].P_CHANGE ? Number(printData.collections.PAYMENT_LIST[0].P_CHANGE).toFixed(2) : " ") + "</div>"
-                    + "</div >"
-                creditDataDiv.appendChild(cashBackDiv);
-            }
         }
 
         return creditDataDiv
-
     }
 
-    createTotalsData(printData) {
+    createTotalsData(printData, isGiftCardBill, isTaxExempt) {
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
-        // let data = _billService.resolveItems(printData.variables, printData.collections);
+        var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc);
+
+        if (taxDataDiv !== null && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
+
 
         var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData);
         if (taxDataDiv !== null) {
@@ -573,18 +638,18 @@ export default class TemplateBuilderService {
 
             // if (!_isUS) {
             printData.data.totals.forEach(total => {
+                var isCheckTotal = total.name === 'Check Total';
+
                 var totalDiv = this._doc.createElement('div');
                 if (total.type === 'exclusive_tax') {
                     totalDiv.innerHTML = "<div class='itemDiv'>" +
-                        "<div class='total-name'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? total.rate + " &nbsp;%" : " ") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(total.amount) + "'>" + (total.amount ? total.amount : " ") +
-                        "</div>" +
-                        "</div>"
+                        "<div class='total-name'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? total.rate + "%" : " ") + "</div>" + " " +
+                        "<div class='total-amount " + this.isNegative(total.amount) + "'>" + (total.amount ? this.twoDecimals(total.amount) : " ") + "</div>" + "</div>"
                 }
                 else if (total.type !== 'exclusive_tax') {
-                    totalDiv.innerHTML = "<div class='itemDiv'>" +
+                    totalDiv.innerHTML = "<div class='itemDiv " + (isCheckTotal ? " bold" : '') + "'>" +
                         "<div class='total-name'>" + (total.name ? total.name : " ") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(total.amount) + "'>" + (total.amount ? total.amount : " ") + "</div>" +
+                        "<div class='total-amount " + this.isNegative(total.amount) + "'>" + (total.amount ? this.twoDecimals(total.amount) : " ") + "</div>" +
                         "</div>"
                 }
 
@@ -597,9 +662,6 @@ export default class TemplateBuilderService {
 
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
-
-
-        // let data = _billService.resolveItems(printData.variables, printData.collections);
 
         if (this._docObj && this._docData.documentType === "deliveryNote") {
             return tplOrderPaymentsDiv;
@@ -649,7 +711,8 @@ export default class TemplateBuilderService {
                 }
                 if (payment.holderName) {
                     var holderNameDiv = this._doc.createElement('div');
-                    holderNameDiv.innerHTML = "&nbsp;&nbsp;&nbsp;" + payment.holderName;
+                    holderNameDiv.classList += ' holder-name';
+                    holderNameDiv.innerHTML = "&nbsp;" + payment.holderName;
                     OrderPaymentsDiv.appendChild(holderNameDiv);
                 }
 
@@ -692,6 +755,66 @@ export default class TemplateBuilderService {
         giftCardDiv.appendChild(transactNumDiv);
 
         return giftCardDiv;
+
+    }
+
+    createMediaExchange(printData) {
+        var printMessage;
+        var pName;
+        var cardNumber;
+        var pAmount;
+        var balanceAmount;
+
+        if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length > 0) {
+            printData.collections.PAYMENT_LIST.forEach(payment => {
+                if (payment.P_TENDER_TYPE === 'giftCard') {
+                    printMessage = payment.PRINT_MESSAGE.replace(/\n/ig, '<br/>');
+                    pName = payment.P_NAME;
+                    cardNumber = payment.CARD_NUMBER;
+                    pAmount = payment.P_AMOUNT;
+                    balanceAmount = payment.BALANCE_AMOUNT;
+                }
+            });
+        }
+
+        var mediaExchangeDiv = this._doc.createElement('div');
+        mediaExchangeDiv.id = 'mediaExchangeDiv';
+
+        //set texts for the divs
+        var giftCardText = pName;
+        var cardNumberText = this.$translate.getText('card_number');
+        var amountText = this.$translate.getText('amount');
+        var balanceText = this.$translate.getText('Balance');
+
+        //create div to append
+        var pNameDiv = this._doc.createElement('div');
+        var amountDiv = this._doc.createElement('div');
+        var cardNumberDiv = this._doc.createElement('div');
+        var balanceDiv = this._doc.createElement('div');
+        var printMsgDiv = this._doc.createElement('div');
+
+        if (pName) {
+            pNameDiv.innerHTML = "<div class='padding-top bold'>" + giftCardText + "</div>"
+            mediaExchangeDiv.appendChild(pNameDiv);
+        }
+        if (cardNumber) {
+            cardNumberDiv.innerHTML = "<div class='bold'>" + cardNumberText + ": " + cardNumber + "</div>"
+            mediaExchangeDiv.appendChild(cardNumberDiv);
+        }
+        if (pAmount) {
+            amountDiv.innerHTML = "<div class='bold'>" + amountText + ": " + this.twoDecimals(pAmount) + "</div>"
+            mediaExchangeDiv.appendChild(amountDiv);
+        }
+        if (balanceAmount) {
+            balanceDiv.innerHTML = "<div class='bold'>" + balanceText + ": " + this.twoDecimals(balanceAmount) + "</div>"
+            mediaExchangeDiv.appendChild(balanceDiv);
+        }
+        if (printMessage) {
+            printMsgDiv.innerHTML = "<div class='bold'>" + printMessage + "</div>"
+            mediaExchangeDiv.appendChild(printMsgDiv);
+        }
+
+        return mediaExchangeDiv;
     }
 
     createCashPaymentFooter(printData) {
@@ -706,7 +829,7 @@ export default class TemplateBuilderService {
         var cashPaidDiv = this._doc.createElement('div')
         cashPaidDiv.innerHTML = "<div class='itemDiv'>" +
             "<div class='total-name'>" + (!printData.isRefund ? cashPaidText : cashReturnedText) + "</div>" +
-            "<div class='total-amount " + this.isNegative(pAmount) + "'>" + (pAmount).toFixed(2) + "</div>" +
+            "<div class='total-amount " + this.isNegative(pAmount) + "'>" + this.twoDecimals(pAmount) + "</div>" +
             "</div>"
 
         cashDiv.appendChild(cashPaidDiv);
@@ -718,7 +841,7 @@ export default class TemplateBuilderService {
             var transactNumDiv = this._doc.createElement('div')
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + pChange + "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + this.twoDecimals(pChange) + "</div>" +
                 "</div>"
 
             cashDiv.appendChild(transactNumDiv);
@@ -739,7 +862,7 @@ export default class TemplateBuilderService {
         var chequePaidDiv = this._doc.createElement('div')
         chequePaidDiv.innerHTML = "<div class='itemDiv'>" +
             "<div class='total-name'>" + (!printData.isRefund ? chequePaidText : chequeReturnedText) + "</div>" +
-            "<div class='total-amount " + this.isNegative(pAmount) + "'>" + (pAmount).toFixed(2) + "</div>" +
+            "<div class='total-amount " + this.isNegative(pAmount) + "'>" + this.twoDecimals(pAmount) + "</div>" +
             "</div>"
 
         chequeDiv.appendChild(chequePaidDiv);
@@ -751,7 +874,7 @@ export default class TemplateBuilderService {
             var transactNumDiv = this._doc.createElement('div')
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + pChange + "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + this.twoDecimals(pChange) + "</div>" +
                 "</div>"
 
             chequeDiv.appendChild(transactNumDiv);
@@ -760,12 +883,51 @@ export default class TemplateBuilderService {
         return chequeDiv;
     }
 
+
+    createReturnOrderText(printData) {
+        var returnOrderDiv = this._doc.createElement('div')
+
+        var isReturnOrderTextDiv = this._doc.createElement('div');
+        isReturnOrderTextDiv.id = "isReturnOrderTextDiv";
+        isReturnOrderTextDiv.innerHTML = "<div class= bigBold>" + (this.$translate.getText('RETURN_TRANSACTION')) + "</div>";
+        returnOrderDiv.appendChild(isReturnOrderTextDiv);
+        //return order comment
+        if (printData.variables.RETURN_COMMENT) {
+            var returnOrderCommentDiv = this._doc.createElement('div');
+            returnOrderCommentDiv.id = "returnOrderCommentDiv";
+            returnOrderCommentDiv.innerHTML = printData.variables.RETURN_COMMENT;
+            returnOrderDiv.appendChild(returnOrderCommentDiv);
+        }
+
+        return returnOrderDiv;
+    }
+
+    createCustomerMessage(printData, doc) {
+        if (printData.variables.CUSTOMER_MESSAGE) {
+            var customerMessage = this.breakCustomerMessageFilter(printData.variables.CUSTOMER_MESSAGE);
+            var customerMessageDataDiv = doc.createElement('div');
+            customerMessageDataDiv.innerHTML = "<div class='customerMessage'>" + customerMessage + "</div>"
+
+            return customerMessageDataDiv;
+        }
+        else return null;
+
+    }
+
+    breakCustomerMessageFilter(str) {
+        if (!str) return '';
+        return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br\/>$2');
+    }
     //create svg function
     makeSVG(tag, attrs) {
         var el = this._doc.createElementNS('http://www.w3.org/2000/svg', tag);
         for (var k in attrs)
             el.setAttribute(k, attrs[k]);
         return el;
+    }
+
+    twoDecimals(number) {
+        return this.$utils.twoDecimals(number);
     }
 
     //function for appending multiple children
@@ -780,6 +942,20 @@ export default class TemplateBuilderService {
         return divForAppending;
     }
 
+    orderWordsByLocale(input1, input2, input3) {
+        let htmlString;
+        if (this._isUS) {
+            htmlString = "<span>" + input2 + "</span>" + "&nbsp;" + "<span>" + input1 + "</span>" + "&nbsp;" + " <span> #" + input3 + "</span >"
+        } else {
+            htmlString = "<span>" + input1 + "</span>" + "&nbsp;" + "<span>" + input2 + "</span> " + "&nbsp;" + " <span> #" + input3 + "</span >"
+
+        }
+
+        return htmlString;
+    }
+
+
+
     isNegative(amount) {
         var intAmount = parseInt(amount);
         return intAmount < 0 ? 'negative' : "";
@@ -788,14 +964,14 @@ export default class TemplateBuilderService {
 
     formatDateUS(stringDate) {
         var date = new Date(stringDate);
-        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + date.getHours() + ":" +
+        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
             ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
     }
 
     formatDateIL(stringDate) {
         var date = new Date(stringDate);
-        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " " +
-            ((date.getHours() > 10) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes());
+        return ((date.getHours() > 10) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes()) + " " +
+            date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " ";
     }
 
     // TemplateBuilderService.prototype.createHTMLFromPrintDATA = (docObj, printData) => createHTMLFromPrintDATA(docObj, printData);

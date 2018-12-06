@@ -7,7 +7,7 @@ export default class TlogDocsUtils {
     // TlogDocsUtils() {
 
     // }
-    constructor(){
+    constructor() {
 
     }
 
@@ -34,30 +34,31 @@ export default class TlogDocsUtils {
 
     }
 
+    isUsAmount(isUS) {
+        if (isUS) {
+            return 'ltrAmount';
+        }
+        return 'rtlAmount';
+    }
     twoDecimals(number) {
         return Number(number).toFixed(2);
     }
 
+    notEmpty(field) {
+        if (field !== undefined && field !== null) { return true; }
+        return false
+    }
+
     formatDateUS(stringDate) {
         var date = new Date(stringDate);
-        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + date.getHours() + ":" +
+        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
             ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
     }
 
     formatDateIL(stringDate) {
         var date = new Date(stringDate);
-        return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " " +
-            ((date.getHours() > 10) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes());
+        return ((date.getHours() > 10) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes()) +
+            " " + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     }
 
-    // TlogDocsUtils.prototype.isNegative = _isNegative;
-    // TlogDocsUtils.prototype.formatDateIL = _formatDateIL;
-    // TlogDocsUtils.prototype.formatDateUS = _formatDateUS;
-
-    // TlogDocsUtils.prototype.toFixedSafe = _toFixedSafe;
-    // TlogDocsUtils.prototype.currencyFraction = _currencyFraction;
-    // TlogDocsUtils.prototype.twoDecimals = _twoDecimals;
-
-    // return TlogDocsUtils;
 }
-// }());

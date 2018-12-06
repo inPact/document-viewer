@@ -1,7 +1,7 @@
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 
-export default class CreateCreditSlipService {
+export default class CreateGiftCardSlipService {
 
     constructor(options) {
         this._options = {};
@@ -20,149 +20,149 @@ export default class CreateCreditSlipService {
             this._isUS = options.isUS;
         }
     }
-    createCreditSlip(printData, docObjChosen, doc) {
+    createGiftCardSlip(printData, docObjChosen, doc) {
         this._doc = doc;
-        let creditSlipDiv = this._doc.createElement('div');
-        creditSlipDiv.id = 'creditSlipDiv';
+        let giftCardSlipDiv = this._doc.createElement('div');
+        giftCardSlipDiv.id = 'giftCardSlipDiv';
 
-        let creditSlipDoc;
+        let giftCardSlipDoc;
         if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length > 0) {
             printData.collections.PAYMENT_LIST.forEach(payment => {
-                if (payment.P_TENDER_TYPE === 'creditCard' &&
+                if (payment.P_TENDER_TYPE === 'giftCard' &&
                     payment.P_ID === docObjChosen.md.paymentId
                 ) {
-                    creditSlipDoc = payment;
+                    giftCardSlipDoc = payment;
                 }
             })
         }
 
-        if (creditSlipDoc) {
+        if (giftCardSlipDoc) {
             let transactionTypeDiv = this._doc.createElement('div');
             transactionTypeDiv.id = 'transactionTypeDiv';
-            let TransactionTypeText = this.$translate.getText('TransactionType');
+            let TransactionTypeText =this.$translate.getText('TransactionType');
             transactionTypeDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(TransactionTypeText === null) ? TransactionTypeText : "") + ": "
-                + (creditSlipDoc.TRANS_TYPE ? creditSlipDoc.TRANS_TYPE : "") + "</div></div>"
+                + (giftCardSlipDoc.TRANS_TYPE ? giftCardSlipDoc.TRANS_TYPE : "") + "</div></div>"
 
             transactionTypeDiv.classList += ' padding-top';
-            creditSlipDiv.appendChild(transactionTypeDiv);
+            giftCardSlipDiv.appendChild(transactionTypeDiv);
 
             let cardTypeDiv = this._doc.createElement('div');
             cardTypeDiv.id = 'cardTypeDiv';
-            let cardTypeText = this.$translate.getText('CardType');
-            if (creditSlipDoc.CARD_TYPE) {
+            let cardTypeText =this.$translate.getText('CardType');
+            if (giftCardSlipDoc.CARD_TYPE) {
                 cardTypeDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(cardTypeText === null) ? cardTypeText : "") + ": "
-                    + (creditSlipDoc.CARD_TYPE ? creditSlipDoc.CARD_TYPE : "") + "</div></div>"
-                creditSlipDiv.appendChild(cardTypeDiv)
+                    + (giftCardSlipDoc.CARD_TYPE ? giftCardSlipDoc.CARD_TYPE : "") + "</div></div>"
+                giftCardSlipDiv.appendChild(cardTypeDiv)
             }
 
             let cardNumDiv = this._doc.createElement('div');
             cardNumDiv.id = 'cardNumDiv';
-            let cardNumText = this.$translate.getText('CardNumber');
+            let cardNumText =this.$translate.getText('CardNumber');
             cardNumDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (!(cardNumText === null) ? cardNumText : "") + ": " + (creditSlipDoc.CARD_NUMBER_MASKED ? creditSlipDoc.CARD_NUMBER_MASKED : "XXXX-" + creditSlipDoc.LAST_4) +
+                "<div class='total-name'>" + (!(cardNumText === null) ? cardNumText : "") + ": " + (giftCardSlipDoc.CARD_NUMBER_MASKED ? giftCardSlipDoc.CARD_NUMBER_MASKED : "XXXX-" + giftCardSlipDoc.LAST_4) +
                 "</div></div>"
 
-            creditSlipDiv.appendChild(cardNumDiv)
+            giftCardSlipDiv.appendChild(cardNumDiv)
 
-            if (creditSlipDoc.P_TENDER_TYPE === 'creditCard') {
-                let pTenderTypeDiv = this._doc.createElement('div');
-                pTenderTypeDiv.id = 'pTenderTypeDiv';
-                let pTenderTypeText = this.$translate.getText('CardHolder');
-                pTenderTypeDiv.innerHTML = "<div class='itemDiv'>" +
-                    (!(pTenderTypeText === null) ? pTenderTypeText : "") + ": " + (creditSlipDoc.CUSTOMER_NAME ? creditSlipDoc.CUSTOMER_NAME : "") +
+            if (giftCardSlipDoc.CUSTOMER_NAME) {
+                let cardHolderDiv = this._doc.createElement('div');
+                cardHolderDiv.id = 'cardHolderDiv';
+                let cardHolderText =this.$translate.getText('CardHolder');
+                cardHolderDiv.innerHTML = "<div class='itemDiv'>" +
+                    (!(cardHolderText === null) ? cardHolderText : "") + ": " + (giftCardSlipDoc.CUSTOMER_NAME ? giftCardSlipDoc.CUSTOMER_NAME : "") +
                     "</div></div>"
-                creditSlipDiv.appendChild(pTenderTypeDiv)
+                giftCardSlipDiv.appendChild(cardHolderDiv)
             }
 
 
-            let dateTimeStr = creditSlipDoc.PROVIDER_PAYMENT_DATE;
+            let dateTimeStr = giftCardSlipDoc.PROVIDER_PAYMENT_DATE;
             let dateTimeResult;
-            let transactTimeText = this.$translate.getText('transactTimeText');
-            let creditSlipTimeDiv = this._doc.createElement('div');
-            creditSlipTimeDiv.classList += " creditSlipTimeDiv";
-
+            let transactTimeText =this.$translate.getText('transactTimeText');
+            let giftCardSlipTimeDiv = this._doc.createElement('div')
             if (this._isUS) dateTimeResult = this.$utils.formatDateUS(dateTimeStr);
             else if (!this._isUS) {
                 dateTimeResult = this.$utils.formatDateIL(dateTimeStr);
             }
-            creditSlipTimeDiv.innerHTML = "<div class='itemDiv'>" +
+            giftCardSlipTimeDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + ": " + (transactTimeText ? dateTimeResult : "") + "</div>" +
                 "</div>";
 
-            creditSlipTimeDiv.classList += ' padding-bottom';
+            giftCardSlipTimeDiv.classList += ' padding-bottom';
+            giftCardSlipTimeDiv.classList += ' tpl-body-div';
 
-            creditSlipDiv.appendChild(creditSlipTimeDiv);
+            giftCardSlipDiv.appendChild(giftCardSlipTimeDiv);
 
             let merchantDiv = this._doc.createElement('div');
             merchantDiv.id = 'merchantDiv';
-            let merchantText = this.$translate.getText('Merchant');
+            let merchantText =this.$translate.getText('Merchant');
             merchantDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (!(merchantText === null) ? merchantText : "") + ": " + (creditSlipDoc.MERCHANT_NUMBER ? creditSlipDoc.MERCHANT_NUMBER : "") +
+                "<div class='total-name'>" + (!(merchantText === null) ? merchantText : "") + ": " + (giftCardSlipDoc.MERCHANT_NUMBER ? giftCardSlipDoc.MERCHANT_NUMBER : "") +
                 "</div></div>";
             merchantDiv.classList += ' padding-top';
 
-            creditSlipDiv.appendChild(merchantDiv)
+            giftCardSlipDiv.appendChild(merchantDiv)
+
 
             let sequenceDiv = this._doc.createElement('div');
             sequenceDiv.id = 'sequenceDiv';
-            let sequenceText = this.$translate.getText('Sequence');
+            let sequenceText =this.$translate.getText('Sequence');
             sequenceDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(sequenceText === null) ? sequenceText : "") + ": " +
-                + (creditSlipDoc.PROVIDER_TRANS_ID ? creditSlipDoc.PROVIDER_TRANS_ID : "") + "</div>" +
+                + (giftCardSlipDoc.PROVIDER_TRANS_ID ? giftCardSlipDoc.PROVIDER_TRANS_ID : "") + "</div>" +
                 "</div>"
-            creditSlipDiv.appendChild(sequenceDiv)
+            giftCardSlipDiv.appendChild(sequenceDiv)
 
             let responseDiv = this._doc.createElement('div');
             responseDiv.id = 'responseDiv';
-            let responseText = this.$translate.getText('Response');
-            let responseMessage = creditSlipDoc.PROVIDER_RESPONSE_MESSAGE ? creditSlipDoc.PROVIDER_RESPONSE_MESSAGE : '';
+            let responseText =this.$translate.getText('Response');
+            let responseMessage = giftCardSlipDoc.PROVIDER_RESPONSE_MESSAGE ? giftCardSlipDoc.PROVIDER_RESPONSE_MESSAGE : '';
             responseDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(responseText === null || responseText === undefined) ? responseText : "") + ": " +
-                (creditSlipDoc.PROVIDER_RESPONSE_CODE ? creditSlipDoc.PROVIDER_RESPONSE_CODE + "/" + responseMessage : "") + "</div>" +
+                (giftCardSlipDoc.PROVIDER_RESPONSE_CODE ? giftCardSlipDoc.PROVIDER_RESPONSE_CODE + "/" + responseMessage : "") + "</div>" +
                 "</div>"
-            creditSlipDiv.appendChild(responseDiv)
+            giftCardSlipDiv.appendChild(responseDiv)
 
             let approvalDiv = this._doc.createElement('div');
             approvalDiv.id = 'approvalDiv';
-            let approvalText = this.$translate.getText('Approval');
+            let approvalText =this.$translate.getText('Approval');
             approvalDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(approvalText === null) ? approvalText : "") + ": " +
-                (creditSlipDoc.CONFIRMATION_NUMBER ? creditSlipDoc.CONFIRMATION_NUMBER : "") + "</div></div>"
+                (giftCardSlipDoc.CONFIRMATION_NUMBER ? giftCardSlipDoc.CONFIRMATION_NUMBER : "") + "</div></div>"
 
-            creditSlipDiv.appendChild(approvalDiv)
+            giftCardSlipDiv.appendChild(approvalDiv)
 
             let entryDiv = this._doc.createElement('div');
             entryDiv.classList += ' tpl-body-div';
             entryDiv.id = 'entryDiv';
-            let entryText = this.$translate.getText('Entry');
+            let entryText =this.$translate.getText('Entry');
             entryDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(entryText === null) ? entryText : "") + ": " +
-                (creditSlipDoc.ENTRY_METHOD ? creditSlipDoc.ENTRY_METHOD : "") +
+                (giftCardSlipDoc.ENTRY_METHOD ? giftCardSlipDoc.ENTRY_METHOD : "") +
                 "</div></div>"
 
             entryDiv.classList += ' padding-bottom';
             entryDiv.classList += ' tpl-body-div';
-            creditSlipDiv.appendChild(entryDiv)
+            giftCardSlipDiv.appendChild(entryDiv)
 
             let checkTotalDiv = this._doc.createElement('div');
             checkTotalDiv.id = 'checkTotalDiv';
-            let checkTotalText = this.$translate.getText('CheckTotal');
+            let checkTotalText =this.$translate.getText('CheckTotal');
             checkTotalDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(checkTotalText === null) ? checkTotalText : "") + ": " + "</div >" +
-                "<div class='total-amount'>" + (creditSlipDoc.P_AMOUNT_WO_TIP ? Number(creditSlipDoc.P_AMOUNT_WO_TIP).toFixed(2) : "") +
+                "<div class='total-amount'>" + (giftCardSlipDoc.P_AMOUNT_WO_TIP ? Number(giftCardSlipDoc.P_AMOUNT_WO_TIP).toFixed(2) : "") +
                 "</div></div>"
 
             checkTotalDiv.classList += ' padding-top';
-            creditSlipDiv.appendChild(checkTotalDiv)
+            giftCardSlipDiv.appendChild(checkTotalDiv)
 
             let tipDiv = this._doc.createElement('div');
             tipDiv.id = 'tipDiv';
-            let tipText = this.$translate.getText('Tip');
+            let tipText =this.$translate.getText('Tip');
             let tipAmount;
-            if (creditSlipDoc.TIP_AMOUNT !== undefined && creditSlipDoc.TIP_AMOUNT !== null) {
-                tipAmount = creditSlipDoc.TIP_AMOUNT;
+            if (giftCardSlipDoc.TIP_AMOUNT !== undefined && giftCardSlipDoc.TIP_AMOUNT !== null) {
+                tipAmount = giftCardSlipDoc.TIP_AMOUNT;
             }
             else {
                 tipAmount = 0;
@@ -171,15 +171,15 @@ export default class CreateCreditSlipService {
                 "<div class='total-name'>" + (!(tipText === null) ? tipText : "") + ": " + "</div >" +
                 "<div class='total-amount'>" + (tipAmount ? Number(tipAmount).toFixed(2) : '0.00') +
                 "</div></div>"
-            creditSlipDiv.appendChild(tipDiv)
+            giftCardSlipDiv.appendChild(tipDiv)
 
             let totalDiv = this._doc.createElement('div');
             totalDiv.id = 'totalDiv';
-            let totalText = this.$translate.getText('Total');
+            let totalText =this.$translate.getText('Total');
             totalDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (totalText ? totalText : "") + ": " + "</div >" +
-                "<div class='total-amount'>" + (creditSlipDoc.P_AMOUNT ? Number(creditSlipDoc.P_AMOUNT).toFixed(2) : "") + "</div></div>";
-            creditSlipDiv.appendChild(totalDiv)
+                "<div class='total-amount'>" + (giftCardSlipDoc.P_AMOUNT ? Number(giftCardSlipDoc.P_AMOUNT).toFixed(2) : "") + "</div></div>";
+            giftCardSlipDiv.appendChild(totalDiv)
 
             //Add signature 
 
@@ -221,11 +221,11 @@ export default class CreateCreditSlipService {
                 elementSVG.setAttribute("height", "auto");
 
                 elementSVGDiv.appendChild(elementSVG);
-                creditSlipDiv.appendChild(signatureDiv)
+                giftCardSlipDiv.appendChild(signatureDiv)
             }
         }
 
-        return creditSlipDiv;
+        return giftCardSlipDiv;
     }
 
     makeSVG(tag, attrs) {
