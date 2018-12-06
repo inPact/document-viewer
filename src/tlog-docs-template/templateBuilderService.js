@@ -6,6 +6,7 @@ import DeliveryNoteTransactionDataService from './deliveryNoteTransactionService
 import CreateCreditSlipService from './createCreditSlipService';
 import CreateGiftCardSlipService from './createGiftCardSlipService'
 import TlogDocsUtils from './tlogDocsUtils';
+
 export default class TemplateBuilderService {
     constructor(options = {}) {
         this._isUS = options.isUS === undefined ? true : options.isUS;
