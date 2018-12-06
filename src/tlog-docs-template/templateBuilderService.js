@@ -5,6 +5,7 @@ import TlogDocsTranslateService from './tlogDocsTranslate';
 import DeliveryNoteTransactionDataService from './deliveryNoteTransactionService';
 import CreateCreditSlipService from './createCreditSlipService';
 import CreateGiftCardSlipService from './createGiftCardSlipService'
+import TlogDocsUtils from './tlogDocsUtils';
 export default class TemplateBuilderService {
     constructor(options = {}) {
         this._isUS = options.isUS === undefined ? true : options.isUS;
@@ -12,7 +13,7 @@ export default class TemplateBuilderService {
         this._isGiftCardBill;
         this._isTaxExempt;
 
-
+        this.$utils = new TlogDocsUtils();
         this.$translate = new TlogDocsTranslateService({ local: this._local });
         this.$billService = new BillService(options);
         this.$createVatTemplateService = new CreateVatTemplateService(options);
