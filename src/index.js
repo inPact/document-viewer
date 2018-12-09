@@ -4,12 +4,13 @@ import TlogDocsService from './tlog-docs-template/tlogDocsService';
 window.DocumentViewer = class DocumentViewer {
     constructor(options = {}) {
         // options.locale = options.locale || 'he-IL';
+        this.options = {};
         this.options.locale = options.locale || 'en-US';
-        this.options.isUS = options.isUS;
+        this.options.isUS = options.isUS || true;
 
         this._tlogDocsService = new TlogDocsService({
-            locale: options.locale,
-            isUS: options.locale === 'en-US'
+            locale: this.options.locale,
+            isUS: this.options.isUS
         });
     }
 
