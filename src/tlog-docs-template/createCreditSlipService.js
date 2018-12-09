@@ -16,7 +16,6 @@ export default class CreateCreditSlipService {
     configure(options) {
         if (options.local) this._options.local = options.local;
         if (options.isUS !== undefined) {
-            this._options.isUS = options.isUS;
             this._isUS = options.isUS;
         }
     }

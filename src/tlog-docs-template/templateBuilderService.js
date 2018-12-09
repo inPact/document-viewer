@@ -10,7 +10,7 @@ import TlogDocsUtils from './tlogDocsUtils';
 export default class TemplateBuilderService {
     constructor(options = {}) {
         this._isUS = options.isUS === undefined ? true : options.isUS;
-        this._local = options.local || 'he-IL';
+        this._local = options.local;
         this._isGiftCardBill;
         this._isTaxExempt;
 
