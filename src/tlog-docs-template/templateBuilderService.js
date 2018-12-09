@@ -442,13 +442,8 @@ export default class TemplateBuilderService {
                 if (!(data.isReturnOrder && this._docData.documentType === 'orderBill' && (!item.amount || item.amount === '0.00'))) {
 
                     var orderdOfferListExists = printData.collections.ORDERED_OFFERS_LIST.length > 0 ? true : false;
-                    var offerUnits;
-                    if (orderdOfferListExists) {
-                        printData.collections.ORDERED_OFFERS_LIST.forEach((order) => {
-                            order.OFFER_UNITS ? offerUnits = order.OFFER_UNITS : offerUnits = null
-                        })
-
-                    }
+                    var offerListIndex = orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] ? orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] : null;
+                    var offerUnits = offerListIndex ? offerListIndex.OFFER_UNITS : null;
 
                     var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
                     var weightWordTranslate = this.$translate.getText('weight');
