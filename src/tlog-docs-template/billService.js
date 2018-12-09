@@ -92,19 +92,19 @@ export default class BillService {
                         oth.push(item)
                     } else {
 
-                        if (offer.OFFER_PRICE && offer.OFFER_QTY > 0) { // if the offer amount is 0 not need to show 
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
-                            items.push(item);
-                        }
-                        if (offer.OPEN_PRICE) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
-                            items.push(item);
-                        }
+                        // if (offer.OFFER_PRICE && offer.OFFER_QTY > 0) { // if the offer amount is 0 not need to show 
+                        //     item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
+                        //     items.push(item);
+                        // }
                         if (isReturnOrder) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         } else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null) { // if the offer amount is 0 not need to show 
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2)
+                            items.push(item);
+                        }
+                        if (offer.OPEN_PRICE) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
                             items.push(item);
                         }
                     }
