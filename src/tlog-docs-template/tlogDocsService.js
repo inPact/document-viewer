@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 export default class TlogDocsService {
 
-    constructor(options) {
+    constructor(options={}) {
         this._locale;
         this._isUS;
         this._options = options;
