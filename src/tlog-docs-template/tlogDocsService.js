@@ -6,11 +6,13 @@ import _ from 'lodash';
 export default class TlogDocsService {
 
     constructor(options) {
+        this._locale;
+        this._isUS;
         this._options = options;
         this._configure(options);
 
-        this.$templateBuilder = new TemplateBuilderService(this._options);
-        this.$translate = new TlogDocsTranslateService({ local: options.local });
+        this.$templateBuilder = new TemplateBuilderService(options);
+        this.$translate = new TlogDocsTranslateService(options);
     }
 
     Enums() {
@@ -35,13 +37,13 @@ export default class TlogDocsService {
     }
 
     _configure(options) {
-        if (options.local) this._options.local = options.local;
+        if (options.locale) this._locale = options.locale;
         if (options.isUS !== undefined) {
-            this._options.isUS = options.isUS;
             this._isUS = options.isUS;
+        } else {
+            this._isUS = true;
         }
     }
-
     //Create the Buttons
     orderTypesListCreator(tlog, billData, isClosedOrder) {
         //the array of orders for use of the buttons or other needs
@@ -81,7 +83,7 @@ export default class TlogDocsService {
                     tlogId: tlog._id,
                     id: tlog._id,
                     type: tlog._type,
-                    title:this.$translate.getText('order') + ' ' + tlog.number,
+                    title: this.$translate.getText('order') + ' ' + tlog.number,
                     ep: `tlogs/${tlog._id}/bill`,
                     isRefund: false,
                     isFullOrderBill: true,
@@ -285,7 +287,7 @@ export default class TlogDocsService {
         let _enrichPrintData = _billService.resolvePrintData({
             collections: billData.printData.collections,
             variables: billData.printData.variables
-        }, this._options._isUS);
+        }, this._isUS);
 
         docsArray = this.orderTypesListCreator(tlog, _enrichPrintData, isClosedOrder);
 

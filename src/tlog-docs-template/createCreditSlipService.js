@@ -7,14 +7,14 @@ export default class CreateCreditSlipService {
         this._options = {};
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new TlogDocsUtils();
-        this._local;
+        this._locale;
         this._isUS;
         this._doc;
         this.configure(options)
 
     }
     configure(options) {
-        if (options.local) this._options.local = options.local;
+        if (options.locale) this._locale = options.locale;
         if (options.isUS !== undefined) {
             this._isUS = options.isUS;
         }

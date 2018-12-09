@@ -8,20 +8,30 @@ import CreateGiftCardSlipService from './createGiftCardSlipService'
 import TlogDocsUtils from './tlogDocsUtils';
 
 export default class TemplateBuilderService {
-    constructor(options = {}) {
-        this._isUS = options.isUS === undefined ? true : options.isUS;
-        this._local = options.local;
+    constructor(options) {
+        this._isUS;
+        this._locale;
         this._isGiftCardBill;
         this._isTaxExempt;
 
         this.$utils = new TlogDocsUtils();
-        this.$translate = new TlogDocsTranslateService({ local: this._local });
+        this.$translate = new TlogDocsTranslateService({ locale: this._locale });
         this.$billService = new BillService(options);
         this.$createVatTemplateService = new CreateVatTemplateService(options);
         this.$createCreditSlipService = new CreateCreditSlipService(options);
         this.$createGiftCardSlipService = new CreateGiftCardSlipService(options);
         this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
         this.$addTaxData = new AddTaxDataService(options);
+    }
+
+    _configure(options) {
+        if (options.locale) this._locale = options.locale;
+        if (options.isUS !== undefined) {
+            this._isUS = options.isUS;
+        }
+        else {
+            this._isUS = false;
+        }
     }
 
     _createRootElement() {
@@ -47,7 +57,7 @@ export default class TemplateBuilderService {
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');
 
-        if (this._local == 'he-IL') {
+        if (this._locale == 'he-IL') {
             docTemplate.classList += ' rtl'
             docTemplate.classList.remove('ltr')
         }
@@ -60,7 +70,7 @@ export default class TemplateBuilderService {
         docTemplate.appendChild(templateHeader);
 
         var checkInIL;
-        if (this._local == 'he-IL' && docObjChosen.documentType === 'check') {
+        if (this._locale == 'he-IL' && docObjChosen.documentType === 'check') {
             checkInIL = true;
         }
 

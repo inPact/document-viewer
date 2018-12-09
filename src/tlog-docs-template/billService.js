@@ -5,8 +5,9 @@ import moment from 'moment';
 export default class BillService {
     constructor(options) {
         this._isUS = options.isUS === undefined ? true : options.isUS;
+        this._locale = options.locale;
         this.$utils = new TlogDocsUtils();
-        this.$translate = new TlogDocsTranslateService({ local: options.local });
+        this.$translate = new TlogDocsTranslateService(options);
     }
 
     Enums() {

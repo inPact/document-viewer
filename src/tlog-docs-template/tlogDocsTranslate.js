@@ -536,14 +536,14 @@ export default class TlogDocsTranslateService {
 
 
     configure(options) {
-        if (options.local) this._options.local = options.local;
+        if (options.locale) this._options.locale = options.locale;
     }
 
     getText(key, keys, values) {
         if (key !== undefined) {
 
 
-            let text = this._translate()[this._options.local][key];
+            let text = this._translate()[this._options.locale][key];
             if (text !== undefined) {
 
                 if ((keys !== undefined && values !== undefined) && keys.length > 0 && values.length > 0) {
