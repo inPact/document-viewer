@@ -11,6 +11,7 @@ export default class TemplateBuilderService {
     constructor(options) {
         this._isUS;
         this._locale;
+        this._configure(options);
         this._isGiftCardBill;
         this._isTaxExempt;
 

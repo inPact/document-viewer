@@ -8,7 +8,7 @@ export default class TlogDocsTranslateService {
     //     configure(options)
     // }
 
-    constructor(options) {
+    constructor(options = {}) {
         this._options = options;
 
         this.configure(options)
