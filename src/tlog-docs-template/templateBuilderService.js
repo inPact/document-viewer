@@ -629,7 +629,7 @@ export default class TemplateBuilderService {
         if (taxDataDiv !== null && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
 
-        var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData);
+        var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc);
         if (taxDataDiv !== null) {
             tplOrderTotals.appendChild(taxDataDiv);
         }
