@@ -17,12 +17,12 @@ export default class {
         return this.$utils.isNegative(number)
     }
 
-    addTaxDataFunc(printData, doc) {
+    addTaxDataFunc(printData, doc, isGiftCardBill) {
         this._doc = doc;
 
-        if (
+        if (!isGiftCardBill&&(
             (printData.data.taxes.InclusiveTaxes.length > 0 || printData.data.taxes.InclusiveTaxes[0] !== undefined) ||
-            (printData.data.taxes.ExemptedTaxes.length > 0 || printData.data.taxes.ExemptedTaxes[0] !== undefined)
+            (printData.data.taxes.ExemptedTaxes.length > 0 || printData.data.taxes.ExemptedTaxes[0] !== undefined))
         ) {
 
             this.taxDataDiv = this._doc.createElement('div');
@@ -58,8 +58,8 @@ export default class {
 
             this.inclusiveTaxDiv = this.createInclusiveTaxFunc(printData, this._doc)
 
-            if (this.taxExemptDiv !== null) this.taxDataDiv.appendChild(this.taxExemptDiv);
-            if (this.inclusiveTaxDiv !== null) this.taxDataDiv.appendChild(this.inclusiveTaxDiv);
+            if (this.taxExemptDiv) this.taxDataDiv.appendChild(this.taxExemptDiv);
+            if (this.inclusiveTaxDiv) this.taxDataDiv.appendChild(this.inclusiveTaxDiv);
 
             return this.taxDataDiv;
 
