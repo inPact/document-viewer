@@ -619,12 +619,12 @@ export default class TemplateBuilderService {
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
-        var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc);
+        var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
 
         if (taxDataDiv !== null && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
 
-        var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc);
+        var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
         if (taxDataDiv !== null) {
             tplOrderTotals.appendChild(taxDataDiv);
         }
