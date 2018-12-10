@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 export default class TlogDocsService {
 
-    constructor(options={}) {
+    constructor(options = {}) {
         this._locale;
         this._isUS;
         this._options = options;
@@ -43,6 +43,8 @@ export default class TlogDocsService {
         } else {
             this._isUS = true;
         }
+        console.log('this._isUS: ' + this._isUS)
+        console.log('this._locale: ' + this._locale)
     }
     //Create the Buttons
     orderTypesListCreator(tlog, billData, isClosedOrder) {

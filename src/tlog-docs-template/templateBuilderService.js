@@ -33,6 +33,10 @@ export default class TemplateBuilderService {
         else {
             this._isUS = false;
         }
+        consoele.log('this._locale in TemplateBuilder: ' + this._locale)
+        consoele.log(' this._isUS  in TemplateBuilder: ' + this._isUS)
+
+
     }
 
     _createRootElement() {

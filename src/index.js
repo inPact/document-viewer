@@ -11,10 +11,7 @@ window.DocumentViewer = class DocumentViewer {
         this.options.locale = options.locale || 'en-US';
         this.options.isUS = options.isUS || true;
 
-        this._tlogDocsService = new TlogDocsService({
-            locale: this.options.locale,
-            isUS: this.options.isUS
-        });
+        this._tlogDocsService = new TlogDocsService(this.options);
     }
 
     getDocumentsInfoFromTlog(tlog, printData, isOrderClosed) {
