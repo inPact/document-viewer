@@ -1,5 +1,4 @@
 .basicTemplate {
-  text-align: center;
   background-color: white;
   font-family: "Courier New", Courier, monospace;
   padding: 5px 15px 5px 15px; }
@@ -49,6 +48,7 @@
 .basicTemplate .item-name {
   display: flex;
   justify-content: flex-start;
+  text-align: start;
   flex: 5; }
 
 .basicTemplate .item-amount {
@@ -61,13 +61,22 @@
   justify-content: flex-start;
   flex: 6; }
 
+.basicTemplate .number-data {
+  display: flex;
+  justify-content: flex-start;
+  flex: 8; }
+
 .basicTemplate .total-amount {
   display: flex;
+  padding: 0 20px 0 20px;
   justify-content: flex-start;
   flex: 3; }
 
-.basicTemplate .bold {
-  font-weight: bold; }
+.basicTemplate .holder-name {
+  font-size: 10px;
+  display: flex;
+  justify-content: flex-start;
+  flex: 6; }
 
 .basicTemplate .negative {
   direction: ltr !important;
@@ -111,10 +120,25 @@
 .basicTemplate .med-chars {
   font-size: 18px; }
 
+.basicTemplate .bold {
+  font-weight: bold; }
+
+.basicTemplate .bigBold {
+  font-weight: bold;
+  font-size: 26px; }
+
+.basicTemplate.rtl .customerMessage {
+  padding-top: 5px;
+  text-align: right; }
+
+.basicTemplate.ltr .customerMessage {
+  padding-top: 5px;
+  text-align: left; }
+
 .basicTemplate .total-amount.negative {
   direction: ltr !important;
   text-align: right;
-  width: 100%;
+  padding: 0 20px 0 20px;
   display: block; }
 
 .basicTemplate .othDiv {
@@ -131,3 +155,9 @@
 .basicTemplate .centralize {
   display: flex;
   justify-content: center; }
+
+.basicTemplate.ltr .total-amount {
+  padding: 0 20px 0 40px;
+  justify-content: flex-end;
+  direction: ltr !important;
+  text-align: right !important; }
