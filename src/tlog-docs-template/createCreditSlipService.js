@@ -15,9 +15,8 @@ export default class CreateCreditSlipService {
     }
     configure(options) {
         if (options.locale) this._locale = options.locale;
-        if (options.isUS !== undefined) {
-            this._isUS = options.isUS;
-        }
+        if (options.isUS) this._isUS = options.isUS;
+
     }
     createCreditSlip(printData, docObjChosen, doc) {
         this._doc = doc;

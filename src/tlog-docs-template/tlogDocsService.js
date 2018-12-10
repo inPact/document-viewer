@@ -38,11 +38,8 @@ export default class TlogDocsService {
 
     _configure(options) {
         if (options.locale) this._locale = options.locale;
-        if (options.isUS !== undefined) {
-            this._isUS = options.isUS;
-        } else {
-            this._isUS = true;
-        }
+        if (options.isUS) this._isUS = options.isUS;
+    
         console.log('this._isUS: ' + this._isUS)
         console.log('this._locale: ' + this._locale)
     }

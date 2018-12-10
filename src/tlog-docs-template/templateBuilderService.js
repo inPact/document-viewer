@@ -27,14 +27,7 @@ export default class TemplateBuilderService {
 
     _configure(options) {
         if (options.locale) this._locale = options.locale;
-        if (options.isUS !== undefined) {
-            this._isUS = options.isUS;
-        }
-        else {
-            this._isUS = false;
-        }
-        
-
+        if (options.isUS !== undefined) this._isUS = options.isUS;
 
     }
 

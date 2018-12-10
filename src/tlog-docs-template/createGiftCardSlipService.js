@@ -15,11 +15,8 @@ export default class CreateGiftCardSlipService {
     }
     configure(options) {
         if (options.locale) this._locale = options.locale;
-        if (options.isUS !== undefined) {
-            this._isUS = options.isUS;
-        } else {
-            this._isUS = true;
-        }
+        if (options.isUS) this._isUS = options.isUS;
+
     }
     createGiftCardSlip(printData, docObjChosen, doc) {
         this._doc = doc;
