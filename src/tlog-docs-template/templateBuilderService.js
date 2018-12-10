@@ -741,7 +741,8 @@ export default class TemplateBuilderService {
         var pAmount = printData.collections.GIFT_CARD_PAYMENTS[0].P_AMOUNT ? Number(printData.collections.GIFT_CARD_PAYMENTS[0].P_AMOUNT).toFixed(2) : '';
         var giftCardPaidDiv = this._doc.createElement('div')
         giftCardPaidDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (paidGiftCardText ? paidGiftCardText : " ") + "</div>" + "<div class='total-amount'>" + pAmount + "</div></div>"
+            "<div class='total-name'>" + (paidGiftCardText ? paidGiftCardText : " ") + "</div>" +
+            "<div class='total-amount'>" + pAmount + "</div></div>"
 
         giftCardDiv.appendChild(giftCardPaidDiv);
 
@@ -750,8 +751,8 @@ export default class TemplateBuilderService {
         var cardNum = printData.collections.GIFT_CARD_PAYMENTS[0].CARD_NUMBER ? printData.collections.GIFT_CARD_PAYMENTS[0].CARD_NUMBER : '';
         var giftCardNumDiv = this._doc.createElement('div')
         giftCardNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (giftCardNum ? giftCardNum : " ") + " " + cardNum + "</div>" +
-            "</div>"
+            "<div class='total-name'>" + (giftCardNum ? (giftCardNum + ": ") : " ") + "</div>" +
+            "<div class='data-number'>" + cardNum + "</div>" + "</div>"
 
         giftCardDiv.appendChild(giftCardNumDiv);
 
@@ -760,8 +761,8 @@ export default class TemplateBuilderService {
         var transactNum = printData.collections.GIFT_CARD_PAYMENTS[0].PROVIDER_TRANS_ID ? printData.collections.GIFT_CARD_PAYMENTS[0].PROVIDER_TRANS_ID : '';
         var transactNumDiv = this._doc.createElement('div')
         transactNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (transactionNumText ? transactionNumText : " ") + " " + transactNum + "</div>" +
-            "</div>"
+            "<div class='total-name'>" + (transactionNumText ? (transactionNumText + ": ") : " ") + "</div>"
+        "<div class='data-number'>" + transactNum + "</div>" + "</div>"
 
         giftCardDiv.appendChild(transactNumDiv);
 
