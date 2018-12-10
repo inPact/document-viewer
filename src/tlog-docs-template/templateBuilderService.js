@@ -33,8 +33,7 @@ export default class TemplateBuilderService {
         else {
             this._isUS = false;
         }
-        console.log('this._locale in TemplateBuilder: ' + this._locale)
-        console.log(' this._isUS  in TemplateBuilder: ' + this._isUS)
+        
 
 
     }
