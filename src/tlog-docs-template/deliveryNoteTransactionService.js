@@ -84,7 +84,7 @@ export default class DeliveryNoteTransactionDataService {
                 cashBackDiv.id = "cashBackDiv";
                 cashbackDiv.innerHTML = "<div class='changeDiv'>" +
                     "<div class='total-name'>" + (hAccountPayments ? cashBackText : "") + "</div>" +
-                    "<div class='total-amount " + this.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
+                    "<div class='number-data " + this.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
                     "</div>";
 
                 dNoteChargeAccntDiv.appendChild(cashBackDiv);
@@ -96,7 +96,7 @@ export default class DeliveryNoteTransactionDataService {
                 providerTransDiv.id = "providerTransDiv";
                 providerTransDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (hAccountPayments ? providerTransText : "") + "</div>" +
-                    "<div class='total-amount'>" + (hAccountPayments.PROVIDER_TRANS_ID ? hAccountPayments.PROVIDER_TRANS_ID : "") + "</div>" +
+                    "<div class='number-data'>" + (hAccountPayments.PROVIDER_TRANS_ID ? hAccountPayments.PROVIDER_TRANS_ID : "") + "</div>" +
                     "</div>"
 
                 dNoteChargeAccntDiv.appendChild(providerTransDiv);
@@ -108,9 +108,9 @@ export default class DeliveryNoteTransactionDataService {
                 var cAccountNameDiv = this._doc.createElement('div')
                 cAccountNameDiv.id = "cAccountNameDiv";
                 cAccountNameDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? cAccountNameText : "") + " " +
-                    (hAccountPayments.CHARGE_ACCOUNT_NAME ? hAccountPayments.CHARGE_ACCOUNT_NAME : "") + "</div>" +
-                    "</div>"
+                    "<div class='total-name'>" + (hAccountPayments ? cAccountNameText : "") + ": " + "</div>" +
+                    "<div class='number-data'>" + (hAccountPayments.CHARGE_ACCOUNT_NAME ? hAccountPayments.CHARGE_ACCOUNT_NAME : "") +
+                    "</div></div>"
 
                 dNoteChargeAccntDiv.appendChild(cAccountNameDiv);
 
@@ -121,9 +121,9 @@ export default class DeliveryNoteTransactionDataService {
                 var companyNameDiv = this._doc.createElement('div');
                 companyNameDiv.id = "companyNameDiv";
                 companyNameDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? companyNameText : "") + ": " +
-                    (hAccountPayments.COMPANY_NAME ? hAccountPayments.COMPANY_NAME : "") + "</div>" +
-                    "</div>"
+                    "<div class='total-name'>" + (hAccountPayments ? companyNameText : "") + ": " + "</div>" +
+                    "<div class='number-data'>" + (hAccountPayments.COMPANY_NAME ? hAccountPayments.COMPANY_NAME : "") +
+                    "</div></div>"
 
                 dNoteChargeAccntDiv.appendChild(companyNameDiv);
 
@@ -134,9 +134,9 @@ export default class DeliveryNoteTransactionDataService {
                 var lastFourDiv = this._doc.createElement('div')
                 lastFourDiv.id = "lastFourDiv";
                 lastFourDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='item-name'>" + (hAccountPayments ? lastFourText : " ")
-                    + " " + " " + (hAccountPayments.LAST_4 ? hAccountPayments.LAST_4 : " ") +
-                    "</div>"
+                    "<div class='total-name'>" + (hAccountPayments ? lastFourText : " ") + ": " + "</div>" +
+                    "<div class='number-data'>" + (hAccountPayments.LAST_4 ? hAccountPayments.LAST_4 : " ") +
+                    "</div></div>"
 
                 dNoteChargeAccntDiv.appendChild(lastFourDiv);
 
@@ -155,9 +155,9 @@ export default class DeliveryNoteTransactionDataService {
                     dateTimeResult = this.formatDateIL(dateTimeStr);
                 }
                 transactionTimeDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='item-name'>" + (hAccountPayments ? transactionTimeText : "") +
-                    " " + (hAccountPayments.PROVIDER_PAYMENT_DATE ? dateTimeResult : "") +
-                    "</div>"
+                    "<div class='total-name'>" + (hAccountPayments ? transactionTimeText : "") + ": " + "</div>" +
+                    "<div class='number-data'>" + (hAccountPayments.PROVIDER_PAYMENT_DATE ? dateTimeResult : "") +
+                    "</div></div>"
 
                 dNoteChargeAccntDiv.appendChild(transactionTimeDiv);
 
