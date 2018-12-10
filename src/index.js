@@ -12,8 +12,8 @@ window.DocumentViewer = class DocumentViewer {
         console.log('this._locale in index before init: ' + this.options.locale)
         console.log(' this._isUS  in index before init:' + this.options.isUS)
 
-        this.options.locale = this.options.locale || 'en-US';
-        this.options.isUS = this.options.isUS || true;
+        this.options.locale ? this.options.locale : 'en-US';
+        this.options.isUS ? this.options.isUS : true;
 
         console.log('this._locale in index after init: ' + this.options.loacle)
         console.log(' this._isUS  in index after init: ' + this.options.isUS)
