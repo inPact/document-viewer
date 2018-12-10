@@ -750,6 +750,7 @@ export default class TemplateBuilderService {
         var giftCardNum = this.$translate.getText('CARD_NO');
         var cardNum = printData.collections.GIFT_CARD_PAYMENTS[0].CARD_NUMBER ? printData.collections.GIFT_CARD_PAYMENTS[0].CARD_NUMBER : '';
         var giftCardNumDiv = this._doc.createElement('div')
+        giftCardNumDiv.id = 'giftCardNumDiv';
         giftCardNumDiv.innerHTML = "<div class='itemDiv'>" +
             "<div class='total-name'>" + (giftCardNum ? (giftCardNum + ": ") : " ") + "</div>" +
             "<div class='number-data'>" + cardNum + "</div>" + "</div>"
@@ -759,10 +760,11 @@ export default class TemplateBuilderService {
         //transaction Num div
         var transactionNumText = this.$translate.getText('TRANSACTION_NO');
         var transactNum = printData.collections.GIFT_CARD_PAYMENTS[0].PROVIDER_TRANS_ID ? printData.collections.GIFT_CARD_PAYMENTS[0].PROVIDER_TRANS_ID : '';
-        var transactNumDiv = this._doc.createElement('div')
+        var transactNumDiv = this._doc.createElement('div');
+        transactNum.id = 'transactNum'
         transactNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (transactionNumText ? (transactionNumText + ": ") : " ") + "</div>"
-        "<div class='number-data'>" + transactNum + "</div>" + "</div>"
+            "<div class='total-name'>" + (transactionNumText ? (transactionNumText + ": ") : " ") + "</div>" +
+            "<div class='number-data'>" + transactNum + "</div>" + "</div>"
 
         giftCardDiv.appendChild(transactNumDiv);
 
