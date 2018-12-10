@@ -99,8 +99,8 @@ export default class BillService {
                         if (isReturnOrder) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
-                        } else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null) { // if the offer amount is 0 not need to show 
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2)
+                        } else if (offer.OFFER_AMOUNT !== 0 && offer.OFFER_AMOUNT !== null) { // if the offer amount is 0 not need to show 
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
                         if (offer.OPEN_PRICE) {
@@ -167,7 +167,7 @@ export default class BillService {
                         isOffer: true,
                         name: offer.OFFER_NAME,
                         qty: offerQty,
-                        amount: offer.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_CALC_AMT, 2)
+                        amount: offer.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_AMOUNT, 2)
                     });
 
                     if (!isReturnOrder) {
