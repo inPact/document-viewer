@@ -541,6 +541,7 @@ export default class TemplateBuilderService {
             }
 
 
+            var cashBackText = this.$translate.getText(printData.variables.CHANGE ? 'TOTAL_CASHBACK' : "");
             var cashBackDiv = this._doc.createElement('div');
             if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
                 cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom'>" +
@@ -566,7 +567,6 @@ export default class TemplateBuilderService {
             var transactTimeText = this.$translate.getText(creditData.PROVIDER_PAYMENT_DATE ? 'TRANSACTION_TIME' : "");
             var transactNumText = this.$translate.getText(creditData.PROVIDER_TRANS_ID ? 'TRANSACTION_NO' : "");
             var approvalText = this.$translate.getText(creditData.CONFIRMATION_NUMBER ? 'APPROVAL_NO' : "");
-            var cashBackText = this.$translate.getText(printData.variables.CHANGE ? 'TOTAL_CASHBACK' : "");
 
 
             var lastFourDiv = this._doc.createElement('div');
