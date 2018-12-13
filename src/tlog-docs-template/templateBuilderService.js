@@ -564,11 +564,9 @@ export default class TemplateBuilderService {
                 CreditHeaderDiv.appendChild(cashBackDiv);
             }
             else {
-                cashBackDiv = null;
-            }
-            if (cashBackDiv === null) {
                 cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'></div>"
             }
+
 
 
             var creditDataTemplate = this.createCreditDataTemplate(credPayments, printData)
