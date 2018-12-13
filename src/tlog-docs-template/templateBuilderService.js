@@ -269,8 +269,10 @@ export default class TemplateBuilderService {
         tplOrderTable.id = "tplOrderTable";
         var tplOrderServerClients = this._doc.createElement('div');
         tplOrderServerClients.id = "tplOrderServerClients";
+        var tplcCheckNumber = this._doc.createElement('div');
+        tplcCheckNumber.id = "tplcCheckNumber";
         //create array for the appendChildren function
-        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients,];
+        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber];
 
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
@@ -320,8 +322,7 @@ export default class TemplateBuilderService {
             //Asked to take this down temporary
             case 'tplOrderTitle': {
                 if (this._docObj.title) {
-                    htmlElement.innerHTML = this._docObj.title;
-                    htmlElement.setAttribute('class', 'med-chars');
+                    htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + this._docObj.title; + "</div >"
                 }
             }
                 break;
@@ -355,6 +356,16 @@ export default class TemplateBuilderService {
                 }
             }
                 break;
+            case 'tplcCheckNumber': {
+                if (this._docData.documentType === "invoice") {
+                    var checkTranslate = this.$translate.getText("Invoice")
+                    printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
+                    var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
+                    if (invoiceNum) { htmlElement.innerHTML = `<span> ` + checkTranslate + ": " + invoiceNum + `</span>`; }
+                }
+            }
+                break;
+
 
         }
         return htmlElement;
@@ -538,18 +549,27 @@ export default class TemplateBuilderService {
                     "<div class='total-amount " + this.isNegative(paymentAmount) + "'>" + (paymentAmount ? Number(paymentAmount).toFixed(2) : "") + "</div>" +
                     "</div>"
                 CreditTemplate.appendChild(CreditHeaderDiv);
+
             }
 
 
             var cashBackText = this.$translate.getText(printData.variables.CHANGE ? 'TOTAL_CASHBACK' : "");
             var cashBackDiv = this._doc.createElement('div');
             if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
-                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom'>" +
+                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'>" +
                     "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
                     "<div class='total-amount'>" + (printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : " ") + "</div>"
                     + "</div >"
+
+                CreditHeaderDiv.appendChild(cashBackDiv);
             }
-            CreditHeaderDiv.appendChild(cashBackDiv);
+            else {
+                cashBackDiv = null;
+            }
+            if (cashBackDiv === null) {
+                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'></div>"
+            }
+
 
             var creditDataTemplate = this.createCreditDataTemplate(credPayments, printData)
             CreditTemplate.appendChild(creditDataTemplate)
