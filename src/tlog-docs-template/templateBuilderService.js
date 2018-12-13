@@ -357,11 +357,11 @@ export default class TemplateBuilderService {
             }
                 break;
             case 'tplcCheckNumber': {
-                if (this._docData.documentType === "invoice") {
-                    var checkTranslate = this.$translate.getText("Invoice")
+                var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
+                if (this._docData.documentType === "invoice" && invoiceNum) {
+                    var checkTranslate = this.$translate.getText("INVOICE")
                     printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
-                    var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
-                    if (invoiceNum) { htmlElement.innerHTML = `<span> ` + checkTranslate + ": " + invoiceNum + `</span>`; }
+                    htmlElement.innerHTML = `<span> ` + checkTranslate + ": " + invoiceNum + `</span>`;
                 }
             }
                 break;
