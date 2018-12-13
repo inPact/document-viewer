@@ -3,20 +3,9 @@ import TlogDocsService from './tlog-docs-template/tlogDocsService';
 
 window.DocumentViewer = class DocumentViewer {
     constructor(options = {}) {
-        // options.locale = options.locale || 'he-IL';
-        this.options = {
-            locale: options.locale,
-            isUS: options.isUS
-        };
-
-
-
-        this.options.locale ? this.options.locale : 'en-US';
-        this.options.isUS ? this.options.isUS : true;
-
- 
-
-        this._tlogDocsService = new TlogDocsService(this.options);
+        options.isUS = options.isUS || false;
+        options.locale = options.locale || 'he-IL';
+        this._tlogDocsService = new TlogDocsService(options);
     }
 
     getDocumentsInfoFromTlog(tlog, printData, isOrderClosed) {
