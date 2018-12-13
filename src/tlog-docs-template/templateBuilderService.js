@@ -541,6 +541,15 @@ export default class TemplateBuilderService {
             }
 
 
+            var cashBackDiv = this._doc.createElement('div');
+            if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
+                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom'>" +
+                    "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
+                    "<div class='total-amount'>" + (printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : " ") + "</div>"
+                    + "</div >"
+            }
+            CreditTemplate.appendChild(cashBackDiv);
+
             var creditDataTemplate = this.createCreditDataTemplate(credPayments, printData)
             CreditTemplate.appendChild(creditDataTemplate)
 
@@ -559,14 +568,6 @@ export default class TemplateBuilderService {
             var approvalText = this.$translate.getText(creditData.CONFIRMATION_NUMBER ? 'APPROVAL_NO' : "");
             var cashBackText = this.$translate.getText(printData.variables.CHANGE ? 'TOTAL_CASHBACK' : "");
 
-            var cashBackDiv = this._doc.createElement('div');
-            if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
-                cashBackDiv.innerHTML = "<div class='changeDiv'>" +
-                    "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
-                    "<div class='total-amount'>" + (printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : " ") + "</div>"
-                    + "</div >"
-            }
-            creditDataDiv.appendChild(cashBackDiv);
 
             var lastFourDiv = this._doc.createElement('div');
             if (lastFourText) {
@@ -885,13 +886,14 @@ export default class TemplateBuilderService {
         if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
             var changeText = this.$translate.getText('TOTAL_CASHBACK');
             var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? Number(printData.collections.PAYMENT_LIST[0].P_CHANGE).toFixed(2) : '';
-            var transactNumDiv = this._doc.createElement('div')
-            transactNumDiv.innerHTML = "<div class='changeDiv'>" +
+            var tpChangeNumDiv = this._doc.createElement('div')
+            tpChangeNumDiv.className += 'tpChangeNumDiv'
+            tpChangeNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
                 "<div class='total-amount " + this.isNegative(pChange) + "'>" + this.twoDecimals(pChange) + "</div>" +
                 "</div>"
 
-            chequeDiv.appendChild(transactNumDiv);
+            chequeDiv.appendChild(tpChangeNumDiv);
         }
 
         return chequeDiv;
