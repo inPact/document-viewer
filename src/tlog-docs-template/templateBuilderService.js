@@ -549,7 +549,7 @@ export default class TemplateBuilderService {
                     "<div class='total-amount'>" + (printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : " ") + "</div>"
                     + "</div >"
             }
-            CreditTemplate.appendChild(cashBackDiv);
+            CreditHeaderDiv.appendChild(cashBackDiv);
 
             var creditDataTemplate = this.createCreditDataTemplate(credPayments, printData)
             CreditTemplate.appendChild(creditDataTemplate)
