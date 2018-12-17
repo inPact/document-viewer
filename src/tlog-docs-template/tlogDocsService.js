@@ -319,7 +319,7 @@ export default class TlogDocsService {
         }
 
         documentInfo.documentNumber = _.get(document, 'printData.variables.DOCUMENT_NO');
-        documentInfo.excludeHeader = options.excludeHeader;
+        documentInfo.excludeHeader = options.excludeHeader ? options.excludeHeader:null;
         return this.getHTMLDocument(documentInfo, document);
     }
 }

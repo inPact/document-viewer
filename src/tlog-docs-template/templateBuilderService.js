@@ -41,7 +41,7 @@ export default class TemplateBuilderService {
         this._doc = this._createRootElement();
         this._docObj = documentInfo;
         this._docData = document;
-        this.excludeHeader = documentInfo.excludeHeader;
+        this.excludeHeader = documentInfo.excludeHeader ? documentInfo.excludeHeader : false;
         this._printData = this.$billService.resolvePrintData(document.printData, this._isUS);
         this._printData.isRefund = documentInfo.isRefund;
 
