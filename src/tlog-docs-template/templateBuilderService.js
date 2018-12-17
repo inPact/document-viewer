@@ -66,7 +66,7 @@ export default class TemplateBuilderService {
             docTemplate.classList.remove('rtl')
         }
 
-        if (!_excludeHeader) {
+        if (!this._excludeHeader) {
             var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
             templateHeader.classList += ' text-center';
 
