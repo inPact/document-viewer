@@ -297,7 +297,7 @@ export default class TlogDocsService {
         return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document);
     }
 
-    getHTMLDocumentWithoutTlog(document) {
+    getHTMLDocumentWithoutTlog(document, options) {
         let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
 
         switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
@@ -319,6 +319,7 @@ export default class TlogDocsService {
         }
 
         documentInfo.documentNumber = _.get(document, 'printData.variables.DOCUMENT_NO');
+        documentInfo.excludeHeader = options.excludeHeader;
         return this.getHTMLDocument(documentInfo, document);
     }
 }
