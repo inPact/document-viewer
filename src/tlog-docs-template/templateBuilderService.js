@@ -92,6 +92,7 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(mediaExchangeDiv)
         }
         if (isCreditSlip !== null && isCreditSlip) {
+            console.log('isCreditSlip is TRUUEEE')
             var tplCreditSlipTemplate = this.$createCreditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
             docTemplate.appendChild(tplCreditSlipTemplate);
         }
