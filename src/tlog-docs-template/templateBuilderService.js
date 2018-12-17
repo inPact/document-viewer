@@ -42,7 +42,7 @@ export default class TemplateBuilderService {
         this._doc = this._createRootElement();
         this._docObj = documentInfo;
         this._docData = document;
-        
+
         this._printData = this.$billService.resolvePrintData(document.printData, this._isUS);
         this._printData.isRefund = documentInfo.isRefund;
 
@@ -51,7 +51,7 @@ export default class TemplateBuilderService {
         return (new XMLSerializer()).serializeToString(this._doc);
     }
 
-    createDocTemplate(docObjChosen, options={}) {
+    createDocTemplate(docObjChosen, options = {}) {
         this._excludeHeader = options.excludeHeader ? options.excludeHeader : false;
         var docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
@@ -84,7 +84,7 @@ export default class TemplateBuilderService {
         this._isTaxExempt = this._printData.data.isTaxExempt;
 
         var isMediaExchange = (this._printData.variables.ORDER_TYPE === "MEDIAEXCHANGE");
-        var isCreditSlip = (docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL)
+        var isCreditSlip = ((docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL) || docObjChosen.documentType === 'creditSlip')
         var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this._isUS);
 
         if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
@@ -162,7 +162,7 @@ export default class TemplateBuilderService {
         return docTemplate;
     }
 
-    
+
     createOrderPaymentData(printData) {
 
         var tplOrderPaymentData = this._doc.createElement('div');

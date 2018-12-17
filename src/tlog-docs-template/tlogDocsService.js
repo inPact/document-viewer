@@ -288,7 +288,6 @@ export default class TlogDocsService {
 
         docsArray = this.orderTypesListCreator(tlog, _enrichPrintData, isClosedOrder);
 
-
         return docsArray;
 
     }
@@ -299,10 +298,8 @@ export default class TlogDocsService {
 
     getHTMLDocumentWithoutTlog(document, options = {}) {
         let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
-        this.options = options;
-        if (document.documentType === 'creditSlip') {
-            this.options.excludeHeader = true;
-        }
+        documentInfo.documentType = document.documentType;
+
         switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
             case 'cash':
                 documentInfo.docPaymentType = 'CashPayment';
