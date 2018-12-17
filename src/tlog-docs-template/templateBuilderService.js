@@ -64,7 +64,7 @@ export default class TemplateBuilderService {
         }
 
         var templateHeader = this.createHeader(this._printData);
-        templateHeader.classList += ' centralize';
+        templateHeader.classList += ' text-center';
 
         docTemplate.appendChild(templateHeader);
 

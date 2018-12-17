@@ -156,6 +156,9 @@
   display: flex;
   justify-content: center; }
 
+.basicTemplate .text-center {
+  text-align: center; }
+
 .basicTemplate.ltr .total-amount {
   padding: 0 20px 0 40px;
   justify-content: flex-end;
