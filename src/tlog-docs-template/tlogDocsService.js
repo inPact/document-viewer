@@ -300,7 +300,7 @@ export default class TlogDocsService {
     getHTMLDocumentWithoutTlog(document, options = {}) {
         let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
         this.options = options;
-        if (document.documentType = 'creditSlip') {
+        if (document.documentType === 'creditSlip') {
             this.options.excludeHeader = true;
         }
         switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
