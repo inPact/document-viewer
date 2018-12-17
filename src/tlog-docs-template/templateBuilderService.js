@@ -983,17 +983,17 @@ export default class TemplateBuilderService {
     //     return divForAppending;
     // }
 
-    orderWordsByLocale(input1, input2, input3) {
-        let htmlString;
-        if (this._isUS) {
-            htmlString = "<span>" + input2 + "</span>" + "&nbsp;" + "<span>" + input1 + "</span>" + "&nbsp;" + " <span> #" + input3 + "</span >"
-        } else {
-            htmlString = "<span>" + input1 + "</span>" + "&nbsp;" + "<span>" + input2 + "</span> " + "&nbsp;" + " <span> #" + input3 + "</span >"
+    // orderWordsByLocale(input1, input2, input3) {
+    //     let htmlString;
+    //     if (this._isUS) {
+    //         htmlString = "<span>" + input2 + "</span>" + "&nbsp;" + "<span>" + input1 + "</span>" + "&nbsp;" + " <span> #" + input3 + "</span >"
+    //     } else {
+    //         htmlString = "<span>" + input1 + "</span>" + "&nbsp;" + "<span>" + input2 + "</span> " + "&nbsp;" + " <span> #" + input3 + "</span >"
 
-        }
+    //     }
 
-        return htmlString;
-    }
+    //     return htmlString;
+    // }
 
 
 

@@ -273,6 +273,25 @@ export default class HeaderService {
     }
 
 
+
+    createReturnOrderText(printData) {
+        var returnOrderDiv = this._doc.createElement('div')
+
+        var isReturnOrderTextDiv = this._doc.createElement('div');
+        isReturnOrderTextDiv.id = "isReturnOrderTextDiv";
+        isReturnOrderTextDiv.innerHTML = "<div class= bigBold>" + (this.$translate.getText('RETURN_TRANSACTION')) + "</div>";
+        returnOrderDiv.appendChild(isReturnOrderTextDiv);
+        //return order comment
+        if (printData.variables.RETURN_COMMENT) {
+            var returnOrderCommentDiv = this._doc.createElement('div');
+            returnOrderCommentDiv.id = "returnOrderCommentDiv";
+            returnOrderCommentDiv.innerHTML = printData.variables.RETURN_COMMENT;
+            returnOrderDiv.appendChild(returnOrderCommentDiv);
+        }
+
+        return returnOrderDiv;
+    }
+    
     appendChildren(target, array) {
         var divForAppending = this._doc.createElement('div');
         var length = array.length;
@@ -283,4 +302,35 @@ export default class HeaderService {
         }
         return divForAppending;
     }
+
+    orderWordsByLocale(input1, input2, input3) {
+        let htmlString;
+        if (this._isUS) {
+            htmlString = "<span>" + input2 + "</span>" + "&nbsp;" + "<span>" + input1 + "</span>" + "&nbsp;" + " <span> #" + input3 + "</span >"
+        } else {
+            htmlString = "<span>" + input1 + "</span>" + "&nbsp;" + "<span>" + input2 + "</span> " + "&nbsp;" + " <span> #" + input3 + "</span >"
+
+        }
+
+        return htmlString;
+    }
+
+    formatDateUS(stringDate) {
+        var date = new Date(stringDate);
+        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
+            ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
+    }
+
+    formatDateIL(stringDate) {
+        var date = new Date(stringDate);
+        return ((date.getHours() > 10) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes()) + " " +
+            date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " ";
+    }
+
+    isNegative(amount) {
+        var intAmount = parseInt(amount);
+        return intAmount < 0 ? 'negative' : "";
+
+    }
+
 }
