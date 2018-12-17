@@ -294,7 +294,7 @@ export default class TlogDocsService {
     }
 
     getHTMLDocument(documentInfo, document, options = {}) {
-        return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options );
+        return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options);
     }
 
     getHTMLDocumentWithoutTlog(document, options = {}) {
@@ -314,6 +314,9 @@ export default class TlogDocsService {
                 documentInfo.docPaymentType = 'ChequePayment';
                 break;
             case 'chargeAccount':
+                documentInfo.docPaymentType = 'ChargeAccountPayment';
+                break;
+            case 'creditSlip':
                 documentInfo.docPaymentType = 'ChargeAccountPayment';
                 break;
         }
