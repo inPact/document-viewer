@@ -294,12 +294,15 @@ export default class TlogDocsService {
     }
 
     getHTMLDocument(documentInfo, document, options = {}) {
-        return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options );
+        return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options);
     }
 
     getHTMLDocumentWithoutTlog(document, options = {}) {
         let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
-
+        this.options = options;
+        if (document.documentType = 'creditSlip') {
+            this.options.excludeHeader = true;
+        }
         switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
             case 'cash':
                 documentInfo.docPaymentType = 'CashPayment';
@@ -316,6 +319,7 @@ export default class TlogDocsService {
             case 'chargeAccount':
                 documentInfo.docPaymentType = 'ChargeAccountPayment';
                 break;
+
         }
 
         documentInfo.documentNumber = _.get(document, 'printData.variables.DOCUMENT_NO');
