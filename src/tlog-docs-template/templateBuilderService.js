@@ -64,6 +64,8 @@ export default class TemplateBuilderService {
         }
 
         var templateHeader = this.createHeader(this._printData);
+        templateHeader.classList += ' centralize';
+
         docTemplate.appendChild(templateHeader);
 
         var checkInIL;
@@ -254,7 +256,6 @@ export default class TemplateBuilderService {
         //Bring the tplOrderHeader for appending other divs to it
         var tplOrderHeader = this._doc.createElement('div');
         tplOrderHeader.id = 'tplOrderHeader';
-        tplOrderHeader.classList += ' centralize';
         //all order header needed Divs
         var tplOrderCustomer = this._doc.createElement('div');
         tplOrderCustomer.id = "tplOrderCustomer";
