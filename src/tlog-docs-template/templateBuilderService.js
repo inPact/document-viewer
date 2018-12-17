@@ -38,20 +38,21 @@ export default class TemplateBuilderService {
         return rootElement;
     }
 
-    createHTMLFromPrintDATA(documentInfo, document) {
+    createHTMLFromPrintDATA(documentInfo, document, options = {}) {
         this._doc = this._createRootElement();
         this._docObj = documentInfo;
         this._docData = document;
-        this.excludeHeader = documentInfo.excludeHeader ? documentInfo.excludeHeader : false;
+        
         this._printData = this.$billService.resolvePrintData(document.printData, this._isUS);
         this._printData.isRefund = documentInfo.isRefund;
 
-        let template = this.createDocTemplate(documentInfo);
+        let template = this.createDocTemplate(documentInfo, options);
         this._doc.body.appendChild(template);
         return (new XMLSerializer()).serializeToString(this._doc);
     }
 
-    createDocTemplate(docObjChosen) {
+    createDocTemplate(docObjChosen, options={}) {
+        this._excludeHeader = options.excludeHeader ? options.excludeHeader : false;
         var docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');
@@ -65,8 +66,8 @@ export default class TemplateBuilderService {
             docTemplate.classList.remove('rtl')
         }
 
-        if (!docObjChosen.excludeHeader) {
-            var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj,this._docData);
+        if (!_excludeHeader) {
+            var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
             templateHeader.classList += ' text-center';
 
             docTemplate.appendChild(templateHeader);

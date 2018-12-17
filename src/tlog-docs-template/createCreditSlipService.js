@@ -146,7 +146,7 @@ export default class CreateCreditSlipService {
 
             let checkTotalDiv = this._doc.createElement('div');
             checkTotalDiv.id = 'checkTotalDiv';
-            let checkTotalText = this.$translate.getText('CheckTotal');
+            let checkTotalText = this.$translate.getText('Amount');
             checkTotalDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(checkTotalText === null) ? checkTotalText : "") + ": " + "</div >" +
                 "<div class='total-amount'>" + (creditSlipDoc.P_AMOUNT_WO_TIP ? Number(creditSlipDoc.P_AMOUNT_WO_TIP).toFixed(2) : "") +
