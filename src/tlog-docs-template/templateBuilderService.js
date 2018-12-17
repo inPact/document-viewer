@@ -66,7 +66,7 @@ export default class TemplateBuilderService {
         }
 
         if (!docObjChosen.excludeHeader) {
-            var templateHeader = this.$headerService.createHeader(this._printData, this._doc);
+            var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj,this._docData);
             templateHeader.classList += ' text-center';
 
             docTemplate.appendChild(templateHeader);

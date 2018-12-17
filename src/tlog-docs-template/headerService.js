@@ -10,8 +10,10 @@ export default class HeaderService {
     }
 
 
-    createHeader(printData, doc) {
+    createHeader(printData, doc, docObj, docData) {
         this._doc = doc;
+        this._docObj = docObj;
+        this._docData = docData;
         //creating a div to populate and return
         var headerDiv = this._doc.createElement('div');
         headerDiv.id = "headerDiv";
