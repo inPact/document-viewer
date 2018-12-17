@@ -19,12 +19,15 @@ export default class CreateCreditSlipService {
 
     }
     createCreditSlip(printData, docObjChosen, doc) {
+        docObjChosen.md = docObjChosen.md || {};
         this._doc = doc;
         let creditSlipDiv = this._doc.createElement('div');
         creditSlipDiv.id = 'creditSlipDiv';
 
         let creditSlipDoc;
-        if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length > 0) {
+        if(!_.get(docObjChosen, 'md.paymentId') && printData.collections.PAYMENT_LIST.length === 1) {
+            creditSlipDoc = printData.collections.PAYMENT_LIST[0];
+        } else if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length) {
             printData.collections.PAYMENT_LIST.forEach(payment => {
                 if (payment.P_TENDER_TYPE === 'creditCard' &&
                     payment.P_ID === docObjChosen.md.paymentId
