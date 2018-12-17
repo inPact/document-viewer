@@ -206,7 +206,7 @@ export default class CreateCreditSlipService {
                 let elementSVG = signatureDiv.getElementsByTagName('svg')[0];
                 elementSVG.id = 'elementSVG';
 
-                let path = this.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-80) scale(0.5,0.5)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+                let path = this.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-40) scale(0.4,0.4)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
                 path.setAttribute("width", "50%");
                 path.setAttribute("height", "auto");
 
