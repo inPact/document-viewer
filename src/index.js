@@ -23,6 +23,9 @@ window.DocumentViewer = class DocumentViewer {
     }
 
     getDocumentHtml(document, options) {
+        if(options.isUS === undefined)
+            options.isUS = options.locale === 'en-US';
+
         return this._tlogDocsService.getHTMLDocumentWithoutTlog(document, options);
     }
 };
