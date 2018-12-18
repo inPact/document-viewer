@@ -3,8 +3,10 @@ import TlogDocsService from './tlog-docs-template/tlogDocsService';
 
 window.DocumentViewer = class DocumentViewer {
     constructor(options = {}) {
-        options.isUS = options.isUS || false;
         options.locale = options.locale || 'he-IL';
+        if (options.isUS === undefined)
+            options.isUS = options.locale === 'en-US';
+
         this._tlogDocsService = new TlogDocsService(options);
     }
 
@@ -22,10 +24,7 @@ window.DocumentViewer = class DocumentViewer {
         return this._tlogDocsService.getHTMLDocument(documentInfo, printData);
     }
 
-    getDocumentHtml(document, options) {
-        if(options.isUS === undefined)
-            options.isUS = options.locale === 'en-US';
-
+    getDocumentHtml(document, options = {}) {
         return this._tlogDocsService.getHTMLDocumentWithoutTlog(document, options);
     }
 };
