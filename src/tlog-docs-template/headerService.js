@@ -291,7 +291,7 @@ export default class HeaderService {
 
         return returnOrderDiv;
     }
-    
+
     appendChildren(target, array) {
         var divForAppending = this._doc.createElement('div');
         var length = array.length;
@@ -318,12 +318,12 @@ export default class HeaderService {
     formatDateUS(stringDate) {
         var date = new Date(stringDate);
         return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
-            ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
+            ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
     }
 
     formatDateIL(stringDate) {
         var date = new Date(stringDate);
-        return ((date.getHours() > 10) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 10) ? date.getMinutes() : "0" + date.getMinutes()) + " " +
+        return ((date.getHours() > 9) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " +
             date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " ";
     }
 
