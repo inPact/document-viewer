@@ -1,5 +1,6 @@
 import BillService from './billService';
 import HeaderService from './headerService';
+import EmvService from './emvService';
 import AddTaxDataService from './addTaxDataService';
 import CreateVatTemplateService from './createVatTemplateService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
@@ -20,6 +21,7 @@ export default class TemplateBuilderService {
         this.$translate = new TlogDocsTranslateService({ locale: this._locale });
         this.$billService = new BillService(options);
         this.$headerService = new HeaderService(options);
+        this.$emvService = new EmvService(options);
         this.$createVatTemplateService = new CreateVatTemplateService(options);
         this.$createCreditSlipService = new CreateCreditSlipService(options);
         this.$createGiftCardSlipService = new CreateGiftCardSlipService(options);
@@ -160,6 +162,24 @@ export default class TemplateBuilderService {
         if (this._printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
             docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
+
+        if (this._docData.documentType === 'orderBill' &&
+            this._printData.collections.PAYMENT_LIST &&
+            this._printData.collections.PAYMENT_LIST.length > 0 &&
+            this._printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined)) {
+                
+            docTemplate.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
+        }
+        else if (
+            this._docData.documentType === 'invoice' &&
+            this._printData.collections.CREDIT_PAYMENTS &&
+            this._printData.collections.CREDIT_PAYMENTS.length > 0 &&
+            this._printData.collections.CREDIT_PAYMENTS[0].EMV &&
+            this._printData.collections.CREDIT_PAYMENTS[0].EMV.length > 0) {
+
+            docTemplate.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
+        }
+
         return docTemplate;
     }
 
