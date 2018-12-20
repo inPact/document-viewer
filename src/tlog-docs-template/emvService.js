@@ -10,7 +10,7 @@ export default class emvService {
 
     createEmvTemplate(documentType, printData, doc) {
         this._doc = doc
-        let data = getEMVData(documentType, printData);
+        let data = this.getEMVData(documentType, printData);
 
         return this.createEmvHtmlTemplate(data)
     }
