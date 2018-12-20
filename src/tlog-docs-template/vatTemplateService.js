@@ -68,9 +68,7 @@ export default class VatTemplateService {
             vatTemplate.appendChild(vatDataTemplateDiv);
 
         }
-        else {
-
-                  
+        else {               
             console.log('THe Vat printData');
             console.log(printData)
             let refundText = null;
@@ -83,7 +81,6 @@ export default class VatTemplateService {
             }
             //else, if not refund but multi doc, add buisness meal text
             else if (!printData.isRefund && printData.variables.ORDER_DOCUMENT_PRINT === 'MULTI_DOC') {
-
                 let buisnessMealTranslate = this.$translate.getText('BUSINESS_MEAL');
                 vatHeaderDiv.classList.add("bold");
                 buisnessMealText = buisnessMealTranslate;

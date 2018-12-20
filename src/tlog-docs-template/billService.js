@@ -256,8 +256,8 @@ export default class BillService {
     resolveChecksData(printCheck) {
 
         let CheckBill = function (collections, variables, data, printByOrder, waiterDiners) {
-            this.collections = collections;
-            this.variables = variables;
+            this.collections = printCheck.printData.collections;
+            this.variables = printCheck.printData.variables;
             this.data = data;
             this.print_by_order = printByOrder;
             this.waiter_diners = waiterDiners;
@@ -578,8 +578,8 @@ export default class BillService {
     resolvePrintData(printData, isUS) {
 
         let DataBill = function (collections, variables, data, printByOrder, waiterDiners) {
-            this.collections = collections;
-            this.variables = variables;
+            this.collections = printData.collections;
+            this.variables = printData.variables;
             this.data = data;
             this.print_by_order = printByOrder;
             this.waiter_diners = waiterDiners;
