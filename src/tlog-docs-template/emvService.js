@@ -22,14 +22,13 @@ export default class emvService {
         if (documentType === 'orderBill') {
             let emvList = printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined);
             this.emvData = this.resolveEmvData(emvList)
-           
+
         }
         else if (documentType === 'invoice') {
-          
 
-                let emvList = printData.collections.CREDIT_PAYMENTS[0].EMV;
-                this.emvData = this.resolveEmvData(emvList);
-            
+            let emvList = printData.collections.CREDIT_PAYMENTS[0].EMV;
+            this.emvData = this.resolveEmvData(emvList);
+
         }
 
         return this.emvData
@@ -37,7 +36,7 @@ export default class emvService {
 
 
     resolveEmvData(collection) {
-
+        console.log('collection: ' + collection)
         let list = [];
 
         collection.forEach(item => {
@@ -48,23 +47,24 @@ export default class emvService {
             }
 
             list.push(item);
+
         });
 
 
-        filteredDataList = this.remove(list, 'cardNumber');
+        let filteredDataList = this.remove(list, 'cardNumber');
 
-        return this.filteredDataList
+        return filteredDataList;
 
     }
 
     remove(list, itemType) {
-        list.fotEach(item => {
+        list.forEach(item => {
             if (item.TYPE === itemType) {
                 list.splice(list.indexOf(item), 1);
             }
         })
 
-        return list
+        return list;
     }
 
 
