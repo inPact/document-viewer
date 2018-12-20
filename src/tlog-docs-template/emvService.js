@@ -9,10 +9,10 @@ export default class emvService {
     }
 
     createEmvTemplate(documentType, printData, doc) {
-        this._doc = doc
+        this._doc = doc;
         let data = this.getEMVData(documentType, printData);
 
-        return this.createEmvHtmlTemplate(data)
+        return this.createEmvHtmlTemplate(data);
     }
 
 
@@ -25,8 +25,8 @@ export default class emvService {
 
         }
         else if (documentType === 'invoice') {
-            let payment = printData.collections.CREDIT_PAYMENTS[0].EMV;
-            emvData = this.resolveEmvData(payment.EMV);
+            let emv = printData.collections.CREDIT_PAYMENTS[0].EMV;
+            emvData = this.resolveEmvData(emv);
 
         }
 

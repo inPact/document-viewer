@@ -180,10 +180,7 @@ export default class TemplateBuilderService {
             console.log(this._docData.documentType);
             docTemplate.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
         }
-        else {
-            console.log('THe docType is: ');
-            console.log(this._docData.documentType);
-        }
+ 
 
         return docTemplate;
     }
