@@ -50,9 +50,6 @@ export default class VatTemplateService {
                     vatHeaderDiv.classList.add("bold");
                     totalAmountText = totalAmountTranslate;
 
-                    console.log('YAY IT IS SINGLE');
-                    console.log(printData)
-                    console.log(printData.variables.ORDER_DOCUMENT_PRINT)
                 }
 
                 console.log('buisnessMealText1: ' + buisnessMealText);
@@ -72,6 +69,10 @@ export default class VatTemplateService {
 
         }
         else {
+
+                  
+            console.log('THe Vat printData');
+            console.log(printData)
             let refundText = null;
             let buisnessMealText = null;
             let totalAmountText = null;
@@ -92,6 +93,11 @@ export default class VatTemplateService {
                 let totalAmountTranslate = this.$translate.getText('TOTAL_AMOUNT');
                 vatHeaderDiv.classList.add("bold");
                 totalAmountText = totalAmountTranslate;
+
+                
+                console.log('YAY IT IS SINGLE');
+                console.log(printData)
+                console.log(printData.variables.ORDER_DOCUMENT_PRINT)
             }
             vat.TOTAL_EX_VAT = printData.variables.TOTAL_EX_VAT;
             vat.TOTAL_INCLUDED_TAX = printData.variables.TOTAL_INCLUDED_TAX;
