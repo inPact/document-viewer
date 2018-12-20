@@ -1,12 +1,12 @@
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
-import CreateVatTemplateService from './createVatTemplateService';
+import VatTemplateService from './vatTemplateService';
 
 export default class DeliveryNoteTransactionDataService {
     constructor(options) {
         this._isUS = options.isUS;
         this.$translate = new TlogDocsTranslateService(options);
-        this.$createVatTemplateService = new CreateVatTemplateService(options);
+        this.$vatTemplateService = new VatTemplateService(options);
         this.$utils = new TlogDocsUtils();
     }
 
@@ -27,7 +27,7 @@ export default class DeliveryNoteTransactionDataService {
         var deliveryNoteTransactionDiv = this._doc.createElement('div');
         deliveryNoteTransactionDiv.id = 'deliveryNoteTransactionDiv';
 
-        var deliveryVat = this.$createVatTemplateService.createVatTemplate(printData, this._doc)
+        var deliveryVat = this.$vatTemplateService.createVatTemplate(printData, this._doc)
         deliveryVat.id = 'deliveryVat';
 
         deliveryVat.classList += ' padding-bottom';

@@ -2,11 +2,11 @@ import BillService from './billService';
 import HeaderService from './headerService';
 import EmvService from './emvService';
 import AddTaxDataService from './addTaxDataService';
-import CreateVatTemplateService from './createVatTemplateService';
+import VatTemplateService from './vatTemplateService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import DeliveryNoteTransactionDataService from './deliveryNoteTransactionService';
-import CreateCreditSlipService from './createCreditSlipService';
-import CreateGiftCardSlipService from './createGiftCardSlipService'
+import CreditSlipService from './creditSlipService';
+import GiftCardSlipService from './giftCardSlipService'
 import TlogDocsUtils from './tlogDocsUtils';
 
 export default class TemplateBuilderService {
@@ -22,9 +22,9 @@ export default class TemplateBuilderService {
         this.$billService = new BillService(options);
         this.$headerService = new HeaderService(options);
         this.$emvService = new EmvService(options);
-        this.$createVatTemplateService = new CreateVatTemplateService(options);
-        this.$createCreditSlipService = new CreateCreditSlipService(options);
-        this.$createGiftCardSlipService = new CreateGiftCardSlipService(options);
+        this.$vatTemplateService = new VatTemplateService(options);
+        this.$creditSlipService = new CreditSlipService(options);
+        this.$giftCardSlipService = new GiftCardSlipService(options);
         this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
         this.$addTaxData = new AddTaxDataService(options);
     }
@@ -95,11 +95,11 @@ export default class TemplateBuilderService {
         }
         if (isCreditSlip !== null && isCreditSlip) {
             console.log('isCreditSlip is TRUUEEE')
-            var tplCreditSlipTemplate = this.$createCreditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
+            var tplCreditSlipTemplate = this.$creditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
             docTemplate.appendChild(tplCreditSlipTemplate);
         }
         else if (isGiftCardSlip) {
-            var tplGiftCardSlipTemplate = this.$createGiftCardSlipService.createGiftCardSlip(this._printData, docObjChosen, this._doc);
+            var tplGiftCardSlipTemplate = this.$giftCardSlipService.createGiftCardSlip(this._printData, docObjChosen, this._doc);
             docTemplate.appendChild(tplGiftCardSlipTemplate);
         }
         else {
@@ -167,7 +167,7 @@ export default class TemplateBuilderService {
             this._printData.collections.PAYMENT_LIST &&
             this._printData.collections.PAYMENT_LIST.length > 0 &&
             this._printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined)) {
-                
+
             docTemplate.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
         }
         else if (
@@ -416,7 +416,7 @@ export default class TemplateBuilderService {
 
         if (this._docObj && (this._docData.documentType ===
             ('invoice' || 'CreditCardPayment' || 'CreditCardRefund' || 'CashPayment' || 'GiftCard' || 'CashRefund' || 'ChequePayment' || 'ChequeRefund'))) {
-            var vatTemplateDiv = this.$createVatTemplateService.createVatTemplate(printData, this._doc);
+            var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);
         }
         else if (this._docObj && (this._docData.documentType === 'deliveryNote')) {
@@ -778,9 +778,4 @@ export default class TemplateBuilderService {
             date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " ";
     }
 
-    // TemplateBuilderService.prototype.createHTMLFromPrintDATA = (docObj, printData) => createHTMLFromPrintDATA(docObj, printData);
-
-    // return TemplateBuilderService;
-
 }
-// })();

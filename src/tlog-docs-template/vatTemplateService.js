@@ -1,7 +1,7 @@
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 
-export default class CreateVatTemplateService {
+export default class VatTemplateService {
     constructor(options) {
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new TlogDocsUtils();

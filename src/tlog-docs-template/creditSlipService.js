@@ -1,7 +1,7 @@
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 
-export default class CreateCreditSlipService {
+export default class CreditSlipService {
 
     constructor(options) {
         this._options = {};
