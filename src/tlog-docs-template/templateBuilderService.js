@@ -162,12 +162,12 @@ export default class TemplateBuilderService {
         if (this._printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
             docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
-        if (this._docData.documentType === 'orderBill') {
+        if (docObjChosen.isFullOrderBill) {
             console.log('IM ORDER Bill')
         } else {
             console.log("Im not OrderBIll, Im: " + this._docData.documentType)
         }
-        if (this._docData.documentType === 'orderBill' &&
+        if (this.docObjChosen.isFullOrderBill &&
             this._printData.collections.PAYMENT_LIST &&
             this._printData.collections.PAYMENT_LIST.length > 0 &&
             this._printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined)) {
