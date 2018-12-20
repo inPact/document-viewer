@@ -168,3 +168,10 @@
 .border-bottom {
   padding-bottom: 10px;
   border-bottom: solid #E8E8E8 1px; }
+
+.emv-div {
+  display: flex; }
+
+.emv-text {
+  display: flex;
+  flex: 1; }

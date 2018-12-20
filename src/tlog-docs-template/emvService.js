@@ -83,9 +83,9 @@ export default class emvService {
         data.forEach(item => {
             let emvItemDiv = this._doc.createElement('div');
             emvItemDiv.className += 'emvItemDiv'
-            emvItemDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div>" + item.DESC + "</div >" + ": " +
-                "<div>" + item.DATA + "</div></div>"
+            emvItemDiv.innerHTML = "<div class='emv-div'>" +
+                "<div class='emv-text'>" + item.DESC + ": " + "</div >" +
+                "<div class='emv-text'>" + item.DATA + "</div></div>"
 
             emvDiv.appendChild(emvItemDiv)
         })
