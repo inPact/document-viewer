@@ -44,7 +44,7 @@ export default class emvService {
 
             // change text.
             if (['uid', 'rrn'].indexOf(item.TYPE) > -1) {
-                item.DESC = this.$translate.getText(`CreditTransactionData.${item.TYPE}`);
+                item.DESC = this.$translate.getText('CreditTransactionData.${item.TYPE}');
             }
 
             list.push(item);
@@ -79,7 +79,7 @@ export default class emvService {
             let emvItemDiv = this._doc.createElement('div');
             emvItemDiv.className += 'emvItemDiv'
             emvItemDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div>" + item.DESC + "</div >" +
+                "<div>" + item.DESC + "</div >" +": "
                 "<div>" + item.DATA + "</div></div>"
 
             emvDiv.appendChild(emvItemDiv)
