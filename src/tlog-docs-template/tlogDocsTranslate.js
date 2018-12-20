@@ -285,11 +285,8 @@ export default class TlogDocsTranslateService {
                 "kg": "ק\"ג",
                 "lb": "lb",
                 "Balance": "BALANCE",
-                "CreditTransactionData": {
-                    "uid": "Identification Number",
-                    "rrn": "Unique Transaction ID"
-                }
-
+                "uid": "Identification Number",
+                "rrn": "Unique Transaction ID"
             },
             "he-IL": {
                 "OTH": "על חשבון הבית",
@@ -534,10 +531,9 @@ export default class TlogDocsTranslateService {
                 "kg": "ק\"ג",
                 "lb": "ליברה",
                 "Balance": "יתרה",
-                "CreditTransactionData": {
-                    "uid": "מספר מזהה",
-                    "rrn": "מזהה עסקה ייחודי"
-                }
+                "uid": "מספר מזהה",
+                "rrn": "מזהה עסקה ייחודי"
+
 
             }
         }
