@@ -94,7 +94,6 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(mediaExchangeDiv)
         }
         if (isCreditSlip !== null && isCreditSlip) {
-            console.log('isCreditSlip is TRUUEEE')
             var tplCreditSlipTemplate = this.$creditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
             docTemplate.appendChild(tplCreditSlipTemplate);
         }
@@ -163,7 +162,8 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
 
-        if (docObjChosen.isFullOrderBill &&
+        if (isMediaExchange &&
+            docObjChosen.isFullOrderBill &&
             this._printData.collections.PAYMENT_LIST &&
             this._printData.collections.PAYMENT_LIST.length > 0 &&
             this._printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined)) {
@@ -176,8 +176,13 @@ export default class TemplateBuilderService {
             this._printData.collections.CREDIT_PAYMENTS.length > 0 &&
             this._printData.collections.CREDIT_PAYMENTS[0].EMV &&
             this._printData.collections.CREDIT_PAYMENTS[0].EMV.length > 0) {
-
+            console.log('THe docType is: ');
+            console.log(this._docData.documentType);
             docTemplate.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
+        }
+        else {
+            console.log('THe docType is: ');
+            console.log(this._docData.documentType);
         }
 
         return docTemplate;
