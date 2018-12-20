@@ -44,7 +44,7 @@ export default class emvService {
 
             // change text.
             if (['uid', 'rrn'].indexOf(item.TYPE) > -1) {
-                item.DESC = this.$translate.instant(`CreditTransactionData.${item.TYPE}`);
+                item.DESC = this.$translate.getText(`CreditTransactionData.${item.TYPE}`);
             }
 
             list.push(item);
