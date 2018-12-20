@@ -20,13 +20,13 @@ export default class emvService {
         let emvData;
 
         if (documentType === 'orderBill') {
-            let emvList = printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined);
-            emvData = this.resolveEmvData(emvList)
+            let payment = printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined);
+            emvData = this.resolveEmvData(payment.EMV)
 
         }
         else if (documentType === 'invoice') {
-            let emvList = printData.collections.CREDIT_PAYMENTS[0].EMV;
-            emvData = this.resolveEmvData(emvList);
+            let payment = printData.collections.CREDIT_PAYMENTS[0].EMV;
+            emvData = this.resolveEmvData(payment.EMV);
 
         }
 
