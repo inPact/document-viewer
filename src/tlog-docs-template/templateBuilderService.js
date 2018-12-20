@@ -162,7 +162,11 @@ export default class TemplateBuilderService {
         if (this._printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
             docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
-
+        if (this._docData.documentType === 'orderBill') {
+            console.log('IM ORDER Bill')
+        } else {
+            console.log("Im not OrderBIll, Im: " + this._docData.documentType)
+        }
         if (this._docData.documentType === 'orderBill' &&
             this._printData.collections.PAYMENT_LIST &&
             this._printData.collections.PAYMENT_LIST.length > 0 &&
