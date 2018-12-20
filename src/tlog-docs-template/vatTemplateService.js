@@ -51,6 +51,10 @@ export default class VatTemplateService {
                     totalAmountText = totalAmountTranslate;
                 }
 
+                console.log('buisnessMealText: '+ buisnessMealText);
+                console.log('totalAmountText: '+ totalAmountText);
+                console.log('refundText: '+ refundText);
+
                 vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
                     "<div class='total-amount " + this.isNegative(item.ITEM_AMOUNT) + "'>" + (this.notEmpty(item.ITEM_AMOUNT) ? this.twoDecimals(item.ITEM_AMOUNT) : "") + "</div>" +
@@ -90,6 +94,11 @@ export default class VatTemplateService {
             vat.VAT_PERCENT = this.twoDecimals(printData.variables.VAT_PERCENT);
             vat.TOTAL_IN_VAT = printData.variables.TOTAL_IN_VAT;
             vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
+
+            console.log('buisnessMealText: '+ buisnessMealText);
+            console.log('totalAmountText: '+ totalAmountText);
+            console.log('refundText: '+ refundText);
+
             vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
                 "<div class='total-amount " + this.isNegative(vat.ITEM_AMOUNT) + "'>" + (this.notEmpty(vat.ITEM_AMOUNT) ? this.twoDecimals(vat.ITEM_AMOUNT) : "") + "</div>" +
@@ -100,7 +109,7 @@ export default class VatTemplateService {
             let vatDataTemplateDiv = this.createVatDataTemplate(vat, false)
             vatTemplate.appendChild(vatDataTemplateDiv);
         }
-
+        
         return vatTemplate;
 
     }
