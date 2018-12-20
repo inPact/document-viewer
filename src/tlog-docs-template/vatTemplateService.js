@@ -49,11 +49,15 @@ export default class VatTemplateService {
                     let totalAmountTranslate = this.$translate.getText('TOTAL_AMOUNT');
                     vatHeaderDiv.classList.add("bold");
                     totalAmountText = totalAmountTranslate;
+
+                    console.log('YAY IT IS SINGLE');
+                    console.log(printData)
+                    console.log(printData.variables.ORDER_DOCUMENT_PRINT)
                 }
 
-                console.log('buisnessMealText1: '+ buisnessMealText);
-                console.log('totalAmountText1: '+ totalAmountText);
-                console.log('refundText1: '+ refundText);
+                console.log('buisnessMealText1: ' + buisnessMealText);
+                console.log('totalAmountText1: ' + totalAmountText);
+                console.log('refundText1: ' + refundText);
 
                 vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
@@ -95,9 +99,9 @@ export default class VatTemplateService {
             vat.TOTAL_IN_VAT = printData.variables.TOTAL_IN_VAT;
             vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
 
-            console.log('buisnessMealText2: '+ buisnessMealText);
-            console.log('totalAmountText2: '+ totalAmountText);
-            console.log('refundText2: '+ refundText);
+            console.log('buisnessMealText2: ' + buisnessMealText);
+            console.log('totalAmountText2: ' + totalAmountText);
+            console.log('refundText2: ' + refundText);
 
             vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
