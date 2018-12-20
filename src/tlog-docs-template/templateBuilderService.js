@@ -167,7 +167,7 @@ export default class TemplateBuilderService {
         } else {
             console.log("Im not OrderBIll, Im: " + this._docData.documentType)
         }
-        if (this.docObjChosen.isFullOrderBill &&
+        if (docObjChosen.isFullOrderBill &&
             this._printData.collections.PAYMENT_LIST &&
             this._printData.collections.PAYMENT_LIST.length > 0 &&
             this._printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined)) {
