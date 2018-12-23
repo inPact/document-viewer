@@ -471,8 +471,8 @@ export default class TemplateBuilderService {
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
 
                 if (this._docObj.md && !this._isUS) {
-                    var signatureDiv = this._doc.createElement('div');
-                    signatureDiv.id = 'signatureDiv';
+                    var signatureArea = this._doc.createElement('div');
+                    signatureArea.id = 'signatureArea';
                     tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(this._docObj, signatureDiv, this._doc));
                 }
             }
