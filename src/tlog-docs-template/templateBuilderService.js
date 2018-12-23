@@ -474,9 +474,9 @@ export default class TemplateBuilderService {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
                     signatureArea.className += ' item-div' 
-                    if (docObjChosen.md.signature) {
+                    if (this._docObj.md.signature) {
 
-                        let signatureData = docObjChosen.md.signature;
+                        let signatureData = this._docObj.md.signature;
                         let signatureDiv = this._doc.createElement('div');
                         signatureDiv.id = 'signatureDiv';
                         signatureDiv.classList += " signature-container";
