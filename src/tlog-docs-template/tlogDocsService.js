@@ -170,6 +170,10 @@ export default class TlogDocsService {
                                         type: doc._type,
                                         title: this.$translate.getText('invoice_number') + doc.number,
                                         ep: `documents/v2/${doc._id}/printdata`,
+                                        md: {
+                                            paymentId: payment._id,
+                                            signature: payment && payment.customerSignature ? payment.customerSignature.data : null
+                                        },
                                         docPaymentType: (doc.payments[0]._type ? doc.payments[0]._type : ''),
                                         isRefund: false
                                     });
@@ -204,7 +208,6 @@ export default class TlogDocsService {
                                             docPaymentType: doc.payments[0]._type,
                                             isRefund: doc._type.toUpperCase().includes('REFUND')
                                         });
-
 
                                         break;
                                     }
