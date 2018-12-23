@@ -253,51 +253,6 @@ export default class BillService {
 
     }
 
-<<<<<<< Updated upstream
-    resolveChecksData(printCheck) {
-
-        let CheckBill = function (collections, variables, data, printByOrder, waiterDiners) {
-            this.collections = collections;
-            this.variables = variables;
-            this.data = data;
-            this.print_by_order = printByOrder;
-            this.waiter_diners = waiterDiners;
-        }
-
-        let collections = printCheck.printData.collections;
-        let variables = printCheck.printData.variables;
-
-        if (collections.PAYMENT_LIST.length === 0) {
-            return;
-        }
-
-        let data = {};
-
-        let _details = this.resolveItems(variables, collections);
-
-        data.items = _details.items;
-        data.oth = _details.oth;
-        data.isReturnOrder = _details.isReturnOrder;
-        data.isTaxExempt = _details.isTaxExempt;
-
-        let _totals = this.resolveTotals(variables, collections, true)
-        data.totals = _totals;
-
-        let _payments = this.resolvePayments(variables, collections, true);
-        data.payments = _payments;
-
-        let _taxes = this.resolveTaxes(variables, collections, true);
-        data.taxes = _taxes;
-
-        let printByOrder = this.resolvePrintByOrder(variables);
-        let waiterDiners = this.resolveWaiterDiners(variables);
-
-        let checkBill = new CheckBill(collections, variables, data, printByOrder, waiterDiners);
-        return checkBill;
-    }
-
-=======
->>>>>>> Stashed changes
     resolveTotals(variables, collections) {
         let totals = [];
 
