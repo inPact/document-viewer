@@ -41,16 +41,17 @@ export default class TemplateBuilderService {
     }
 
     createHTMLFromPrintDATA(documentInfo, document, options = {}) {
+
+        console.log('documentInfo: ')
+        console.log(documentInfo)
+        console.log('document: ')
+        console.log(document)
+     
         this._doc = this._createRootElement();
         this._docObj = documentInfo;
         this._docData = document;
-
         this._printData = this.$billService.resolvePrintData(document.printData, this._isUS);
-        console.log('printDATA 23.12.18: ');
-        console.log(this._printData);
-
         this._printData.isRefund = documentInfo.isRefund;
-
         let template = this.createDocTemplate(documentInfo, options);
         this._doc.body.appendChild(template);
         return (new XMLSerializer()).serializeToString(this._doc);
@@ -84,7 +85,6 @@ export default class TemplateBuilderService {
             checkInIL = true;
         }
 
-
         this._isGiftCardBill = docObjChosen.isGiftCardBill ? true : false;
         this._isTaxExempt = this._printData.data.isTaxExempt;
 
@@ -105,13 +105,11 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(tplGiftCardSlipTemplate);
         }
         else {
-
             //create a general template content
             if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
                 var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
                 tplOrderPaymentData.id = 'tplOrderPaymentData';
                 tplOrderPaymentData.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
-
             }
 
             // var tplOrderPaymentData = createOrderPaymentData(_printData);
@@ -150,7 +148,6 @@ export default class TemplateBuilderService {
                 if (this._isUS) {
                     var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
                     if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
-
                 }
             }
 
@@ -158,12 +155,14 @@ export default class TemplateBuilderService {
                 var customerMessageDiv = this.createCustomerMessage(this._printData, this._doc);
                 if (customerMessageDiv !== null) docTemplate.appendChild(customerMessageDiv)
             }
-
         }
 
         if (this._printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
             docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
+
+        console.log('THe docType is: ');
+        console.log(this._docData.documentType);
 
         if (isMediaExchange &&
             docObjChosen.isFullOrderBill &&
@@ -179,18 +178,13 @@ export default class TemplateBuilderService {
             this._printData.collections.CREDIT_PAYMENTS.length > 0 &&
             this._printData.collections.CREDIT_PAYMENTS[0].EMV &&
             this._printData.collections.CREDIT_PAYMENTS[0].EMV.length > 0) {
-            console.log('THe docType is: ');
-            console.log(this._docData.documentType);
             docTemplate.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
         }
- 
 
         return docTemplate;
     }
 
-
     createOrderPaymentData(printData) {
-
         var tplOrderPaymentData = this._doc.createElement('div');
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
         tplOrderPaymentData.classList += ' tpl-body-div';
@@ -198,7 +192,6 @@ export default class TemplateBuilderService {
         paymentDataDiv.id = "paymentDataDiv";
         paymentDataDiv.classList += ' padding-top';
         paymentDataDiv.classList += ' padding-bottom';
-
 
         tplOrderPaymentData.appendChild(paymentDataDiv);
 
@@ -263,7 +256,6 @@ export default class TemplateBuilderService {
                 }
             })
         }
-
     }
 
     fillOthData(htmlElement, data) {
@@ -341,8 +333,6 @@ export default class TemplateBuilderService {
             else {
                 cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'></div>"
             }
-
-
 
             var creditDataTemplate = this.createCreditDataTemplate(credPayments, printData)
             CreditTemplate.appendChild(creditDataTemplate)
