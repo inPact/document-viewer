@@ -6,7 +6,8 @@ export default class SignatureService {
 
     }
 
-    getSignature(docObjChosen, element) {
+    getSignature(docObjChosen, element, doc) {
+        this._doc = doc;
         let signatureData = docObjChosen.md.signature;
         let signatureDiv = this._doc.createElement('div');
         signatureDiv.id = 'signatureDiv';
