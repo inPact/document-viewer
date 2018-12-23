@@ -7,6 +7,7 @@ import TlogDocsTranslateService from './tlogDocsTranslate';
 import DeliveryNoteTransactionDataService from './deliveryNoteTransactionService';
 import CreditSlipService from './creditSlipService';
 import GiftCardSlipService from './giftCardSlipService'
+import SignatureService from './signatureService'
 import TlogDocsUtils from './tlogDocsUtils';
 
 export default class TemplateBuilderService {
@@ -26,6 +27,7 @@ export default class TemplateBuilderService {
         this.$creditSlipService = new CreditSlipService(options);
         this.$giftCardSlipService = new GiftCardSlipService(options);
         this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
+        this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
     }
 
@@ -46,7 +48,7 @@ export default class TemplateBuilderService {
         console.log(documentInfo)
         console.log('document: ')
         console.log(document)
-     
+
         this._doc = this._createRootElement();
         this._docObj = documentInfo;
         this._docData = document;
@@ -90,6 +92,7 @@ export default class TemplateBuilderService {
 
         var isMediaExchange = (this._printData.variables.ORDER_TYPE === "MEDIAEXCHANGE");
         var isCreditSlip = ((docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL) || docObjChosen.documentType === 'creditSlip')
+
         var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this._isUS);
 
         if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
@@ -466,6 +469,12 @@ export default class TemplateBuilderService {
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
+
+                if (this._docObj.md) {
+                    var signatureDiv = this._doc.createElement('div');
+                    signatureDiv.id = 'signatureDiv';
+                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(this._docObj, signatureDiv));
+                }
             }
             else if (this._docObj.docPaymentType === ("GiftCard")) {
                 var giftCardPayment = this.createGiftCardDetails(printData);
@@ -712,6 +721,9 @@ export default class TemplateBuilderService {
         else return null;
 
     }
+
+
+
 
     breakCustomerMessageFilter(str) {
         if (!str) return '';
