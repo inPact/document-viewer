@@ -120,6 +120,9 @@
 .basicTemplate .med-chars {
   font-size: 18px; }
 
+.basicTemplate .small-chars {
+  font-size: 10px; }
+
 .basicTemplate .bold {
   font-weight: bold; }
 
