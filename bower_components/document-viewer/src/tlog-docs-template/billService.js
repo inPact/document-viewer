@@ -99,12 +99,12 @@ export default class BillService {
                         if (isReturnOrder) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
-                        } else if (offer.OFFER_CALC_AMT  !== 0 && offer.OFFER_CALC_AMT  !== null) { // if the offer amount is 0 not need to show 
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT , 2)
+                        } else if (offer.OFFER_AMOUNT !== 0 && offer.OFFER_AMOUNT !== null) { // if the offer amount is 0 not need to show 
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
                         if (offer.OPEN_PRICE) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
                             items.push(item);
                         }
                     }
@@ -253,12 +253,11 @@ export default class BillService {
 
     }
 
-<<<<<<< Updated upstream
     resolveChecksData(printCheck) {
 
         let CheckBill = function (collections, variables, data, printByOrder, waiterDiners) {
-            this.collections = collections;
-            this.variables = variables;
+            this.collections = printCheck.printData.collections;
+            this.variables = printCheck.printData.variables;
             this.data = data;
             this.print_by_order = printByOrder;
             this.waiter_diners = waiterDiners;
@@ -296,8 +295,6 @@ export default class BillService {
         return checkBill;
     }
 
-=======
->>>>>>> Stashed changes
     resolveTotals(variables, collections) {
         let totals = [];
 
@@ -401,6 +398,42 @@ export default class BillService {
         return totals;
     }
 
+    filterOmittedPayments(payments) {
+
+        let omittedOrders = [];
+
+        let filteredItems = payments.forEach(p => {
+            if (p.PROVIDER_TRANS_STATUS === 'omitted') {
+                if (p.CANCELED) {
+
+                    let findRefundPayment = payments.find(r => {
+                        return !r.CANCELED && r.PAYMENT_TYPE === "REFUND" && r.P_AMOUNT === p.P_AMOUNT && r.PROVIDER_TRANS_STATUS === 'omitted';
+                    })
+
+                    if (findRefundPayment) {
+                        omittedOrders.push(p)
+                        omittedOrders.push(findRefundPayment)
+                    }
+
+                }
+            }
+        })
+
+        if (omittedOrders.length > 0) {
+            omittedOrders.forEach(i => {
+                let findPayment = payments.findIndex(p => {
+                    return p.P_ID === i.P_ID;
+                })
+                if (findPayment !== -1) {
+                    payments.splice(findPayment, 1)
+                }
+            })
+        }
+
+        return payments;
+
+    }
+
     resolvePayments(variables, collections) {
 
         // filter payments by ommitted property removes cancelled and refund payments once the order goes shva offline
@@ -425,7 +458,6 @@ export default class BillService {
 
         return payments;
     }
-
     resolveTaxes(variables, collections) {
 
         let taxes = {
@@ -471,7 +503,6 @@ export default class BillService {
         return taxes;
 
     }
-
     resolvePaymentName(payment) {
         let refund = '';
         let paymentName = '';
@@ -499,7 +530,6 @@ export default class BillService {
         return paymentName;
 
     }
-
     resolvePrintByOrder(variables) {
 
         return this.$translate.getText('PRINT_BY_ORDER',
@@ -507,7 +537,6 @@ export default class BillService {
             [variables.ORDER_NO, moment(variables.CREATED_AT).format('DD/MM/YYYY'), moment(variables.CREATED_AT).format('HH:mm:ss')]
         );
     }
-
     resolveWaiterDiners(variables) {
 
         let DISPLAY_NAME = "";
@@ -545,95 +574,15 @@ export default class BillService {
         return RESULT_TEXT;
 
     }
-    filterOmittedPayments(payments) {
-
-        let omittedOrders = [];
-
-        let filteredItems = payments.forEach(p => {
-            if (p.PROVIDER_TRANS_STATUS === 'omitted') {
-                if (p.CANCELED) {
-
-                    let findRefundPayment = payments.find(r => {
-                        return !r.CANCELED && r.PAYMENT_TYPE === "REFUND" && r.P_AMOUNT === p.P_AMOUNT && r.PROVIDER_TRANS_STATUS === 'omitted';
-                    })
-
-                    if (findRefundPayment) {
-                        omittedOrders.push(p)
-                        omittedOrders.push(findRefundPayment)
-                    }
-
-                }
-            }
-        })
-
-        if (omittedOrders.length > 0) {
-            omittedOrders.forEach(i => {
-                let findPayment = payments.findIndex(p => {
-                    return p.P_ID === i.P_ID;
-                })
-                if (findPayment !== -1) {
-                    payments.splice(findPayment, 1)
-                }
-            })
-        }
-
-        return payments;
-
-    }
-
-    resolveChecksData(printCheck) {
-
-        let CheckBill = function (collections, variables, data, printByOrder, waiterDiners) {
-            this.collections = printCheck.printData.collections;
-            this.variables = printCheck.printData.variables;
-            this.data = data;
-            this.print_by_order = printByOrder;
-            this.waiter_diners = waiterDiners;
-        }
-
-        let collections = printCheck.printData.collections;
-        let variables = printCheck.printData.variables;
-
-        if (collections.PAYMENT_LIST.length === 0) {
-            return;
-        }
-
-        let data = {};
-
-        let _details = this.resolveItems(variables, collections);
-
-        data.items = _details.items;
-        data.oth = _details.oth;
-        data.isReturnOrder = _details.isReturnOrder;
-        data.isTaxExempt = _details.isTaxExempt;
-
-        let _totals = this.resolveTotals(variables, collections, true)
-        data.totals = _totals;
-
-        let _payments = this.resolvePayments(variables, collections, true);
-        data.payments = _payments;
-
-        let _taxes = this.resolveTaxes(variables, collections, true);
-        data.taxes = _taxes;
-
-        let printByOrder = this.resolvePrintByOrder(variables);
-        let waiterDiners = this.resolveWaiterDiners(variables);
-
-        let checkBill = new CheckBill(collections, variables, data, printByOrder, waiterDiners);
-        return checkBill;
-    }
-
- 
-  
-
-
- 
 
     resolvePrintData(printData, isUS) {
+        
+        console.log('resolvePrintData');
+        console.log(printData);
 
         let DataBill = function (collections, variables, data, printByOrder, waiterDiners) {
-            this.collections = collections;
-            this.variables = variables;
+            this.collections = printData.collections;
+            this.variables = printData.variables;
             this.data = data;
             this.print_by_order = printByOrder;
             this.waiter_diners = waiterDiners;
