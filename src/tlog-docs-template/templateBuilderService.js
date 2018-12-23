@@ -46,6 +46,9 @@ export default class TemplateBuilderService {
         this._docData = document;
 
         this._printData = this.$billService.resolvePrintData(document.printData, this._isUS);
+        console.log('printDATA 23.12.18: ');
+        console.log(this._printData);
+
         this._printData.isRefund = documentInfo.isRefund;
 
         let template = this.createDocTemplate(documentInfo, options);
