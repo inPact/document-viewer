@@ -473,7 +473,7 @@ export default class TemplateBuilderService {
                 if (this._docObj.md && !this._isUS) {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
-                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(this._docObj, signatureDiv, this._doc));
+                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(this._docObj, signatureArea, this._doc));
                 }
             }
             else if (this._docObj.docPaymentType === ("GiftCard")) {
