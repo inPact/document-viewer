@@ -20,7 +20,7 @@ export default class SignatureService {
         newSVG.id = 'newSVG';
 
         elementSVGDiv.appendChild(newSVG);
-        newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='100' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
+        newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='auto' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
         let svgNode = elementSVGDiv.getElementsByTagName('svg')[0];
         svgNode.classList += " signature-container";
 
