@@ -406,10 +406,11 @@ export default class TemplateBuilderService {
 
         if (taxDataDiv !== null && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
-
-        var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
-        if (taxDataDiv !== null) {
-            tplOrderTotals.appendChild(taxDataDiv);
+        if (!isTaxExempt) {
+            var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
+            if (taxDataDiv !== null) {
+                tplOrderTotals.appendChild(taxDataDiv);
+            }
         }
 
         if (this._docObj && (this._docData.documentType ===
