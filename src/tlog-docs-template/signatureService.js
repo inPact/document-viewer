@@ -35,7 +35,7 @@ export default class SignatureService {
         path.setAttribute("width", "50%");
         path.setAttribute("height", "auto");
 
-        elementSVG.setAttribute("width", "100");
+        elementSVG.setAttribute("width", "100%");
         elementSVG.setAttribute("height", "auto");
 
         elementSVG.innerHTML = "";

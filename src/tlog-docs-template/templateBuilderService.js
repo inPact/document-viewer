@@ -473,6 +473,7 @@ export default class TemplateBuilderService {
                 if (this._docObj.md && !this._isUS && this._docObj.docPaymentType === "CreditCardPayment") {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
+                    signatureArea.className += ' item-div' 
                     if (docObjChosen.md.signature) {
 
                         let signatureData = docObjChosen.md.signature;
@@ -487,7 +488,7 @@ export default class TemplateBuilderService {
                         newSVG.id = 'newSVG';
 
                         elementSVGDiv.appendChild(newSVG)
-                        newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='100px' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
+                        newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='100' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
                         let svgNode = elementSVGDiv.getElementsByTagName('svg')[0];
                         svgNode.classList += " signature-container";
 
@@ -498,7 +499,7 @@ export default class TemplateBuilderService {
                         let elementSVG = signatureDiv.getElementsByTagName('svg')[0];
                         elementSVG.id = 'elementSVG';
 
-                        let path = this.$signatureService.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-40) scale(0.4,0.4)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+                        let path = this.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-40) scale(0.4,0.4)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
                         path.setAttribute("width", "50%");
                         path.setAttribute("height", "auto");
 
