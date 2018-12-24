@@ -654,7 +654,7 @@ export default class TemplateBuilderService {
             var transactNumDiv = this._doc.createElement('div')
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChangeZero ? this.twoDecimals(pChange) : "") + pChange+ "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (!pChangeZero ? this.twoDecimals(pChange) : "") + pChange+ "</div>" +
                 "</div>"
 
             cashDiv.appendChild(transactNumDiv);
@@ -689,7 +689,7 @@ export default class TemplateBuilderService {
             tpChangeNumDiv.className += 'tpChangeNumDiv'
             tpChangeNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChangeZero ? this.twoDecimals(pChange) : "") +pChange+ "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (!pChangeZero ? this.twoDecimals(pChange) : "") +pChange+ "</div>" +
                 "</div>"
 
             chequeDiv.appendChild(tpChangeNumDiv);
