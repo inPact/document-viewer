@@ -402,9 +402,6 @@ export default class TemplateBuilderService {
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
-        var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
-
-        if (taxDataDiv !== null && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
         if (!isTaxExempt) {
             var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
@@ -412,6 +409,8 @@ export default class TemplateBuilderService {
                 tplOrderTotals.appendChild(taxDataDiv);
             }
         }
+
+        if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
         if (this._docObj && (this._docData.documentType ===
             ('invoice' || 'CreditCardPayment' || 'CreditCardRefund' || 'CashPayment' || 'GiftCard' || 'CashRefund' || 'ChequePayment' || 'ChequeRefund'))) {
@@ -442,7 +441,7 @@ export default class TemplateBuilderService {
                 var totalDiv = this._doc.createElement('div');
                 if (total.type === 'exclusive_tax') {
                     totalDiv.innerHTML = "<div class='itemDiv'>" +
-                        "<div class='total-name small-chars'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? total.rate + "%" : " ") + "</div>" + " " +
+                        "<div class='total-name small-chars'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? this.twoDecimals(total.rate) + "%" : " ") + "</div>" + " " +
                         "<div class='total-amount " + this.isNegative(total.amount) + "'>" + (total.amount ? this.twoDecimals(total.amount) : " ") + "</div>" + "</div>"
                 }
                 else if (total.type !== 'exclusive_tax') {
