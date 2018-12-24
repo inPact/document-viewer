@@ -30,7 +30,7 @@ export default class SignatureService {
         contenier.setAttribute("width", "100%");
         contenier.setAttribute("height", "30px");
 
-        let path = makeSVG('path', { d: ctrl.data.data, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+        let path = makeSVG('path', { d: signatureData, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
         contenier.appendChild(path);
 
         element.appendChild(contenier);
