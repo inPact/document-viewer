@@ -24,14 +24,27 @@ export default class SignatureService {
 
 
 
+
         let contenier = this._doc.createElement('div');
         contenier.id = 'signatureDiv';
         contenier.classList += " signature-container";
         contenier.setAttribute("width", "100%");
         contenier.setAttribute("height", "30px");
 
+        let elementSvg = this._doc.createElement('svg');
+        elementSvg.setAttribute('id', "svg");
+        elementSvg.setAttribute('width', "100%");
+        elementSvg.setAttribute('height', "70");
+        elementSvg.setAttribute('transform', "translate(0,0)");
+        elementSvg.setAttribute('viewBox', "300 50 150 380");
+        elementSvg.setAttribute('style', "width: 100%;");
+
+
         let path = this.makeSVG('path', { d: signatureData.data, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
-        contenier.appendChild(path);
+
+        elementSvg.appendChild(path);
+
+        contenier.appendChild(elementSvg);
 
         element.appendChild(contenier);
 
