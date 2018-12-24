@@ -325,11 +325,11 @@ export default class TemplateBuilderService {
 
             var cashBackText = this.$translate.getText(printData.variables.CHANGE ? 'TOTAL_CASHBACK' : "");
             var cashBackDiv = this._doc.createElement('div');
-            var change = printData.collections.PAYMENT_LIST[0].P_CHANGE;
+            var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE;
             if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
                 cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'>" +
                     "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
-                    "<div class='total-amount'>" + ((change && change !== 0) ? this.twoDecimals(change) : " ") + "</div>"
+                    "<div class='total-amount'>" + ((pChange && pChange !== 0) ? this.twoDecimals(pChange) : " ") + pChange +"</div>"
                     + "</div >"
 
                 CreditHeaderDiv.appendChild(cashBackDiv);
@@ -506,13 +506,15 @@ export default class TemplateBuilderService {
         if (printData.data.payments.length > 0) {
             printData.data.payments.forEach(payment => {
                 var paymentDiv = this._doc.createElement('div');
-                var pAmount = payment.amount;
-                var changeAmountZero = pAmount === 0 && payment.type === 'change';
+                var pAmount;
+                var changeAmountZero;
                 if (payment) {
+                    pAmount = payment.amount;
+                    changeAmountZero = (pAmount === 0 && payment.type === 'change');
                     paymentDiv.innerHTML =
                         "<div class=" + (payment.type === 'change' ? 'changeDiv' : 'itemDiv') + ">" +
                         "<div class='total-name'>" + (payment.name ? payment.name : " ") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(pAmount) + "'>" + (!changeAmountZero ? payment.amount : "") + "</div>" +
+                        "<div class='total-amount " + this.isNegative(pAmount) + "'>" + (!changeAmountZero ? pAmount : "") + "</div>" +
                         "</div>"
                     OrderPaymentsDiv.appendChild(paymentDiv);
                 }
@@ -652,7 +654,7 @@ export default class TemplateBuilderService {
             var transactNumDiv = this._doc.createElement('div')
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChangeZero ? this.twoDecimals(pChange) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChangeZero ? this.twoDecimals(pChange) : "") + pChange+ "</div>" +
                 "</div>"
 
             cashDiv.appendChild(transactNumDiv);
@@ -682,12 +684,12 @@ export default class TemplateBuilderService {
         if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
             var changeText = this.$translate.getText('TOTAL_CASHBACK');
             var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? Number(printData.collections.PAYMENT_LIST[0].P_CHANGE).toFixed(2) : '';
-            var pChangeZero = printData.collections.PAYMENT_LIST[0].P_CHANGE === 0
+            var pChangeZero = printData.collections.PAYMENT_LIST[0].P_CHANGE === 0;
             var tpChangeNumDiv = this._doc.createElement('div')
             tpChangeNumDiv.className += 'tpChangeNumDiv'
             tpChangeNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChangeZero ? this.twoDecimals(pChange) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChangeZero ? this.twoDecimals(pChange) : "") +pChange+ "</div>" +
                 "</div>"
 
             chequeDiv.appendChild(tpChangeNumDiv);
