@@ -159,7 +159,7 @@ export default class HeaderService {
                     var BnOrSnText = this.$translate.getText("BN_OR_SN");
                     var customerName = printData.collections.PAYMENT_LIST[0].CUSTOMER_NAME;
                     var customerId = printData.collections.PAYMENT_LIST[0].CUSTOMER_ID;
-                    htmlElement.innerText = forText + ": " + customerName + " " + BnOrSnText + ": " + customerId;
+                    htmlElement.innerHTML = "<div>" + forText + ": " + customerName + "</div><div>" + BnOrSnText + ": " + customerId + "</div>";
                 }
             }
                 break;
