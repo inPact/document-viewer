@@ -212,6 +212,10 @@ export default class TemplateBuilderService {
     fillItemsData(htmlElement, data, printData) {
 
         if (!printData.isRefund) {
+
+            console.log('data');
+            console.log(data);
+
             data.items.forEach((item, index) => {
 
                 //in case it is return order, we don't want to show return of item the did not cost anything
@@ -222,10 +226,19 @@ export default class TemplateBuilderService {
                     var offerUnits = offerListIndex ? offerListIndex.OFFER_UNITS : null;
 
                     var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
-                    var weightWordTranslate = this.$translate.getText('weight');
 
                     var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
-                    var weightUnitTranslate = this.$translate.getText(weightUnit)
+                    // var weightUnitTranslate = this.$translate.getText(weightUnit)
+
+                    var isGram = isWeightItem && weightUnit=== 'kg' && offerUnits < 1;
+
+                    var calcWeight = isGram ? offerUnits * 1000 : offerUnits;
+                    var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
+                    var weightPerUnitTranslate = this._isUS ? this.$translate('dlrPerlb') : this.$translate('ilsToKg')
+                    var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
+                    var weightText = calcWeight + ' ' + weightTranslate + ' @ ' + item.amount + ' ' + weightPerUnitTranslate;
+
+
                     var itemDiv = this._doc.createElement('div');
                     if (item.isOffer) {
                         itemDiv.classList.add("bold");
@@ -236,19 +249,18 @@ export default class TemplateBuilderService {
                         item.qty = '&nbsp;&nbsp;';
                         item.space = "&emsp;";
                     }
+                    var itemAmountResolve = isWeightItem ? printData.variables.TOTAL_AMOUNT : item.amount;
                     itemDiv.innerHTML = "<div class='itemDiv'>" +
                         "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
                         "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(item.amount) + "'>" + (item.amount ? item.amount : "") + "</div>" +
+                        "<div class='total-amount " + this.isNegative(itemAmountResolve) + "'>" + (itemAmountResolve ? itemAmountResolve : "") + "</div>" +
                         "</div>"
 
                     var weightDiv = this._doc.createElement('div');
                     weightDiv.classList += "weightDiv";
                     if (isWeightItem) {
                         weightDiv.innerHTML = "<div class='itemDiv'>" +
-                            "<div class='item-qty'>" + " " + "</div>" + " " +
-                            "<div class='item-name'>" + item.space + "" + (weightWordTranslate) + " (" + weightUnitTranslate + ")" + "</div>" + " " +
-                            "<div class='total-amount'>" + (offerUnits ? offerUnits : "") + "</div>" +
+                            "<div class='item-name'>" + (weightText ? weightText : "") + "</div>" + " " +
                             "</div>"
 
                         itemDiv.appendChild(weightDiv);
