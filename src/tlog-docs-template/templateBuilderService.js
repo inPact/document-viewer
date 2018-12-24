@@ -480,7 +480,7 @@ export default class TemplateBuilderService {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
 
-                if (this._docObj.md.signauture && !this._isUS && this._docObj.docPaymentType === "CreditCardPayment") {
+                if (this._docObj.md.signature && !this._isUS && this._docObj.docPaymentType === "CreditCardPayment") {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
                     signatureArea.className += ' item-div';
