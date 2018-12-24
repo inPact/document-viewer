@@ -473,49 +473,53 @@ export default class TemplateBuilderService {
                 if (this._docObj.md && !this._isUS && this._docObj.docPaymentType === "CreditCardPayment") {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
-                    signatureArea.className += ' item-div' 
-                    if (this._docObj.md.signature) {
+                    signatureArea.className += ' item-div'
 
-                        let signatureData = this._docObj.md.signature;
-                        let signatureDiv = this._doc.createElement('div');
-                        signatureDiv.id = 'signatureDiv';
-                        signatureDiv.classList += " signature-container";
+                    // if (this._docObj.md.signature) {
 
-                        let elementSVGDiv = this._doc.createElement('div');
-                        elementSVGDiv.id = 'elementSVGDiv'
-                        elementSVGDiv.classList += " signature-container";
-                        let newSVG = this._doc.createElement('div');
-                        newSVG.id = 'newSVG';
+                    //     let signatureData = this._docObj.md.signature;
+                    //     let signatureDiv = this._doc.createElement('div');
+                    //     signatureDiv.id = 'signatureDiv';
+                    //     signatureDiv.classList += " signature-container";
 
-                        elementSVGDiv.appendChild(newSVG)
-                        newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='100' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
-                        let svgNode = elementSVGDiv.getElementsByTagName('svg')[0];
-                        svgNode.classList += " signature-container";
+                    //     let elementSVGDiv = this._doc.createElement('div');
+                    //     elementSVGDiv.id = 'elementSVGDiv'
+                    //     elementSVGDiv.classList += " signature-container";
+                    //     let newSVG = this._doc.createElement('div');
+                    //     newSVG.id = 'newSVG';
 
-                        elementSVGDiv.appendChild(svgNode);
+                    //     elementSVGDiv.appendChild(newSVG)
+                    //     newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='100' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
+                    //     let svgNode = elementSVGDiv.getElementsByTagName('svg')[0];
+                    //     svgNode.classList += " signature-container";
 
-                        signatureDiv.appendChild(elementSVGDiv)
+                    //     elementSVGDiv.appendChild(svgNode);
 
-                        let elementSVG = signatureDiv.getElementsByTagName('svg')[0];
-                        elementSVG.id = 'elementSVG';
+                    //     signatureDiv.appendChild(elementSVGDiv)
 
-                        let path = this.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-40) scale(0.4,0.4)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
-                        path.setAttribute("width", "50%");
-                        path.setAttribute("height", "auto");
+                    //     let elementSVG = signatureDiv.getElementsByTagName('svg')[0];
+                    //     elementSVG.id = 'elementSVG';
 
-                        elementSVG.setAttribute("width", "100");
-                        elementSVG.setAttribute("height", "auto");
+                    //     let path = this.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-40) scale(0.4,0.4)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+                    //     path.setAttribute("width", "50%");
+                    //     path.setAttribute("height", "auto");
 
-                        elementSVG.innerHTML = "";
-                        elementSVG.appendChild(path);
-                        elementSVG.setAttribute("width", "100%");
-                        elementSVG.setAttribute("height", "auto");
+                    //     elementSVG.setAttribute("width", "100");
+                    //     elementSVG.setAttribute("height", "auto");
 
-                        elementSVGDiv.appendChild(elementSVG);
-                        signatureArea.appendChild(signatureDiv)
-                    }
+                    //     elementSVG.innerHTML = "";
+                    //     elementSVG.appendChild(path);
+                    //     elementSVG.setAttribute("width", "100%");
+                    //     elementSVG.setAttribute("height", "auto");
+
+                    //     elementSVGDiv.appendChild(elementSVG);
+                    //     signatureArea.appendChild(signatureDiv)
+                    // }
+
+                    console.log("signatureArea");
+
                     tplOrderPaymentsDiv.appendChild(signatureArea);
-                    // tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(this._docObj, signatureArea, this._doc));
+                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(this._docObj, signatureArea, this._doc));
                 }
             }
             else if (this._docObj.docPaymentType === ("GiftCard")) {
