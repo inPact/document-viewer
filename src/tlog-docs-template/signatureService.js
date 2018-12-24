@@ -13,9 +13,7 @@ export default class SignatureService {
         let signatureData = docObjChosen.md.signature;
         console.log(signatureData);
 
-        debugger; 
-
-
+        debugger;
 
         function makeSVG(tag, attrs) {
             var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -24,18 +22,34 @@ export default class SignatureService {
             return el;
         }
 
-        let elementSVG = $element.find('svg');
-        let elementParent = $element.parent().parent();
-        let widthsignatureContenier = elementParent.width();
-        widthsignatureContenier = "100%";
-        if (ctrl.printMode) {
-            widthsignatureContenier = "100%";
-        }
 
-        var path = makeSVG('path', { d: ctrl.data.data, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
-        elementSVG.html("");
-        elementSVG.append(path);
-        elementSVG.width(widthsignatureContenier);
+
+        let contenier = this._doc.createElement('div');
+        contenier.id = 'signatureDiv';
+        contenier.classList += " signature-container";
+        contenier.setAttribute("width", "100%");
+        contenier.setAttribute("height", "30px");
+
+        let path = makeSVG('path', { d: ctrl.data.data, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+        contenier.appendChild(path);
+
+        element.appendChild(contenier);
+
+        return element;
+
+
+        // let elementSVG = $element.find('svg');
+        // let elementParent = $element.parent().parent();
+        // let widthsignatureContenier = elementParent.width();
+        // widthsignatureContenier = "100%";
+        // if (ctrl.printMode) {
+        //     widthsignatureContenier = "100%";
+        // }
+
+        // var path = makeSVG('path', { d: ctrl.data.data, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+        // elementSVG.html("");
+        // elementSVG.append(path);
+        // elementSVG.width(widthsignatureContenier);
 
 
 
