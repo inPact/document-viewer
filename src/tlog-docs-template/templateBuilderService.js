@@ -648,10 +648,11 @@ export default class TemplateBuilderService {
         if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
             var changeText = this.$translate.getText('TOTAL_CASHBACK');
             var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? Number(printData.collections.PAYMENT_LIST[0].P_CHANGE).toFixed(2) : '';
+            var pChangeZero = printData.collections.PAYMENT_LIST[0].P_CHANGE === 0;
             var transactNumDiv = this._doc.createElement('div')
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChange !== 0 ? this.twoDecimals(pChange) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChangeZero ? this.twoDecimals(pChange) : "") + "</div>" +
                 "</div>"
 
             cashDiv.appendChild(transactNumDiv);
@@ -681,11 +682,12 @@ export default class TemplateBuilderService {
         if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
             var changeText = this.$translate.getText('TOTAL_CASHBACK');
             var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? Number(printData.collections.PAYMENT_LIST[0].P_CHANGE).toFixed(2) : '';
+            var pChangeZero = printData.collections.PAYMENT_LIST[0].P_CHANGE === 0
             var tpChangeNumDiv = this._doc.createElement('div')
             tpChangeNumDiv.className += 'tpChangeNumDiv'
             tpChangeNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChange !== 0 ? this.twoDecimals(pChange) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChangeZero ? this.twoDecimals(pChange) : "") + "</div>" +
                 "</div>"
 
             chequeDiv.appendChild(tpChangeNumDiv);
