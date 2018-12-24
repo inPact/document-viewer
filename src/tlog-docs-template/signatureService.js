@@ -37,6 +37,8 @@ export default class SignatureService {
         elementSvg.setAttribute('height', "70");
         elementSvg.setAttribute('transform', "translate(0,0)");
         elementSvg.setAttribute('viewBox', "300 50 150 380");
+        elementSvg.setAttribute('viewbox', "300 50 150 380");
+        elementSvg.setAttribute('view-box', "300 50 150 380");
         elementSvg.setAttribute('style', "width: 100%;");
 
 
