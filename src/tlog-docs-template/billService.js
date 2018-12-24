@@ -74,11 +74,14 @@ export default class BillService {
         if (offersList && offersList.length > 0) {
             offersList.forEach(offer => {
 
+                let isSplitCheck = false;
+
                 let offerQty = 0;
                 if (offer.SPLIT_DENOMINATOR && offer.SPLIT_NUMERATOR && offer.SPLIT_DENOMINATOR !== 100 && offer.SPLIT_NUMERATOR !== 100) {
                     offerQty = `${offer.SPLIT_NUMERATOR}/${offer.SPLIT_DENOMINATOR}`;
+                    isSplitCheck = true;
                 } else {
-                    offerQty = offer.OFFER_QTY
+                    offerQty = offer.OFFER_QTY;
                 }
                 if (offer.OFFER_TYPE == this.Enums().OfferTypes.Simple) {
                     let item = {
@@ -92,17 +95,17 @@ export default class BillService {
                         oth.push(item)
                     } else {
 
-                        // if (offer.OFFER_PRICE && offer.OFFER_QTY > 0) { // if the offer amount is 0 not need to show 
-                        //     item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
-                        //     items.push(item);
-                        // }
                         if (isReturnOrder) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
-                        } else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null) { // if the offer amount is 0 not need to show 
+                        } else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2)
                             items.push(item);
+                        } else if (isSplitCheck === true) {
+                            item.amount = utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
+                            items.push(item);
                         }
+
                         if (offer.OPEN_PRICE) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
