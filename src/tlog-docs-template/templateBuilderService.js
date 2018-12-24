@@ -506,11 +506,13 @@ export default class TemplateBuilderService {
         if (printData.data.payments.length > 0) {
             printData.data.payments.forEach(payment => {
                 var paymentDiv = this._doc.createElement('div');
+                var pAmount = payment.amount;
+                var changeAmountZero = pAmount === 0 && payment.type === 'change';
                 if (payment) {
                     paymentDiv.innerHTML =
                         "<div class=" + (payment.type === 'change' ? 'changeDiv' : 'itemDiv') + ">" +
                         "<div class='total-name'>" + (payment.name ? payment.name : " ") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(payment.amount) + "'>" + (payment.amount ? payment.amount : " ") + "</div>" +
+                        "<div class='total-amount " + this.isNegative(pAmount) + "'>" + (!changeAmountZero ? payment.amount : "") + "</div>" +
                         "</div>"
                     OrderPaymentsDiv.appendChild(paymentDiv);
                 }
@@ -649,7 +651,7 @@ export default class TemplateBuilderService {
             var transactNumDiv = this._doc.createElement('div')
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + this.twoDecimals(pChange) + "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChange !== 0 ? this.twoDecimals(pChange) : "") + "</div>" +
                 "</div>"
 
             cashDiv.appendChild(transactNumDiv);
