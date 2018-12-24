@@ -7,8 +7,8 @@ const extractPlugin = new ExtractTextPlugin({
 module.exports = {
     entry: './src/index.js',
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        path:  './src', //path.resolve(__dirname, 'dist'),
+        filename: 'index.js', //'bundle.js',
         publicPath: '/dist'
     },
     module: {
