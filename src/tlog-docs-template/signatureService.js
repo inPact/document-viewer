@@ -15,12 +15,12 @@ export default class SignatureService {
 
         debugger;
 
-        function makeSVG(tag, attrs) {
-            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
-            for (var k in attrs)
-                el.setAttribute(k, attrs[k]);
-            return el;
-        }
+        // function makeSVG(tag, attrs) {
+        //     var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+        //     for (var k in attrs)
+        //         el.setAttribute(k, attrs[k]);
+        //     return el;
+        // }
 
 
 
@@ -30,7 +30,7 @@ export default class SignatureService {
         contenier.setAttribute("width", "100%");
         contenier.setAttribute("height", "30px");
 
-        let path = makeSVG('path', { d: signatureData, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+        let path = this.makeSVG('path', { d: signatureData, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
         contenier.appendChild(path);
 
         element.appendChild(contenier);
