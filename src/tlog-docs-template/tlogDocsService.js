@@ -233,8 +233,7 @@ export default class TlogDocsService {
 
                 }
             }
-            console.log('orderSelection');
-            console.log(orderSelection);
+
         }
         return orderSelection;
 

@@ -35,8 +35,7 @@ export default class emvService {
 
 
     resolveEmvData(collection) {
-        console.log('collection: ');
-        console.log(collection);
+
 
         let list = [];
 

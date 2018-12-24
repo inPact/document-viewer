@@ -8,6 +8,47 @@ export default class SignatureService {
 
     getSignature(docObjChosen, element, doc) {
         this._doc = doc;
+        
+        
+        let signatureData = docObjChosen.md.signature;
+        
+        
+        
+        
+        function makeSVG(tag, attrs) {
+            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            for (var k in attrs)
+                el.setAttribute(k, attrs[k]);
+            return el;
+        }
+
+        let elementSVG = $element.find('svg');
+        let elementParent = $element.parent().parent();
+        let widthsignatureContenier = elementParent.width();
+        widthsignatureContenier = "100%";
+        if (ctrl.printMode) {
+            widthsignatureContenier = "100%";
+        }
+
+        var path = makeSVG('path', { d: ctrl.data.data, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+        elementSVG.html("");
+        elementSVG.append(path);
+        elementSVG.width(widthsignatureContenier);
+        
+        
+        
+        
+        
+        
+        //////////////////////////////////////////////
+        
+        
+        
+        
+        
+        
+        
+        
         let signatureData = docObjChosen.md.signature;
         let signatureDiv = this._doc.createElement('div');
         signatureDiv.id = 'signatureDiv';

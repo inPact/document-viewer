@@ -44,10 +44,6 @@ export default class TemplateBuilderService {
 
     createHTMLFromPrintDATA(documentInfo, document, options = {}) {
 
-        console.log('documentInfo: ')
-        console.log(documentInfo)
-        console.log('document: ')
-        console.log(document)
 
         this._doc = this._createRootElement();
         this._docObj = documentInfo;
@@ -164,8 +160,6 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
 
-        console.log('THe docType is: ');
-        console.log(this._docData.documentType);
 
         if (isMediaExchange &&
             docObjChosen.isFullOrderBill &&
