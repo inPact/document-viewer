@@ -52,7 +52,7 @@ export default class VatTemplateService {
 
                 }
 
-
+     
                 vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
                     "<div class='total-amount " + this.isNegative(item.ITEM_AMOUNT) + "'>" + (this.notEmpty(item.ITEM_AMOUNT) ? this.twoDecimals(item.ITEM_AMOUNT) : "") + "</div>" +
@@ -66,7 +66,7 @@ export default class VatTemplateService {
 
         }
         else {               
-      
+  
             let refundText = null;
             let buisnessMealText = null;
             let totalAmountText = null;
@@ -86,7 +86,8 @@ export default class VatTemplateService {
                 let totalAmountTranslate = this.$translate.getText('TOTAL_AMOUNT');
                 vatHeaderDiv.classList.add("bold");
                 totalAmountText = totalAmountTranslate;
-                  
+
+
             }
             vat.TOTAL_EX_VAT = printData.variables.TOTAL_EX_VAT;
             vat.TOTAL_INCLUDED_TAX = printData.variables.TOTAL_INCLUDED_TAX;

@@ -35,7 +35,8 @@ export default class emvService {
 
 
     resolveEmvData(collection) {
-  
+
+
         let list = [];
 
         collection.forEach(item => {

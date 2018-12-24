@@ -588,6 +588,7 @@ export default class BillService {
 
 
     resolvePrintData(printData, isUS) {
+  
 
         let DataBill = function (collections, variables, data, printByOrder, waiterDiners) {
             this.collections = printData.collections;

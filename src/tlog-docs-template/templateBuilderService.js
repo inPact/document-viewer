@@ -44,10 +44,6 @@ export default class TemplateBuilderService {
 
     createHTMLFromPrintDATA(documentInfo, document, options = {}) {
 
-        console.log('documentInfo: ')
-        console.log(documentInfo)
-        console.log('document: ')
-        console.log(document)
 
         this._doc = this._createRootElement();
         this._docObj = documentInfo;
@@ -487,6 +483,9 @@ export default class TemplateBuilderService {
                 if (this._docObj.md.signauture && !this._isUS && this._docObj.docPaymentType === "CreditCardPayment") {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
+                    signatureArea.className += ' item-div';
+
+                    tplOrderPaymentsDiv.appendChild(signatureArea);
                     tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(this._docObj, signatureArea, this._doc));
                 }
             }
