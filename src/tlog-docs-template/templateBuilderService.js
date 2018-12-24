@@ -260,7 +260,9 @@ export default class TemplateBuilderService {
                     weightDiv.classList += "weightDiv";
                     if (isWeightItem) {
                         weightDiv.innerHTML = "<div class='itemDiv'>" +
+                            "<div class='item-qty'>" + " " + "</div>" + " " +
                             "<div class='item-name'>" + (weightText ? weightText : "") + "</div>" + " " +
+                            "<div class='total-amount>" + " " + "</div>" +
                             "</div>"
 
                         itemDiv.appendChild(weightDiv);
