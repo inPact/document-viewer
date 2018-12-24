@@ -164,8 +164,6 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
 
-        console.log('THe docType is: ');
-        console.log(this._docData.documentType);
 
         if (isMediaExchange &&
             docObjChosen.isFullOrderBill &&
@@ -326,7 +324,7 @@ export default class TemplateBuilderService {
             var cashBackText = this.$translate.getText(printData.variables.CHANGE ? 'TOTAL_CASHBACK' : "");
             var cashBackDiv = this._doc.createElement('div');
             var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE;
-            
+
             if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
                 cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'>" +
                     "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
@@ -512,8 +510,6 @@ export default class TemplateBuilderService {
                 if (payment) {
                     pAmount = payment.amount;
                     changeAmountZero = (pAmount === 0 && payment.type === 'change');
-                    console.log('pChange3:');
-                    console.log(pAmount);
                     paymentDiv.innerHTML =
                         "<div class=" + (payment.type === 'change' ? 'changeDiv' : 'itemDiv') + ">" +
                         "<div class='total-name'>" + (payment.name ? payment.name : " ") + "</div>" + " " +
@@ -653,14 +649,12 @@ export default class TemplateBuilderService {
         if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
             var changeText = this.$translate.getText('TOTAL_CASHBACK');
             var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : '';
-            console.log('pChange2:');
-            console.log(printData.collections.PAYMENT_LIST[0].P_CHANGE);
             var pChangeZero = printData.collections.PAYMENT_LIST[0].P_CHANGE === 0;
             var transactNumDiv = this._doc.createElement('div')
             transactNumDiv.id = transactNumDiv
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (!pChangeZero ? (pChange) : "") +  "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (!pChangeZero ? (pChange) : "") + "</div>" +
                 "</div>"
 
             cashDiv.appendChild(transactNumDiv);
@@ -690,8 +684,6 @@ export default class TemplateBuilderService {
         if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
             var changeText = this.$translate.getText('TOTAL_CASHBACK');
             var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : '';
-            console.log('pChange1:');
-            console.log(printData.collections.PAYMENT_LIST[0].P_CHANGE);
             var pChangeZero = printData.collections.PAYMENT_LIST[0].P_CHANGE === 0;
             var tpChangeNumDiv = this._doc.createElement('div')
             tpChangeNumDiv.className += 'tpChangeNumDiv'
