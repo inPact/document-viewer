@@ -31,18 +31,27 @@ export default class SignatureService {
         contenier.setAttribute("width", "100%");
         contenier.setAttribute("height", "30px");
 
-        let elementSvg = this._doc.createElement('svg');
-        elementSvg.setAttribute('id', "svg");
-        elementSvg.setAttribute('width', "100%");
-        elementSvg.setAttribute('height', "70");
-        elementSvg.setAttribute('transform', "translate(0,0)");
-        elementSvg.setAttribute('viewBox', "300 50 150 380");
-        elementSvg.setAttribute('viewbox', "300 50 150 380");
-        elementSvg.setAttribute('view-box', "300 50 150 380");
-        elementSvg.setAttribute('style', "width: 100%;");
+        // let elementSvg = this._doc.createElement('svg');
+        // elementSvg.setAttribute('id', "svg");
+        // elementSvg.setAttribute('width', "100%");
+        // elementSvg.setAttribute('height', "70");
+        // elementSvg.setAttribute('transform', "translate(0,0)");
+        // elementSvg.setAttribute('viewBox', "300 50 150 380");
+        // elementSvg.setAttribute('viewbox', "300 50 150 380");
+        // elementSvg.setAttribute('view-box', "300 50 150 380");
+        // elementSvg.setAttribute('style', "width: 100%;");
 
         // contenier.outerHTML += `<svg id="svg" width="100%" height="70" transform="translate(0,0)" viewBox="300 50 150 380" style="width: 100%;"></svg>`;
         // let elementSvg = elementSVGDiv.getElementsByTagName('svg')[0];
+
+        let elementSvg = this.makeSVG('svg', {
+            'id': "svg",
+            'width': "100%",
+            'height': "70",
+            'transform': "translate(0,0)",
+            'viewBox': "300 50 150 380",
+            'style': "width: 100%;"
+        });
 
         let path = this.makeSVG('path', { d: signatureData.data, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
 
@@ -126,7 +135,7 @@ export default class SignatureService {
     makeSVG(tag, attrs) {
         var el = this._doc.createElementNS('http://www.w3.org/2000/svg', tag);
         for (var k in attrs)
-            el.setAttribute(k, attrs[k]);
+            el.setAttributeNS(null, k, attrs[k]);
         return el;
     }
 
