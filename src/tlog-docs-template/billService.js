@@ -378,7 +378,7 @@ export default class BillService {
         payments.push({
             type: 'change',
             name: this.$translate.getText('CHANGE'),
-            amount: this.$utils.toFixedSafe(variables.CHANGE, 2)
+            amount: variables.CHANGE
         });
 
         return payments;
