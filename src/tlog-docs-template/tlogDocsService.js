@@ -128,7 +128,7 @@ export default class TlogDocsService {
 
                                     var typeTitle = "";
                                     if (payment.tenderType === 'creditCard') typeTitle = this.$translate.getText('CreditSlip');
-                                    if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); document.id = document.id + 'giftCard' }
+                                    if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip');}
                                     if (payment.tenderType === 'creditCard' || payment.tenderType === 'giftCard') {
                                         payment.number = `${tlog.order[0].number}/${payment.number}`;
                                         orderSelection.push({
@@ -293,7 +293,7 @@ export default class TlogDocsService {
     }
 
     getHTMLDocument(documentInfo, document, options = {}) {
-        
+
         return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options);
     }
 
