@@ -20,7 +20,7 @@ export default class {
     addTaxDataFunc(printData, doc, isGiftCardBill) {
         this._doc = doc;
 
-        if (!isGiftCardBill&&(
+        if (!isGiftCardBill && (
             (printData.data.taxes.InclusiveTaxes.length > 0 || printData.data.taxes.InclusiveTaxes[0] !== undefined) ||
             (printData.data.taxes.ExemptedTaxes.length > 0 || printData.data.taxes.ExemptedTaxes[0] !== undefined))
         ) {
@@ -76,7 +76,7 @@ export default class {
                 let exmTaxItemDiv = doc.createElement('div');
                 exmTaxItemDiv.classList += 'exmTaxItemDiv';
                 exmTaxItemDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name small-chars'>" + (exmTax.amount ? '&nbsp;' : "") + (exmTax.name ? exmTax.name : " ") + "</div>" + " " +
+                    "<div class='total-name " + (exmTax.amount ? 'small-chars' : "") + "'>" + (exmTax.amount ? '&nbsp;' : "") + (exmTax.name ? exmTax.name : " ") + "</div>" + " " +
                     "<div class='total-amount " + this.isNegative(exmTax.amount) + "'>" + "&nbsp;" + (exmTax.amount ? Number(exmTax.amount).toFixed(2) : " ") + "</div>" + "</div>"
                 exmTaxItemsDiv.appendChild(exmTaxItemDiv)
 
