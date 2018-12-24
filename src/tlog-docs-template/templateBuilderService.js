@@ -325,10 +325,11 @@ export default class TemplateBuilderService {
 
             var cashBackText = this.$translate.getText(printData.variables.CHANGE ? 'TOTAL_CASHBACK' : "");
             var cashBackDiv = this._doc.createElement('div');
+            var change = printData.collections.PAYMENT_LIST[0].P_CHANGE;
             if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
                 cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'>" +
                     "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
-                    "<div class='total-amount'>" + (printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : " ") + "</div>"
+                    "<div class='total-amount'>" + ((change && change !== 0) ? this.twoDecimals(change) : " ") + "</div>"
                     + "</div >"
 
                 CreditHeaderDiv.appendChild(cashBackDiv);
@@ -682,7 +683,7 @@ export default class TemplateBuilderService {
             tpChangeNumDiv.className += 'tpChangeNumDiv'
             tpChangeNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + this.twoDecimals(pChange) + "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (pChange !== 0 ? this.twoDecimals(pChange) : "") + "</div>" +
                 "</div>"
 
             chequeDiv.appendChild(tpChangeNumDiv);
