@@ -230,11 +230,11 @@ export default class TemplateBuilderService {
                     var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
                     // var weightUnitTranslate = this.$translate.getText(weightUnit)
 
-                    var isGram = isWeightItem && weightUnit=== 'kg' && offerUnits < 1;
+                    var isGram = isWeightItem && weightUnit === 'kg' && offerUnits < 1;
 
                     var calcWeight = isGram ? offerUnits * 1000 : offerUnits;
                     var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
-                    var weightPerUnitTranslate = this._isUS ? this.$translate('dlrPerlb') : this.$translate('ilsToKg')
+                    var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
                     var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
                     var weightText = calcWeight + ' ' + weightTranslate + ' @ ' + item.amount + ' ' + weightPerUnitTranslate;
 
