@@ -338,7 +338,7 @@ export default class TemplateBuilderService {
             if (printData.collections.PAYMENT_LIST[0].P_CHANGE) {
                 cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'>" +
                     "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
-                    "<div class='total-amount'>" + ((pChange && pChange !== 0) ? this.twoDecimals(pChange) : " ") + pChange + "</div>"
+                    "<div class='total-amount'>" + ((pChange && pChange !== 0) ? this.twoDecimals(pChange) : " ") + "</div>"
                     + "</div >"
 
                 CreditHeaderDiv.appendChild(cashBackDiv);
@@ -667,7 +667,7 @@ export default class TemplateBuilderService {
             transactNumDiv.id = transactNumDiv
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (!pChangeZero ? (pChange) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (!pChangeZero ? this.twoDecimals(pChange) : "") + "</div>" +
                 "</div>"
 
             cashDiv.appendChild(transactNumDiv);
