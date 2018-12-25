@@ -25,7 +25,7 @@ export default class CreditSlipService {
         creditSlipDiv.id = 'creditSlipDiv';
 
         let creditSlipDoc;
-        if(!_.get(docObjChosen, 'md.paymentId') && printData.collections.PAYMENT_LIST.length === 1) {
+        if (!_.get(docObjChosen, 'md.paymentId') && printData.collections.PAYMENT_LIST.length === 1) {
             creditSlipDoc = printData.collections.PAYMENT_LIST[0];
         } else if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length) {
             printData.collections.PAYMENT_LIST.forEach(payment => {
@@ -184,46 +184,63 @@ export default class CreditSlipService {
 
             //Add signature 
 
-            if (docObjChosen.md.signature) {
+            console.log("signatureArea");
+            console.log("signatureArea");
+            console.log("signatureArea");
+            console.log("signatureArea");
+            console.log("signatureArea");
+            console.log("signatureArea");
+            console.log("signatureArea");
+            console.log("signatureArea");
+            console.log("signatureArea");
 
-                let signatureData = docObjChosen.md.signature;
-                let signatureDiv = this._doc.createElement('div');
-                signatureDiv.id = 'signatureDiv';
-                signatureDiv.classList += " signature-container";
+            var signatureArea = this._doc.createElement('div');
+            signatureArea.id = 'signatureArea';
+            signatureArea.className += ' item-div';
 
-                let elementSVGDiv = this._doc.createElement('div');
-                elementSVGDiv.id = 'elementSVGDiv'
-                elementSVGDiv.classList += " signature-container";
-                let newSVG = this._doc.createElement('div');
-                newSVG.id = 'newSVG';
+            creditSlipDiv.appendChild(signatureArea);
+            creditSlipDiv.appendChild(this.$signatureService.getSignature(docObjChosen, signatureArea, this._doc));
 
-                elementSVGDiv.appendChild(newSVG)
-                newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='100' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
-                let svgNode = elementSVGDiv.getElementsByTagName('svg')[0];
-                svgNode.classList += " signature-container";
+            // if (docObjChosen.md.signature) {
 
-                elementSVGDiv.appendChild(svgNode);
+            //     let signatureData = docObjChosen.md.signature;
+            //     let signatureDiv = this._doc.createElement('div');
+            //     signatureDiv.id = 'signatureDiv';
+            //     signatureDiv.classList += " signature-container";
 
-                signatureDiv.appendChild(elementSVGDiv)
+            //     let elementSVGDiv = this._doc.createElement('div');
+            //     elementSVGDiv.id = 'elementSVGDiv'
+            //     elementSVGDiv.classList += " signature-container";
+            //     let newSVG = this._doc.createElement('div');
+            //     newSVG.id = 'newSVG';
 
-                let elementSVG = signatureDiv.getElementsByTagName('svg')[0];
-                elementSVG.id = 'elementSVG';
+            //     elementSVGDiv.appendChild(newSVG)
+            //     newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='100' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
+            //     let svgNode = elementSVGDiv.getElementsByTagName('svg')[0];
+            //     svgNode.classList += " signature-container";
 
-                let path = this.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-40) scale(0.4,0.4)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
-                path.setAttribute("width", "50%");
-                path.setAttribute("height", "auto");
+            //     elementSVGDiv.appendChild(svgNode);
 
-                elementSVG.setAttribute("width", "100");
-                elementSVG.setAttribute("height", "auto");
+            //     signatureDiv.appendChild(elementSVGDiv)
 
-                elementSVG.innerHTML = "";
-                elementSVG.appendChild(path);
-                elementSVG.setAttribute("width", "100%");
-                elementSVG.setAttribute("height", "auto");
+            //     let elementSVG = signatureDiv.getElementsByTagName('svg')[0];
+            //     elementSVG.id = 'elementSVG';
 
-                elementSVGDiv.appendChild(elementSVG);
-                creditSlipDiv.appendChild(signatureDiv)
-            }
+            //     let path = this.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-40) scale(0.4,0.4)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+            //     path.setAttribute("width", "50%");
+            //     path.setAttribute("height", "auto");
+
+            //     elementSVG.setAttribute("width", "100");
+            //     elementSVG.setAttribute("height", "auto");
+
+            //     elementSVG.innerHTML = "";
+            //     elementSVG.appendChild(path);
+            //     elementSVG.setAttribute("width", "100%");
+            //     elementSVG.setAttribute("height", "auto");
+
+            //     elementSVGDiv.appendChild(elementSVG);
+            //     creditSlipDiv.appendChild(signatureDiv)
+            // }
         }
 
         return creditSlipDiv;
