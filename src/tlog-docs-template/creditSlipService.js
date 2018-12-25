@@ -1,5 +1,6 @@
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
+import SignatureService from './signatureService';
 
 export default class CreditSlipService {
 
@@ -7,6 +8,7 @@ export default class CreditSlipService {
         this._options = {};
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new TlogDocsUtils();
+        this.$signatureService = new SignatureService();
         this._locale;
         this._isUS;
         this._doc;
