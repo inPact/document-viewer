@@ -276,7 +276,7 @@ export default class HeaderService {
 
     createReturnOrderText(printData) {
         var returnOrderDiv = this._doc.createElement('div')
-
+        returnOrderDiv.classList += ' centralize';
         var isReturnOrderTextDiv = this._doc.createElement('div');
         isReturnOrderTextDiv.id = "isReturnOrderTextDiv";
         isReturnOrderTextDiv.innerHTML = "<div class= bigBold>" + (this.$translate.getText('RETURN_TRANSACTION')) + "</div>";
