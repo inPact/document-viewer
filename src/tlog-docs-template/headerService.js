@@ -244,7 +244,7 @@ export default class HeaderService {
         }
         //check if this is a retrun order and prints if it is
 
-        if (printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
+        if (printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
             tplOrderInfoText.appendChild(this.createReturnOrderText(printData));
         }
 

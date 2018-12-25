@@ -175,7 +175,7 @@ export default class TemplateBuilderService {
             emvCreditDataDiv.id = 'emvCreditDataDiv';
             emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
         }
-        if (this._printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
+        if (this._printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
             docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
 
@@ -216,7 +216,7 @@ export default class TemplateBuilderService {
             data.items.forEach((item, index) => {
 
                 //in case it is return order, we don't want to show return of item the did not cost anything
-                if (!(data.isReturnOrder && this._docData.documentType === 'orderBill' && (!item.amount || item.amount === '0.00'))) {
+                if (!(data.isReturnOrder && this._docObj.isFullOrderBill && (!item.amount || item.amount === '0.00'))) {
 
                     var orderdOfferListExists = printData.collections.ORDERED_OFFERS_LIST.length > 0 ? true : false;
                     var offerListIndex = orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] ? orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] : null;
