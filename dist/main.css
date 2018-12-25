@@ -124,7 +124,7 @@
   font-size: 12px; }
 
 .basicTemplate .emv-chars {
-  font-size: 10px; }
+  font-size: 11px; }
 
 .basicTemplate .bold {
   font-weight: bold; }
@@ -173,6 +173,10 @@
 
 .border-bottom {
   padding-bottom: 10px;
+  border-bottom: solid #E8E8E8 1px; }
+
+.border-top {
+  padding-top: 5px;
   border-bottom: solid #E8E8E8 1px; }
 
 .emv-div {

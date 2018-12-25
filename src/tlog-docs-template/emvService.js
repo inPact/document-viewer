@@ -78,7 +78,7 @@ export default class emvService {
         let emvDiv = this._doc.createElement('div');
         emvDiv.id = 'emvDiv';
         emvDiv.className += ' emv-chars';
-
+        emvDiv.className += ' padding-top';
         data.forEach(item => {
             let emvItemDiv = this._doc.createElement('div');
             emvItemDiv.className += 'emvItemDiv'
