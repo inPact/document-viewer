@@ -733,7 +733,7 @@ export default class TemplateBuilderService {
 
         var isReturnOrderTextDiv = this._doc.createElement('div');
         isReturnOrderTextDiv.id = "isReturnOrderTextDiv";
-        isReturnOrderTextDiv.innerHTML = "<div class= bigBold>" + (this.$translate.getText('RETURN_TRANSACTION')) + "</div>";
+        isReturnOrderTextDiv.innerHTML = "<div class= bigBold text-center>" + (this.$translate.getText('RETURN_TRANSACTION')) + "</div>";
         returnOrderDiv.appendChild(isReturnOrderTextDiv);
         //return order comment
         if (printData.variables.RETURN_COMMENT) {
