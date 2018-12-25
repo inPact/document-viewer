@@ -75,8 +75,8 @@ export default class {
             printData.data.taxes.ExemptedTaxes.forEach(exmTax => {
                 let exmTaxItemDiv = doc.createElement('div');
                 exmTaxItemDiv.classList += 'exmTaxItemDiv';
-                exmTaxItemDiv.innerHTML = "<div class='itemDiv " + (exmTax.amount ? ' small-chars' : "") + "'>" +
-                    "<div class='total-name>" + (exmTax.amount ? '&nbsp;' : "") + (exmTax.name ? exmTax.name : " ") + "</div>" + " " +
+                exmTaxItemDiv.innerHTML = "<div class='itemDiv " + (exmTax.amount ? 'small-chars' : "") + "'>" +
+                    "<div class='total-name'>" + (exmTax.amount ? '&nbsp;' : "") + (exmTax.name ? exmTax.name : " ") + "</div>" + " " +
                     "<div class='total-amount " + this.isNegative(exmTax.amount) + "'>" + "&nbsp;" + (exmTax.amount ? Number(exmTax.amount).toFixed(2) : " ") + "</div>" + "</div>"
                 exmTaxItemsDiv.appendChild(exmTaxItemDiv)
             })
