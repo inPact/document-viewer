@@ -339,7 +339,7 @@ export default class TemplateBuilderService {
             var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE;
 
             if (pChange && pChange !== 0) {
-                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'>" +
+                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom'>" +
                     "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
                     "<div class='total-amount'>" + ((pChange && pChange !== 0) ? this.twoDecimals(pChange) : " ") + "</div>"
                     + "</div >"
@@ -347,7 +347,7 @@ export default class TemplateBuilderService {
                 CreditHeaderDiv.appendChild(cashBackDiv);
             }
             else {
-                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom border-bottom'></div>"
+                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom '></div>"
             }
 
             var creditDataTemplate = this.createCreditDataTemplate(credPayments, printData)
