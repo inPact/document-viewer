@@ -298,6 +298,7 @@ export default class TemplateBuilderService {
         CreditTemplate.id = "CreditTemplate";
         var CreditHeaderDiv = this._doc.createElement('div');
         CreditHeaderDiv.id = "CreditHeaderDiv";
+        CreditHeaderDiv.classList += ' border-bottom';
         let credPayments = {}
         if (printData.collections.CREDIT_PAYMENTS && printData.collections.CREDIT_PAYMENTS.length > 0) {
             credPayments = printData.collections.CREDIT_PAYMENTS[0];
@@ -450,8 +451,8 @@ export default class TemplateBuilderService {
 
                 var totalDiv = this._doc.createElement('div');
                 if (total.type === 'exclusive_tax') {
-                    totalDiv.innerHTML = "<div class='itemDiv'>" +
-                        "<div class='total-name small-chars'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? this.twoDecimals(total.rate) + "%" : " ") + "</div>" + " " +
+                    totalDiv.innerHTML = "<div class='itemDiv small-chars'>" +
+                        "<div class='total-name'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? this.twoDecimals(total.rate) + "%" : " ") + "</div>" + " " +
                         "<div class='total-amount " + this.isNegative(total.amount) + "'>" + (total.amount ? this.twoDecimals(total.amount) : " ") + "</div>" + "</div>"
                 }
                 else if (total.type !== 'exclusive_tax') {
@@ -526,7 +527,7 @@ export default class TemplateBuilderService {
                     paymentDiv.innerHTML =
                         "<div class=" + (payment.type === 'change' ? 'changeDiv' : 'itemDiv') + ">" +
                         "<div class='total-name'>" + (payment.name ? payment.name : " ") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(pAmount) + "'>" + (!changeAmountZero ? pAmount : "") + "</div>" +
+                        "<div class='total-amount " + this.isNegative(pAmount) + "'>" + (!changeAmountZero ? this.twoDecimals(pAmount) : "") + "</div>" +
                         "</div>"
                     OrderPaymentsDiv.appendChild(paymentDiv);
                 }
