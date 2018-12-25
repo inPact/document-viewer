@@ -175,7 +175,6 @@ export default class TemplateBuilderService {
             emvCreditDataDiv.id = 'emvCreditDataDiv';
             emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
         }
-        debugger;
         if (this._printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
             docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }

@@ -102,7 +102,7 @@ export default class BillService {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2)
                             items.push(item);
                         } else if (isSplitCheck === true) {
-                            item.amount = utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
 
