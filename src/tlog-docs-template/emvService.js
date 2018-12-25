@@ -9,34 +9,33 @@ export default class emvService {
     }
 
     createEmvTemplate(documentType, printData, doc) {
-        this._doc = doc
-        let data = getEMVData(documentType, printData);
+        this._doc = doc;
+        let data = this.getEMVData(documentType, printData);
 
-        return this.createEmvHtmlTemplate(data)
+        return this.createEmvHtmlTemplate(data);
     }
 
 
     getEMVData(documentType, printData) {
-        this.emvData;
+        let emvData;
 
         if (documentType === 'orderBill') {
-            let emvList = printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined);
-            this.emvData = this.resolveEmvData(emvList)
-           
+            let payment = printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined);
+            emvData = this.resolveEmvData(payment.EMV)
+
         }
         else if (documentType === 'invoice') {
-          
+            let emv = printData.collections.CREDIT_PAYMENTS[0].EMV;
+            emvData = this.resolveEmvData(emv);
 
-                let emvList = printData.collections.CREDIT_PAYMENTS[0].EMV;
-                this.emvData = this.resolveEmvData(emvList);
-            
         }
 
-        return this.emvData
+        return emvData
     }
 
 
     resolveEmvData(collection) {
+
 
         let list = [];
 
@@ -44,27 +43,33 @@ export default class emvService {
 
             // change text.
             if (['uid', 'rrn'].indexOf(item.TYPE) > -1) {
-                item.DESC = $translate.instant(`CreditTransactionData.${item.TYPE}`);
+                if (item.TYPE === 'uid') {
+                    item.DESC = this.$translate.getText('uid');
+
+                } else {
+                    item.DESC = this.$translate.getText('rrn');
+                }
             }
 
             list.push(item);
+
         });
 
 
-        filteredDataList = this.remove(list, 'cardNumber');
+        let filteredDataList = this.remove(list, 'cardNumber');
 
-        return this.filteredDataList
+        return filteredDataList;
 
     }
 
     remove(list, itemType) {
-        list.fotEach(item => {
+        list.forEach(item => {
             if (item.TYPE === itemType) {
                 list.splice(list.indexOf(item), 1);
             }
         })
 
-        return list
+        return list;
     }
 
 
@@ -72,14 +77,14 @@ export default class emvService {
     createEmvHtmlTemplate(data) {
         let emvDiv = this._doc.createElement('div');
         emvDiv.id = 'emvDiv';
-
-
+        emvDiv.className += ' emv-chars';
+        emvDiv.className += ' padding-top';
         data.forEach(item => {
             let emvItemDiv = this._doc.createElement('div');
             emvItemDiv.className += 'emvItemDiv'
-            emvItemDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div>" + item.DESC + "</div >" +
-                "<div>" + item.DATA + "</div></div>"
+            emvItemDiv.innerHTML = "<div class='emv-div'>" +
+                "<div class='emv-text'>" + item.DESC +  "</div >" +
+                "<div class='emv-text'>" + item.DATA + "</div></div>"
 
             emvDiv.appendChild(emvItemDiv)
         })

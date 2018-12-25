@@ -1,7 +1,7 @@
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 
-export default class CreateVatTemplateService {
+export default class VatTemplateService {
     constructor(options) {
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new TlogDocsUtils();
@@ -49,8 +49,10 @@ export default class CreateVatTemplateService {
                     let totalAmountTranslate = this.$translate.getText('TOTAL_AMOUNT');
                     vatHeaderDiv.classList.add("bold");
                     totalAmountText = totalAmountTranslate;
+
                 }
 
+     
                 vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
                     "<div class='total-amount " + this.isNegative(item.ITEM_AMOUNT) + "'>" + (this.notEmpty(item.ITEM_AMOUNT) ? this.twoDecimals(item.ITEM_AMOUNT) : "") + "</div>" +
@@ -63,7 +65,8 @@ export default class CreateVatTemplateService {
             vatTemplate.appendChild(vatDataTemplateDiv);
 
         }
-        else {
+        else {               
+  
             let refundText = null;
             let buisnessMealText = null;
             let totalAmountText = null;
@@ -74,7 +77,6 @@ export default class CreateVatTemplateService {
             }
             //else, if not refund but multi doc, add buisness meal text
             else if (!printData.isRefund && printData.variables.ORDER_DOCUMENT_PRINT === 'MULTI_DOC') {
-
                 let buisnessMealTranslate = this.$translate.getText('BUSINESS_MEAL');
                 vatHeaderDiv.classList.add("bold");
                 buisnessMealText = buisnessMealTranslate;
@@ -84,12 +86,15 @@ export default class CreateVatTemplateService {
                 let totalAmountTranslate = this.$translate.getText('TOTAL_AMOUNT');
                 vatHeaderDiv.classList.add("bold");
                 totalAmountText = totalAmountTranslate;
+
+
             }
             vat.TOTAL_EX_VAT = printData.variables.TOTAL_EX_VAT;
             vat.TOTAL_INCLUDED_TAX = printData.variables.TOTAL_INCLUDED_TAX;
             vat.VAT_PERCENT = this.twoDecimals(printData.variables.VAT_PERCENT);
             vat.TOTAL_IN_VAT = printData.variables.TOTAL_IN_VAT;
             vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
+
             vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
                 "<div class='total-amount " + this.isNegative(vat.ITEM_AMOUNT) + "'>" + (this.notEmpty(vat.ITEM_AMOUNT) ? this.twoDecimals(vat.ITEM_AMOUNT) : "") + "</div>" +

@@ -120,6 +120,12 @@
 .basicTemplate .med-chars {
   font-size: 18px; }
 
+.basicTemplate .small-chars {
+  font-size: 12px; }
+
+.basicTemplate .emv-chars {
+  font-size: 11px; }
+
 .basicTemplate .bold {
   font-weight: bold; }
 
@@ -168,3 +174,14 @@
 .border-bottom {
   padding-bottom: 10px;
   border-bottom: solid #E8E8E8 1px; }
+
+.border-top {
+  padding-top: 5px;
+  border-bottom: solid #E8E8E8 1px; }
+
+.emv-div {
+  display: flex; }
+
+.emv-text {
+  display: flex;
+  flex: 1; }

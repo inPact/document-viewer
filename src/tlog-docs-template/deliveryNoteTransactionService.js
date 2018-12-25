@@ -1,12 +1,12 @@
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
-import CreateVatTemplateService from './createVatTemplateService';
+import VatTemplateService from './vatTemplateService';
 
 export default class DeliveryNoteTransactionDataService {
     constructor(options) {
         this._isUS = options.isUS;
         this.$translate = new TlogDocsTranslateService(options);
-        this.$createVatTemplateService = new CreateVatTemplateService(options);
+        this.$vatTemplateService = new VatTemplateService(options);
         this.$utils = new TlogDocsUtils();
     }
 
@@ -27,11 +27,11 @@ export default class DeliveryNoteTransactionDataService {
         var deliveryNoteTransactionDiv = this._doc.createElement('div');
         deliveryNoteTransactionDiv.id = 'deliveryNoteTransactionDiv';
 
-        var deliveryVat = this.$createVatTemplateService.createVatTemplate(printData, this._doc)
+        var deliveryVat = this.$vatTemplateService.createVatTemplate(printData, this._doc)
         deliveryVat.id = 'deliveryVat';
 
         deliveryVat.classList += ' padding-bottom';
-        deliveryVat.classList += ' padding-top';
+        deliveryVat.classList += ' border-top';
         deliveryVat.classList += ' tpl-body-div';
 
         deliveryNoteTransactionDiv.appendChild(deliveryVat);
@@ -81,8 +81,8 @@ export default class DeliveryNoteTransactionDataService {
             if (hAccountPayments.P_CHANGE > 0) {
                 var cashBackText = this.$translate.getText('TOTAL_CASHBACK')
                 var cashBackDiv = this._doc.createElement('div')
-                cashBackDiv.id = "cashBackDiv";
-                cashbackDiv.innerHTML = "<div class='changeDiv'>" +
+                cashBackDiv.className += "cashBackDiv";
+                cashBackDiv.innerHTML = "<div class='changeDiv'>" +
                     "<div class='total-name'>" + (hAccountPayments ? cashBackText : "") + "</div>" +
                     "<div class='number-data " + this.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
                     "</div>";

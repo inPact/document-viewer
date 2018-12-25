@@ -1,7 +1,7 @@
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 
-export default class CreateGiftCardSlipService {
+export default class GiftCardSlipService {
 
     constructor(options = {}) {
         this._options = {};

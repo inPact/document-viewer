@@ -154,12 +154,12 @@ export default class HeaderService {
 
         switch (htmlElement.id) {
             case 'tplOrderCustomer': {
-                if (printData.variables.CUSTOMER_ID) {
+                if (printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
                     var forText = this.$translate.getText("FOR");
                     var BnOrSnText = this.$translate.getText("BN_OR_SN");
                     var customerName = printData.collections.PAYMENT_LIST[0].CUSTOMER_NAME;
                     var customerId = printData.collections.PAYMENT_LIST[0].CUSTOMER_ID;
-                    htmlElement.innerText = forText + ": " + customerName + " " + BnOrSnText + ": " + customerId;
+                    htmlElement.innerHTML = "<div>" + forText + ": " + customerName + "</div><div>" + BnOrSnText + ": " + customerId + "</div>";
                 }
             }
                 break;
@@ -244,7 +244,7 @@ export default class HeaderService {
         }
         //check if this is a retrun order and prints if it is
 
-        if (printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
+        if (printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
             tplOrderInfoText.appendChild(this.createReturnOrderText(printData));
         }
 
@@ -276,7 +276,7 @@ export default class HeaderService {
 
     createReturnOrderText(printData) {
         var returnOrderDiv = this._doc.createElement('div')
-
+        returnOrderDiv.classList += ' centralize';
         var isReturnOrderTextDiv = this._doc.createElement('div');
         isReturnOrderTextDiv.id = "isReturnOrderTextDiv";
         isReturnOrderTextDiv.innerHTML = "<div class= bigBold>" + (this.$translate.getText('RETURN_TRANSACTION')) + "</div>";
