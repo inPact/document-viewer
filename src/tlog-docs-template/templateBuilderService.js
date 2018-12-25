@@ -156,10 +156,6 @@ export default class TemplateBuilderService {
             }
         }
 
-        if (this._printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
-            docTemplate.appendChild(this.createReturnOrderText(this._printData));
-        }
-
 
         if (isMediaExchange &&
             docObjChosen.isFullOrderBill &&
@@ -178,6 +174,10 @@ export default class TemplateBuilderService {
             let emvCreditDataDiv = this._doc.createElement('div');
             emvCreditDataDiv.id = 'emvCreditDataDiv';
             emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
+        }
+        debugger;
+        if (this._printData.data.isReturnOrder && this._docData.documentType === 'orderBill') {
+            docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
 
         return docTemplate;

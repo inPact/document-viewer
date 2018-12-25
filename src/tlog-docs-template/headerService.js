@@ -154,7 +154,7 @@ export default class HeaderService {
 
         switch (htmlElement.id) {
             case 'tplOrderCustomer': {
-                if (printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
+                if (printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
                     var forText = this.$translate.getText("FOR");
                     var BnOrSnText = this.$translate.getText("BN_OR_SN");
                     var customerName = printData.collections.PAYMENT_LIST[0].CUSTOMER_NAME;
