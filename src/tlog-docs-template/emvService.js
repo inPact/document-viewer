@@ -77,13 +77,13 @@ export default class emvService {
     createEmvHtmlTemplate(data) {
         let emvDiv = this._doc.createElement('div');
         emvDiv.id = 'emvDiv';
-
+        emvDiv.className += ' emv-chars';
 
         data.forEach(item => {
             let emvItemDiv = this._doc.createElement('div');
             emvItemDiv.className += 'emvItemDiv'
             emvItemDiv.innerHTML = "<div class='emv-div'>" +
-                "<div class='emv-text'>" + item.DESC + ": " + "</div >" +
+                "<div class='emv-text'>" + item.DESC +  "</div >" +
                 "<div class='emv-text'>" + item.DATA + "</div></div>"
 
             emvDiv.appendChild(emvItemDiv)

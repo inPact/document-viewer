@@ -175,7 +175,9 @@ export default class TemplateBuilderService {
             this._printData.collections.CREDIT_PAYMENTS.length > 0 &&
             this._printData.collections.CREDIT_PAYMENTS[0].EMV &&
             this._printData.collections.CREDIT_PAYMENTS[0].EMV.length > 0) {
-            docTemplate.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
+            let emvCreditDataDiv = this._doc.createElement('div');
+            emvCreditDataDiv.id = 'emvCreditDataDiv';
+            emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
         }
 
         return docTemplate;
@@ -358,7 +360,19 @@ export default class TemplateBuilderService {
     createCreditDataTemplate(creditData, printData) {
         var creditDataDiv = this._doc.createElement('div');
         creditDataDiv.id = "creditDataDiv";
-        if (creditData) {
+
+        if (
+            this._docData.documentType === 'invoice' &&
+            this._printData.collections.CREDIT_PAYMENTS &&
+            this._printData.collections.CREDIT_PAYMENTS.length > 0 &&
+            this._printData.collections.CREDIT_PAYMENTS[0].EMV &&
+            this._printData.collections.CREDIT_PAYMENTS[0].EMV.length > 0) {
+            let emvCreditDataDiv = this._doc.createElement('div');
+            emvCreditDataDiv.id = 'emvCreditDataDiv';
+            emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
+            creditDataDiv.appendChild(emvCreditDataDiv);
+        }
+        else if (creditData) {
 
             var lastFourText = this.$translate.getText(creditData.LAST_4 ? 'LAST_4' : "");
             var transactTimeText = this.$translate.getText(creditData.PROVIDER_PAYMENT_DATE ? 'TRANSACTION_TIME' : "");
