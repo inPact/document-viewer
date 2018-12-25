@@ -196,12 +196,16 @@ export default class CreditSlipService {
             console.log("signatureArea");
             console.log("signatureArea");
 
-            var signatureArea = this._doc.createElement('div');
-            signatureArea.id = 'signatureArea';
-            signatureArea.className += ' item-div';
+            if (docObjChosen.md.signature) {
 
-            creditSlipDiv.appendChild(signatureArea);
-            creditSlipDiv.appendChild(this.$signatureService.getSignature(docObjChosen, signatureArea, this._doc));
+                var signatureArea = this._doc.createElement('div');
+                signatureArea.id = 'signatureArea';
+                signatureArea.className += ' item-div';
+
+                creditSlipDiv.appendChild(signatureArea);
+                creditSlipDiv.appendChild(this.$signatureService.getSignature(docObjChosen, signatureArea, this._doc));
+
+            }
 
             // if (docObjChosen.md.signature) {
 
