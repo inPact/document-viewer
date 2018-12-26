@@ -443,7 +443,8 @@ export default class BillService {
                 taxes.ExemptedTaxes.push({
                     type: 'exempted_tax',
                     name: tax.NAME ? tax.NAME : this.$translate.getText('EXEMPTED_TAX'),
-                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2)
+                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
+                    rate: this.$utils.toFixedSafe(tax.RATE, 2)
                 })
             });
         }
