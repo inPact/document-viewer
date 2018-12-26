@@ -41,10 +41,8 @@ export default class TemplateBuilderService {
 
     _createRootElement() {
 
-        let rootElement = this.$documentFactory.create();
+        let rootElement = document.implementation.createHTMLDocument();
         return rootElement;
-        // let rootElement = document.implementation.createHTMLDocument();
-        // return rootElement;
     }
 
     createHTMLFromPrintDATA(documentInfo, document, options = {}) {
