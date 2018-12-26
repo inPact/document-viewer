@@ -113,7 +113,8 @@ export default class TemplateBuilderService {
             if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
                 var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
                 tplOrderPaymentData.id = 'tplOrderPaymentData';
-                tplOrderPaymentData.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
+                let child = tplOrderPaymentData.children[0]
+                child.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
             }
 
             // var tplOrderPaymentData = createOrderPaymentData(_printData);
@@ -191,6 +192,16 @@ export default class TemplateBuilderService {
 
         var tplOrderPaymentData = this._doc.createElement('div');
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
+
+        console.log("data");
+        console.log("data");
+        console.log("data");
+        console.log(data);
+
+        console.log("data");
+        console.log("data");
+        console.log("data");
+
         tplOrderPaymentData.classList += ' tpl-body-div';
         var paymentDataDiv = this._doc.createElement('div');
         paymentDataDiv.id = "paymentDataDiv";
