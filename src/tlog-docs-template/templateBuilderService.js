@@ -124,7 +124,12 @@ export default class TemplateBuilderService {
                 console.log("-----child-----");
 
 
-                child.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
+                if (!child.hasChildNodes()) {
+                    tplOrderPaymentData.classList.remove('tpl-body-div');
+                } else {
+                    tplOrderPaymentData.classList += ' body-div';
+                }
+
             }
 
             // var tplOrderPaymentData = createOrderPaymentData(_printData);
