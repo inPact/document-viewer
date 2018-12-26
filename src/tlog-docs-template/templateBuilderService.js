@@ -9,6 +9,7 @@ import CreditSlipService from './creditSlipService';
 import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
 import TlogDocsUtils from './tlogDocsUtils';
+import Localization from '../helpers/localization.service';
 
 
 
@@ -32,6 +33,7 @@ export default class TemplateBuilderService {
         this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
         this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
+        this.$localization = new Localization({ locale: this._locale });
     }
 
     _configure(options) {
@@ -245,6 +247,7 @@ export default class TemplateBuilderService {
 
                     var orderdOfferListExists = printData.collections.ORDERED_OFFERS_LIST.length > 0 ? true : false;
                     var offerListIndex = orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] ? orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] : null;
+
                     var offerUnits = offerListIndex ? offerListIndex.OFFER_UNITS : null;
 
                     var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
@@ -258,7 +261,19 @@ export default class TemplateBuilderService {
                     var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
                     var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
                     var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
-                    var weightText = calcWeight + ' ' + weightTranslate + ' @ ' + item.amount + ' ' + weightPerUnitTranslate;
+
+
+                    //var weightText = `${this.$localization.getSymbol()} ${item.amount} @ ${calcWeight} ${weightTranslate}`;
+                    var weightText = '';
+                    if (this._isUS) {
+                        weightText = `${calcWeight}${weightTranslate} @ ${this.$localization.getSymbol()}${item.amount}/ ${calcWeight}`;
+                    }
+                    else {
+                        weightText = `${calcWeight} ${weightTranslate} @ ${item.amount} ${weightPerUnitTranslate}`;
+                    }
+
+
+                    //var weightText = calcWeight + ' ' + weightTranslate + ' @ ' + item.amount + ' ' + weightPerUnitTranslate;
 
 
                     var itemDiv = this._doc.createElement('div');
