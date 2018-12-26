@@ -14,6 +14,7 @@ import Localization from '../helpers/localization.service';
 
 
 
+
 export default class TemplateBuilderService {
     constructor(options) {
         this._isUS;
@@ -163,6 +164,14 @@ export default class TemplateBuilderService {
                     if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
                 }
             }
+
+            if (this._printData.data.taxes.InclusiveTaxes && this._printData.data.taxes.InclusiveTaxes.length > 0) {
+                if (this._isUS) {
+                    var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
+                    if (inclusiveTaxesDiv !== null) docTemplate.appendChild(inclusiveTaxesDiv)
+                }
+            }
+
 
             if (this._printData.variables.CUSTOMER_MESSAGE) {
                 var customerMessageDiv = this.createCustomerMessage(this._printData, this._doc);
@@ -448,12 +457,12 @@ export default class TemplateBuilderService {
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
 
-        if (!isTaxExempt) {
-            var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
-            if (taxDataDiv !== null) {
-                tplOrderTotals.appendChild(taxDataDiv);
-            }
-        }
+        // if (!isTaxExempt) {
+        //     var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
+        //     if (taxDataDiv !== null) {
+        //         tplOrderTotals.appendChild(taxDataDiv);
+        //     }
+        // }
 
         if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
