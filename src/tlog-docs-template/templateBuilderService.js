@@ -33,7 +33,7 @@ export default class TemplateBuilderService {
         this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
         this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
-        this.$localization = new Localization({ locale: this._locale });
+        this.$localization = new Localization({ isUS: this._isUS });
     }
 
     _configure(options) {
