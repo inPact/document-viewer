@@ -214,7 +214,7 @@ export default class HeaderService {
                     var dinersTranslate = this.$translate.getText("Diners")
                     var firstName = printData.variables.F_NAME && printData.variables.F_NAME !== null ? printData.variables.F_NAME : '';
                     var lastName = printData.variables.L_NAME && printData.variables.L_NAME !== null ? printData.variables.L_NAME : '';
-                    htmlElement.innerHTML = `<span> ` + waiterTranslate + ": " + firstName + " " + lastName.substring(0, 1) + " - " + dinersTranslate + ": " + printData.variables.NUMBER_OF_GUESTS + `</span>`;
+                    htmlElement.innerHTML = `<span> ` + waiterTranslate + " " + firstName + " " + lastName.substring(0, 1) + " - " + dinersTranslate + " " + printData.variables.NUMBER_OF_GUESTS + `</span>`;
                 }
             }
                 break;
@@ -223,7 +223,7 @@ export default class HeaderService {
                 if (this._docData.documentType === "invoice" && invoiceNum) {
                     var checkTranslate = this.$translate.getText("INVOICE")
                     printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
-                    htmlElement.innerHTML = `<span> ` + checkTranslate + ": " + invoiceNum + `</span>`;
+                    htmlElement.innerHTML = `<span> ` + checkTranslate + " " + invoiceNum + `</span>`;
                 }
             }
                 break;

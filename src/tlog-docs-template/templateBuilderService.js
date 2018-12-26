@@ -113,7 +113,14 @@ export default class TemplateBuilderService {
             if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
                 var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
                 tplOrderPaymentData.id = 'tplOrderPaymentData';
-                tplOrderPaymentData.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
+                let child = tplOrderPaymentData.children[0];
+
+                if (!child.hasChildNodes()) {
+                    tplOrderPaymentData.classList.remove('tpl-body-div');
+                } else {
+                    tplOrderPaymentData.classList += ' body-div';
+                }
+
             }
 
             var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
@@ -188,11 +195,22 @@ export default class TemplateBuilderService {
 
         var tplOrderPaymentData = this._doc.createElement('div');
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
+
+        console.log("data");
+        console.log("data");
+        console.log("data");
+        console.log(data);
+
+        console.log("data");
+        console.log("data");
+        console.log("data");
+
         tplOrderPaymentData.classList += ' tpl-body-div';
         var paymentDataDiv = this._doc.createElement('div');
         paymentDataDiv.id = "paymentDataDiv";
         paymentDataDiv.classList += ' padding-top';
-        paymentDataDiv.classList += ' padding-bottom';
+        paymentDataDiv.classList += ' border-bottom';
+        paymentDataDiv.classList += ' tpl-body-div';
 
         tplOrderPaymentData.appendChild(paymentDataDiv);
 
