@@ -115,15 +115,6 @@ export default class TemplateBuilderService {
                 tplOrderPaymentData.id = 'tplOrderPaymentData';
                 let child = tplOrderPaymentData.children[0];
 
-                console.log("-----child-----");
-                console.log();
-                console.log(child);
-                console.log();
-                console.log(tplOrderPaymentData);
-                console.log();
-                console.log("-----child-----");
-
-
                 if (!child.hasChildNodes()) {
                     tplOrderPaymentData.classList.remove('tpl-body-div');
                 } else {
