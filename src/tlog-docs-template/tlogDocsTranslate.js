@@ -288,7 +288,8 @@ export default class TlogDocsTranslateService {
                 "dlrPerlb": "Dollars per lb",
                 "Balance": "BALANCE",
                 "uid": "IDENTIFICATION NUMBER",
-                "rrn": "UNIQUE TRANSACTION ID"
+                "rrn": "UNIQUE TRANSACTION ID",
+                "lb": 'lb'
             },
             "he-IL": {
                 "OTH": "על חשבון הבית",
@@ -536,8 +537,8 @@ export default class TlogDocsTranslateService {
                 "dlrPerlb": "דולרים לליברה",
                 "Balance": "יתרה",
                 "uid": "מספר מזהה",
-                "rrn": "מזהה עסקה ייחודי",
-                "lb": 'lb'
+                "rrn": "מזהה עסקה ייחודי"
+
             }
         }
     }

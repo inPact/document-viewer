@@ -228,8 +228,6 @@ export default class TemplateBuilderService {
 
         if (!printData.isRefund) {
 
-            console.log('data');
-            console.log(data);
 
             data.items.forEach((item, index) => {
 
@@ -244,8 +242,6 @@ export default class TemplateBuilderService {
                     var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
 
                     var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
-                    // var weightUnitTranslate = this.$translate.getText(weightUnit)
-
                     var isGram = isWeightItem && weightUnit === 'kg' && offerUnits < 1;
 
                     var calcWeight = isGram ? offerUnits * 1000 : offerUnits;
@@ -253,21 +249,13 @@ export default class TemplateBuilderService {
                     var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
                     var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
 
-
-                    //var weightText = `${this.$localization.getSymbol()} ${item.amount} @ ${calcWeight} ${weightTranslate}`;
                     var weightText = '';
                     if (this._isUS) {
-                        weightText = `${calcWeight}${weightTranslate} @ ${this.$localization.getSymbol()}${item.amount}/ ${calcWeight}`;
+                        weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.amount}/${weightTranslate}`;
                     }
                     else {
-                        weightText = `${calcWeight} [${weightTranslate}] @ ${item.amount} ${weightTranslate}`;
+                        weightText = `${calcWeight} ${weightTranslate} @ ${item.amount} ${weightPerUnitTranslate}`;
                     }
-
-                    console.log(weightText);
-
-
-                    //var weightText = calcWeight + ' ' + weightTranslate + ' @ ' + item.amount + ' ' + weightPerUnitTranslate;
-
 
                     var itemDiv = this._doc.createElement('div');
                     if (item.isOffer) {
@@ -490,6 +478,10 @@ export default class TemplateBuilderService {
 
     fillOrderTotals(htmlElement, printData) {
         if (printData.data.totals.length > 0) {
+
+            console.log('totals');
+            console.log(printData.data.totals);
+            console.log('totals');
 
             // if (!_isUS) {
             printData.data.totals.forEach(total => {
