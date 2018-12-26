@@ -272,6 +272,8 @@ export default class TemplateBuilderService {
                         weightText = `${calcWeight} ${weightTranslate} @ ${item.amount} ${weightPerUnitTranslate}`;
                     }
 
+                    console.log(weightText);
+
 
                     //var weightText = calcWeight + ' ' + weightTranslate + ' @ ' + item.amount + ' ' + weightPerUnitTranslate;
 
