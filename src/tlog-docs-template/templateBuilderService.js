@@ -113,7 +113,17 @@ export default class TemplateBuilderService {
             if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
                 var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
                 tplOrderPaymentData.id = 'tplOrderPaymentData';
-                let child = tplOrderPaymentData.children[0]
+                let child = tplOrderPaymentData.children[0];
+
+                console.log("-----child-----");
+                console.log();
+                console.log(child);
+                console.log();
+                console.log(tplOrderPaymentData);
+                console.log();
+                console.log("-----child-----");
+
+
                 child.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
             }
 
