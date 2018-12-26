@@ -1,6 +1,10 @@
 export default class Localization {
 
     constructor(options) {
+
+        console.log("Localization");
+        console.log(options);
+
         this.currency = options.region.toUpperCase() === 'US' ? 'USD' : 'ILS';
     }
 
