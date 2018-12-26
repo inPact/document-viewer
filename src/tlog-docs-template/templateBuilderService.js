@@ -196,6 +196,7 @@ export default class TemplateBuilderService {
         paymentDataDiv.id = "paymentDataDiv";
         paymentDataDiv.classList += ' padding-top';
         paymentDataDiv.classList += ' border-bottom';
+        paymentDataDiv.classList += ' tpl-body-div';
 
         tplOrderPaymentData.appendChild(paymentDataDiv);
 
