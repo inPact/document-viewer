@@ -10,6 +10,8 @@ import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
 import TlogDocsUtils from './tlogDocsUtils';
 
+
+
 export default class TemplateBuilderService {
     constructor(options) {
         this._isUS;
@@ -38,8 +40,11 @@ export default class TemplateBuilderService {
     }
 
     _createRootElement() {
-        let rootElement = document.implementation.createHTMLDocument();
+
+        let rootElement = this.$documentFactory.create();
         return rootElement;
+        // let rootElement = document.implementation.createHTMLDocument();
+        // return rootElement;
     }
 
     createHTMLFromPrintDATA(documentInfo, document, options = {}) {
