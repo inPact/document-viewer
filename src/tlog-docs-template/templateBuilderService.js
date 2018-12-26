@@ -201,15 +201,6 @@ export default class TemplateBuilderService {
         var tplOrderPaymentData = this._doc.createElement('div');
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
 
-        console.log("data");
-        console.log("data");
-        console.log("data");
-        console.log(data);
-
-        console.log("data");
-        console.log("data");
-        console.log("data");
-
         tplOrderPaymentData.classList += ' tpl-body-div';
         var paymentDataDiv = this._doc.createElement('div');
         paymentDataDiv.id = "paymentDataDiv";
@@ -269,7 +260,7 @@ export default class TemplateBuilderService {
                         weightText = `${calcWeight}${weightTranslate} @ ${this.$localization.getSymbol()}${item.amount}/ ${calcWeight}`;
                     }
                     else {
-                        weightText = `${calcWeight} ${weightTranslate} @ ${item.amount} ${weightPerUnitTranslate}`;
+                        weightText = `${calcWeight} [${weightTranslate}] @ ${item.amount} ${weightTranslate}`;
                     }
 
                     console.log(weightText);

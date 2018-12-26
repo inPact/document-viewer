@@ -536,9 +536,8 @@ export default class TlogDocsTranslateService {
                 "dlrPerlb": "דולרים לליברה",
                 "Balance": "יתרה",
                 "uid": "מספר מזהה",
-                "rrn": "מזהה עסקה ייחודי"
-
-
+                "rrn": "מזהה עסקה ייחודי",
+                "lb": 'lb'
             }
         }
     }
