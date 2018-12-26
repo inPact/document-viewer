@@ -165,10 +165,10 @@
   display: flex;
   justify-content: center; }
 
-.basicTemplate.ltr .text-align {
+.basicTemplate.ltr .align-text {
   text-align: left; }
 
-.basicTemplate.rtl .text-align {
+.basicTemplate.rtl .align-text {
   text-align: right; }
 
 .basicTemplate .m-bottom-10 {
