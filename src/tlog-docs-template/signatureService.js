@@ -27,7 +27,14 @@ export default class SignatureService {
             'style': "width: 100%;"
         });
 
-        let path = this.makeSVG('path', { d: signatureData.data, stroke: "#06067f", 'stroke-width': "2", 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
+        let path = this.makeSVG('path', {
+            d: signatureData.data,
+            'stroke': "#06067f",
+            'stroke-width': "2",
+            'stroke-linecap': "butt",
+            'fill': "none",
+            'stroke-linejoin': "miter"
+        });
 
         elementSvg.appendChild(path);
 
