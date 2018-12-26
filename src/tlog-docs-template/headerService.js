@@ -115,6 +115,7 @@ export default class HeaderService {
         //all order header needed Divs
         var tplOrderCustomer = this._doc.createElement('div');
         tplOrderCustomer.id = "tplOrderCustomer";
+
         var tplOrderDateTime = this._doc.createElement('div');
         tplOrderDateTime.id = "tplOrderDateTime";
         tplOrderDateTime.classList.add('mystyle');
@@ -142,6 +143,7 @@ export default class HeaderService {
     }
 
     placeOrderHeaderData(printData, array, filledInfoArray) {
+
         array.forEach(element => {
             var singleElement = this.fillOrderHeaderData(printData, element)
             filledInfoArray.push(singleElement);
@@ -160,6 +162,8 @@ export default class HeaderService {
                     var customerName = printData.collections.PAYMENT_LIST[0].CUSTOMER_NAME;
                     var customerId = printData.collections.PAYMENT_LIST[0].CUSTOMER_ID;
                     htmlElement.innerHTML = "<div>" + forText + ": " + customerName + "</div><div>" + BnOrSnText + ": " + customerId + "</div>";
+                    htmlElement.classList.add('text-center');
+                    htmlElement.classList.add('m-bottom-10');
                 }
             }
                 break;
