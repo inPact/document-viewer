@@ -185,6 +185,7 @@ export default class TemplateBuilderService {
     createOrderPaymentData(printData) {
         var tplOrderPaymentData = this._doc.createElement('div');
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
+        tplOrderPaymentData.classList += ' tpl-body-div';
         var paymentDataDiv = this._doc.createElement('div');
         paymentDataDiv.id = "paymentDataDiv";
         paymentDataDiv.classList += ' padding-top';
@@ -212,6 +213,7 @@ export default class TemplateBuilderService {
 
             console.log('data');
             console.log(data);
+
             data.items.forEach((item, index) => {
 
                 //in case it is return order, we don't want to show return of item the did not cost anything
@@ -222,6 +224,7 @@ export default class TemplateBuilderService {
                     var offerUnits = offerListIndex ? offerListIndex.OFFER_UNITS : null;
 
                     var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
+
                     var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
                     // var weightUnitTranslate = this.$translate.getText(weightUnit)
 
@@ -232,6 +235,7 @@ export default class TemplateBuilderService {
                     var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
                     var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
                     var weightText = calcWeight + ' ' + weightTranslate + ' @ ' + item.amount + ' ' + weightPerUnitTranslate;
+
 
                     var itemDiv = this._doc.createElement('div');
                     if (item.isOffer) {
@@ -287,6 +291,7 @@ export default class TemplateBuilderService {
                 "</div>"
 
             htmlElement.appendChild(othItemDiv);
+
         })
     }
 
