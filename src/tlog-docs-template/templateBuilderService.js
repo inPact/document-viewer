@@ -257,7 +257,7 @@ export default class TemplateBuilderService {
                     itemDiv.innerHTML = "<div class='itemDiv'>" +
                         "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
                         "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(itemAmountResolve) + "'>" + (itemAmountResolve ? itemAmountResolve : "") + "</div>" +
+                        "<div class='total-amount " + this.isNegative(itemAmountResolve) + "'>" + (itemAmountResolve ? this.twoDecimals(itemAmountResolve) : "") + "</div>" +
                         "</div>"
 
                     var weightDiv = this._doc.createElement('div');
