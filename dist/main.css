@@ -3,6 +3,9 @@
   font-family: "Courier New", Courier, monospace;
   padding: 5px 15px 5px 15px; }
 
+.text-uppercase {
+  text-transform: uppercase !important; }
+
 .basicTemplate .header-div {
   padding: 10px; }
 
@@ -162,8 +165,14 @@
   display: flex;
   justify-content: center; }
 
-.basicTemplate .text-center {
-  text-align: center; }
+.basicTemplate.ltr .align-text {
+  text-align: left; }
+
+.basicTemplate.rtl .align-text {
+  text-align: right; }
+
+.basicTemplate .m-bottom-10 {
+  margin-bottom: 10px; }
 
 .basicTemplate.ltr .total-amount {
   padding: 0 20px 0 40px;
