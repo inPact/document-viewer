@@ -166,12 +166,34 @@ export default class BillService {
 
                 if ([this.Enums().OfferTypes.ComplexOne, this.Enums().OfferTypes.Combo].indexOf(offer.OFFER_TYPE) > -1) {
 
-                    items.push({
+
+                    let item = {
                         isOffer: true,
                         name: offer.OFFER_NAME,
-                        qty: offerQty,
-                        amount: offer.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_AMOUNT, 2)
-                    });
+                        qty: offerQty
+                    }
+
+                    if (offer.ON_THE_HOUSE) {
+                        item.amount = this.$translate.getText('OTH');
+                        oth.push(item)
+                    } else {
+
+                        if (isReturnOrder) {
+                            item.amount = this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_AMOUNT, 2);
+                            items.push(item);
+                        } else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
+                            items.push(item);
+                        } else if (isSplitCheck === true) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                            items.push(item);
+                        }
+
+                        if (offer.OPEN_PRICE) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                            items.push(item);
+                        }
+                    }
 
                     if (!isReturnOrder) {
                         if (offer.ORDERED_ITEMS_LIST && offer.ORDERED_ITEMS_LIST.length > 0)
@@ -588,7 +610,7 @@ export default class BillService {
 
 
     resolvePrintData(printData, isUS) {
-  
+
 
         let DataBill = function (collections, variables, data, printByOrder, waiterDiners) {
             this.collections = printData.collections;

@@ -12,6 +12,7 @@ import TlogDocsUtils from './tlogDocsUtils';
 
 
 
+
 export default class TemplateBuilderService {
     constructor(options) {
         this._isUS;
@@ -63,6 +64,7 @@ export default class TemplateBuilderService {
         var docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');
+        docTemplate.classList.add('text-uppercase');
 
         if (this._locale == 'he-IL') {
             docTemplate.classList += ' rtl'
@@ -186,6 +188,7 @@ export default class TemplateBuilderService {
     }
 
     createOrderPaymentData(printData) {
+
         var tplOrderPaymentData = this._doc.createElement('div');
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
         tplOrderPaymentData.classList += ' tpl-body-div';
@@ -206,6 +209,7 @@ export default class TemplateBuilderService {
             var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData(printData, this._doc);
             tplOrderPaymentData.appendChild(delNoteTransDiv);
         }
+
         return tplOrderPaymentData
     }
 
