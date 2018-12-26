@@ -215,9 +215,16 @@
   justify-content: center;
 }
 
+.basicTemplate.ltr {
+    .text-align {
+      text-align: left;
+    }
+}
 
-.basicTemplate .text-center {
-  text-align: center;
+.basicTemplate.rtl {
+  .text-align {
+    text-align: right;
+  }
 }
 
 .basicTemplate .m-bottom-10 {
