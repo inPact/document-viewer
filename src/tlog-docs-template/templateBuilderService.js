@@ -233,6 +233,12 @@ export default class TemplateBuilderService {
         if (!printData.isRefund) {
 
 
+            console.log("data.items");
+            console.log("data.items");
+            console.log(data.items);
+            console.log("data.items");
+            console.log("data.items");
+
             data.items.forEach((item, index) => {
 
                 //in case it is return order, we don't want to show return of item the did not cost anything
@@ -255,10 +261,10 @@ export default class TemplateBuilderService {
 
                     var weightText = '';
                     if (this._isUS) {
-                        weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.amount}/${weightTranslate}`;
+                        weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
                     }
                     else {
-                        weightText = `${calcWeight} ${weightTranslate} @ ${item.amount} ${weightPerUnitTranslate}`;
+                        weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
                     }
 
                     var itemDiv = this._doc.createElement('div');
@@ -271,11 +277,11 @@ export default class TemplateBuilderService {
                         item.qty = '&nbsp;&nbsp;';
                         item.space = "&emsp;";
                     }
-                    var itemAmountResolve = isWeightItem ? printData.variables.TOTAL_AMOUNT : item.amount;
+
                     itemDiv.innerHTML = "<div class='itemDiv'>" +
                         "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
                         "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(itemAmountResolve) + "'>" + (itemAmountResolve ? this.twoDecimals(itemAmountResolve) : "") + "</div>" +
+                        "<div class='total-amount " + this.$utils.isNegative(item.amount) + "'>" + (this.$utils.twoDecimals(item.amount)) + "</div>" +
                         "</div>"
 
                     var weightDiv = this._doc.createElement('div');
@@ -311,7 +317,7 @@ export default class TemplateBuilderService {
             othItemDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='item-qty'>" + (othItem.qty ? othItem.qty : " ") + "</div>" + " " +
                 "<div class='item-name'>" + othItem.space + (othItem.name ? othItem.name : "") + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(othItem.amount) + "'>" + (othItem.amount ? othItem.amount : "") + "</div>" +
+                "<div class='total-amount " + this.$utils.isNegative(othItem.amount) + "'>" + (othItem.amount ? othItem.amount : "") + "</div>" +
                 "</div>"
 
             htmlElement.appendChild(othItemDiv);
@@ -340,7 +346,7 @@ export default class TemplateBuilderService {
                 retrunedCredFromText = retrunedCredFromTranslate;
                 CreditHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(retrunedCredFromText === null) ? retrunedCredFromText : "") + " " + (issuer ? issuer : "") + "</div>" + " " +
-                    "<div class='total-amount " + this.isNegative(paymentAmount) + "'>" + (paymentAmount ? Number(paymentAmount).toFixed(2) : "") + "</div>" +
+                    "<div class='total-amount " + this.$utils.isNegative(paymentAmount) + "'>" + (paymentAmount ? Number(paymentAmount).toFixed(2) : "") + "</div>" +
                     "</div>"
                 CreditTemplate.appendChild(CreditHeaderDiv);
 
@@ -351,7 +357,7 @@ export default class TemplateBuilderService {
                 paidCredFromText = paidCredFromTranslate;
                 CreditHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(paidCredFromText === null) ? paidCredFromText : "") + " " + (issuer ? issuer : "") + "</div>" + " " +
-                    "<div class='total-amount " + this.isNegative(paymentAmount) + "'>" + (paymentAmount ? Number(paymentAmount).toFixed(2) : "") + "</div>" +
+                    "<div class='total-amount " + this.$utils.isNegative(paymentAmount) + "'>" + (paymentAmount ? Number(paymentAmount).toFixed(2) : "") + "</div>" +
                     "</div>"
                 CreditTemplate.appendChild(CreditHeaderDiv);
 
@@ -365,7 +371,7 @@ export default class TemplateBuilderService {
             if (pChange && pChange !== 0) {
                 cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom'>" +
                     "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
-                    "<div class='total-amount'>" + ((pChange && pChange !== 0) ? this.twoDecimals(pChange) : " ") + "</div>"
+                    "<div class='total-amount'>" + ((pChange && pChange !== 0) ? this.$utils.twoDecimals(pChange) : " ") + "</div>"
                     + "</div >"
 
                 CreditHeaderDiv.appendChild(cashBackDiv);
@@ -494,13 +500,13 @@ export default class TemplateBuilderService {
                 var totalDiv = this._doc.createElement('div');
                 if (total.type === 'exclusive_tax') {
                     totalDiv.innerHTML = "<div class='itemDiv small-chars'>" +
-                        "<div class='total-name'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? this.twoDecimals(total.rate) + "%" : " ") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(total.amount) + "'>" + (total.amount ? this.twoDecimals(total.amount) : " ") + "</div>" + "</div>"
+                        "<div class='total-name'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? this.$utils.twoDecimals(total.rate) + "%" : " ") + "</div>" + " " +
+                        "<div class='total-amount " + this.$utils.isNegative(total.amount) + "'>" + (total.amount ? this.$utils.twoDecimals(total.amount) : " ") + "</div>" + "</div>"
                 }
                 else if (total.type !== 'exclusive_tax') {
                     totalDiv.innerHTML = "<div class='itemDiv " + (isCheckTotal ? " bold" : '') + "'>" +
                         "<div class='total-name'>" + (total.name ? total.name : " ") + "</div>" + " " +
-                        "<div class='total-amount " + this.isNegative(total.amount) + "'>" + (total.amount ? this.twoDecimals(total.amount) : " ") + "</div>" +
+                        "<div class='total-amount " + this.$utils.isNegative(total.amount) + "'>" + (total.amount ? this.$utils.twoDecimals(total.amount) : " ") + "</div>" +
                         "</div>"
                 }
 
@@ -570,7 +576,7 @@ export default class TemplateBuilderService {
                         paymentDiv.innerHTML =
                             "<div class=" + (payment.type === 'change' ? 'changeDiv' : 'itemDiv') + ">" +
                             "<div class='total-name'>" + (payment.name ? payment.name : " ") + "</div>" + " " +
-                            "<div class='total-amount " + this.isNegative(pAmount) + "'>" + (!changeAmountZero ? this.twoDecimals(pAmount) : "") + "</div>" +
+                            "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + (!changeAmountZero ? this.$utils.twoDecimals(pAmount) : "") + "</div>" +
                             "</div>"
                         OrderPaymentsDiv.appendChild(paymentDiv);
                     }
@@ -607,7 +613,7 @@ export default class TemplateBuilderService {
         var giftCardNumDiv = this._doc.createElement('div')
         giftCardNumDiv.id = 'giftCardNumDiv';
         giftCardNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (giftCardNum ? (giftCardNum + ": ") : " ") + "</div>" +
+            "<div class='total-name'>" + (giftCardNum ? (giftCardNum) : " ") + "</div>" +
             "<div class='number-data'>" + cardNum + "</div>" + "</div>"
 
         giftCardDiv.appendChild(giftCardNumDiv);
@@ -618,7 +624,7 @@ export default class TemplateBuilderService {
         var transactNumDiv = this._doc.createElement('div');
         transactNumDiv.id = 'transactNumDiv';
         transactNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (transactionNumText ? (transactionNumText + ": ") : " ") + "</div>" +
+            "<div class='total-name'>" + (transactionNumText ? (transactionNumText) : " ") + "</div>" +
             "<div class='number-data'>" + transactNum + "</div>" + "</div>"
 
         giftCardDiv.appendChild(transactNumDiv);
@@ -671,11 +677,11 @@ export default class TemplateBuilderService {
             mediaExchangeDiv.appendChild(cardNumberDiv);
         }
         if (pAmount) {
-            amountDiv.innerHTML = "<div class='bold'>" + amountText + ": " + this.twoDecimals(pAmount) + "</div>"
+            amountDiv.innerHTML = "<div class='bold'>" + amountText + ": " + this.$utils.twoDecimals(pAmount) + "</div>"
             mediaExchangeDiv.appendChild(amountDiv);
         }
         if (balanceAmount) {
-            balanceDiv.innerHTML = "<div class='bold'>" + balanceText + ": " + this.twoDecimals(balanceAmount) + "</div>"
+            balanceDiv.innerHTML = "<div class='bold'>" + balanceText + ": " + this.$utils.twoDecimals(balanceAmount) + "</div>"
             mediaExchangeDiv.appendChild(balanceDiv);
         }
         if (printMessage) {
@@ -698,7 +704,7 @@ export default class TemplateBuilderService {
         var cashPaidDiv = this._doc.createElement('div')
         cashPaidDiv.innerHTML = "<div class='itemDiv'>" +
             "<div class='total-name'>" + (!printData.isRefund ? cashPaidText : cashReturnedText) + "</div>" +
-            "<div class='total-amount " + this.isNegative(pAmount) + "'>" + this.twoDecimals(pAmount) + "</div>" +
+            "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + this.$utils.twoDecimals(pAmount) + "</div>" +
             "</div>"
 
         cashDiv.appendChild(cashPaidDiv);
@@ -706,13 +712,13 @@ export default class TemplateBuilderService {
         //Change div
         if (printData.collections.PAYMENT_LIST[0].P_CHANGE && printData.collections.PAYMENT_LIST[0].P_CHANGE !== 0) {
             var changeText = this.$translate.getText('TOTAL_CASHBACK');
-            var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : '';
+            var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.$utils.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : '';
             var pChangeZero = printData.collections.PAYMENT_LIST[0].P_CHANGE === 0;
             var transactNumDiv = this._doc.createElement('div')
             transactNumDiv.id = transactNumDiv
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (!pChangeZero ? this.twoDecimals(pChange) : "") + "</div>" +
+                "<div class='total-amount " + this.$utils.isNegative(pChange) + "'>" + (!pChangeZero ? this.$utils.twoDecimals(pChange) : "") + "</div>" +
                 "</div>"
 
             cashDiv.appendChild(transactNumDiv);
@@ -733,7 +739,7 @@ export default class TemplateBuilderService {
         var chequePaidDiv = this._doc.createElement('div')
         chequePaidDiv.innerHTML = "<div class='itemDiv'>" +
             "<div class='total-name'>" + (!printData.isRefund ? chequePaidText : chequeReturnedText) + "</div>" +
-            "<div class='total-amount " + this.isNegative(pAmount) + "'>" + this.twoDecimals(pAmount) + "</div>" +
+            "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + this.$utils.twoDecimals(pAmount) + "</div>" +
             "</div>"
 
         chequeDiv.appendChild(chequePaidDiv);
@@ -741,13 +747,13 @@ export default class TemplateBuilderService {
         //Change div
         if (printData.collections.PAYMENT_LIST[0].P_CHANGE && printData.collections.PAYMENT_LIST[0].P_CHANGE !== 0) {
             var changeText = this.$translate.getText('TOTAL_CASHBACK');
-            var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : '';
+            var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE ? this.$utils.twoDecimals(printData.collections.PAYMENT_LIST[0].P_CHANGE) : '';
             var pChangeZero = printData.collections.PAYMENT_LIST[0].P_CHANGE === 0;
             var tpChangeNumDiv = this._doc.createElement('div')
             tpChangeNumDiv.className += 'tpChangeNumDiv'
             tpChangeNumDiv.innerHTML = "<div class='changeDiv'>" +
                 "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.isNegative(pChange) + "'>" + (!pChangeZero ? this.twoDecimals(pChange) : "") + "</div>" +
+                "<div class='total-amount " + this.$utils.isNegative(pChange) + "'>" + (!pChangeZero ? this.$utils.twoDecimals(pChange) : "") + "</div>" +
                 "</div>"
 
             chequeDiv.appendChild(tpChangeNumDiv);
@@ -790,26 +796,7 @@ export default class TemplateBuilderService {
     breakCustomerMessageFilter(str) {
         if (!str) return '';
 
-        //str = this.$utils.replaceAll(str, ':', ' ');
-
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br\/>$2');
-    }
-    //create svg function
-    makeSVG(tag, attrs) {
-        var el = this._doc.createElementNS('http://www.w3.org/2000/svg', tag);
-        for (var k in attrs)
-            el.setAttribute(k, attrs[k]);
-        return el;
-    }
-
-    twoDecimals(number) {
-        return this.$utils.twoDecimals(number);
-    }
-
-    isNegative(amount) {
-        var intAmount = parseInt(amount);
-        return intAmount < 0 ? 'negative' : "";
-
     }
 
 }

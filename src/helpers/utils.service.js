@@ -35,7 +35,14 @@ export default class Utils {
     }
 
     twoDecimals(number) {
-        return Number(number).toFixed(2);
+
+        let result = '';
+
+        if (number) {
+            result = Number(number).toFixed(2);
+        }
+
+        return result;
     }
 
     notEmpty(field) {
