@@ -85,7 +85,7 @@ export default class HeaderService {
                         tplHeaderLine.innerHTML = orgString;
                     }
                     else {
-                        tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_LEGAL_NAME
+                        tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_LEGAL_NAME;
                     }
                 }
                     break;
@@ -158,8 +158,10 @@ export default class HeaderService {
     fillOrderHeaderData(printData, htmlElement) {
 
         switch (htmlElement.id) {
+
             case 'tplOrderCustomer': {
-                if (printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
+
+                if (!this._docObj.isFullOrderBill && printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
                     var forText = this.$translate.getText("FOR");
                     var BnOrSnText = this.$translate.getText("BN_OR_SN");
                     var customerName = printData.collections.PAYMENT_LIST[0].CUSTOMER_NAME;
@@ -168,8 +170,9 @@ export default class HeaderService {
                     htmlElement.classList.add('align-text');
                     htmlElement.classList.add('m-bottom-10');
                 }
-            }
                 break;
+            }
+
 
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
@@ -183,15 +186,17 @@ export default class HeaderService {
                     htmlElement.setAttribute('class', 'med-chars');
 
                 }
-            }
                 break;
+            }
+
             //Asked to take this down temporary
             case 'tplOrderTitle': {
                 if (this._docObj.title) {
                     htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + this._docObj.title; + "</div >"
                 }
-            }
                 break;
+            }
+
             case 'tplOrderType': {
                 if (printData.variables.ORDER_TYPE && printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {
                     var typeTranslate = this.$translate.getText("ORDER_TYPE")
@@ -201,8 +206,9 @@ export default class HeaderService {
                     htmlElement.setAttribute('class', 'med-chars');
 
                 }
-            }
                 break;
+            }
+
             case 'tplOrderTable': {
                 if (printData.variables.ORDER_TYPE === "SEATED" && printData.variables.TABLE_NO) {
                     var tableTranslate = this.$translate.getText("table")
@@ -210,8 +216,9 @@ export default class HeaderService {
                     htmlElement.setAttribute('class', 'med-chars');
 
                 }
-            }
                 break;
+            }
+
             case 'tplOrderServerClients': {
                 if (!(this._docData.documentType === "invoice") && !(this._docData.documentType === "deliveryNote")) {
                     var waiterTranslate = this.$translate.getText("Server")
@@ -220,8 +227,9 @@ export default class HeaderService {
                     var lastName = printData.variables.L_NAME && printData.variables.L_NAME !== null ? printData.variables.L_NAME : '';
                     htmlElement.innerHTML = `<span>${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - ${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</span>`;
                 }
-            }
                 break;
+            }
+
             case 'tplcCheckNumber': {
                 var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
                 if (this._docData.documentType === "invoice" && invoiceNum) {
@@ -229,9 +237,8 @@ export default class HeaderService {
                     printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
                     htmlElement.innerHTML = `<span> ` + checkTranslate + " " + invoiceNum + `</span>`;
                 }
-            }
                 break;
-
+            }
 
         }
         return htmlElement;
