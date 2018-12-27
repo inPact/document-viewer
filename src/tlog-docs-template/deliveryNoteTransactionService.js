@@ -53,6 +53,17 @@ export default class DeliveryNoteTransactionDataService {
 
         }
         else if (!printData.isRefund && hAccountPayments && hAccountPayments.P_AMOUNT) {
+
+
+            console.log('PAID_IN_CHARCHACCOUNT_FROM');
+            console.log('PAID_IN_CHARCHACCOUNT_FROM');
+            console.log('PAID_IN_CHARCHACCOUNT_FROM');
+            console.log('PAID_IN_CHARCHACCOUNT_FROM');
+            console.log('PAID_IN_CHARCHACCOUNT_FROM');
+            console.log('PAID_IN_CHARCHACCOUNT_FROM');
+            console.log('PAID_IN_CHARCHACCOUNT_FROM');
+
+
             var returnText = this.$translate.getText('PAID_IN_CHARCHACCOUNT_FROM')
             var refundTextDiv = this._doc.createElement('div')
             refundTextDiv.id = 'refundTextDiv';
