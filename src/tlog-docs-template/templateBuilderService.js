@@ -235,6 +235,12 @@ export default class TemplateBuilderService {
         if (!printData.isRefund) {
 
 
+            console.log("data.items");
+            console.log("data.items");
+            console.log(data.items);
+            console.log("data.items");
+            console.log("data.items");
+
             data.items.forEach((item, index) => {
 
                 //in case it is return order, we don't want to show return of item the did not cost anything
@@ -277,7 +283,7 @@ export default class TemplateBuilderService {
                     itemDiv.innerHTML = "<div class='itemDiv'>" +
                         "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
                         "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
-                        "<div class='total-amount " + this.$utils.isNegative(item.amount) + "'>" + ( this.$utils.twoDecimals(item.amount)) + "</div>" +
+                        "<div class='total-amount " + this.$utils.isNegative(item.amount) + "'>" + (this.$utils.twoDecimals(item.amount)) + "</div>" +
                         "</div>"
 
                     var weightDiv = this._doc.createElement('div');
