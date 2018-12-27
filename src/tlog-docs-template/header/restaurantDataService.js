@@ -8,7 +8,7 @@ export default class RestaurantDataService {
         this.$utils = new TlogDocsUtils();
     }
 
-    getRestaurantData(doc, printData) {
+    getRestaurantData(printData,doc) {
         this._doc = doc;
         //setting header constants div for display
         var tplHeaderConstants = this._doc.createElement('div');
