@@ -107,6 +107,13 @@ export default class {
         });
 
         if (printData.data.taxes.InclusiveTaxes.length > 0) {
+
+            console.log("printData.data.taxes.InclusiveTaxes");
+            console.log("printData.data.taxes.InclusiveTaxes");
+            console.log(printData.data.taxes.InclusiveTaxes);
+            console.log("printData.data.taxes.InclusiveTaxes");
+            console.log("printData.data.taxes.InclusiveTaxes");
+
             printData.data.taxes.InclusiveTaxes.forEach(incTax => {
 
                 let incTaxItemDiv = doc.createElement('div');

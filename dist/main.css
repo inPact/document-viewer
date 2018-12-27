@@ -4,6 +4,9 @@
 .padding-top-0 {
   padding-top: 0px !important; }
 
+.section-element {
+  padding: 8px 0px; }
+
 .basicTemplate {
   background-color: white;
   font-family: "Courier New", Courier, monospace;
