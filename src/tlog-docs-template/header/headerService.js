@@ -49,10 +49,7 @@ export default class HeaderService {
         tplHeader.setAttribute('style', "text-align:center;")
         tplHeader.classList += ' rowPadding'
 
-        var orderHeader = this.createOrderHeader(printData);
-        orderHeader.id = 'orderHeader';
-        orderHeader.classList += ' rowPadding'
-
+    
         tplHeader.appendChild(restaurantDataDiv);
         tplHeader.appendChild(customerDataDiv);
         tplHeader.appendChild(orderDataDiv);
