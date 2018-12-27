@@ -162,11 +162,11 @@ export default class HeaderService {
             case 'tplOrderCustomer': {
 
                 if (!this._docObj.isFullOrderBill && printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
-                    var forText = this.$translate.getText("FOR");
-                    var BnOrSnText = this.$translate.getText("BN_OR_SN");
+
                     var customerName = printData.collections.PAYMENT_LIST[0].CUSTOMER_NAME;
                     var customerId = printData.collections.PAYMENT_LIST[0].CUSTOMER_ID;
-                    htmlElement.innerHTML = "<div>" + forText + ": " + customerName + "</div><div>" + BnOrSnText + ": " + customerId + "</div>";
+
+                    htmlElement.innerHTML = `<div>${this.$translate.getText("FOR")} ${customerName}</div><div>${this.$translate.getText("BN_OR_SN")} ${customerId}</div>`
                     htmlElement.classList.add('align-text');
                     htmlElement.classList.add('m-bottom-10');
                 }

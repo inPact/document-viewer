@@ -4,11 +4,20 @@ export default class HtmlCreator {
 
     }
 
-    createSection(doc) {
+    createSection(doc, options) {
+
+        let classList = options.classList;
+        let id = options.id;
 
         let elementSection = doc.createElement('div');
 
+        elementSection.id = id;
+
         elementSection.classList.add('section-element');
+
+        classList.forEach(c => {
+            elementSection.classList.add(c);
+        });
 
         return elementSection;
     }

@@ -1,11 +1,16 @@
 
 
 import Utils from '../helpers/utils.service';
+import HtmlCreator from '../helpers/htmlCreator.serivce';
+
 
 export default class {
 
     constructor(options) {
+
         this.$utils = new Utils();
+        this.$htmlCreator = new HtmlCreator();
+
         this._doc;
         this.taxExemptDiv;
         this.inclusiveTaxDiv;
@@ -70,33 +75,50 @@ export default class {
 
 
     createTaxExemptFunc(printData, doc) {
-        let exmTaxItemsDiv = doc.createElement('div')
+
+        let exemptTaxContainer = this.$htmlCreator.createSection({
+            id: 'exempt-tax',
+            classList: []
+        });
+
         if (printData.data.taxes.ExemptedTaxes.length > 0) {
             printData.data.taxes.ExemptedTaxes.forEach(exmTax => {
+
                 let exmTaxItemDiv = doc.createElement('div');
                 exmTaxItemDiv.classList += 'exmTaxItemDiv';
                 exmTaxItemDiv.innerHTML = "<div class='itemDiv " + (exmTax.amount ? 'small-chars' : "") + "'>" +
                     "<div class='total-name'>" + (exmTax.amount ? '&nbsp;' : "") + (exmTax.name ? exmTax.name : " ") + (exmTax.amount ? "&nbsp;" + exmTax.rate + "%" : '') + "</div>" + " " +
                     "<div class='total-amount " + this.isNegative(exmTax.amount) + "'>" + "&nbsp;" + (exmTax.amount ? Number(exmTax.amount).toFixed(2) : " ") + "</div>" + "</div>"
-                exmTaxItemsDiv.appendChild(exmTaxItemDiv)
-            })
-            return exmTaxItemsDiv;
+
+                exemptTaxContainer.appendChild(exmTaxItemDiv);
+            });
+
+            return exemptTaxContainer;
         }
+
         return null;
     }
 
     createInclusiveTaxFunc(printData, doc) {
-        let inclusiveItemsDiv = doc.createElement('div')
+
+        let inclusiveTaxContainer = this.$htmlCreator.createSection({
+            id: 'inclusive-tax',
+            classList: []
+        });
+
         if (printData.data.taxes.InclusiveTaxes.length > 0) {
             printData.data.taxes.InclusiveTaxes.forEach(incTax => {
+
                 let incTaxItemDiv = doc.createElement('div');
                 incTaxItemDiv.classList += 'incTaxItemDiv';
                 incTaxItemDiv.innerHTML = "<div class='itemDiv " + (incTax.amount ? 'small-chars' : "") + "'>" +
                     "<div class='total-name'>" + (incTax.amount ? '&nbsp;' : "") + (incTax.name ? incTax.name : " ") + "</div>" + " " +
                     "<div class='total-amount " + this.isNegative(incTax.amount) + "'> &nbsp;" + (incTax.amount ? Number(incTax.amount).toFixed(2) : " ") + "</div>" + "</div>"
-                inclusiveItemsDiv.appendChild(incTaxItemDiv)
-            })
-            return inclusiveItemsDiv;
+
+                inclusiveTaxContainer.appendChild(incTaxItemDiv)
+            });
+
+            return inclusiveTaxContainer;
 
         }
         return null;
