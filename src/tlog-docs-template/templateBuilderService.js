@@ -9,6 +9,8 @@ import CreditSlipService from './creditSlipService';
 import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
 import TlogDocsUtils from './tlogDocsUtils';
+import Localization from '../helpers/localization.service';
+
 
 
 
@@ -32,6 +34,7 @@ export default class TemplateBuilderService {
         this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
         this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
+        this.$localization = new Localization({ isUS: this._isUS });
     }
 
     _configure(options) {
@@ -159,6 +162,14 @@ export default class TemplateBuilderService {
                 }
             }
 
+            if (this._printData.data.taxes.InclusiveTaxes && this._printData.data.taxes.InclusiveTaxes.length > 0) {
+                if (this._isUS) {
+                    var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
+                    if (inclusiveTaxesDiv !== null) docTemplate.appendChild(inclusiveTaxesDiv)
+                }
+            }
+
+
             if (this._printData.variables.CUSTOMER_MESSAGE) {
                 var customerMessageDiv = this.createCustomerMessage(this._printData, this._doc);
                 if (customerMessageDiv !== null) docTemplate.appendChild(customerMessageDiv)
@@ -196,15 +207,6 @@ export default class TemplateBuilderService {
         var tplOrderPaymentData = this._doc.createElement('div');
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
 
-        console.log("data");
-        console.log("data");
-        console.log("data");
-        console.log(data);
-
-        console.log("data");
-        console.log("data");
-        console.log("data");
-
         tplOrderPaymentData.classList += ' tpl-body-div';
         var paymentDataDiv = this._doc.createElement('div');
         paymentDataDiv.id = "paymentDataDiv";
@@ -233,8 +235,6 @@ export default class TemplateBuilderService {
 
         if (!printData.isRefund) {
 
-            console.log('data');
-            console.log(data);
 
             data.items.forEach((item, index) => {
 
@@ -243,21 +243,26 @@ export default class TemplateBuilderService {
 
                     var orderdOfferListExists = printData.collections.ORDERED_OFFERS_LIST.length > 0 ? true : false;
                     var offerListIndex = orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] ? orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] : null;
+
                     var offerUnits = offerListIndex ? offerListIndex.OFFER_UNITS : null;
 
                     var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
 
                     var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
-                    // var weightUnitTranslate = this.$translate.getText(weightUnit)
-
                     var isGram = isWeightItem && weightUnit === 'kg' && offerUnits < 1;
 
                     var calcWeight = isGram ? offerUnits * 1000 : offerUnits;
                     var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
                     var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
                     var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
-                    var weightText = calcWeight + ' ' + weightTranslate + ' @ ' + item.amount + ' ' + weightPerUnitTranslate;
 
+                    var weightText = '';
+                    if (this._isUS) {
+                        weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.amount}/${weightTranslate}`;
+                    }
+                    else {
+                        weightText = `${calcWeight} ${weightTranslate} @ ${item.amount} ${weightPerUnitTranslate}`;
+                    }
 
                     var itemDiv = this._doc.createElement('div');
                     if (item.isOffer) {
@@ -450,14 +455,14 @@ export default class TemplateBuilderService {
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
 
-        if (!isTaxExempt) {
-            var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
-            if (taxDataDiv !== null) {
-                tplOrderTotals.appendChild(taxDataDiv);
-            }
-        }
+        // if (!isTaxExempt) {
+        //     var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
+        //     if (taxDataDiv !== null) {
+        //         tplOrderTotals.appendChild(taxDataDiv);
+        //     }
+        // }
 
-        if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
+        // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
         if (this._docObj && (this._docData.documentType ===
             ('invoice' || 'CreditCardPayment' || 'CreditCardRefund' || 'CashPayment' || 'GiftCard' || 'CashRefund' || 'ChequePayment' || 'ChequeRefund'))) {
@@ -480,6 +485,10 @@ export default class TemplateBuilderService {
 
     fillOrderTotals(htmlElement, printData) {
         if (printData.data.totals.length > 0) {
+
+            console.log('totals');
+            console.log(printData.data.totals);
+            console.log('totals');
 
             // if (!_isUS) {
             printData.data.totals.forEach(total => {
@@ -549,7 +558,7 @@ export default class TemplateBuilderService {
     }
 
     fillPaymentsData(printData) {
-        var OrderPaymentsDiv = this._doc.createElement('tplOrderPayments');
+        var OrderPaymentsDiv = this._doc.createElement('div');
         OrderPaymentsDiv.id = 'OrderPaymentsDiv';
 
         if (printData.data.payments.length > 0) {

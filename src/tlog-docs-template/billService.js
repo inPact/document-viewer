@@ -443,7 +443,8 @@ export default class BillService {
                 taxes.ExemptedTaxes.push({
                     type: 'exempted_tax',
                     name: tax.NAME ? tax.NAME : this.$translate.getText('EXEMPTED_TAX'),
-                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2)
+                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
+                    rate: this.$utils.toFixedSafe(tax.RATE, 2)
                 })
             });
         }
@@ -473,7 +474,7 @@ export default class BillService {
         if (payment.P_TENDER_TYPE === 'creditCard' || payment.P_TENDER_TYPE === 'gidtCard') {
             paymentName = refund !== '' ? `${refund} (${payment.CARD_TYPE} ${payment.LAST_4})` : `${payment.CARD_TYPE} ${payment.LAST_4}`;
         } else {
-            paymentName = `${refund} ${payment.P_NAME}`;
+            paymentName = `${payment.P_NAME} ${refund}`;
         }
 
         return paymentName;
