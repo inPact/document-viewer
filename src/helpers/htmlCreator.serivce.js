@@ -1,10 +1,15 @@
+
+import DocumentFactory from '../helpers/documentFactory.service';
+
 export default class HtmlCreator {
 
     constructor(options) {
-
+        this.$documentFactory = new DocumentFactory();
     }
 
-    createSection(doc, options) {
+    createSection(options) {
+
+        let doc = this.$documentFactory.get();
 
         let classList = options.classList;
         let id = options.id;

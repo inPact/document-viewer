@@ -10,9 +10,7 @@ import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
 import Utils from '../helpers/utils.service';
 import Localization from '../helpers/localization.service';
-
-
-
+import DocumentFactory from '../helpers/documentFactory.service';
 
 
 export default class TemplateBuilderService {
@@ -35,6 +33,7 @@ export default class TemplateBuilderService {
         this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
         this.$localization = new Localization({ isUS: this._isUS });
+        this.$documentFactory = new DocumentFactory();
     }
 
     _configure(options) {
@@ -44,8 +43,7 @@ export default class TemplateBuilderService {
     }
 
     _createRootElement() {
-
-        let rootElement = document.implementation.createHTMLDocument();
+        let rootElement = this.$documentFactory.create();// document.implementation.createHTMLDocument();
         return rootElement;
     }
 
