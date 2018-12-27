@@ -33,7 +33,6 @@ export default class TemplateBuilderService {
         this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
         this.$localization = new Localization({ isUS: this._isUS });
-        this.$documentFactory = new DocumentFactory();
     }
 
     _configure(options) {
@@ -43,7 +42,7 @@ export default class TemplateBuilderService {
     }
 
     _createRootElement() {
-        let rootElement = this.$documentFactory.create();// document.implementation.createHTMLDocument();
+        let rootElement = DocumentFactory.get();// document.implementation.createHTMLDocument();
         return rootElement;
     }
 

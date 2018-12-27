@@ -1,16 +1,24 @@
 
-export default class DocumentFactory {
+class DocumentFactory {
 
     constructor(options) {
-
+        this.rootElement = undefined;
     }
 
-    create() {
-        this.rootElement = document.implementation.createHTMLDocument();
-        return this.rootElement;
-    }
+    // create() {
+    //     let rootElement = document.implementation.createHTMLDocument();
+    //     this.rootElement = rootElement;
+    //     return this.rootElement;
+    // }
 
     get() {
+
+        if (this.rootElement === undefined) {
+            this.rootElement = document.implementation.createHTMLDocument();
+        }
+
         return this.rootElement;
     }
 }
+
+module.exports = new DocumentFactory();
