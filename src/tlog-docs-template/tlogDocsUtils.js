@@ -49,16 +49,4 @@ export default class TlogDocsUtils {
         return false
     }
 
-    // formatDateUS(stringDate) {
-    //     var date = new Date(stringDate);
-    //     return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
-    //         ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
-    // }
-
-    // formatDateIL(stringDate) {
-    //     var date = new Date(stringDate);
-    //     return ((date.getHours() > 9) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) +
-    //         " " + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-    // }
-
 }

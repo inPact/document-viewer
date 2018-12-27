@@ -56,9 +56,6 @@ export default class Utils {
         let a = (date.getHours() > 12 ? "PM" : "AM");
 
         return `${day}/${month}/${year} ${hour}:${minute} ${a}`;
-
-        // return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
-        //     ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
     }
 
     formatDateIL(stringDate) {
@@ -72,9 +69,6 @@ export default class Utils {
         let minute = (date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes();
 
         return `${day}/${month}/${year} ${hour}:${minute}`;
-
-        // return ((date.getHours() > 9) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) +
-        //     " " + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     }
 
     toDate(options) {

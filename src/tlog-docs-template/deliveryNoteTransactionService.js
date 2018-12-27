@@ -14,14 +14,6 @@ export default class DeliveryNoteTransactionDataService {
         return this.$utils.isNegative(number)
     }
 
-    // formatDateIL(stringDate) {
-    //     return this.$utils.formatDateIL(stringDate);
-    // }
-
-    // formatDateUS(stringDate) {
-    //     return this.$utils.formatDateUS(stringDate);
-    // }
-
     createDeliveryNoteTransactionData(printData, doc) {
         this._doc = doc;
         var deliveryNoteTransactionDiv = this._doc.createElement('div');

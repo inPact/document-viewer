@@ -797,6 +797,9 @@ export default class TemplateBuilderService {
 
     breakCustomerMessageFilter(str) {
         if (!str) return '';
+
+        str.replace(':', ' ');
+
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br\/>$2');
     }
     //create svg function
@@ -811,48 +814,10 @@ export default class TemplateBuilderService {
         return this.$utils.twoDecimals(number);
     }
 
-    //function for appending multiple children
-    // appendChildren(target, array) {
-    //     var divForAppending = this._doc.createElement('div');
-    //     var length = array.length;
-    //     if (length > 0) {
-    //         array.forEach(element => {
-    //             divForAppending.appendChild(element);
-    //         })
-    //     }
-    //     return divForAppending;
-    // }
-
-    // orderWordsByLocale(input1, input2, input3) {
-    //     let htmlString;
-    //     if (this._isUS) {
-    //         htmlString = "<span>" + input2 + "</span>" + "&nbsp;" + "<span>" + input1 + "</span>" + "&nbsp;" + " <span> #" + input3 + "</span >"
-    //     } else {
-    //         htmlString = "<span>" + input1 + "</span>" + "&nbsp;" + "<span>" + input2 + "</span> " + "&nbsp;" + " <span> #" + input3 + "</span >"
-
-    //     }
-
-    //     return htmlString;
-    // }
-
-
-
     isNegative(amount) {
         var intAmount = parseInt(amount);
         return intAmount < 0 ? 'negative' : "";
 
     }
-
-    // formatDateUS(stringDate) {
-    //     var date = new Date(stringDate);
-    //     return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
-    //         ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
-    // }
-
-    // formatDateIL(stringDate) {
-    //     var date = new Date(stringDate);
-    //     return ((date.getHours() > 9) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " +
-    //         date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " ";
-    // }
 
 }
