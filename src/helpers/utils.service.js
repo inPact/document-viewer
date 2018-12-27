@@ -88,9 +88,8 @@ export default class Utils {
 
     }
 
-    replaceAll(search, replacement) {
-        var target = this;
-        return target.replace(new RegExp(search, 'g'), replacement);
+    replaceAll(text, search, replacement) {
+        return text.replace(new RegExp(search, 'g'), replacement);
     };
 
 
