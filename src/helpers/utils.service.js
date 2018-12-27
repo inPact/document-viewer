@@ -49,9 +49,19 @@ export default class Utils {
     }
 
     formatDateIL(stringDate) {
-        var date = new Date(stringDate);
-        return ((date.getHours() > 9) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) +
-            " " + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+
+        let date = new Date(stringDate);
+
+        let day = date.getDate();
+        let month = (date.getMonth() + 1);
+        let year = date.getFullYear();
+        let hour = (date.getHours() > 9) ? date.getHours() : "0" + date.getHours();
+        let minute = (date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes();
+
+        return `${hour}:${minute} ${day}/${month}/${year}`;
+
+        // return ((date.getHours() > 9) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) +
+        //     " " + date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
     }
 
     toDate(options) {
