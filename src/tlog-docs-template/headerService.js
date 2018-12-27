@@ -1,4 +1,4 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import HtmlCreator from '../helpers/htmlCreator.serivce';
 
@@ -8,7 +8,7 @@ export default class HeaderService {
     constructor(options) {
         this._isUS = options.isUS;
         this.$translate = new TlogDocsTranslateService(options);
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
         this.$htmlCreator = new HtmlCreator();
     }
 

@@ -1,4 +1,4 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import moment from 'moment';
 
@@ -6,7 +6,7 @@ export default class BillService {
     constructor(options) {
         this._isUS = options.isUS === undefined ? true : options.isUS;
         this._locale = options.locale;
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService(options);
     }
 

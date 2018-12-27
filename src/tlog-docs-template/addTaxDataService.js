@@ -1,11 +1,11 @@
 
 
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 
 export default class {
 
     constructor(options) {
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
         this._doc;
         this.taxExemptDiv;
         this.inclusiveTaxDiv;

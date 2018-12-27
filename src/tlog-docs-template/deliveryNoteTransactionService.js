@@ -1,4 +1,4 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import VatTemplateService from './vatTemplateService';
 
@@ -7,7 +7,7 @@ export default class DeliveryNoteTransactionDataService {
         this._isUS = options.isUS;
         this.$translate = new TlogDocsTranslateService(options);
         this.$vatTemplateService = new VatTemplateService(options);
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
     }
 
     isNegative(number) {

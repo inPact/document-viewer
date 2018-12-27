@@ -8,7 +8,7 @@ import DeliveryNoteTransactionDataService from './deliveryNoteTransactionService
 import CreditSlipService from './creditSlipService';
 import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import Localization from '../helpers/localization.service';
 
 
@@ -23,7 +23,7 @@ export default class TemplateBuilderService {
         this._isGiftCardBill;
         this._isTaxExempt;
 
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService({ locale: this._locale });
         this.$billService = new BillService(options);
         this.$headerService = new HeaderService(options);
@@ -418,15 +418,15 @@ export default class TemplateBuilderService {
             }
             creditDataDiv.appendChild(lastFourDiv);
 
-            var dateTimeStr = creditData.PROVIDER_PAYMENT_DATE;
-            var dateTimeResult;
+            let providerPaymentDate = this.$utils.toDate({
+                _isUS: this._isUS,
+                date: creditData.PROVIDER_PAYMENT_DATE
+            });
+
             var transactionTimeDiv = this._doc.createElement('div')
-            if (this._isUS) dateTimeResult = this.formatDateUS(dateTimeStr);
-            else if (!this._isUS) {
-                dateTimeResult = this.formatDateIL(dateTimeStr);
-            }
+
             transactionTimeDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + "</div>" + "<div class='number-data'>" + (transactTimeText ? dateTimeResult : "") + "</div>" +
+                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + "</div>" + "<div class='number-data'>" + (transactTimeText ? providerPaymentDate : "") + "</div>" +
                 "</div>"
 
             creditDataDiv.appendChild(transactionTimeDiv);
