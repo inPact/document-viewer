@@ -1,5 +1,5 @@
 import BillService from './billService';
-import HeaderService from './headerService';
+import HeaderService from './header/headerService';
 import EmvService from './emvService';
 import AddTaxDataService from './addTaxDataService';
 import VatTemplateService from './vatTemplateService';
