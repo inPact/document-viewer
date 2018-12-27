@@ -26,9 +26,11 @@ export default class HeaderService {
         var headerDiv = this._doc.createElement('div');
         headerDiv.id = "headerDiv";
 
+        //declare the restaurant Data div and get the element from the service
         let restaurantDataDiv = this.$restaurantDataService.getRestaurantData(printData, doc);
         restaurantDataDiv.id = 'restaurantDataDiv';
 
+        //declare the customer Data div
         let customerDataDiv;
         if (printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
 
@@ -49,9 +51,9 @@ export default class HeaderService {
         tplHeader.setAttribute('style', "text-align:center;")
         tplHeader.classList += ' rowPadding'
 
-    
+
         tplHeader.appendChild(restaurantDataDiv);
-        tplHeader.appendChild(customerDataDiv);
+        if (customerDataDiv) tplHeader.appendChild(customerDataDiv);
         tplHeader.appendChild(orderDataDiv);
         tplHeader.appendChild(orderInfoText);
 
