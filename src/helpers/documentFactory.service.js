@@ -11,13 +11,13 @@ class DocumentFactory {
     //     return this.rootElement;
     // }
 
-    get(createNew) {
+    get(options) {
 
         if (this.rootElement === undefined) {
             this.rootElement = document.implementation.createHTMLDocument();
         }
 
-        if (createNew) {
+        if (options && options.createNew === true) {
             this.rootElement === undefined;
             this.rootElement = document.implementation.createHTMLDocument();
         }

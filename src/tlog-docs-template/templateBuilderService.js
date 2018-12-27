@@ -42,7 +42,7 @@ export default class TemplateBuilderService {
     }
 
     _createRootElement() {
-        let rootElement = DocumentFactory.get();// document.implementation.createHTMLDocument();
+        let rootElement = DocumentFactory.get({ createNew: true });
         return rootElement;
     }
 
