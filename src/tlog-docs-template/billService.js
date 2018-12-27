@@ -426,7 +426,8 @@ export default class BillService {
                 taxes.InclusiveTaxes.push({
                     type: 'inclusive_tax',
                     name: tax.NAME ? tax.NAME : this.$translate.getText('INCLUSIVE_TAXES'),
-                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2)
+                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
+                    rate: this.$utils.toFixedSafe(tax.RATE, 2)
                 })
             })
         }

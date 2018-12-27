@@ -108,18 +108,12 @@ export default class {
 
         if (printData.data.taxes.InclusiveTaxes.length > 0) {
 
-            console.log("printData.data.taxes.InclusiveTaxes");
-            console.log("printData.data.taxes.InclusiveTaxes");
-            console.log(printData.data.taxes.InclusiveTaxes);
-            console.log("printData.data.taxes.InclusiveTaxes");
-            console.log("printData.data.taxes.InclusiveTaxes");
-
             printData.data.taxes.InclusiveTaxes.forEach(incTax => {
 
                 let incTaxItemDiv = doc.createElement('div');
                 incTaxItemDiv.classList += 'incTaxItemDiv';
                 incTaxItemDiv.innerHTML = "<div class='itemDiv " + (incTax.amount ? 'small-chars' : "") + "'>" +
-                    "<div class='total-name'>" + (incTax.amount ? '&nbsp;' : "") + (incTax.name ? incTax.name : " ") + "</div>" + " " +
+                    "<div class='total-name'>" + (incTax.amount ? '&nbsp;' : "") + (incTax.name ? incTax.name : " ") + (incTax.amount ? "&nbsp;" + incTax.rate + "%" : '') + "</div>" + " " +
                     "<div class='total-amount " + this.isNegative(incTax.amount) + "'> &nbsp;" + (incTax.amount ? Number(incTax.amount).toFixed(2) : " ") + "</div>" + "</div>"
 
                 inclusiveTaxContainer.appendChild(incTaxItemDiv)
