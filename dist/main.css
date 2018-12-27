@@ -1,6 +1,9 @@
 .text-transform-none {
   text-transform: none; }
 
+.padding-top-0 {
+  padding-top: 0px; }
+
 .basicTemplate {
   background-color: white;
   font-family: "Courier New", Courier, monospace;

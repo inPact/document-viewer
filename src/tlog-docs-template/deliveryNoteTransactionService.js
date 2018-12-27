@@ -81,6 +81,8 @@ export default class DeliveryNoteTransactionDataService {
                 var cashBackText = this.$translate.getText('TOTAL_CASHBACK')
                 var cashBackDiv = this._doc.createElement('div');
                 cashBackDiv.classList.add('tpl-body-div');
+                cashBackDiv.classList.add('padding-top-0');
+
                 cashBackDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (hAccountPayments ? cashBackText : "") + "</div>" +
                     "<div class='total-amount " + this.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
