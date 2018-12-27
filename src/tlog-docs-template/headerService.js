@@ -1,5 +1,7 @@
 import TlogDocsUtils from './tlogDocsUtils';
 import TlogDocsTranslateService from './tlogDocsTranslate';
+import HtmlCreator from '../helpers/htmlCreator.serivce';
+
 
 export default class HeaderService {
 
@@ -7,6 +9,7 @@ export default class HeaderService {
         this._isUS = options.isUS;
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new TlogDocsUtils();
+        this.$htmlCreator = new HtmlCreator();
     }
 
 
@@ -260,16 +263,41 @@ export default class HeaderService {
             tplOrderInfoText.appendChild(taxExemptText);
 
             if (printData.variables.TAX_EXEMPTION_CODE) {
-                var isTaxExemptCodeDiv = this._doc.createElement('div');
-                isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
-                isTaxExemptCodeDiv.innerHTML = "<div class='bold'>" + printData.variables.TAX_EXEMPTION_CODE; + "</div>"
-                tplOrderInfoText.appendChild(isTaxExemptCodeDiv);
+
+
+                let elementTaxExemptCode = this.$htmlCreator.create({
+                    id: 'tax-exempt-code',
+                    type: 'div',
+                    classList: ['bold'],
+                    value: printData.variables.TAX_EXEMPTION_CODE
+                });
+
+                // var isTaxExemptCodeDiv = this._doc.createElement('div');
+
+                // isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
+
+                // isTaxExemptCodeDiv.innerHTML = "<div class='bold'>" + printData.variables.TAX_EXEMPTION_CODE; + "</div>"
+
+                tplOrderInfoText.appendChild(elementTaxExemptCode);
             }
+
             if (printData.variables.TAX_EXEMPTION_COMMENT) {
-                var isTaxExemptCodeDiv = this._doc.createElement('div');
-                isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
-                isTaxExemptCodeDiv.innerHTML = printData.variables.TAX_EXEMPTION_COMMENT;
-                tplOrderInfoText.appendChild(isTaxExemptCodeDiv);
+
+
+                let elementTaxExemptComment = this.$htmlCreator.create({
+                    id: 'tax-exempt-comment',
+                    type: 'div',
+                    classList: [],
+                    value: printData.variables.TAX_EXEMPTION_COMMENT
+                });
+
+                // var isTaxExemptCodeDiv = this._doc.createElement('div');
+
+                // isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
+
+                // isTaxExemptCodeDiv.innerHTML = printData.variables.TAX_EXEMPTION_COMMENT;
+
+                tplOrderInfoText.appendChild(elementTaxExemptComment);
             }
         }
 
