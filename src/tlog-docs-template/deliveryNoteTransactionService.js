@@ -331,7 +331,7 @@ export default class DeliveryNoteTransactionDataService {
 
         console.log("elementProviderPaymentDate");
         console.log("elementProviderPaymentDate");
-        console.log(elementProviderPaymentDate);
+        console.log(houseAccountPaymentContainer);
         console.log("elementProviderPaymentDate");
         console.log("elementProviderPaymentDate");
 
