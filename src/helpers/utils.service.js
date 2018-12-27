@@ -33,6 +33,7 @@ export default class Utils {
         }
         return 'rtlAmount';
     }
+
     twoDecimals(number) {
         return Number(number).toFixed(2);
     }
@@ -41,6 +42,7 @@ export default class Utils {
         if (field !== undefined && field !== null) { return true; }
         return false
     }
+
 
     formatDateUS(stringDate) {
 
@@ -83,9 +85,9 @@ export default class Utils {
         let date = options.date;
 
         if (isUS) {
-            result = formatDateUS(date);
+            result = this.formatDateUS(date);
         } else {
-            result = formatDateIL(date);
+            result = this.formatDateIL(date);
         }
 
         return result;
