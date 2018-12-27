@@ -560,7 +560,7 @@ export default class TemplateBuilderService {
     }
 
     fillPaymentsData(printData) {
-        var OrderPaymentsDiv = this._doc.createElement('tplOrderPayments');
+        var OrderPaymentsDiv = this._doc.createElement('div');
         OrderPaymentsDiv.id = 'OrderPaymentsDiv';
 
         if (printData.data.payments.length > 0) {
