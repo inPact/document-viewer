@@ -327,15 +327,17 @@ export default class DeliveryNoteTransactionDataService {
                 houseAccountPaymentContainer.appendChild(elementProviderPaymentDate);
 
             }
+
+
+            console.log("elementProviderPaymentDate");
+            console.log("elementProviderPaymentDate");
+            console.log(houseAccountPaymentContainer);
+            console.log("elementProviderPaymentDate");
+            console.log("elementProviderPaymentDate");
+
+            dNoteChargeAccntDiv.appendChild(houseAccountPaymentContainer);
         }
 
-        console.log("elementProviderPaymentDate");
-        console.log("elementProviderPaymentDate");
-        console.log(houseAccountPaymentContainer);
-        console.log("elementProviderPaymentDate");
-        console.log("elementProviderPaymentDate");
-
-        dNoteChargeAccntDiv.appendChild(houseAccountPaymentContainer);
 
 
         dNoteChargeAccntDiv.classList += ' tpl-body-div';
