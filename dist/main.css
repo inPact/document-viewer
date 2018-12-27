@@ -1,3 +1,6 @@
+.text-transform-none {
+  text-transform: none; }
+
 .basicTemplate {
   background-color: white;
   font-family: "Courier New", Courier, monospace;
