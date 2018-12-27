@@ -609,7 +609,7 @@ export default class TemplateBuilderService {
         var giftCardNumDiv = this._doc.createElement('div')
         giftCardNumDiv.id = 'giftCardNumDiv';
         giftCardNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (giftCardNum ? (giftCardNum + ": ") : " ") + "</div>" +
+            "<div class='total-name'>" + (giftCardNum ? (giftCardNum) : " ") + "</div>" +
             "<div class='number-data'>" + cardNum + "</div>" + "</div>"
 
         giftCardDiv.appendChild(giftCardNumDiv);
@@ -620,7 +620,7 @@ export default class TemplateBuilderService {
         var transactNumDiv = this._doc.createElement('div');
         transactNumDiv.id = 'transactNumDiv';
         transactNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (transactionNumText ? (transactionNumText + ": ") : " ") + "</div>" +
+            "<div class='total-name'>" + (transactionNumText ? (transactionNumText) : " ") + "</div>" +
             "<div class='number-data'>" + transactNum + "</div>" + "</div>"
 
         giftCardDiv.appendChild(transactNumDiv);

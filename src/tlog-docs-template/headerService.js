@@ -227,7 +227,7 @@ export default class HeaderService {
                     var lastName = printData.variables.L_NAME && printData.variables.L_NAME !== null ? printData.variables.L_NAME : '';
                     htmlElement.classList.add('flex-center');
                     //htmlElement.innerHTML = `<span>${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - ${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</span>`;
-                    htmlElement.innerHTML = `<div class="flex">${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - </div><div class="flex">${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</div>`;
+                    htmlElement.innerHTML = `<div class="flex">${waiterTranslate} ${firstName} ${lastName.substring(0, 1)}</div><div>&nbsp;-&nbsp;</div><div class="flex">${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</div>`;
 
                 }
                 break;

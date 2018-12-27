@@ -95,7 +95,7 @@
 
 .basicTemplate .total-amount {
   display: flex;
-  padding:0 20px 0 20px;
+  padding: 0 0px 0 3px;
   justify-content: flex-start;
   flex: 3;
 }
@@ -197,7 +197,6 @@
 .basicTemplate .total-amount.negative {
   direction: ltr !important;
   text-align: right;
-  padding: 0 20px 0 20px;
   display: block;
 }
 
