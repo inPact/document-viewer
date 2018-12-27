@@ -332,17 +332,25 @@ export default class BillService {
                                 type: 'service_charge',
                                 name: _name,
                                 amount: this.$utils.toFixedSafe(tip.AMOUNT, 2)
-                            })
-
+                            });
                         }
 
-                    })
+                    });
                 }
             }
 
         }
 
-        if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined || variables.TOTAL_TIPS !== undefined) {
+        if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined && variables.TOTAL_TIPS_ON_PAYMENTS > 0 && isServiceCharge == true) {
+
+            totals.push({
+                type: 'tips',
+                name: this.$translate.getText('TIP'),
+                amount: this.$utils.toFixedSafe(variables.TOTAL_TIPS_ON_PAYMENTS, 2)
+            });
+
+        }
+        else if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined || variables.TOTAL_TIPS !== undefined) {
 
             let tipAmount = 0;
             if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined && variables.TOTAL_TIPS_ON_PAYMENTS !== 0) { tipAmount = variables.TOTAL_TIPS_ON_PAYMENTS; }
