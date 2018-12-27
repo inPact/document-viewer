@@ -309,6 +309,8 @@ export default class BillService {
             })
         }
 
+        let isServiceCharge = false;
+
         if (collections.TIPS) {
 
             let autoGratuityTips = collections.TIPS.filter(c => c.SCOPE === "order");
@@ -325,6 +327,7 @@ export default class BillService {
                         }
 
                         if (tip.AMOUNT !== 0) {
+                            isServiceCharge = true;
                             totals.push({
                                 type: 'service_charge',
                                 name: _name,
@@ -346,12 +349,16 @@ export default class BillService {
             else if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS !== 0) { tipAmount = variables.TOTAL_TIPS; }
 
             if (tipAmount > 0) {
-                totals.push({
-                    type: 'tips',
-                    name: this.$translate.getText('TIP'),
-                    amount: this.$utils.toFixedSafe(tipAmount, 2)
-                })
+
+                if (isServiceCharge === false) {
+                    totals.push({
+                        type: 'tips',
+                        name: this.$translate.getText('TIP'),
+                        amount: this.$utils.toFixedSafe(tipAmount, 2)
+                    });
+                }
             }
+
             //if it is a returned order, the tip is negative and needs to be presented
             if (collections.PAYMENT_LIST[0].TRANS_TYPE === this.Enums().TransTypes.Return) {
                 if (collections.PAYMENT_LIST[0].TIP_AMOUNT !== 0) {
