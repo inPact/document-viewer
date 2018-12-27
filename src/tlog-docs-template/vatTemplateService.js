@@ -1,10 +1,10 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 
 export default class VatTemplateService {
     constructor(options) {
         this.$translate = new TlogDocsTranslateService(options);
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
     }
 
     isNegative(number) {

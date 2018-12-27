@@ -1,4 +1,4 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import SignatureService from './signatureService';
 
@@ -7,7 +7,7 @@ export default class CreditSlipService {
     constructor(options) {
         this._options = {};
         this.$translate = new TlogDocsTranslateService(options);
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
         this.$signatureService = new SignatureService();
         this._locale;
         this._isUS;
@@ -80,18 +80,19 @@ export default class CreditSlipService {
             }
 
 
-            let dateTimeStr = creditSlipDoc.PROVIDER_PAYMENT_DATE;
-            let dateTimeResult;
+
             let transactTimeText = this.$translate.getText('transactTimeText');
             let creditSlipTimeDiv = this._doc.createElement('div');
             creditSlipTimeDiv.classList += " creditSlipTimeDiv";
 
-            if (this._isUS) dateTimeResult = this.$utils.formatDateUS(dateTimeStr);
-            else if (!this._isUS) {
-                dateTimeResult = this.$utils.formatDateIL(dateTimeStr);
-            }
+
+            let providerPaymentDate = this.$utils.toDate({
+                isUS: this._isUS,
+                date: creditSlipDoc.PROVIDER_PAYMENT_DATE
+            });
+
             creditSlipTimeDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + ": " + (transactTimeText ? dateTimeResult : "") + "</div>" +
+                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + ": " + (transactTimeText ? providerPaymentDate : "") + "</div>" +
                 "</div>";
 
             creditSlipTimeDiv.classList += ' padding-bottom';

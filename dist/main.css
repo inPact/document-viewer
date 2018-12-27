@@ -1,3 +1,22 @@
+.text-transform-none {
+  text-transform: none; }
+
+.padding-top-0 {
+  padding-top: 0px !important; }
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  justify-content: center; }
+
+.flex {
+  display: flex; }
+
+.section-element {
+  padding: 8px 0px; }
+
 .basicTemplate {
   background-color: white;
   font-family: "Courier New", Courier, monospace;
@@ -57,7 +76,7 @@
 .basicTemplate .item-amount {
   display: flex;
   justify-content: flex-start;
-  flex: 3; }
+  flex: 4; }
 
 .basicTemplate .total-name {
   display: flex;

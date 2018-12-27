@@ -1,12 +1,15 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
+import HtmlCreator from '../helpers/htmlCreator.serivce';
+
 
 export default class HeaderService {
 
     constructor(options) {
         this._isUS = options.isUS;
         this.$translate = new TlogDocsTranslateService(options);
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
+        this.$htmlCreator = new HtmlCreator();
     }
 
 
@@ -82,7 +85,7 @@ export default class HeaderService {
                         tplHeaderLine.innerHTML = orgString;
                     }
                     else {
-                        tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_LEGAL_NAME
+                        tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_LEGAL_NAME;
                     }
                 }
                     break;
@@ -155,39 +158,45 @@ export default class HeaderService {
     fillOrderHeaderData(printData, htmlElement) {
 
         switch (htmlElement.id) {
+
             case 'tplOrderCustomer': {
-                if (printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
-                    var forText = this.$translate.getText("FOR");
-                    var BnOrSnText = this.$translate.getText("BN_OR_SN");
+
+                if (!this._docObj.isFullOrderBill && printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
+
                     var customerName = printData.collections.PAYMENT_LIST[0].CUSTOMER_NAME;
                     var customerId = printData.collections.PAYMENT_LIST[0].CUSTOMER_ID;
-                    htmlElement.innerHTML = "<div>" + forText + ": " + customerName + "</div><div>" + BnOrSnText + ": " + customerId + "</div>";
+
+                    htmlElement.innerHTML = `<div>${this.$translate.getText("FOR")} ${customerName}</div><div>${this.$translate.getText("BN_OR_SN")} ${customerId}</div>`
                     htmlElement.classList.add('align-text');
                     htmlElement.classList.add('m-bottom-10');
                 }
-            }
                 break;
+            }
+
 
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
-                    var dateStr = printData.variables.CREATED_AT;
-                    if (this._isUS) htmlElement.innerHTML = this.formatDateUS(dateStr);
 
-                    else if (!this._isUS) {
-                        htmlElement.innerHTML = this.formatDateIL(dateStr);
-                    }
+                    let createdDate = this.$utils.toDate({
+                        isUS: this._isUS,
+                        date: printData.variables.CREATED_AT
+                    });
+
+                    htmlElement.innerHTML = createdDate;
                     htmlElement.setAttribute('class', 'med-chars');
 
                 }
-            }
                 break;
+            }
+
             //Asked to take this down temporary
             case 'tplOrderTitle': {
                 if (this._docObj.title) {
                     htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + this._docObj.title; + "</div >"
                 }
-            }
                 break;
+            }
+
             case 'tplOrderType': {
                 if (printData.variables.ORDER_TYPE && printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {
                     var typeTranslate = this.$translate.getText("ORDER_TYPE")
@@ -197,8 +206,9 @@ export default class HeaderService {
                     htmlElement.setAttribute('class', 'med-chars');
 
                 }
-            }
                 break;
+            }
+
             case 'tplOrderTable': {
                 if (printData.variables.ORDER_TYPE === "SEATED" && printData.variables.TABLE_NO) {
                     var tableTranslate = this.$translate.getText("table")
@@ -206,18 +216,23 @@ export default class HeaderService {
                     htmlElement.setAttribute('class', 'med-chars');
 
                 }
-            }
                 break;
+            }
+
             case 'tplOrderServerClients': {
                 if (!(this._docData.documentType === "invoice") && !(this._docData.documentType === "deliveryNote")) {
                     var waiterTranslate = this.$translate.getText("Server")
                     var dinersTranslate = this.$translate.getText("Diners")
                     var firstName = printData.variables.F_NAME && printData.variables.F_NAME !== null ? printData.variables.F_NAME : '';
                     var lastName = printData.variables.L_NAME && printData.variables.L_NAME !== null ? printData.variables.L_NAME : '';
-                    htmlElement.innerHTML = `<span>${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - ${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</span>`;
+                    htmlElement.classList.add('flex-center');
+                    //htmlElement.innerHTML = `<span>${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - ${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</span>`;
+                    htmlElement.innerHTML = `<div class="flex">${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - </div><div class="flex">${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</div>`;
+
                 }
-            }
                 break;
+            }
+
             case 'tplcCheckNumber': {
                 var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
                 if (this._docData.documentType === "invoice" && invoiceNum) {
@@ -225,9 +240,8 @@ export default class HeaderService {
                     printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
                     htmlElement.innerHTML = `<span> ` + checkTranslate + " " + invoiceNum + `</span>`;
                 }
-            }
                 break;
-
+            }
 
         }
         return htmlElement;
@@ -260,16 +274,41 @@ export default class HeaderService {
             tplOrderInfoText.appendChild(taxExemptText);
 
             if (printData.variables.TAX_EXEMPTION_CODE) {
-                var isTaxExemptCodeDiv = this._doc.createElement('div');
-                isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
-                isTaxExemptCodeDiv.innerHTML = "<div class='bold'>" + printData.variables.TAX_EXEMPTION_CODE; + "</div>"
-                tplOrderInfoText.appendChild(isTaxExemptCodeDiv);
+
+
+                let elementTaxExemptCode = this.$htmlCreator.create(this._doc, {
+                    id: 'tax-exempt-code',
+                    type: 'div',
+                    classList: ['bold', 'text-transform-none'],
+                    value: printData.variables.TAX_EXEMPTION_CODE
+                });
+
+                // var isTaxExemptCodeDiv = this._doc.createElement('div');
+
+                // isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
+
+                // isTaxExemptCodeDiv.innerHTML = "<div class='bold'>" + printData.variables.TAX_EXEMPTION_CODE; + "</div>"
+
+                tplOrderInfoText.appendChild(elementTaxExemptCode);
             }
+
             if (printData.variables.TAX_EXEMPTION_COMMENT) {
-                var isTaxExemptCodeDiv = this._doc.createElement('div');
-                isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
-                isTaxExemptCodeDiv.innerHTML = printData.variables.TAX_EXEMPTION_COMMENT;
-                tplOrderInfoText.appendChild(isTaxExemptCodeDiv);
+
+
+                let elementTaxExemptComment = this.$htmlCreator.create(this._doc, {
+                    id: 'tax-exempt-comment',
+                    type: 'div',
+                    classList: ['text-transform-none'],
+                    value: printData.variables.TAX_EXEMPTION_COMMENT
+                });
+
+                // var isTaxExemptCodeDiv = this._doc.createElement('div');
+
+                // isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
+
+                // isTaxExemptCodeDiv.innerHTML = printData.variables.TAX_EXEMPTION_COMMENT;
+
+                tplOrderInfoText.appendChild(elementTaxExemptComment);
             }
         }
 
@@ -317,18 +356,6 @@ export default class HeaderService {
         }
 
         return htmlString;
-    }
-
-    formatDateUS(stringDate) {
-        var date = new Date(stringDate);
-        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
-            ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
-    }
-
-    formatDateIL(stringDate) {
-        var date = new Date(stringDate);
-        return ((date.getHours() > 9) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " +
-            date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " ";
     }
 
     isNegative(amount) {
