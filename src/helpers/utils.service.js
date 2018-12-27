@@ -55,7 +55,7 @@ export default class Utils {
         let minute = (date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes();
         let a = (date.getHours() > 12 ? "PM" : "AM");
 
-        return `${hour}:${minute} ${a} ${day}/${month}/${year}`;
+        return `${day}/${month}/${year} ${hour}:${minute} ${a}`;
 
         // return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
         //     ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
