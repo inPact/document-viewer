@@ -33,6 +33,7 @@ export default class HtmlCreator {
         let id = options.id;
         let classList = options.classList;
         let value = options.value;
+        let children = options.children;
 
         let element = doc.createElement(type);
 
@@ -42,7 +43,16 @@ export default class HtmlCreator {
             element.classList.add(c);
         });
 
-        element.innerHTML = value;
+        if (value !== undefined)
+            element.innerHTML = value;
+
+        if (children && children.length > 0) {
+
+            children.forEach(elementChild => {
+                element.appendChild(elementChild);
+            });
+
+        }
 
         return element;
     }

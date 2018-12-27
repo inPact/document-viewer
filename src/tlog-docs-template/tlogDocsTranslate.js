@@ -515,7 +515,7 @@ export default class TlogDocsTranslateService {
                 "RETURND_IN_CHARCHACCOUNT_FROM": "הוחזר בהקפה מ ",
                 "RETURNED_IN_CREDIT_FROM": "הוחזר באשראי מ",
                 "PAID_IN_CREDIT_FROM": "שולם באשראי מ",
-                "TRANSACTION_TIME": "זמן העיסקה",
+                "TRANSACTION_TIME": "זמן העסקה",
                 "TRANSACTION_NO": "מספר עסקה",
                 "APPROVAL_NO": "Approval no.",
                 "APPROVAL_NO": "מספר אישור",
