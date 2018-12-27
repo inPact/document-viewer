@@ -225,8 +225,9 @@ export default class HeaderService {
                     var dinersTranslate = this.$translate.getText("Diners")
                     var firstName = printData.variables.F_NAME && printData.variables.F_NAME !== null ? printData.variables.F_NAME : '';
                     var lastName = printData.variables.L_NAME && printData.variables.L_NAME !== null ? printData.variables.L_NAME : '';
+                    htmlElement.classList.add('flex-center');
                     //htmlElement.innerHTML = `<span>${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - ${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</span>`;
-                    htmlElement.innerHTML = `<span>${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - </span><span>${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</span>`;
+                    htmlElement.innerHTML = `<div class="flex">${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - </div><div class="flex">${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</div>`;
 
                 }
                 break;
