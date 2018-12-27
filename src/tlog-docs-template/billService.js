@@ -75,6 +75,11 @@ export default class BillService {
             offersList.forEach(offer => {
 
                 let isSplitCheck = false;
+                let isWeight = false;
+
+                if (offer.OFFER_UNITS !== undefined && offer.OFFER_UNITS !== null) {
+                    isWeight = true;
+                }
 
                 let offerQty = 0;
                 if (offer.SPLIT_DENOMINATOR && offer.SPLIT_NUMERATOR && offer.SPLIT_DENOMINATOR !== 100 && offer.SPLIT_NUMERATOR !== 100) {
@@ -95,10 +100,11 @@ export default class BillService {
                         oth.push(item)
                     } else {
 
-                        if (isReturnOrder) {
+                        if (isReturnOrder || isWeight) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
-                        } else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
+                        }
+                        else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2)
                             items.push(item);
                         } else if (isSplitCheck === true) {
