@@ -61,26 +61,41 @@ export default class DeliveryNoteTransactionDataService {
                 "<div class='total-amount " + this.isNegative(hAccountPayments.P_AMOUNT) + "'>" + (hAccountPayments.P_AMOUNT ? Number(hAccountPayments.P_AMOUNT).toFixed(2) : "") + "</div > " +
                 "</div>";
 
-            refundTextDiv.classList += " padding-bottom";
-            refundTextDiv.classList += " padding-top";
-            refundTextDiv.classList += " tpl-body-div";
+            refundTextDiv.classList.add('padding-bottom');
+            refundTextDiv.classList.add('padding-top');
+
+
+            if (hAccountPayments.P_CHANGE > 0) {
+                var cashBackText = this.$translate.getText('TOTAL_CASHBACK')
+                var cashBackDiv = this._doc.createElement('div');
+                cashBackDiv.classList.add('tpl-body-div');
+                cashBackDiv.innerHTML = "<div class='itemDiv'>" +
+                    "<div class='total-name'>" + (hAccountPayments ? cashBackText : "") + "</div>" +
+                    "<div class='total-amount " + this.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
+                    "</div>";
+
+                dNoteChargeAccntDiv.appendChild(cashBackDiv);
+            } else {
+                refundTextDiv.classList += " tpl-body-div";
+            }
 
             dNoteChargeAccntDiv.appendChild(refundTextDiv);
 
         }
+
         if (hAccountPayments) {
 
-            if (hAccountPayments.P_CHANGE > 0) {
-                var cashBackText = this.$translate.getText('TOTAL_CASHBACK')
-                var cashBackDiv = this._doc.createElement('div')
-                cashBackDiv.className += "cashBackDiv";
-                cashBackDiv.innerHTML = "<div class='changeDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? cashBackText : "") + "</div>" +
-                    "<div class='number-data " + this.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
-                    "</div>";
+            //  if (hAccountPayments.P_CHANGE > 0) {
+            //      var cashBackText = this.$translate.getText('TOTAL_CASHBACK')
+            //      var cashBackDiv = this._doc.createElement('div')
+            //      cashBackDiv.className += "cashBackDiv";
+            //      cashBackDiv.innerHTML = "<div class='changeDiv'>" +
+            //          "<div class='total-name'>" + (hAccountPayments ? cashBackText : "") + "</div>" +
+            //          "<div class='number-data " + this.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
+            //          "</div>";
 
-                dNoteChargeAccntDiv.appendChild(cashBackDiv);
-            }
+            //      dNoteChargeAccntDiv.appendChild(cashBackDiv);
+            //  }
 
             if (hAccountPayments.PROVIDER_TRANS_ID) {
                 var providerTransText = this.$translate.getText('CHARGE_TRANSACTION')
@@ -100,7 +115,7 @@ export default class DeliveryNoteTransactionDataService {
                 var cAccountNameDiv = this._doc.createElement('div')
                 cAccountNameDiv.id = "cAccountNameDiv";
                 cAccountNameDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? cAccountNameText : "") + ": " + "</div>" +
+                    "<div class='total-name'>" + (hAccountPayments ? cAccountNameText : "") + "</div>" +
                     "<div class='number-data'>" + (hAccountPayments.CHARGE_ACCOUNT_NAME ? hAccountPayments.CHARGE_ACCOUNT_NAME : "") +
                     "</div></div>"
 
@@ -113,7 +128,7 @@ export default class DeliveryNoteTransactionDataService {
                 var companyNameDiv = this._doc.createElement('div');
                 companyNameDiv.id = "companyNameDiv";
                 companyNameDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? companyNameText : "") + ": " + "</div>" +
+                    "<div class='total-name'>" + (hAccountPayments ? companyNameText : "") + "</div>" +
                     "<div class='number-data'>" + (hAccountPayments.COMPANY_NAME ? hAccountPayments.COMPANY_NAME : "") +
                     "</div></div>"
 
@@ -126,7 +141,7 @@ export default class DeliveryNoteTransactionDataService {
                 var lastFourDiv = this._doc.createElement('div')
                 lastFourDiv.id = "lastFourDiv";
                 lastFourDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? lastFourText : " ") + ": " + "</div>" +
+                    "<div class='total-name'>" + (hAccountPayments ? lastFourText : " ") + "</div>" +
                     "<div class='number-data'>" + (hAccountPayments.LAST_4 ? hAccountPayments.LAST_4 : " ") +
                     "</div></div>"
 
@@ -158,6 +173,7 @@ export default class DeliveryNoteTransactionDataService {
 
             }
         }
+
         dNoteChargeAccntDiv.classList += ' tpl-body-div';
         deliveryNoteTransactionDiv.appendChild(dNoteChargeAccntDiv);
         return deliveryNoteTransactionDiv;

@@ -795,7 +795,7 @@ export default class TemplateBuilderService {
     breakCustomerMessageFilter(str) {
         if (!str) return '';
 
-        str = this.$utils.replaceAll(str, ':', ' ');
+        //str = this.$utils.replaceAll(str, ':', ' ');
 
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br\/>$2');
     }
