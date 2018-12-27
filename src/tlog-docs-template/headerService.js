@@ -173,12 +173,13 @@ export default class HeaderService {
 
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
-                    var dateStr = printData.variables.CREATED_AT;
-                    if (this._isUS) htmlElement.innerHTML = this.formatDateUS(dateStr);
 
-                    else if (!this._isUS) {
-                        htmlElement.innerHTML = this.formatDateIL(dateStr);
-                    }
+                    let createdDate = this.$utils.toDate({
+                        isUS: this._isUS,
+                        date: printData.variables.CREATED_AT
+                    });
+
+                    htmlElement.innerHTML = createdDate;
                     htmlElement.setAttribute('class', 'med-chars');
 
                 }
@@ -347,17 +348,17 @@ export default class HeaderService {
         return htmlString;
     }
 
-    formatDateUS(stringDate) {
-        var date = new Date(stringDate);
-        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
-            ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
-    }
+    // formatDateUS(stringDate) {
+    //     var date = new Date(stringDate);
+    //     return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
+    //         ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
+    // }
 
-    formatDateIL(stringDate) {
-        var date = new Date(stringDate);
-        return ((date.getHours() > 9) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " +
-            date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " ";
-    }
+    // formatDateIL(stringDate) {
+    //     var date = new Date(stringDate);
+    //     return ((date.getHours() > 9) ? date.getHours() : "0" + date.getHours()) + ":" + ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " +
+    //         date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + " ";
+    // }
 
     isNegative(amount) {
         var intAmount = parseInt(amount);

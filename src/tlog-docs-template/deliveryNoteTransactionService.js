@@ -14,13 +14,13 @@ export default class DeliveryNoteTransactionDataService {
         return this.$utils.isNegative(number)
     }
 
-    formatDateIL(stringDate) {
-        return this.$utils.formatDateIL(stringDate);
-    }
+    // formatDateIL(stringDate) {
+    //     return this.$utils.formatDateIL(stringDate);
+    // }
 
-    formatDateUS(stringDate) {
-        return this.$utils.formatDateUS(stringDate);
-    }
+    // formatDateUS(stringDate) {
+    //     return this.$utils.formatDateUS(stringDate);
+    // }
 
     createDeliveryNoteTransactionData(printData, doc) {
         this._doc = doc;
@@ -146,17 +146,20 @@ export default class DeliveryNoteTransactionDataService {
 
                 printData.collections.HOUSE_ACCOUNT_PAYMENTS[0];
 
-                var dateTimeStr = hAccountPayments.PROVIDER_PAYMENT_DATE;
-                var dateTimeResult;
+
+
                 var transactionTimeText = this.$translate.getText('TRANSACTION_TIME')
                 var transactionTimeDiv = this._doc.createElement('div')
-                if (this._isUS) dateTimeResult = this.formatDateUS(dateTimeStr);
-                else if (!this._isUS) {
-                    dateTimeResult = this.formatDateIL(dateTimeStr);
-                }
+
+
+                let providerPaymentDate = this.$utils.toDate({
+                    isUS: this._isUS,
+                    date: hAccountPayments.PROVIDER_PAYMENT_DATE
+                });
+
                 transactionTimeDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (hAccountPayments ? transactionTimeText : "") + ": " + "</div>" +
-                    "<div class='number-data'>" + (hAccountPayments.PROVIDER_PAYMENT_DATE ? dateTimeResult : "") +
+                    "<div class='number-data'>" + (hAccountPayments.PROVIDER_PAYMENT_DATE ? providerPaymentDate : "") +
                     "</div></div>"
 
                 dNoteChargeAccntDiv.appendChild(transactionTimeDiv);

@@ -43,9 +43,20 @@ export default class Utils {
     }
 
     formatDateUS(stringDate) {
-        var date = new Date(stringDate);
-        return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
-            ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
+
+        let date = new Date(stringDate);
+
+        let day = date.getDate();
+        let month = (date.getMonth() + 1);
+        let year = date.getFullYear();
+        let hour = (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours());
+        let minute = (date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes();
+        let a = (date.getHours() > 12 ? "PM" : "AM");
+
+        return `${hour}:${minute} ${a} ${day}/${month}/${year}`;
+
+        // return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + " " + (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours()) + ":" +
+        //     ((date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes()) + " " + (date.getHours() > 12 ? "PM" : "AM");
     }
 
     formatDateIL(stringDate) {

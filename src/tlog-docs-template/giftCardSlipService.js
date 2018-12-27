@@ -77,16 +77,17 @@ export default class GiftCardSlipService {
             }
 
 
-            let dateTimeStr = giftCardSlipDoc.PROVIDER_PAYMENT_DATE;
-            let dateTimeResult;
+
             let transactTimeText = this.$translate.getText('transactTimeText');
             let giftCardSlipTimeDiv = this._doc.createElement('div')
-            if (this._isUS) dateTimeResult = this.$utils.formatDateUS(dateTimeStr);
-            else if (!this._isUS) {
-                dateTimeResult = this.$utils.formatDateIL(dateTimeStr);
-            }
+
+            let providerPaymentDate = this.$utils.toDate({
+                isUS: this._isUS,
+                date: giftCardSlipDoc.PROVIDER_PAYMENT_DATE
+            });
+
             giftCardSlipTimeDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + ": " + (transactTimeText ? dateTimeResult : "") + "</div>" +
+                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + ": " + (transactTimeText ? providerPaymentDate : "") + "</div>" +
                 "</div>";
 
             giftCardSlipTimeDiv.classList += ' padding-bottom';
@@ -192,7 +193,7 @@ export default class GiftCardSlipService {
                 giftCardSlipDiv.appendChild(this.$signatureService.getSignature(docObjChosen, signatureArea, this._doc));
 
             }
-            
+
         }
 
         return giftCardSlipDiv;
