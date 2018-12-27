@@ -64,6 +64,7 @@ export default class DeliveryNoteTransactionDataService {
             refundTextDiv.classList.add('padding-bottom');
             refundTextDiv.classList.add('padding-top');
 
+            dNoteChargeAccntDiv.appendChild(refundTextDiv);
 
             if (hAccountPayments.P_CHANGE > 0) {
                 var cashBackText = this.$translate.getText('TOTAL_CASHBACK')
@@ -79,7 +80,6 @@ export default class DeliveryNoteTransactionDataService {
                 refundTextDiv.classList += " tpl-body-div";
             }
 
-            dNoteChargeAccntDiv.appendChild(refundTextDiv);
 
         }
 
