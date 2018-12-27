@@ -263,10 +263,10 @@ export default class TemplateBuilderService {
 
                     var weightText = '';
                     if (this._isUS) {
-                        weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.amount}/${weightTranslate}`;
+                        weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
                     }
                     else {
-                        weightText = `${calcWeight} ${weightTranslate} @ ${item.amount} ${weightPerUnitTranslate}`;
+                        weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
                     }
 
                     var itemDiv = this._doc.createElement('div');

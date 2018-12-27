@@ -100,8 +100,12 @@ export default class BillService {
                         oth.push(item)
                     } else {
 
-                        if (isReturnOrder || isWeight) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
+                        if (isReturnOrder) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                            items.push(item);
+                        } else if (isWeight) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                            item.weightAmount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
                             items.push(item);
                         }
                         else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
