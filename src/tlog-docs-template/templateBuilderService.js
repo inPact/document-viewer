@@ -273,11 +273,11 @@ export default class TemplateBuilderService {
                         item.qty = '&nbsp;&nbsp;';
                         item.space = "&emsp;";
                     }
-                    var itemAmountResolve = isWeightItem ? printData.variables.OFFER_AMOUNT : item.amount;
+
                     itemDiv.innerHTML = "<div class='itemDiv'>" +
                         "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
                         "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
-                        "<div class='total-amount " + this.$utils.isNegative(itemAmountResolve) + "'>" + (itemAmountResolve ? this.twoDecimals(itemAmountResolve) : "") + "</div>" +
+                        "<div class='total-amount " + this.$utils.isNegative(itemAmountResolve) + "'>" + (this.twoDecimals(item.amount)) + "</div>" +
                         "</div>"
 
                     var weightDiv = this._doc.createElement('div');
