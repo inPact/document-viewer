@@ -276,7 +276,7 @@ export default class HeaderService {
             if (printData.variables.TAX_EXEMPTION_CODE) {
 
 
-                let elementTaxExemptCode = this.$htmlCreator.create(this._doc, {
+                let elementTaxExemptCode = this.$htmlCreator.create({
                     id: 'tax-exempt-code',
                     type: 'div',
                     classList: ['bold', 'text-transform-none'],
@@ -295,7 +295,7 @@ export default class HeaderService {
             if (printData.variables.TAX_EXEMPTION_COMMENT) {
 
 
-                let elementTaxExemptComment = this.$htmlCreator.create(this._doc, {
+                let elementTaxExemptComment = this.$htmlCreator.create({
                     id: 'tax-exempt-comment',
                     type: 'div',
                     classList: ['text-transform-none'],

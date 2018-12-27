@@ -27,7 +27,9 @@ export default class HtmlCreator {
         return elementSection;
     }
 
-    create(doc, options) {
+    create(options) {
+
+        let doc = DocumentFactory.get();
 
         let type = options.type;
         let id = options.id;
