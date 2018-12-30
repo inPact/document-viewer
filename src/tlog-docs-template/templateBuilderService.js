@@ -303,7 +303,7 @@ export default class TemplateBuilderService {
                     let elementItemContainer = this.$htmlCreator.create({
                         type: 'div',
                         id: `item-${index}`,
-                        classList: item.isOffer ? ['bold'] : ['itemDiv'],
+                        classList: item.isOffer ? ['bold', 'itemDiv'] : ['itemDiv'],
                         children: [
                             elementItemQty,
                             elementItemName,
