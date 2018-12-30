@@ -328,8 +328,15 @@ export default class TemplateBuilderService {
                         let elementWeightItemValue = this.$htmlCreator.create({
                             type: 'div',
                             id: `weight-item-value-${index}`,
-                            classList: ['total-amount'],
+                            classList: ['item-name'],
                             value: weightText
+                        });
+
+                        let elementWeightItemAmount = this.$htmlCreator.create({
+                            type: 'div',
+                            id: `weight-item-amount-${index}`,
+                            classList: ['total-amount'],
+                            value: ""
                         });
 
                         let elementWeightItemContainer = this.$htmlCreator.create({
@@ -338,7 +345,8 @@ export default class TemplateBuilderService {
                             classList: ['itemDiv'],
                             children: [
                                 elementWeightItemQty,
-                                elementWeightItemValue
+                                elementWeightItemValue,
+                                elementWeightItemAmount
                             ]
                         });
 
