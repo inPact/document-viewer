@@ -9,7 +9,10 @@ export default class CreditTransaction {
     constructor(options) {
         this.$htmlCreator = new HtmlCreator();
         this.$utils = new Utils();
-        this.$translate = new TlogDocsTranslateService();
+        this.$translate = new TlogDocsTranslateService({
+            isUS: options.isUS,
+            locale: options.locale
+        });
     }
 
     get(options) {

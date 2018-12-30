@@ -36,7 +36,7 @@ export default class TemplateBuilderService {
         this.$addTaxData = new AddTaxDataService(options);
         this.$localization = new Localization({ isUS: this._isUS });
         this.$htmlCreator = new HtmlCreator();
-        this.$creditTransaction = new CreditTransaction();
+        this.$creditTransaction = new CreditTransaction(options);
     }
 
     _configure(options) {
