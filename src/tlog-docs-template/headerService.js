@@ -198,9 +198,9 @@ export default class HeaderService {
             }
 
             case 'tplOrderType': {
-                if (printData.variables.ORDER_TYPE && printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {
+                if (printData.variables.ORDER_BILL_TYPE) {
                     var typeTranslate = this.$translate.getText("ORDER_TYPE")
-                    var orderType = "ORDER_TYPES_" + printData.variables.ORDER_TYPE;
+                    var orderType = "ORDER_TYPES_" + printData.variables.ORDER_BILL_TYPE;
                     var typeDataTranslate = this.$translate.getText(orderType);
                     htmlElement.innerHTML = "<div class='centralize' style='justify-content:center;'>" + this.orderWordsByLocale(typeTranslate, typeDataTranslate, printData.variables.ORDER_NO) + "</div > "
                     htmlElement.setAttribute('class', 'med-chars');
@@ -210,7 +210,7 @@ export default class HeaderService {
             }
 
             case 'tplOrderTable': {
-                if (printData.variables.ORDER_TYPE === "SEATED" && printData.variables.TABLE_NO) {
+                if ((printData.variables.ORDER_TYPE === "SEATED" || printData.variables.ORDER_TYPE === "REFUND") && printData.variables.TABLE_NO) {
                     var tableTranslate = this.$translate.getText("table")
                     htmlElement.innerHTML = tableTranslate + " " + printData.variables.TABLE_NO;
                     htmlElement.setAttribute('class', 'med-chars');
@@ -220,16 +220,16 @@ export default class HeaderService {
             }
 
             case 'tplOrderServerClients': {
-                if (!(this._docData.documentType === "invoice") && !(this._docData.documentType === "deliveryNote")) {
-                    var waiterTranslate = this.$translate.getText("Server")
-                    var dinersTranslate = this.$translate.getText("Diners")
-                    var firstName = printData.variables.F_NAME && printData.variables.F_NAME !== null ? printData.variables.F_NAME : '';
-                    var lastName = printData.variables.L_NAME && printData.variables.L_NAME !== null ? printData.variables.L_NAME : '';
-                    htmlElement.classList.add('flex-center');
-                    //htmlElement.innerHTML = `<span>${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - ${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</span>`;
-                    htmlElement.innerHTML = `<div class="flex">${waiterTranslate} ${firstName} ${lastName.substring(0, 1)}</div><div>&nbsp;-&nbsp;</div><div class="flex">${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</div>`;
+                // if (!(this._docData.documentType === "invoice") && !(this._docData.documentType === "deliveryNote")) {
+                var waiterTranslate = this.$translate.getText("Server")
+                var dinersTranslate = this.$translate.getText("Diners")
+                var firstName = printData.variables.F_NAME && printData.variables.F_NAME !== null ? printData.variables.F_NAME : '';
+                var lastName = printData.variables.L_NAME && printData.variables.L_NAME !== null ? printData.variables.L_NAME : '';
+                htmlElement.classList.add('flex-center');
+                //htmlElement.innerHTML = `<span>${waiterTranslate} ${firstName} ${lastName.substring(0, 1)} - ${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</span>`;
+                htmlElement.innerHTML = `<div class="flex">${waiterTranslate} ${firstName} ${lastName.substring(0, 1)}</div><div>&nbsp;-&nbsp;</div><div class="flex">${printData.variables.NUMBER_OF_GUESTS} ${dinersTranslate}</div>`;
 
-                }
+                // }
                 break;
             }
 

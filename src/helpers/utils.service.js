@@ -99,5 +99,33 @@ export default class Utils {
         return text.replace(new RegExp(search, 'g'), replacement);
     };
 
+    generateGuid(options) {
+
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+
+        if (options && options.count) {
+
+            let result = '';
+
+            for (let index = 0; index < options.count; index++) {
+
+                if (index > 1) {
+                    result += '-';
+                }
+
+                result += s4() + s4();
+            }
+
+            return result;
+        }
+        else {
+            return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+                s4() + '-' + s4() + s4() + s4();
+        }
+    };
 
 }
