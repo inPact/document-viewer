@@ -26,7 +26,16 @@ export default class CreditTransaction {
             classList: []
         });
 
+        console.log("----------creditTransaction.LAST_4");
+        console.log(creditTransaction.LAST_4);
+        console.log("-------------creditTransaction.LAST_4");
+
         if (creditTransaction.LAST_4) {
+
+
+            console.log("creditTransaction.LAST_4");
+            console.log(creditTransaction.LAST_4);
+            console.log("creditTransaction.LAST_4");
 
             let elementLast4Text = this.$htmlCreator.create({
                 type: 'div',
