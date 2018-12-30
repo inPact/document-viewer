@@ -105,12 +105,6 @@ export default class TemplateBuilderService {
         if (docObjChosen.type === 'clubMembers') {
 
 
-            console.log("clubMembers-clubMembers");
-            console.log("clubMembers-clubMembers");
-            console.log("clubMembers-clubMembers");
-            console.log("clubMembers-clubMembers");
-            console.log("clubMembers-clubMembers");
-
             let elementClubMember = this.$clubMembersService.get({
                 totalAmount: this._printData.variables.TOTAL_AMOUNT,
                 members: this._printData.collections.MEMBERS
@@ -283,7 +277,7 @@ export default class TemplateBuilderService {
                         type: 'div',
                         id: `item-name-${index}`,
                         classList: ['item-name'],
-                        value: item.isOffer ? `${item.name}` : `&nbsp;&nbsp;${item.name}`
+                        value: item.isOffer ? `${item.name || ''}` : `&nbsp;&nbsp;${item.name || ''}`
                     });
 
                     let classList = ['total-amount'];
