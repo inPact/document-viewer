@@ -14,8 +14,12 @@ export default class CreditTransaction {
 
     get(options) {
 
-        let isUS = this._isUS;
+        let isUS = this.isUS;
         let creditTransaction = options.data;
+
+        console.log("creditTransaction");
+        console.log(creditTransaction);
+        console.log("creditTransaction");
 
         let creditTransactionContainer = this.$htmlCreator.createSection({
             id: 'credit-transaction',
@@ -56,7 +60,7 @@ export default class CreditTransaction {
         if (creditTransaction.PROVIDER_PAYMENT_DATE) {
 
             let providerPaymentDate = this.$utils.toDate({
-                _isUS: this._isUS,
+                isUS: isUS,
                 date: creditTransaction.PROVIDER_PAYMENT_DATE
             });
 
