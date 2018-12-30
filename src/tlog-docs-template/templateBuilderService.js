@@ -37,6 +37,7 @@ export default class TemplateBuilderService {
         this.$localization = new Localization({ isUS: this._isUS });
         this.$htmlCreator = new HtmlCreator();
         this.$creditTransaction = new CreditTransaction(options);
+        this.$clubMembersService = new ClubMembersService(options);
     }
 
     _configure(options) {
@@ -64,6 +65,13 @@ export default class TemplateBuilderService {
     }
 
     createDocTemplate(docObjChosen, options = {}) {
+
+        // switch (docObjChosen.type) {
+        //     case 'clubMember': {
+        //         return clubMemberService.get();
+        //     }
+        // }
+
         this._excludeHeader = options.excludeHeader ? options.excludeHeader : false;
         var docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
@@ -90,6 +98,23 @@ export default class TemplateBuilderService {
         var checkInIL;
         if (this._locale == 'he-IL' && docObjChosen.documentType === 'check') {
             checkInIL = true;
+        }
+
+        if (docObjChosen.type === 'clubMembers') {
+
+
+            console.log("clubMembers-clubMembers");
+            console.log("clubMembers-clubMembers");
+            console.log("clubMembers-clubMembers");
+            console.log("clubMembers-clubMembers");
+            console.log("clubMembers-clubMembers");
+
+            let elementClubMember = this.$clubMembersService.get({
+                totalAmount: this._printData.variables.TOTAL_AMOUNT,
+                members: this._printData.collections.MEMBERS
+            });
+
+            docTemplate.appendChild(elementClubMember);
         }
 
         this._isGiftCardBill = docObjChosen.isGiftCardBill ? true : false;
