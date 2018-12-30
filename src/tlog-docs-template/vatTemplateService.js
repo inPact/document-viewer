@@ -116,7 +116,7 @@ export default class VatTemplateService {
                 type: 'div',
                 id: 'total-amount-value',
                 classList: classList,
-                value: this.$utils.toFixedSafe(printData.variables.TOTAL_AMOUNT)
+                value: this.$utils.toFixedSafe(printData.variables.TOTAL_AMOUNT, 2)
             });
 
             let elementTotalAmount = this.$htmlCreator.create({
@@ -186,12 +186,12 @@ export default class VatTemplateService {
 
             vatTextDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_INCLUDED_TAX) ? vatTranslate : "") + " " + vat.VAT_PERCENT + "%" + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.TOTAL_INCLUDED_TAX) + "'>" + this.$utils.toFixedSafe(vat.TOTAL_INCLUDED_TAX) + "</div>" +
+                "<div class='total-amount " + this.isNegative(vat.TOTAL_INCLUDED_TAX) + "'>" + this.$utils.toFixedSafe(vat.TOTAL_INCLUDED_TAX, 2) + "</div>" +
                 "</div>";
 
             includeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_IN_VAT) ? includeVatTranslate : "") + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.TOTAL_IN_VAT) + "'>" + this.$utils.toFixedSafe(vat.TOTAL_IN_VAT) + "</div>" +
+                "<div class='total-amount " + this.isNegative(vat.TOTAL_IN_VAT) + "'>" + this.$utils.toFixedSafe(vat.TOTAL_IN_VAT, 2) + "</div>" +
                 "</div>";
         }
 
