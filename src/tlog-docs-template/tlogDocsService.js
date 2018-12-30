@@ -2,6 +2,7 @@ import TemplateBuilderService from './templateBuilderService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import BillService from './billService';
 import _ from 'lodash';
+import Utils from '../helpers/utils.service';
 
 export default class TlogDocsService {
 
@@ -13,6 +14,7 @@ export default class TlogDocsService {
 
         this.$templateBuilder = new TemplateBuilderService(options);
         this.$translate = new TlogDocsTranslateService(options);
+        this.$utils = new Utils();
     }
 
     Enums() {
@@ -132,7 +134,7 @@ export default class TlogDocsService {
 
                     orderSelection.push({
                         tlogId: tlog._id,
-                        id: tlog._id,
+                        id: this.$utils.generateGuid({ count: 3 }),// 'clubMembers', // patch id
                         type: 'clubMembers',
                         title: this.$translate.getText('clubMembers'),
                         ep: `tlogs/${tlog._id}/bill`,
