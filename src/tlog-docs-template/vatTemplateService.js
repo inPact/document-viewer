@@ -97,7 +97,7 @@ export default class VatTemplateService {
 
             vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.ITEM_AMOUNT) + "'>" + (this.notEmpty(vat.ITEM_AMOUNT) ? this.twoDecimals(vat.ITEM_AMOUNT) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(vat.TOTAL_AMOUNT) + "'>" + (this.notEmpty(vat.TOTAL_AMOUNT) ? this.twoDecimals(vat.TOTAL_AMOUNT) : "") + "</div>" +
                 "</div>"
 
             vatTemplate.appendChild(vatHeaderDiv);
