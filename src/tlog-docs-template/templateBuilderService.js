@@ -9,6 +9,7 @@ import CreditSlipService from './creditSlipService';
 import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
 import Utils from '../helpers/utils.service';
+import htmlCreator from '../helpers/htmlCreator.serivce';
 import Localization from '../helpers/localization.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 
@@ -246,58 +247,93 @@ export default class TemplateBuilderService {
                 //in case it is return order, we don't want to show return of item the did not cost anything
                 if (!(data.isReturnOrder && this._docObj.isFullOrderBill && (!item.amount || item.amount === '0.00'))) {
 
-                    var orderdOfferListExists = printData.collections.ORDERED_OFFERS_LIST.length > 0 ? true : false;
-                    var offerListIndex = orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] ? orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] : null;
+                    // var orderdOfferListExists = printData.collections.ORDERED_OFFERS_LIST.length > 0 ? true : false;
+                    // var offerListIndex = orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] ? orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] : null;
 
-                    var offerUnits = offerListIndex ? offerListIndex.OFFER_UNITS : null;
+                    // var offerUnits = offerListIndex ? offerListIndex.OFFER_UNITS : null;
 
-                    var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
+                    // var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
 
-                    var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
-                    var isGram = isWeightItem && weightUnit === 'kg' && offerUnits < 1;
+                    // var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
+                    // var isGram = isWeightItem && weightUnit === 'kg' && offerUnits < 1;
 
-                    var calcWeight = isGram ? offerUnits * 1000 : offerUnits;
-                    var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
-                    var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
-                    var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
+                    // var calcWeight = isGram ? offerUnits * 1000 : offerUnits;
+                    // var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
+                    // var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
+                    // var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
 
-                    var weightText = '';
-                    if (this._isUS) {
-                        weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
-                    }
-                    else {
-                        weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
-                    }
+                    // var weightText = '';
+                    // if (this._isUS) {
+                    //     weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
+                    // }
+                    // else {
+                    //     weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
+                    // }
 
-                    var itemDiv = this._doc.createElement('div');
-                    if (item.isOffer) {
-                        itemDiv.classList.add("bold");
-                        item.space = "";
-                    }
-                    else if (!item.isOffer) {
-                        itemDiv.classList.add("itemDiv");
-                        item.qty = '&nbsp;&nbsp;';
-                        item.space = "&emsp;";
-                    }
 
-                    itemDiv.innerHTML = "<div class='itemDiv'>" +
-                        "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
-                        "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
-                        "<div class='total-amount " + this.$utils.isNegative(item.amount) + "'>" + (this.$utils.twoDecimals(item.amount)) + "</div>" +
-                        "</div>"
 
-                    var weightDiv = this._doc.createElement('div');
-                    weightDiv.classList += "weightDiv";
-                    if (isWeightItem) {
-                        weightDiv.innerHTML = "<div class='itemDiv'>" +
-                            "<div class='item-qty'>" + " " + "</div>" + " " +
-                            "<div class='item-name'>" + (weightText ? weightText : "") + "</div>" + " " +
-                            "<div class='total-amount>" + " " + "</div>" +
-                            "</div>"
+                    let elementItemQty = htmlCreator.create({
+                        type: 'div',
+                        id: `item-qty-${index}`,
+                        classList: ['item-qty'],
+                        value: item.qty
+                    });
 
-                        itemDiv.appendChild(weightDiv);
-                    }
-                    htmlElement.appendChild(itemDiv);
+                    let elementItemName = htmlCreator.create({
+                        type: 'div',
+                        id: `item-name-${index}`,
+                        classList: ['item-name'],
+                        value: item.isOffer ? `  ${item.name}` : item.name
+                    });
+
+                    let elementItemAmount = htmlCreator.create({
+                        type: 'div',
+                        id: `item-amount-${index}`,
+                        classList: ['total-amount', this.$utils.isNegative(item.amount)],
+                        value: this.$utils.twoDecimals(item.amount)
+                    });
+
+                    let elementItemContainer = htmlCreator.create({
+                        type: 'div',
+                        id: `item-${index}`,
+                        classList: item.isOffer ? ['bold'] : ['itemDiv'],
+                        children: [
+                            elementItemQty,
+                            elementItemName,
+                            elementItemAmount
+                        ]
+                    });
+
+                    // var itemDiv = this._doc.createElement('div');
+                    // if (item.isOffer) {
+                    //     itemDiv.classList.add("bold");
+                    //     item.space = "";
+                    // }
+                    // else if (!item.isOffer) {
+                    //     itemDiv.classList.add("itemDiv");
+                    //     item.qty = '&nbsp;&nbsp;';
+                    //     item.space = "&emsp;";
+                    // }
+
+                    // itemDiv.innerHTML = "<div class='itemDiv'>" +
+                    //     "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
+                    //     "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
+                    //     "<div class='total-amount " + this.$utils.isNegative(item.amount) + "'>" + (this.$utils.twoDecimals(item.amount)) + "</div>" +
+                    //     "</div>"
+
+                    // var weightDiv = this._doc.createElement('div');
+                    // weightDiv.classList += "weightDiv";
+                    // if (isWeightItem) {
+                    //     weightDiv.innerHTML = "<div class='itemDiv'>" +
+                    //         "<div class='item-qty'>" + " " + "</div>" + " " +
+                    //         "<div class='item-name'>" + (weightText ? weightText : "") + "</div>" + " " +
+                    //         "<div class='total-amount>" + " " + "</div>" +
+                    //         "</div>"
+
+                    //     itemDiv.appendChild(weightDiv);
+                    // }
+
+                    htmlElement.appendChild(elementItemContainer);
                 }
             })
         }
