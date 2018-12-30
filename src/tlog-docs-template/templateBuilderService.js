@@ -13,6 +13,8 @@ import HtmlCreator from '../helpers/htmlCreator.serivce';
 import Localization from '../helpers/localization.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 import CreditTransaction from '../services/creditTransaction.service';
+import ClubMembersService from '../services/clubMembers.service';
+
 
 
 export default class TemplateBuilderService {
