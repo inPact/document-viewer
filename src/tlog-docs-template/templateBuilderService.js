@@ -348,7 +348,7 @@ export default class TemplateBuilderService {
                         let elementWeightItemContainer = this.$htmlCreator.create({
                             type: 'div',
                             id: `weight-item-${index}`,
-                            classList: ['itemDiv', 'fs-12 '],
+                            classList: ['itemDiv', 'fs-12'],
                             children: [
                                 elementWeightItemQty,
                                 elementWeightItemValue,
