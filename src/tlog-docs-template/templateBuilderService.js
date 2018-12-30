@@ -9,7 +9,7 @@ import CreditSlipService from './creditSlipService';
 import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
 import Utils from '../helpers/utils.service';
-import htmlCreator from '../helpers/htmlCreator.serivce';
+import HtmlCreator from '../helpers/htmlCreator.serivce';
 import Localization from '../helpers/localization.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 
@@ -34,6 +34,7 @@ export default class TemplateBuilderService {
         this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
         this.$localization = new Localization({ isUS: this._isUS });
+        this.$htmlCreator = new HtmlCreator();
     }
 
     _configure(options) {
@@ -272,28 +273,28 @@ export default class TemplateBuilderService {
 
 
 
-                    let elementItemQty = htmlCreator.create({
+                    let elementItemQty = this.$htmlCreator.create({
                         type: 'div',
                         id: `item-qty-${index}`,
                         classList: ['item-qty'],
                         value: item.qty
                     });
 
-                    let elementItemName = htmlCreator.create({
+                    let elementItemName = this.$htmlCreator.create({
                         type: 'div',
                         id: `item-name-${index}`,
                         classList: ['item-name'],
                         value: item.isOffer ? `  ${item.name}` : item.name
                     });
 
-                    let elementItemAmount = htmlCreator.create({
+                    let elementItemAmount = this.$htmlCreator.create({
                         type: 'div',
                         id: `item-amount-${index}`,
                         classList: ['total-amount', this.$utils.isNegative(item.amount)],
                         value: this.$utils.twoDecimals(item.amount)
                     });
 
-                    let elementItemContainer = htmlCreator.create({
+                    let elementItemContainer = this.$htmlCreator.create({
                         type: 'div',
                         id: `item-${index}`,
                         classList: item.isOffer ? ['bold'] : ['itemDiv'],
