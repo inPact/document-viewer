@@ -14,6 +14,12 @@
 .flex {
   display: flex; }
 
+.fs-12 {
+  font-size: 12px; }
+
+.margin-15-0 {
+  margin: 15px 0px; }
+
 .section-element {
   padding: 10px 0px; }
 
