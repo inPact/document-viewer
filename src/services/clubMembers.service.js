@@ -42,8 +42,8 @@ export default class ClubMembers {
         let elementTotalAmountValue = this.$htmlCreator.create({
             type: 'div',
             id: 'club-members-amount-value',
-            classList: ['number-data'],
-            value: totalAmount || ''
+            classList: ['total-amount'],
+            value: this.$utils.toFixedSafe(totalAmount, 2) || ''
         });
 
         let elementTotalAmount = this.$htmlCreator.create({
