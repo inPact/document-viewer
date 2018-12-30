@@ -291,7 +291,7 @@ export default class TemplateBuilderService {
                     let elementItemContainer = this.$htmlCreator.create({
                         type: 'div',
                         id: `item-${index}`,
-                        classList: item.isOffer ? ['bold', 'itemDiv'] : ['itemDiv'],
+                        classList: item.isOffer ? ['itemDiv', 'bold'] : ['itemDiv'],
                         children: [
                             elementItemQty,
                             elementItemName,
@@ -312,17 +312,17 @@ export default class TemplateBuilderService {
 
                         var weightText = '';
                         if (this._isUS) {
-                            weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
+                            weightText = `&nbsp;&nbsp;${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
                         }
                         else {
-                            weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
+                            weightText = `&nbsp;&nbsp;${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
                         }
 
 
                         let elementWeightItemValue = this.$htmlCreator.create({
                             type: 'div',
                             id: `weight-item-value-${index}`,
-                            classList: classList,
+                            classList: ['total-amount'],
                             value: weightText
                         });
 
