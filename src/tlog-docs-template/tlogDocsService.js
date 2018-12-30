@@ -122,15 +122,7 @@ export default class TlogDocsService {
 
                 let members = tlog.order[0].diners.filter(c => c.member !== undefined && c.member !== null);
 
-                console.log("members");
-                console.log(members);
-                console.log("members");
-
                 if (members.length > 0) {
-
-                    console.log("members");
-                    console.log(members);
-                    console.log("members");
 
                     orderSelection.push({
                         tlogId: tlog._id,

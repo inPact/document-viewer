@@ -110,7 +110,6 @@ export default class ClubMembers {
         ClubMembersContainer.appendChild(ClubMembersAmountSection);
         ClubMembersContainer.appendChild(ClubMembersSection);
 
-        console.log(ClubMembersContainer);
 
         return ClubMembersContainer;
 
