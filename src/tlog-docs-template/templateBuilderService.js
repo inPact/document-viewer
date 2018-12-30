@@ -174,7 +174,7 @@ export default class TemplateBuilderService {
             }
 
 
-            if (this._printData.variables.CUSTOMER_MESSAGE) {
+            if (this._printData.variables.CUSTOMER_MESSAGE && docObjChosen.isFullOrderBill) {
                 var customerMessageDiv = this.createCustomerMessage(this._printData, this._doc);
                 if (customerMessageDiv !== null) docTemplate.appendChild(customerMessageDiv)
             }
