@@ -20,25 +20,12 @@ export default class CreditTransaction {
         let isUS = this.isUS;
         let creditTransaction = options.data;
 
-        console.log("creditTransaction");
-        console.log(creditTransaction);
-        console.log("creditTransaction");
-
         let creditTransactionContainer = this.$htmlCreator.createSection({
             id: 'credit-transaction',
             classList: []
         });
 
-        console.log("----------creditTransaction.LAST_4");
-        console.log(creditTransaction.LAST_4);
-        console.log("-------------creditTransaction.LAST_4");
-
         if (creditTransaction.LAST_4) {
-
-
-            console.log("creditTransaction.LAST_4");
-            console.log(creditTransaction.LAST_4);
-            console.log("creditTransaction.LAST_4");
 
             let elementLast4Text = this.$htmlCreator.create({
                 type: 'div',

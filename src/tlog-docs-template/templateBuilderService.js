@@ -536,10 +536,6 @@ export default class TemplateBuilderService {
     fillOrderTotals(htmlElement, printData) {
         if (printData.data.totals.length > 0) {
 
-            console.log('totals');
-            console.log(printData.data.totals);
-            console.log('totals');
-
             // if (!_isUS) {
             printData.data.totals.forEach(total => {
                 var isCheckTotal = total.name === 'Check Total';
