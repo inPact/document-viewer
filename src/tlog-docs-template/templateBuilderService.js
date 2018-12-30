@@ -258,18 +258,6 @@ export default class TemplateBuilderService {
                     // var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
                     // var isGram = isWeightItem && weightUnit === 'kg' && offerUnits < 1;
 
-                    // var calcWeight = isGram ? offerUnits * 1000 : offerUnits;
-                    // var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
-                    // var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
-                    // var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
-
-                    // var weightText = '';
-                    // if (this._isUS) {
-                    //     weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
-                    // }
-                    // else {
-                    //     weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
-                    // }
 
 
 
@@ -284,7 +272,7 @@ export default class TemplateBuilderService {
                         type: 'div',
                         id: `item-name-${index}`,
                         classList: ['item-name'],
-                        value: item.isOffer ? `  ${item.name}` : item.name
+                        value: item.isOffer ? `${item.name}` : `&nbsp;&nbsp;${item.name}`
                     });
 
                     let classList = ['total-amount'];
@@ -310,6 +298,46 @@ export default class TemplateBuilderService {
                             elementItemAmount
                         ]
                     });
+
+                    htmlElement.appendChild(elementItemContainer);
+
+                    if (item.isWeight) {
+
+                        var isGram = item.isWeight && printData.variables.BASIC_WEIGHT_UOM === 'kg' && item.units < 1;
+
+                        var calcWeight = isGram ? item.units * 1000 : item.units;
+                        var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
+                        var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
+                        var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
+
+                        var weightText = '';
+                        if (this._isUS) {
+                            weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
+                        }
+                        else {
+                            weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
+                        }
+
+
+                        let elementWeightItemValue = this.$htmlCreator.create({
+                            type: 'div',
+                            id: `weight-item-value-${index}`,
+                            classList: classList,
+                            value: weightText
+                        });
+
+                        let elementWeightItemContainer = this.$htmlCreator.create({
+                            type: 'div',
+                            id: `weight-item-${index}`,
+                            classList: ['itemDiv'],
+                            children: [
+                                elementWeightItemValue
+                            ]
+                        });
+
+
+                        htmlElement.appendChild(elementWeightItemContainer);
+                    }
 
                     // var itemDiv = this._doc.createElement('div');
                     // if (item.isOffer) {
@@ -340,7 +368,6 @@ export default class TemplateBuilderService {
                     //     itemDiv.appendChild(weightDiv);
                     // }
 
-                    htmlElement.appendChild(elementItemContainer);
                 }
             })
         }
