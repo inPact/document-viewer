@@ -502,7 +502,7 @@ export default class BillService {
         if (payment.P_TENDER_TYPE === 'creditCard' || payment.P_TENDER_TYPE === 'gidtCard') {
             paymentName = refund !== '' ? `${refund} (${payment.CARD_TYPE} ${payment.LAST_4})` : `${payment.CARD_TYPE} ${payment.LAST_4}`;
         } else {
-            paymentName = `${payment.P_NAME} ${refund}`;
+            paymentName = `${refund} ${payment.P_NAME}`;
         }
 
         return paymentName;
