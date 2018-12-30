@@ -312,12 +312,18 @@ export default class TemplateBuilderService {
 
                         var weightText = '';
                         if (this._isUS) {
-                            weightText = `&nbsp;&nbsp;${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
+                            weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
                         }
                         else {
-                            weightText = `&nbsp;&nbsp;${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
+                            weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
                         }
 
+                        let elementWeightItemQty = this.$htmlCreator.create({
+                            type: 'div',
+                            id: `weight-item-qty-${index}`,
+                            classList: ['item-qty'],
+                            value: ""
+                        });
 
                         let elementWeightItemValue = this.$htmlCreator.create({
                             type: 'div',
@@ -331,6 +337,7 @@ export default class TemplateBuilderService {
                             id: `weight-item-${index}`,
                             classList: ['itemDiv'],
                             children: [
+                                elementWeightItemQty,
                                 elementWeightItemValue
                             ]
                         });
