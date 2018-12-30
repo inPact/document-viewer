@@ -1,10 +1,12 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
+import HtmlCreator from '../helpers/htmlCreator.serivce';
 
 export default class VatTemplateService {
     constructor(options) {
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
+        this.$htmlCreator = new HtmlCreator();
     }
 
     isNegative(number) {
@@ -95,12 +97,45 @@ export default class VatTemplateService {
             vat.TOTAL_IN_VAT = printData.variables.TOTAL_IN_VAT;
             vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
 
-            vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.TOTAL_AMOUNT) + "'>" + (this.notEmpty(vat.TOTAL_AMOUNT) ? this.twoDecimals(vat.TOTAL_AMOUNT) : "") + "</div>" +
-                "</div>"
 
-            vatTemplate.appendChild(vatHeaderDiv);
+
+
+            let elementTotalAmountText = this.$htmlCreator.create({
+                type: 'div',
+                id: 'total-amount-text',
+                classList: ['total-name'],
+                value: (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") // copy from ilan code.
+            });
+
+            let classList = ['total-amount'];
+            let negativeClass = this.$utils.isNegative(item.amount);
+            if (negativeClass !== "") {
+                classList.push(negativeClass);
+            }
+
+            let elementTotalAmountValue = this.$htmlCreator.create({
+                type: 'div',
+                id: 'total-amount-value',
+                classList: classList,
+                value: this.$utils.toFixedSafe(printData.variables.TOTAL_AMOUNT)
+            });
+
+            let elementTotalAmount = this.$htmlCreator.create({
+                type: 'div',
+                id: 'total-amount',
+                classList: ['itemDiv'],
+                children: [
+                    elementTotalAmountText,
+                    elementTotalAmountValue
+                ]
+            });
+
+            // vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
+            //     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
+            //     "<div class='total-amount " + this.isNegative(vat.TOTAL_AMOUNT) + "'>" + (this.notEmpty(vat.TOTAL_AMOUNT) ? this.twoDecimals(vat.TOTAL_AMOUNT) : "") + "</div>" +
+            //     "</div>"
+
+            vatTemplate.appendChild(elementTotalAmount);
 
             let vatDataTemplateDiv = this.createVatDataTemplate(vat, false)
             vatTemplate.appendChild(vatDataTemplateDiv);
