@@ -117,117 +117,119 @@ export default class TemplateBuilderService {
             });
 
             docTemplate.appendChild(elementClubMember);
-        }
+        } else {
 
-        this._isGiftCardBill = docObjChosen.isGiftCardBill ? true : false;
-        this._isTaxExempt = this._printData.data.isTaxExempt;
+            this._isGiftCardBill = docObjChosen.isGiftCardBill ? true : false;
+            this._isTaxExempt = this._printData.data.isTaxExempt;
 
-        var isMediaExchange = (this._printData.variables.ORDER_TYPE === "MEDIAEXCHANGE");
-        var isCreditSlip = ((docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL) || docObjChosen.documentType === 'creditSlip')
+            var isMediaExchange = (this._printData.variables.ORDER_TYPE === "MEDIAEXCHANGE");
+            var isCreditSlip = ((docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL) || docObjChosen.documentType === 'creditSlip')
 
-        var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this._isUS);
+            var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this._isUS);
 
-        if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
-            var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen);
-            docTemplate.appendChild(mediaExchangeDiv)
-        }
-        if (isCreditSlip !== null && isCreditSlip) {
-            var tplCreditSlipTemplate = this.$creditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
-            docTemplate.appendChild(tplCreditSlipTemplate);
-        }
-        else if (isGiftCardSlip) {
-            var tplGiftCardSlipTemplate = this.$giftCardSlipService.createGiftCardSlip(this._printData, docObjChosen, this._doc);
-            docTemplate.appendChild(tplGiftCardSlipTemplate);
-        }
-        else {
-            //create a general template content
-            if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
-                var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
-                tplOrderPaymentData.id = 'tplOrderPaymentData';
-                let child = tplOrderPaymentData.children[0];
+            if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
+                var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen);
+                docTemplate.appendChild(mediaExchangeDiv)
+            }
+            if (isCreditSlip !== null && isCreditSlip) {
+                var tplCreditSlipTemplate = this.$creditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
+                docTemplate.appendChild(tplCreditSlipTemplate);
+            }
+            else if (isGiftCardSlip) {
+                var tplGiftCardSlipTemplate = this.$giftCardSlipService.createGiftCardSlip(this._printData, docObjChosen, this._doc);
+                docTemplate.appendChild(tplGiftCardSlipTemplate);
+            }
+            else {
 
-                if (!child.hasChildNodes()) {
-                    tplOrderPaymentData.classList.remove('tpl-body-div');
-                } else {
-                    tplOrderPaymentData.classList += ' body-div';
+                //create a general template content
+                if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
+                    var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
+                    tplOrderPaymentData.id = 'tplOrderPaymentData';
+                    let child = tplOrderPaymentData.children[0];
+
+                    if (!child.hasChildNodes()) {
+                        tplOrderPaymentData.classList.remove('tpl-body-div');
+                    } else {
+                        tplOrderPaymentData.classList += ' body-div';
+                    }
+
                 }
 
-            }
+                // var tplOrderPaymentData = createOrderPaymentData(_printData);
+                var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
+                var tplOrderPayments = this.createPaymentsData(this._printData);
 
-            // var tplOrderPaymentData = createOrderPaymentData(_printData);
-            var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
-            var tplOrderPayments = this.createPaymentsData(this._printData);
+                // tplOrderPaymentData.id = 'tplOrderPaymentData';
+                tplOrderTotals.id = 'tplOrderTotals';
+                tplOrderPayments.id = 'tplOrderPayments';
 
-            // tplOrderPaymentData.id = 'tplOrderPaymentData';
-            tplOrderTotals.id = 'tplOrderTotals';
-            tplOrderPayments.id = 'tplOrderPayments';
+                //adding styling to the template divs
+                // tplOrderPaymentData.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
+                tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' body-div tpl-body-div' : '';
+                tplOrderPayments.hasChildNodes() ? tplOrderPayments.classList += ' body-div tpl-body-div' : '';
 
-            //adding styling to the template divs
-            // tplOrderPaymentData.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
-            tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' body-div tpl-body-div' : '';
-            tplOrderPayments.hasChildNodes() ? tplOrderPayments.classList += ' body-div tpl-body-div' : '';
+                //set body main divs
+                if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
+                    docTemplate.appendChild(tplOrderPaymentData);
+                }
+                tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
+                tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
 
-            //set body main divs
-            if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
-                docTemplate.appendChild(tplOrderPaymentData);
-            }
-            tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
-            tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
+                //if gift card
+                if (this._isGiftCardBill) {
+                    if (this._isUS) {
+                        var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
+                        var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
 
-            //if gift card
-            if (this._isGiftCardBill) {
-                if (this._isUS) {
-                    var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
-                    var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
+                        if (inclusiveTaxesDiv !== null) docTemplate.appendChild(inclusiveTaxesDiv)
+                        if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
+                    }
+                }
 
-                    if (inclusiveTaxesDiv !== null) docTemplate.appendChild(inclusiveTaxesDiv)
-                    if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
+                //if tax exempt
+                if (this._isTaxExempt) {
+                    if (this._isUS) {
+                        var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
+                        if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
+                    }
+                }
+
+                if (this._printData.data.taxes.InclusiveTaxes && this._printData.data.taxes.InclusiveTaxes.length > 0) {
+                    if (this._isUS) {
+                        var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
+                        if (inclusiveTaxesDiv !== null) docTemplate.appendChild(inclusiveTaxesDiv)
+                    }
+                }
+
+
+                if (this._printData.variables.CUSTOMER_MESSAGE && docObjChosen.isFullOrderBill) {
+                    var customerMessageDiv = this.createCustomerMessage(this._printData, this._doc);
+                    if (customerMessageDiv !== null) docTemplate.appendChild(customerMessageDiv)
                 }
             }
 
-            //if tax exempt
-            if (this._isTaxExempt) {
-                if (this._isUS) {
-                    var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
-                    if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
-                }
+
+            if (isMediaExchange &&
+                docObjChosen.isFullOrderBill &&
+                this._printData.collections.PAYMENT_LIST &&
+                this._printData.collections.PAYMENT_LIST.length > 0 &&
+                this._printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined)) {
+                let documentType = 'orderBill'
+                docTemplate.appendChild(this.$emvService.createEmvTemplate(documentType, this._printData, this._doc));
             }
-
-            if (this._printData.data.taxes.InclusiveTaxes && this._printData.data.taxes.InclusiveTaxes.length > 0) {
-                if (this._isUS) {
-                    var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
-                    if (inclusiveTaxesDiv !== null) docTemplate.appendChild(inclusiveTaxesDiv)
-                }
+            else if (
+                this._docData.documentType === 'invoice' &&
+                this._printData.collections.CREDIT_PAYMENTS &&
+                this._printData.collections.CREDIT_PAYMENTS.length > 0 &&
+                this._printData.collections.CREDIT_PAYMENTS[0].EMV &&
+                this._printData.collections.CREDIT_PAYMENTS[0].EMV.length > 0) {
+                let emvCreditDataDiv = this._doc.createElement('div');
+                emvCreditDataDiv.id = 'emvCreditDataDiv';
+                emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
             }
-
-
-            if (this._printData.variables.CUSTOMER_MESSAGE && docObjChosen.isFullOrderBill) {
-                var customerMessageDiv = this.createCustomerMessage(this._printData, this._doc);
-                if (customerMessageDiv !== null) docTemplate.appendChild(customerMessageDiv)
+            if (this._printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
+                docTemplate.appendChild(this.createReturnOrderText(this._printData));
             }
-        }
-
-
-        if (isMediaExchange &&
-            docObjChosen.isFullOrderBill &&
-            this._printData.collections.PAYMENT_LIST &&
-            this._printData.collections.PAYMENT_LIST.length > 0 &&
-            this._printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined)) {
-            let documentType = 'orderBill'
-            docTemplate.appendChild(this.$emvService.createEmvTemplate(documentType, this._printData, this._doc));
-        }
-        else if (
-            this._docData.documentType === 'invoice' &&
-            this._printData.collections.CREDIT_PAYMENTS &&
-            this._printData.collections.CREDIT_PAYMENTS.length > 0 &&
-            this._printData.collections.CREDIT_PAYMENTS[0].EMV &&
-            this._printData.collections.CREDIT_PAYMENTS[0].EMV.length > 0) {
-            let emvCreditDataDiv = this._doc.createElement('div');
-            emvCreditDataDiv.id = 'emvCreditDataDiv';
-            emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
-        }
-        if (this._printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
-            docTemplate.appendChild(this.createReturnOrderText(this._printData));
         }
 
         return docTemplate;

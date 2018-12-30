@@ -29,7 +29,7 @@ export default class ClubMembers {
 
         let ClubMembersAmountSection = this.$htmlCreator.createSection({
             id: 'club-members-amount-section',
-            classList: []
+            classList: ['tpl-body-div']
         });
 
         let elementTotalAmountText = this.$htmlCreator.create({
