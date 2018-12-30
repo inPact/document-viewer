@@ -99,7 +99,6 @@ export default class VatTemplateService {
 
 
 
-
             let elementTotalAmountText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'total-amount-text',
@@ -129,11 +128,6 @@ export default class VatTemplateService {
                     elementTotalAmountValue
                 ]
             });
-
-            // vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
-            //     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
-            //     "<div class='total-amount " + this.isNegative(vat.TOTAL_AMOUNT) + "'>" + (this.notEmpty(vat.TOTAL_AMOUNT) ? this.twoDecimals(vat.TOTAL_AMOUNT) : "") + "</div>" +
-            //     "</div>"
 
             vatTemplate.appendChild(elementTotalAmount);
 
@@ -192,12 +186,12 @@ export default class VatTemplateService {
 
             vatTextDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_INCLUDED_TAX) ? vatTranslate : "") + " " + vat.VAT_PERCENT + "%" + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.TOTAL_INCLUDED_TAX) + "'>" + (this.notEmpty(vat.TOTAL_INCLUDED_TAX) ? this.twoDecimals(vat.TOTAL_INCLUDED_TAX) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(vat.TOTAL_INCLUDED_TAX) + "'>" + this.$utils.toFixedSafe(vat.TOTAL_INCLUDED_TAX) + "</div>" +
                 "</div>";
 
             includeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_IN_VAT) ? includeVatTranslate : "") + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.TOTAL_IN_VAT) + "'>" + (this.notEmpty(vat.TOTAL_IN_VAT) ? this.twoDecimals(vat.TOTAL_IN_VAT) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(vat.TOTAL_IN_VAT) + "'>" + this.$utils.toFixedSafe(vat.TOTAL_IN_VAT) + "</div>" +
                 "</div>";
         }
 
