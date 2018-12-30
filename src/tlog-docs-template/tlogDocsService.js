@@ -62,7 +62,7 @@ export default class TlogDocsService {
                 tlog.order.length > 0 &&
                 tlog.order[0].allDocuments.length > 0 &&
                 tlog.order[0].allDocuments[0].payments.length > 0 &&
-                tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false;
+                tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false; /// TODO : is gift card only in index 0 ?????
             if (checkGiftcardExists) {
                 orderSelection.push({
                     tlogId: tlog._id,
@@ -96,6 +96,7 @@ export default class TlogDocsService {
                         isRefund: false
                     });
                 }
+
                 if (tlog.order[0].checks && tlog.order[0].checks.length > 1) {
 
 
@@ -116,6 +117,29 @@ export default class TlogDocsService {
                         });
                     });
                 }
+
+                let members = tlog.order[0].diners.filter(c => c.member !== undefined && c.member !== null);
+
+                console.log("members");
+                console.log(members);
+                console.log("members");
+
+                if (members.length > 0) {
+
+                    console.log("members");
+                    console.log(members);
+                    console.log("members");
+
+                    orderSelection.push({
+                        tlogId: tlog._id,
+                        id: tlog._id,
+                        type: 'clubMembers',
+                        title: this.$translate.getText('clubMembers'),
+                        ep: `tlogs/${tlog._id}/bill`,
+                        isRefund: false
+                    });
+                }
+
             }
 
             if (this._isUS) {
@@ -128,7 +152,7 @@ export default class TlogDocsService {
 
                                     var typeTitle = "";
                                     if (payment.tenderType === 'creditCard') typeTitle = this.$translate.getText('CreditSlip');
-                                    if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip');}
+                                    if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); }
                                     // if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); document.id = document.id + 'giftCard' }
                                     if (payment.tenderType === 'creditCard' || payment.tenderType === 'giftCard') {
                                         payment.number = `${tlog.order[0].number}/${payment.number}`;
@@ -293,7 +317,7 @@ export default class TlogDocsService {
     }
 
     getHTMLDocument(documentInfo, document, options = {}) {
-        
+
         return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options);
     }
 
