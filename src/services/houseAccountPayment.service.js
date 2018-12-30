@@ -2,12 +2,20 @@
 
 import HtmlCreator from '../helpers/htmlCreator.serivce';
 import Utils from '../helpers/utils.service';
+import TlogDocsTranslateService from '../tlog-docs-template/tlogDocsTranslate';
 
 export default class HouseAccountPayment {
 
     constructor(options) {
+
+        this._isUS = options.isUS;
+
         this.$htmlCreator = new HtmlCreator();
         this.$utils = new Utils();
+        this.$translate = new TlogDocsTranslateService({
+            isUS: options.isUS,
+            locale: options.locale
+        });
     }
 
     get(options) {

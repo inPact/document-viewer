@@ -77,7 +77,7 @@ export default class BillService {
                 let isSplitCheck = false;
                 let isWeight = false;
 
-                if (offer.OFFER_UNITS !== undefined && offer.OFFER_UNITS !== null) {
+                if (offer.OFFER_UNITS !== undefined && offer.OFFER_UNITS !== null && offer.OFFER_UNITS > 0) {
                     isWeight = true;
                 }
 
@@ -105,7 +105,9 @@ export default class BillService {
                             items.push(item);
                         } else if (isWeight) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                            item.isWeight = isWeight;
                             item.weightAmount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
+                            item.units = offer.OFFER_UNITS;
                             items.push(item);
                         }
                         else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 

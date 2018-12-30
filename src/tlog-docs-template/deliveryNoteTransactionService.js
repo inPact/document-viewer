@@ -10,7 +10,7 @@ export default class DeliveryNoteTransactionDataService {
         this.$translate = new TlogDocsTranslateService(options);
         this.$vatTemplateService = new VatTemplateService(options);
         this.$utils = new Utils();
-        this.$houseAccountPayment = new HouseAccountPayment();
+        this.$houseAccountPayment = new HouseAccountPayment(options);
     }
 
     createDeliveryNoteTransactionData(printData, doc) {

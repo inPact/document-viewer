@@ -71,7 +71,8 @@
   display: flex;
   justify-content: flex-start;
   text-align: start;
-  flex: 5; }
+  flex: 5;
+  margin: 0px 2px; }
 
 .basicTemplate .item-amount {
   display: flex;
@@ -153,7 +154,7 @@
 
 .basicTemplate .bigBold {
   font-weight: bold;
-  font-size: 23px; }
+  font-size: 21px; }
 
 .basicTemplate.rtl .customerMessage {
   padding-top: 5px;

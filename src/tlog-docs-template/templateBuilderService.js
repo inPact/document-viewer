@@ -9,8 +9,10 @@ import CreditSlipService from './creditSlipService';
 import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
 import Utils from '../helpers/utils.service';
+import HtmlCreator from '../helpers/htmlCreator.serivce';
 import Localization from '../helpers/localization.service';
 import DocumentFactory from '../helpers/documentFactory.service';
+import CreditTransaction from '../services/creditTransaction.service';
 
 
 export default class TemplateBuilderService {
@@ -33,6 +35,8 @@ export default class TemplateBuilderService {
         this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
         this.$localization = new Localization({ isUS: this._isUS });
+        this.$htmlCreator = new HtmlCreator();
+        this.$creditTransaction = new CreditTransaction(options);
     }
 
     _configure(options) {
@@ -232,70 +236,104 @@ export default class TemplateBuilderService {
 
         if (!printData.isRefund) {
 
-
-            console.log("data.items");
-            console.log("data.items");
-            console.log(data.items);
-            console.log("data.items");
-            console.log("data.items");
-
             data.items.forEach((item, index) => {
 
                 //in case it is return order, we don't want to show return of item the did not cost anything
                 if (!(data.isReturnOrder && this._docObj.isFullOrderBill && (!item.amount || item.amount === '0.00'))) {
 
-                    var orderdOfferListExists = printData.collections.ORDERED_OFFERS_LIST.length > 0 ? true : false;
-                    var offerListIndex = orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] ? orderdOfferListExists && printData.collections.ORDERED_OFFERS_LIST[index] : null;
+                    let elementItemQty = this.$htmlCreator.create({
+                        type: 'div',
+                        id: `item-qty-${index}`,
+                        classList: ['item-qty'],
+                        value: item.qty
+                    });
 
-                    var offerUnits = offerListIndex ? offerListIndex.OFFER_UNITS : null;
+                    let elementItemName = this.$htmlCreator.create({
+                        type: 'div',
+                        id: `item-name-${index}`,
+                        classList: ['item-name'],
+                        value: item.isOffer ? `${item.name}` : `&nbsp;&nbsp;${item.name}`
+                    });
 
-                    var isWeightItem = offerUnits && offerUnits > 0 ? true : false;
-
-                    var weightUnit = printData.variables.BASIC_WEIGHT_UOM;
-                    var isGram = isWeightItem && weightUnit === 'kg' && offerUnits < 1;
-
-                    var calcWeight = isGram ? offerUnits * 1000 : offerUnits;
-                    var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
-                    var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
-                    var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
-
-                    var weightText = '';
-                    if (this._isUS) {
-                        weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
-                    }
-                    else {
-                        weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
+                    let classList = ['total-amount'];
+                    let negativeClass = this.$utils.isNegative(item.amount);
+                    if (negativeClass !== "") {
+                        classList.push(negativeClass);
                     }
 
-                    var itemDiv = this._doc.createElement('div');
-                    if (item.isOffer) {
-                        itemDiv.classList.add("bold");
-                        item.space = "";
-                    }
-                    else if (!item.isOffer) {
-                        itemDiv.classList.add("itemDiv");
-                        item.qty = '&nbsp;&nbsp;';
-                        item.space = "&emsp;";
+                    let elementItemAmount = this.$htmlCreator.create({
+                        type: 'div',
+                        id: `item-amount-${index}`,
+                        classList: classList,
+                        value: this.$utils.twoDecimals(item.amount)
+                    });
+
+                    let elementItemContainer = this.$htmlCreator.create({
+                        type: 'div',
+                        id: `item-${index}`,
+                        classList: item.isOffer ? ['itemDiv', 'bold'] : ['itemDiv'],
+                        children: [
+                            elementItemQty,
+                            elementItemName,
+                            elementItemAmount
+                        ]
+                    });
+
+                    htmlElement.appendChild(elementItemContainer);
+
+                    if (item.isWeight) {
+
+                        var isGram = item.isWeight && printData.variables.BASIC_WEIGHT_UOM === 'kg' && item.units < 1;
+
+                        var calcWeight = isGram ? item.units * 1000 : item.units;
+                        var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
+                        var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
+                        var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
+
+                        var weightText = '';
+                        if (this._isUS) {
+                            weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
+                        }
+                        else {
+                            weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
+                        }
+
+                        let elementWeightItemQty = this.$htmlCreator.create({
+                            type: 'div',
+                            id: `weight-item-qty-${index}`,
+                            classList: ['item-qty'],
+                            value: ""
+                        });
+
+                        let elementWeightItemValue = this.$htmlCreator.create({
+                            type: 'div',
+                            id: `weight-item-value-${index}`,
+                            classList: ['item-name'],
+                            value: weightText
+                        });
+
+                        let elementWeightItemAmount = this.$htmlCreator.create({
+                            type: 'div',
+                            id: `weight-item-amount-${index}`,
+                            classList: ['total-amount'],
+                            value: ""
+                        });
+
+                        let elementWeightItemContainer = this.$htmlCreator.create({
+                            type: 'div',
+                            id: `weight-item-${index}`,
+                            classList: ['itemDiv'],
+                            children: [
+                                elementWeightItemQty,
+                                elementWeightItemValue,
+                                elementWeightItemAmount
+                            ]
+                        });
+
+
+                        htmlElement.appendChild(elementWeightItemContainer);
                     }
 
-                    itemDiv.innerHTML = "<div class='itemDiv'>" +
-                        "<div class='item-qty'>" + (item.qty ? item.qty : " ") + "</div>" + " " +
-                        "<div class='item-name'>" + item.space + "" + (item.name ? item.name : "") + "</div>" + " " +
-                        "<div class='total-amount " + this.$utils.isNegative(item.amount) + "'>" + (this.$utils.twoDecimals(item.amount)) + "</div>" +
-                        "</div>"
-
-                    var weightDiv = this._doc.createElement('div');
-                    weightDiv.classList += "weightDiv";
-                    if (isWeightItem) {
-                        weightDiv.innerHTML = "<div class='itemDiv'>" +
-                            "<div class='item-qty'>" + " " + "</div>" + " " +
-                            "<div class='item-name'>" + (weightText ? weightText : "") + "</div>" + " " +
-                            "<div class='total-amount>" + " " + "</div>" +
-                            "</div>"
-
-                        itemDiv.appendChild(weightDiv);
-                    }
-                    htmlElement.appendChild(itemDiv);
                 }
             })
         }
@@ -404,49 +442,56 @@ export default class TemplateBuilderService {
         }
         else if (creditData) {
 
-            var lastFourText = this.$translate.getText(creditData.LAST_4 ? 'LAST_4' : "");
-            var transactTimeText = this.$translate.getText(creditData.PROVIDER_PAYMENT_DATE ? 'TRANSACTION_TIME' : "");
-            var transactNumText = this.$translate.getText(creditData.PROVIDER_TRANS_ID ? 'TRANSACTION_NO' : "");
-            var approvalText = this.$translate.getText(creditData.CONFIRMATION_NUMBER ? 'APPROVAL_NO' : "");
-
-
-            var lastFourDiv = this._doc.createElement('div');
-            if (lastFourText) {
-                lastFourDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (lastFourText ? lastFourText : " ") + "</div>"
-                    + " " + "<div class='number-data'>" + (creditData.LAST_4 ? creditData.LAST_4 : " ") + "</div>" + "</div>"
-
-            }
-            creditDataDiv.appendChild(lastFourDiv);
-
-            let providerPaymentDate = this.$utils.toDate({
-                _isUS: this._isUS,
-                date: creditData.PROVIDER_PAYMENT_DATE
+            let elementCreditTransaction = this.$creditTransaction.get({
+                isUS: this._isUS,
+                data: creditData
             });
 
-            var transactionTimeDiv = this._doc.createElement('div')
+            creditDataDiv.appendChild(elementCreditTransaction);
 
-            transactionTimeDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + "</div>" + "<div class='number-data'>" + (transactTimeText ? providerPaymentDate : "") + "</div>" +
-                "</div>"
+            // var lastFourText = this.$translate.getText(creditData.LAST_4 ? 'LAST_4' : "");
+            // var transactTimeText = this.$translate.getText(creditData.PROVIDER_PAYMENT_DATE ? 'TRANSACTION_TIME' : "");
+            // var transactNumText = this.$translate.getText(creditData.PROVIDER_TRANS_ID ? 'TRANSACTION_NO' : "");
+            // var approvalText = this.$translate.getText(creditData.CONFIRMATION_NUMBER ? 'APPROVAL_NO' : "");
 
-            creditDataDiv.appendChild(transactionTimeDiv);
 
-            var transactNumDiv = this._doc.createElement('div');
-            if (creditData.PROVIDER_TRANS_ID) {
-                transactNumDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (transactNumText ? transactNumText : " ") + "</div>" +
-                    "<div class='number-data'>" + (creditData.PROVIDER_TRANS_ID ? creditData.PROVIDER_TRANS_ID : " ") + "</div>" + "</div>"
-            }
-            creditDataDiv.appendChild(transactNumDiv);
+            // var lastFourDiv = this._doc.createElement('div');
+            // if (lastFourText) {
+            //     lastFourDiv.innerHTML = "<div class='itemDiv'>" +
+            //         "<div class='total-name'>" + (lastFourText ? lastFourText : " ") + "</div>"
+            //         + " " + "<div class='number-data'>" + (creditData.LAST_4 ? creditData.LAST_4 : " ") + "</div>" + "</div>"
 
-            var approvalDiv = this._doc.createElement('div');
-            if (creditData.CONFIRMATION_NUMBER) {
-                approvalDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (approvalText ? approvalText : " ") + "</div>" +
-                    "<div class='number-data'>" + (creditData.CONFIRMATION_NUMBER ? creditData.CONFIRMATION_NUMBER : " ") + "</div>" + "</div>"
-            }
-            creditDataDiv.appendChild(approvalDiv);
+            // }
+            // creditDataDiv.appendChild(lastFourDiv);
+
+            // let providerPaymentDate = this.$utils.toDate({
+            //     _isUS: this._isUS,
+            //     date: creditData.PROVIDER_PAYMENT_DATE
+            // });
+
+            // var transactionTimeDiv = this._doc.createElement('div')
+
+            // transactionTimeDiv.innerHTML = "<div class='itemDiv'>" +
+            //     "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + "</div>" + "<div class='number-data'>" + (transactTimeText ? providerPaymentDate : "") + "</div>" +
+            //     "</div>"
+
+            // creditDataDiv.appendChild(transactionTimeDiv);
+
+            // var transactNumDiv = this._doc.createElement('div');
+            // if (creditData.PROVIDER_TRANS_ID) {
+            //     transactNumDiv.innerHTML = "<div class='itemDiv'>" +
+            //         "<div class='total-name'>" + (transactNumText ? transactNumText : " ") + "</div>" +
+            //         "<div class='number-data'>" + (creditData.PROVIDER_TRANS_ID ? creditData.PROVIDER_TRANS_ID : " ") + "</div>" + "</div>"
+            // }
+            // creditDataDiv.appendChild(transactNumDiv);
+
+            // var approvalDiv = this._doc.createElement('div');
+            // if (creditData.CONFIRMATION_NUMBER) {
+            //     approvalDiv.innerHTML = "<div class='itemDiv'>" +
+            //         "<div class='total-name'>" + (approvalText ? approvalText : " ") + "</div>" +
+            //         "<div class='number-data'>" + (creditData.CONFIRMATION_NUMBER ? creditData.CONFIRMATION_NUMBER : " ") + "</div>" + "</div>"
+            // }
+            // creditDataDiv.appendChild(approvalDiv);
 
         }
 
@@ -488,10 +533,6 @@ export default class TemplateBuilderService {
 
     fillOrderTotals(htmlElement, printData) {
         if (printData.data.totals.length > 0) {
-
-            console.log('totals');
-            console.log(printData.data.totals);
-            console.log('totals');
 
             // if (!_isUS) {
             printData.data.totals.forEach(total => {
