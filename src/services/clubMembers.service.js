@@ -49,7 +49,7 @@ export default class ClubMembers {
         let elementTotalAmount = this.$htmlCreator.create({
             type: 'div',
             id: 'club-members-amount',
-            classList: ['itemDiv'],
+            classList: ['itemDiv', 'bold'],
             value: undefined,
             children: [
                 elementTotalAmountText,
@@ -63,6 +63,25 @@ export default class ClubMembers {
             id: 'club-members-section',
             classList: []
         });
+
+        let elementClubMemberHeaderText = this.$htmlCreator.create({
+            type: 'div',
+            id: 'club-members-header-text',
+            classList: ['total-name'],
+            value: this.$translate.getText('clubMembers')
+        });
+
+        let elementClubMemberHeader = this.$htmlCreator.create({
+            type: 'div',
+            id: 'club-members-header',
+            classList: ['itemDiv'],
+            value: undefined,
+            children: [
+                elementClubMemberHeaderText
+            ]
+        });
+
+        ClubMembersSection.appendChild(elementClubMemberHeader);
 
         members.forEach((member, index) => {
 
