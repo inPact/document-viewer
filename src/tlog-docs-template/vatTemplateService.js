@@ -108,7 +108,7 @@ export default class VatTemplateService {
             });
 
             let classList = ['total-amount'];
-            let negativeClass = this.$utils.isNegative(item.amount);
+            let negativeClass = this.$utils.isNegative(printData.variables.TOTAL_AMOUNT);
             if (negativeClass !== "") {
                 classList.push(negativeClass);
             }
