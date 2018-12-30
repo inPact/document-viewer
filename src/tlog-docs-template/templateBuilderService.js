@@ -287,10 +287,16 @@ export default class TemplateBuilderService {
                         value: item.isOffer ? `  ${item.name}` : item.name
                     });
 
+                    let classList = ['total-amount'];
+                    let negativeClass = this.$utils.isNegative(item.amount);
+                    if (negativeClass !== "") {
+                        classList.push(negativeClass);
+                    }
+
                     let elementItemAmount = this.$htmlCreator.create({
                         type: 'div',
                         id: `item-amount-${index}`,
-                        classList: ['total-amount', this.$utils.isNegative(item.amount)],
+                        classList: classList,
                         value: this.$utils.twoDecimals(item.amount)
                     });
 
