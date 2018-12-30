@@ -624,12 +624,16 @@ export default class TemplateBuilderService {
             OrderPaymentsDiv.id = "OrderPaymentsDiv";
             tplOrderPaymentsDiv.appendChild(OrderPaymentsDiv);
         }
-        return tplOrderPaymentsDiv
+        return tplOrderPaymentsDiv;
     }
 
     fillPaymentsData(printData) {
         var OrderPaymentsDiv = this._doc.createElement('div');
         OrderPaymentsDiv.id = 'OrderPaymentsDiv';
+
+        console.log("printData.data.payments");
+        console.log(printData.data.payments);
+        console.log("printData.data.payments");
 
         if (printData.data.payments.length > 0) {
             printData.data.payments.forEach(payment => {
