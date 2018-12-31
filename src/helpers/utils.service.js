@@ -62,7 +62,7 @@ export default class Utils {
         let minute = (date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes();
         let a = (date.getHours() > 12 ? "PM" : "AM");
 
-        return `${day}/${month}/${year} ${hour}:${minute} ${a}`;
+        return `${month}/${day}/${year} ${hour}:${minute} ${a}`;
     }
 
     formatDateIL(stringDate) {
