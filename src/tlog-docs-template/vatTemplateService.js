@@ -1,10 +1,12 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
+import HtmlCreator from '../helpers/htmlCreator.serivce';
 
-export default class CreateVatTemplateService {
+export default class VatTemplateService {
     constructor(options) {
         this.$translate = new TlogDocsTranslateService(options);
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
+        this.$htmlCreator = new HtmlCreator();
     }
 
     isNegative(number) {
@@ -49,7 +51,9 @@ export default class CreateVatTemplateService {
                     let totalAmountTranslate = this.$translate.getText('TOTAL_AMOUNT');
                     vatHeaderDiv.classList.add("bold");
                     totalAmountText = totalAmountTranslate;
+
                 }
+
 
                 vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
@@ -64,6 +68,7 @@ export default class CreateVatTemplateService {
 
         }
         else {
+
             let refundText = null;
             let buisnessMealText = null;
             let totalAmountText = null;
@@ -74,7 +79,6 @@ export default class CreateVatTemplateService {
             }
             //else, if not refund but multi doc, add buisness meal text
             else if (!printData.isRefund && printData.variables.ORDER_DOCUMENT_PRINT === 'MULTI_DOC') {
-
                 let buisnessMealTranslate = this.$translate.getText('BUSINESS_MEAL');
                 vatHeaderDiv.classList.add("bold");
                 buisnessMealText = buisnessMealTranslate;
@@ -84,18 +88,48 @@ export default class CreateVatTemplateService {
                 let totalAmountTranslate = this.$translate.getText('TOTAL_AMOUNT');
                 vatHeaderDiv.classList.add("bold");
                 totalAmountText = totalAmountTranslate;
+
+
             }
             vat.TOTAL_EX_VAT = printData.variables.TOTAL_EX_VAT;
             vat.TOTAL_INCLUDED_TAX = printData.variables.TOTAL_INCLUDED_TAX;
             vat.VAT_PERCENT = this.twoDecimals(printData.variables.VAT_PERCENT);
             vat.TOTAL_IN_VAT = printData.variables.TOTAL_IN_VAT;
             vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
-            vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.ITEM_AMOUNT) + "'>" + (this.notEmpty(vat.ITEM_AMOUNT) ? this.twoDecimals(vat.ITEM_AMOUNT) : "") + "</div>" +
-                "</div>"
 
-            vatTemplate.appendChild(vatHeaderDiv);
+
+
+            let elementTotalAmountText = this.$htmlCreator.create({
+                type: 'div',
+                id: 'total-amount-text',
+                classList: ['total-name'],
+                value: (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") // copy from ilan code.
+            });
+
+            let classList = ['total-amount'];
+            let negativeClass = this.$utils.isNegative(printData.variables.TOTAL_AMOUNT);
+            if (negativeClass !== "") {
+                classList.push(negativeClass);
+            }
+
+            let elementTotalAmountValue = this.$htmlCreator.create({
+                type: 'div',
+                id: 'total-amount-value',
+                classList: classList,
+                value: this.$utils.toFixedSafe(printData.variables.TOTAL_AMOUNT, 2)
+            });
+
+            let elementTotalAmount = this.$htmlCreator.create({
+                type: 'div',
+                id: 'total-amount',
+                classList: ['itemDiv'],
+                children: [
+                    elementTotalAmountText,
+                    elementTotalAmountValue
+                ]
+            });
+
+            vatTemplate.appendChild(elementTotalAmount);
 
             let vatDataTemplateDiv = this.createVatDataTemplate(vat, false)
             vatTemplate.appendChild(vatDataTemplateDiv);
@@ -152,12 +186,12 @@ export default class CreateVatTemplateService {
 
             vatTextDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_INCLUDED_TAX) ? vatTranslate : "") + " " + vat.VAT_PERCENT + "%" + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.TOTAL_INCLUDED_TAX) + "'>" + (this.notEmpty(vat.TOTAL_INCLUDED_TAX) ? this.twoDecimals(vat.TOTAL_INCLUDED_TAX) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(vat.TOTAL_INCLUDED_TAX) + "'>" + this.$utils.toFixedSafe(vat.TOTAL_INCLUDED_TAX, 2) + "</div>" +
                 "</div>";
 
             includeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_IN_VAT) ? includeVatTranslate : "") + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.TOTAL_IN_VAT) + "'>" + (this.notEmpty(vat.TOTAL_IN_VAT) ? this.twoDecimals(vat.TOTAL_IN_VAT) : "") + "</div>" +
+                "<div class='total-amount " + this.isNegative(vat.TOTAL_IN_VAT) + "'>" + this.$utils.toFixedSafe(vat.TOTAL_IN_VAT, 2) + "</div>" +
                 "</div>";
         }
 

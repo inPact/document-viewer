@@ -1,25 +1,16 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
-import CreateVatTemplateService from './createVatTemplateService';
+import VatTemplateService from './vatTemplateService';
+
+import HouseAccountPayment from '../services/houseAccountPayment.service';
 
 export default class DeliveryNoteTransactionDataService {
     constructor(options) {
         this._isUS = options.isUS;
         this.$translate = new TlogDocsTranslateService(options);
-        this.$createVatTemplateService = new CreateVatTemplateService(options);
-        this.$utils = new TlogDocsUtils();
-    }
-
-    isNegative(number) {
-        return this.$utils.isNegative(number)
-    }
-
-    formatDateIL(stringDate) {
-        return this.$utils.formatDateIL(stringDate);
-    }
-
-    formatDateUS(stringDate) {
-        return this.$utils.formatDateUS(stringDate);
+        this.$vatTemplateService = new VatTemplateService(options);
+        this.$utils = new Utils();
+        this.$houseAccountPayment = new HouseAccountPayment(options);
     }
 
     createDeliveryNoteTransactionData(printData, doc) {
@@ -27,11 +18,11 @@ export default class DeliveryNoteTransactionDataService {
         var deliveryNoteTransactionDiv = this._doc.createElement('div');
         deliveryNoteTransactionDiv.id = 'deliveryNoteTransactionDiv';
 
-        var deliveryVat = this.$createVatTemplateService.createVatTemplate(printData, this._doc)
+        var deliveryVat = this.$vatTemplateService.createVatTemplate(printData, this._doc)
         deliveryVat.id = 'deliveryVat';
 
         deliveryVat.classList += ' padding-bottom';
-        deliveryVat.classList += ' padding-top';
+        deliveryVat.classList += ' border-top';
         deliveryVat.classList += ' tpl-body-div';
 
         deliveryNoteTransactionDiv.appendChild(deliveryVat);
@@ -49,7 +40,7 @@ export default class DeliveryNoteTransactionDataService {
             refundTextDiv.id = "refundTextDiv";
             refundTextDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (hAccountPayments ? returnText + " " + hAccountPayments.CHARGE_ACCOUNT_NAME : "") + "</div>" +
-                "<div class='total-amount " + this.isNegative(hAccountPayments.P_AMOUNT) + "'>" + (hAccountPayments.P_AMOUNT ? hAccountPayments.P_AMOUNT : "") + "</div>" +
+                "<div class='total-amount " + this.$utils.isNegative(hAccountPayments.P_AMOUNT) + "'>" + (hAccountPayments.P_AMOUNT ? hAccountPayments.P_AMOUNT : "") + "</div>" +
                 "</div>";
 
             refundTextDiv.classList += " padding-bottom";
@@ -61,108 +52,55 @@ export default class DeliveryNoteTransactionDataService {
 
         }
         else if (!printData.isRefund && hAccountPayments && hAccountPayments.P_AMOUNT) {
+
+
             var returnText = this.$translate.getText('PAID_IN_CHARCHACCOUNT_FROM')
             var refundTextDiv = this._doc.createElement('div')
             refundTextDiv.id = 'refundTextDiv';
             refundTextDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (hAccountPayments ? returnText + " " + hAccountPayments.CHARGE_ACCOUNT_NAME : "") + "</div>" +
-                "<div class='total-amount " + this.isNegative(hAccountPayments.P_AMOUNT) + "'>" + (hAccountPayments.P_AMOUNT ? Number(hAccountPayments.P_AMOUNT).toFixed(2) : "") + "</div > " +
+                "<div class='total-amount " + this.$utils.isNegative(hAccountPayments.P_AMOUNT) + "'>" + (hAccountPayments.P_AMOUNT ? Number(hAccountPayments.P_AMOUNT).toFixed(2) : "") + "</div > " +
                 "</div>";
 
-            refundTextDiv.classList += " padding-bottom";
-            refundTextDiv.classList += " padding-top";
-            refundTextDiv.classList += " tpl-body-div";
+            refundTextDiv.classList.add('padding-bottom');
+            refundTextDiv.classList.add('padding-top');
 
             dNoteChargeAccntDiv.appendChild(refundTextDiv);
 
-        }
-        if (hAccountPayments) {
-
             if (hAccountPayments.P_CHANGE > 0) {
                 var cashBackText = this.$translate.getText('TOTAL_CASHBACK')
-                var cashBackDiv = this._doc.createElement('div')
-                cashBackDiv.id = "cashBackDiv";
-                cashbackDiv.innerHTML = "<div class='changeDiv'>" +
+                var cashBackDiv = this._doc.createElement('div');
+                cashBackDiv.classList.add('tpl-body-div');
+                cashBackDiv.classList.add('padding-top-0');
+
+                cashBackDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (hAccountPayments ? cashBackText : "") + "</div>" +
-                    "<div class='number-data " + this.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
+                    "<div class='total-amount " + this.$utils.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
                     "</div>";
 
                 dNoteChargeAccntDiv.appendChild(cashBackDiv);
+            } else {
+                refundTextDiv.classList += " tpl-body-div";
             }
 
-            if (hAccountPayments.PROVIDER_TRANS_ID) {
-                var providerTransText = this.$translate.getText('CHARGE_TRANSACTION')
-                var providerTransDiv = this._doc.createElement('div');
-                providerTransDiv.id = "providerTransDiv";
-                providerTransDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? providerTransText : "") + "</div>" +
-                    "<div class='number-data'>" + (hAccountPayments.PROVIDER_TRANS_ID ? hAccountPayments.PROVIDER_TRANS_ID : "") + "</div>" +
-                    "</div>"
 
-                dNoteChargeAccntDiv.appendChild(providerTransDiv);
-
-            }
-
-            if (hAccountPayments.CHARGE_ACCOUNT_NAME) {
-                var cAccountNameText = this.$translate.getText('CHARGE_ACCOUNT_NAME')
-                var cAccountNameDiv = this._doc.createElement('div')
-                cAccountNameDiv.id = "cAccountNameDiv";
-                cAccountNameDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? cAccountNameText : "") + ": " + "</div>" +
-                    "<div class='number-data'>" + (hAccountPayments.CHARGE_ACCOUNT_NAME ? hAccountPayments.CHARGE_ACCOUNT_NAME : "") +
-                    "</div></div>"
-
-                dNoteChargeAccntDiv.appendChild(cAccountNameDiv);
-
-            }
-
-            if (hAccountPayments.COMPANY_NAME) {
-                var companyNameText = this.$translate.getText('company')
-                var companyNameDiv = this._doc.createElement('div');
-                companyNameDiv.id = "companyNameDiv";
-                companyNameDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? companyNameText : "") + ": " + "</div>" +
-                    "<div class='number-data'>" + (hAccountPayments.COMPANY_NAME ? hAccountPayments.COMPANY_NAME : "") +
-                    "</div></div>"
-
-                dNoteChargeAccntDiv.appendChild(companyNameDiv);
-
-            }
-
-            if (hAccountPayments.LAST_4) {
-                var lastFourText = this.$translate.getText('LAST_4')
-                var lastFourDiv = this._doc.createElement('div')
-                lastFourDiv.id = "lastFourDiv";
-                lastFourDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? lastFourText : " ") + ": " + "</div>" +
-                    "<div class='number-data'>" + (hAccountPayments.LAST_4 ? hAccountPayments.LAST_4 : " ") +
-                    "</div></div>"
-
-                dNoteChargeAccntDiv.appendChild(lastFourDiv);
-
-            }
-
-            if (hAccountPayments.PROVIDER_PAYMENT_DATE) {
-
-                printData.collections.HOUSE_ACCOUNT_PAYMENTS[0];
-
-                var dateTimeStr = hAccountPayments.PROVIDER_PAYMENT_DATE;
-                var dateTimeResult;
-                var transactionTimeText = this.$translate.getText('TRANSACTION_TIME')
-                var transactionTimeDiv = this._doc.createElement('div')
-                if (this._isUS) dateTimeResult = this.formatDateUS(dateTimeStr);
-                else if (!this._isUS) {
-                    dateTimeResult = this.formatDateIL(dateTimeStr);
-                }
-                transactionTimeDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? transactionTimeText : "") + ": " + "</div>" +
-                    "<div class='number-data'>" + (hAccountPayments.PROVIDER_PAYMENT_DATE ? dateTimeResult : "") +
-                    "</div></div>"
-
-                dNoteChargeAccntDiv.appendChild(transactionTimeDiv);
-
-            }
         }
+
+
+        /**
+         * Add House Account Payment Section.
+         */
+        if (hAccountPayments) {
+
+            let elementHouseAccountPayment = this.$houseAccountPayment.get({
+                data: hAccountPayments
+            })
+
+            dNoteChargeAccntDiv.appendChild(elementHouseAccountPayment);
+        }
+
+
+
         dNoteChargeAccntDiv.classList += ' tpl-body-div';
         deliveryNoteTransactionDiv.appendChild(dNoteChargeAccntDiv);
         return deliveryNoteTransactionDiv;

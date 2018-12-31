@@ -1,7 +1,35 @@
+.text-transform-none {
+  text-transform: none; }
+
+.padding-top-0 {
+  padding-top: 0px !important; }
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  justify-content: center; }
+
+.flex {
+  display: flex; }
+
+.fs-12 {
+  font-size: 12px; }
+
+.margin-15-0 {
+  margin: 15px 0px; }
+
+.section-element {
+  padding: 10px 0px; }
+
 .basicTemplate {
   background-color: white;
   font-family: "Courier New", Courier, monospace;
   padding: 5px 15px 5px 15px; }
+
+.text-uppercase {
+  text-transform: uppercase !important; }
 
 .basicTemplate .header-div {
   padding: 10px; }
@@ -49,12 +77,13 @@
   display: flex;
   justify-content: flex-start;
   text-align: start;
-  flex: 5; }
+  flex: 5;
+  margin: 0px 2px; }
 
 .basicTemplate .item-amount {
   display: flex;
   justify-content: flex-start;
-  flex: 3; }
+  flex: 4; }
 
 .basicTemplate .total-name {
   display: flex;
@@ -68,7 +97,7 @@
 
 .basicTemplate .total-amount {
   display: flex;
-  padding: 0 20px 0 20px;
+  padding: 0 0px 0 3px;
   justify-content: flex-start;
   flex: 3; }
 
@@ -120,12 +149,18 @@
 .basicTemplate .med-chars {
   font-size: 18px; }
 
+.basicTemplate .small-chars {
+  font-size: 12px; }
+
+.basicTemplate .emv-chars {
+  font-size: 11px; }
+
 .basicTemplate .bold {
   font-weight: bold; }
 
 .basicTemplate .bigBold {
   font-weight: bold;
-  font-size: 26px; }
+  font-size: 21px; }
 
 .basicTemplate.rtl .customerMessage {
   padding-top: 5px;
@@ -138,7 +173,6 @@
 .basicTemplate .total-amount.negative {
   direction: ltr !important;
   text-align: right;
-  padding: 0 20px 0 20px;
   display: block; }
 
 .basicTemplate .othDiv {
@@ -156,8 +190,14 @@
   display: flex;
   justify-content: center; }
 
-.basicTemplate .text-center {
-  text-align: center; }
+.basicTemplate.ltr .align-text {
+  text-align: left; }
+
+.basicTemplate.rtl .align-text {
+  text-align: right; }
+
+.basicTemplate .m-bottom-10 {
+  margin-bottom: 10px; }
 
 .basicTemplate.ltr .total-amount {
   padding: 0 20px 0 40px;
@@ -168,3 +208,14 @@
 .border-bottom {
   padding-bottom: 10px;
   border-bottom: solid #E8E8E8 1px; }
+
+.border-top {
+  padding-top: 5px;
+  border-bottom: solid #E8E8E8 1px; }
+
+.emv-div {
+  display: flex; }
+
+.emv-text {
+  display: flex;
+  flex: 1; }

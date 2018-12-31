@@ -2,6 +2,7 @@ import TemplateBuilderService from './templateBuilderService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import BillService from './billService';
 import _ from 'lodash';
+import Utils from '../helpers/utils.service';
 
 export default class TlogDocsService {
 
@@ -13,6 +14,7 @@ export default class TlogDocsService {
 
         this.$templateBuilder = new TemplateBuilderService(options);
         this.$translate = new TlogDocsTranslateService(options);
+        this.$utils = new Utils();
     }
 
     Enums() {
@@ -62,7 +64,7 @@ export default class TlogDocsService {
                 tlog.order.length > 0 &&
                 tlog.order[0].allDocuments.length > 0 &&
                 tlog.order[0].allDocuments[0].payments.length > 0 &&
-                tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false;
+                tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false; /// TODO : is gift card only in index 0 ?????
             if (checkGiftcardExists) {
                 orderSelection.push({
                     tlogId: tlog._id,
@@ -96,6 +98,7 @@ export default class TlogDocsService {
                         isRefund: false
                     });
                 }
+
                 if (tlog.order[0].checks && tlog.order[0].checks.length > 1) {
 
 
@@ -116,6 +119,21 @@ export default class TlogDocsService {
                         });
                     });
                 }
+
+                let members = tlog.order[0].diners.filter(c => c.member !== undefined && c.member !== null);
+
+                if (members.length > 0) {
+
+                    orderSelection.push({
+                        tlogId: tlog._id,
+                        id: this.$utils.generateGuid({ count: 3 }),// 'clubMembers', // patch id
+                        type: 'clubMembers',
+                        title: this.$translate.getText('clubMembers'),
+                        ep: `tlogs/${tlog._id}/bill`,
+                        isRefund: false
+                    });
+                }
+
             }
 
             if (this._isUS) {
@@ -128,12 +146,13 @@ export default class TlogDocsService {
 
                                     var typeTitle = "";
                                     if (payment.tenderType === 'creditCard') typeTitle = this.$translate.getText('CreditSlip');
-                                    if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); document.id = document.id + 'giftCard' }
+                                    if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); }
+                                    // if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); document.id = document.id + 'giftCard' }
                                     if (payment.tenderType === 'creditCard' || payment.tenderType === 'giftCard') {
                                         payment.number = `${tlog.order[0].number}/${payment.number}`;
                                         orderSelection.push({
                                             tlogId: tlog._id,
-                                            id: document.id,
+                                            id: this.$utils.generateGuid({ count: 3 }),
                                             type: payment.tenderType,
                                             title: typeTitle + "-" + payment.number,
                                             ep: `documents/v2/${payment._id}/printdata`,
@@ -233,8 +252,7 @@ export default class TlogDocsService {
 
                 }
             }
-            console.log('orderSelection');
-            console.log(orderSelection);
+
         }
         return orderSelection;
 
@@ -293,6 +311,7 @@ export default class TlogDocsService {
     }
 
     getHTMLDocument(documentInfo, document, options = {}) {
+
         return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options);
     }
 
