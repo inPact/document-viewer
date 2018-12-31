@@ -226,6 +226,15 @@ export default class TemplateBuilderService {
             }
         }
 
+        let elementVersion = this.$htmlCreator.create({
+            type: 'div',
+            id: 'version',
+            classList: ['hidden-element'],
+            value: VERSION
+        });
+
+        docTemplate.appendChild(elementVersion);
+
         return docTemplate;
     }
 
