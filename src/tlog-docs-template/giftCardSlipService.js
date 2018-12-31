@@ -183,7 +183,7 @@ export default class GiftCardSlipService {
             giftCardSlipDiv.appendChild(totalDiv)
 
             //Add signature 
-            if (docObjChosen.md.signature) {
+            if (docObjChosen.md && docObjChosen.md.signature) {
 
                 var signatureArea = this._doc.createElement('div');
                 signatureArea.id = 'signatureArea';
