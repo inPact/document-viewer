@@ -311,7 +311,7 @@ export default class TlogDocsService {
     }
 
     getHTMLDocument(documentInfo, document, options = {}) {
-
+        console.log("Version: " + VERSION);
         return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options);
     }
 
