@@ -152,7 +152,7 @@ export default class TlogDocsService {
                                         payment.number = `${tlog.order[0].number}/${payment.number}`;
                                         orderSelection.push({
                                             tlogId: tlog._id,
-                                            id: document.id,
+                                            id: this.$utils.generateGuid({ count: 3 }),
                                             type: payment.tenderType,
                                             title: typeTitle + "-" + payment.number,
                                             ep: `documents/v2/${payment._id}/printdata`,
