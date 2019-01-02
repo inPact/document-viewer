@@ -141,6 +141,9 @@ export default class VatTemplateService {
 
     createVatDataTemplate(vat, isMulti) {
 
+        console.log("isMulti: " + isMulti);
+        console.log(vat[0]);
+
         let vatDataTemplate = this._doc.createElement('div');
         vatDataTemplate.id = "VatDataTemplate";
 
@@ -185,7 +188,7 @@ export default class VatTemplateService {
                 "</div>";
 
 
-            console.log("vat.TOTAL_INCLUDED_TAX");
+            console.log("vat.   ");
             console.log(vat.TOTAL_INCLUDED_TAX);
             console.log("vat.TOTAL_INCLUDED_TAX");
 
