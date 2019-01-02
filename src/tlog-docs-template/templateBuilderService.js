@@ -464,6 +464,7 @@ export default class TemplateBuilderService {
         var creditDataDiv = this._doc.createElement('div');
         creditDataDiv.id = "creditDataDiv";
 
+
         if (
             this._docData.documentType === 'invoice' &&
             this._printData.collections.CREDIT_PAYMENTS &&
@@ -623,7 +624,8 @@ export default class TemplateBuilderService {
             return tplOrderPaymentsDiv;
         }
 
-        else if (this._docObj && this._docData.documentType === "invoice") {
+        else if (this._docObj && ["invoice", "refundInvoice"].indexOf(this._docData.documentType) > -1) {
+
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
