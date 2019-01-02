@@ -130,7 +130,8 @@ export default class TlogDocsService {
                         type: 'clubMembers',
                         title: this.$translate.getText('clubMembers'),
                         ep: `tlogs/${tlog._id}/bill`,
-                        isRefund: false
+                        isRefund: false,
+                        isFakeDocument: true
                     });
                 }
 
@@ -162,7 +163,8 @@ export default class TlogDocsService {
                                             },
                                             docPaymentType: (payment.tenderType ? payment.tenderType : ''),
                                             isRefund: payment.tenderType.toUpperCase().includes('REFUND'),
-                                            isGiftCardBill: false
+                                            isGiftCardBill: false,
+                                            isFakeDocument: true
                                         });
                                     }
                                 })

@@ -200,7 +200,7 @@ export default class HeaderService {
             case 'tplOrderType': {
                 if (printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE) {
                     var typeTranslate = this.$translate.getText("ORDER_TYPE")
-                    var orderType = "ORDER_TYPES_" + printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE;
+                    var orderType = "ORDER_TYPES_" + (printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE);
                     var typeDataTranslate = this.$translate.getText(orderType);
                     htmlElement.innerHTML = "<div class='centralize' style='justify-content:center;'>" + this.orderWordsByLocale(typeTranslate, typeDataTranslate, printData.variables.ORDER_NO) + "</div > "
                     htmlElement.setAttribute('class', 'med-chars');

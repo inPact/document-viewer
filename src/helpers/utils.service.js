@@ -62,6 +62,14 @@ export default class Utils {
         let minute = (date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes();
         let a = (date.getHours() > 12 ? "PM" : "AM");
 
+        if (day < 10) {
+            day = `0${day}`;
+        }
+
+        if (month < 10) {
+            month = `0${month}`;
+        }
+
         return `${month}/${day}/${year} ${hour}:${minute} ${a}`;
     }
 
@@ -74,6 +82,14 @@ export default class Utils {
         let year = date.getFullYear();
         let hour = (date.getHours() > 9) ? date.getHours() : "0" + date.getHours();
         let minute = (date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes();
+
+        if (day < 10) {
+            day = `0${day}`;
+        }
+
+        if (month < 10) {
+            month = `0${month}`;
+        }
 
         return `${day}/${month}/${year} ${hour}:${minute}`;
     }
