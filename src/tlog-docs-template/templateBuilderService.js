@@ -547,13 +547,36 @@ export default class TemplateBuilderService {
 
         // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
-        if (this._docObj && (this._docData.documentType ===
-            ('invoice' || 'CreditCardPayment' || 'CreditCardRefund' || 'CashPayment' || 'GiftCard' || 'CashRefund' || 'ChequePayment' || 'ChequeRefund'))) {
+
+        console.log("printData");
+        console.log(printData);
+        console.log("printData");
+
+        if (this._docObj && [
+            'invoice',
+            'CreditCardPayment',
+            'CreditCardRefund',
+            'CashPayment',
+            'GiftCard',
+            'CashRefund',
+            'ChequePayment',
+            'ChequeRefund',
+            'refundInvoice'
+        ].indexOf(this._docData.documentType) > -1) {
+
+
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);
         }
         else if (this._docObj && (this._docData.documentType === 'deliveryNote')) {
-            return tplOrderTotals
+            return tplOrderTotals;
         }
         else {
             var OrderTotalsDiv = this._doc.createElement('div');
