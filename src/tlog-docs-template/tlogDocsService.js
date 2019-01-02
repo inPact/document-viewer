@@ -323,6 +323,10 @@ export default class TlogDocsService {
         let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
         documentInfo.documentType = document.documentType;
 
+        console.log("documentInfo");
+        console.log(documentInfo);
+        console.log("documentInfo");
+
         switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
             case 'cash':
                 documentInfo.docPaymentType = 'CashPayment';
@@ -341,6 +345,8 @@ export default class TlogDocsService {
                 break;
 
         }
+
+        documentInfo.title = this.$slipService.getTitle({ type: documentInfo.documentType, number: doc.number })
 
         documentInfo.documentNumber = _.get(document, 'printData.variables.DOCUMENT_NO');
         return this.getHTMLDocument(documentInfo, document, options);
