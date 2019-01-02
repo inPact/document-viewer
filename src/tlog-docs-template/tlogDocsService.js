@@ -349,7 +349,7 @@ export default class TlogDocsService {
 
         }
 
-        documentInfo.title = this.$slipService.getTitle({ type: documentInfo.documentType, number: doc.number })
+        documentInfo.title = this.$slipService.getTitle({ type: documentInfo.documentType, number: document.printData.variables.ORDER_NO })
 
         documentInfo.documentNumber = _.get(document, 'printData.variables.DOCUMENT_NO');
         return this.getHTMLDocument(documentInfo, document, options);
