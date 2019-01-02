@@ -10,26 +10,26 @@ export default class SlipService {
     getTitle(options) {
 
         let type = options.type;
-        let printData = options.printData;
         let number = options.number;
 
-        let variables = printData.variables;
+        console.log("getTitle");
+        console.log(options);
 
         switch (type) {
             case "orderBill": {
-                return `${this.$translate.getText('order')} ${variables.ORDER_NO}`;
+                return `${this.$translate.getText('order')} ${number}`;
             }
             case "invoice": {
-                return `${this.$translate.getText('invoice_number')} ${variables.ORDER_NO}`;
+                return `${this.$translate.getText('invoice_number')} ${number}`;
             }
             case "refundInvoice": {
-                return `${this.$translate.getText('credit_invoice_number')} ${variables.ORDER_NO}`;
+                return `${this.$translate.getText('credit_invoice_number')} ${number}`;
             }
             case "deliveryNote": {
-                return `${this.$translate.getText('delivery_note_number')} ${variables.ORDER_NO}`;
+                return `${this.$translate.getText('delivery_note_number')} ${number}`;
             }
             case "refundDeliveryNote": {
-                return `${this.$translate.getText('refund_note_number')} ${variables.ORDER_NO}`;
+                return `${this.$translate.getText('refund_note_number')} ${number}`;
             }
             case "creditCard": {
                 return `${this.$translate.getText('CreditSlip')} ${number}`;
