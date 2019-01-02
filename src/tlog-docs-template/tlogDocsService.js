@@ -325,7 +325,10 @@ export default class TlogDocsService {
 
         console.log("documentInfo");
         console.log(documentInfo);
-        console.log("documentInfo");
+        console.log("");
+        console.log("options");
+        console.log(options);
+        console.log("");
 
         switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
             case 'cash':
