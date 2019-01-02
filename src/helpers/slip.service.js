@@ -19,6 +19,9 @@ export default class SlipService {
             case "orderBill": {
                 return `${this.$translate.getText('order')} ${number}`;
             }
+            case "tlog": {
+                return `${this.$translate.getText('order')} ${number}`;
+            }
             case "invoice": {
                 return `${this.$translate.getText('invoice_number')} ${number}`;
             }
