@@ -22,7 +22,7 @@ export default class Utils {
     }
 
     isNegative(amount) {
-        var intAmount = parseInt(amount);
+        var intAmount = Number(amount);
         return intAmount < 0 ? 'negative' : "";
 
     }
