@@ -186,7 +186,7 @@ export default class CreditSlipService {
             creditSlipDiv.appendChild(totalDiv)
 
             //Add signature 
-            if (docObjChosen.md.signature) {
+            if (_.get(docObjChosen, 'md.signature')) {
 
                 var signatureArea = this._doc.createElement('div');
                 signatureArea.id = 'signatureArea';
