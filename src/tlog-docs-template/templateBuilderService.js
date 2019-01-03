@@ -226,6 +226,15 @@ export default class TemplateBuilderService {
             }
         }
 
+        let elementVersion = this.$htmlCreator.create({
+            type: 'div',
+            id: 'version',
+            classList: ['hidden-element'],
+            value: VERSION
+        });
+
+        docTemplate.appendChild(elementVersion);
+
         return docTemplate;
     }
 
@@ -455,6 +464,7 @@ export default class TemplateBuilderService {
         var creditDataDiv = this._doc.createElement('div');
         creditDataDiv.id = "creditDataDiv";
 
+
         if (
             this._docData.documentType === 'invoice' &&
             this._printData.collections.CREDIT_PAYMENTS &&
@@ -538,13 +548,36 @@ export default class TemplateBuilderService {
 
         // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
-        if (this._docObj && (this._docData.documentType ===
-            ('invoice' || 'CreditCardPayment' || 'CreditCardRefund' || 'CashPayment' || 'GiftCard' || 'CashRefund' || 'ChequePayment' || 'ChequeRefund'))) {
+
+        console.log("printData");
+        console.log(printData);
+        console.log("printData");
+
+        if (this._docObj && [
+            'invoice',
+            'CreditCardPayment',
+            'CreditCardRefund',
+            'CashPayment',
+            'GiftCard',
+            'CashRefund',
+            'ChequePayment',
+            'ChequeRefund',
+            'refundInvoice'
+        ].indexOf(this._docData.documentType) > -1) {
+
+
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+            console.log('createVatTemplate');
+
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);
         }
         else if (this._docObj && (this._docData.documentType === 'deliveryNote')) {
-            return tplOrderTotals
+            return tplOrderTotals;
         }
         else {
             var OrderTotalsDiv = this._doc.createElement('div');
@@ -591,12 +624,13 @@ export default class TemplateBuilderService {
             return tplOrderPaymentsDiv;
         }
 
-        else if (this._docObj && this._docData.documentType === "invoice") {
+        else if (this._docObj && ["invoice", "refundInvoice"].indexOf(this._docData.documentType) > -1) {
+
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
 
-                if (this._docObj.md && this._docObj.md.signature && !this._isUS && this._docObj.docPaymentType === "CreditCardPayment") {
+                if (_.get(this, '_docObj.md.signature') && !this._isUS && this._docObj.docPaymentType === "CreditCardPayment") {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
                     signatureArea.className += ' item-div';
