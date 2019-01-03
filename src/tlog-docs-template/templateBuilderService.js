@@ -93,7 +93,7 @@ export default class TemplateBuilderService {
             value: VERSION
         });
 
-        console.log('elementVersion : ' + VERSION);
+        console.log('doc-viewer version : ' + VERSION);
 
         docTemplate.appendChild(elementVersion);
 
