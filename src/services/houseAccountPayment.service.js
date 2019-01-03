@@ -1,6 +1,6 @@
 
 
-import HtmlCreator from '../helpers/htmlCreator.serivce';
+import HtmlCreator from '../helpers/htmlCreator.service';
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from '../tlog-docs-template/tlogDocsTranslate';
 

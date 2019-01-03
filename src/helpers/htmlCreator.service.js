@@ -1,5 +1,5 @@
 
-import DocumentFactory from '../helpers/documentFactory.service';
+import DocumentFactory from './documentFactory.service';
 
 export default class HtmlCreator {
 
@@ -36,6 +36,7 @@ export default class HtmlCreator {
         let classList = options.classList;
         let value = options.value;
         let children = options.children;
+        let attributes = options.attributes;
 
         let element = doc.createElement(type);
 
@@ -52,6 +53,14 @@ export default class HtmlCreator {
 
             children.forEach(elementChild => {
                 element.appendChild(elementChild);
+            });
+
+        }
+
+        if (attributes && attributes.length > 0) {
+
+            attributes.forEach(attr => {
+                element.setAttribute(attr.key, attr.value);
             });
 
         }

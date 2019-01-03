@@ -1,6 +1,6 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
-import HtmlCreator from '../helpers/htmlCreator.serivce';
+import HtmlCreator from '../helpers/htmlCreator.service';
 
 export default class VatTemplateService {
     constructor(options) {
@@ -140,6 +140,7 @@ export default class VatTemplateService {
     }
 
     createVatDataTemplate(vat, isMulti) {
+
 
         let vatDataTemplate = this._doc.createElement('div');
         vatDataTemplate.id = "VatDataTemplate";

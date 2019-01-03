@@ -9,11 +9,12 @@ import CreditSlipService from './creditSlipService';
 import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
 import Utils from '../helpers/utils.service';
-import HtmlCreator from '../helpers/htmlCreator.serivce';
+import HtmlCreator from '../helpers/htmlCreator.service';
 import Localization from '../helpers/localization.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 import CreditTransaction from '../services/creditTransaction.service';
 import ClubMembersService from '../services/clubMembers.service';
+import _ from 'lodash';
 
 
 
@@ -48,31 +49,26 @@ export default class TemplateBuilderService {
 
     }
 
-    _createRootElement() {
-        let rootElement = DocumentFactory.get({ createNew: true });
-        return rootElement;
-    }
+    createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
 
-    createHTMLFromPrintDATA(documentInfo, document, options = {}) {
+        this._doc = DocumentFactory.get({
+            createNew: true,
+            documentInfo, documentInfo,
+            printData: printData
+        });
 
-
-        this._doc = this._createRootElement();
         this._docObj = documentInfo;
-        this._docData = document;
-        this._printData = this.$billService.resolvePrintData(document.printData, this._isUS);
+        this._docData = printData;
+        this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
         this._printData.isRefund = documentInfo.isRefund;
         let template = this.createDocTemplate(documentInfo, options);
         this._doc.body.appendChild(template);
+
         return (new XMLSerializer()).serializeToString(this._doc);
     }
 
     createDocTemplate(docObjChosen, options = {}) {
 
-        // switch (docObjChosen.type) {
-        //     case 'clubMember': {
-        //         return clubMemberService.get();
-        //     }
-        // }
 
         this._excludeHeader = options.excludeHeader ? options.excludeHeader : false;
         var docTemplate = this._doc.createElement('div');
@@ -88,6 +84,19 @@ export default class TemplateBuilderService {
             docTemplate.classList += ' ltr'
             docTemplate.classList.remove('rtl')
         }
+
+        // Set pkg version (hidden element).
+        let elementVersion = this.$htmlCreator.create({
+            type: 'div',
+            id: 'version',
+            classList: ['hidden-element'],
+            value: VERSION
+        });
+
+        console.log('elementVersion : ' + VERSION);
+
+        docTemplate.appendChild(elementVersion);
+
 
         if (!this._excludeHeader) {
             var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
@@ -226,6 +235,15 @@ export default class TemplateBuilderService {
             }
         }
 
+        // let elementVersion = this.$htmlCreator.create({
+        //     type: 'div',
+        //     id: 'version',
+        //     classList: ['hidden-element'],
+        //     value: VERSION
+        // });
+
+        //docTemplate.appendChild(elementVersion);
+
         return docTemplate;
     }
 
@@ -250,7 +268,7 @@ export default class TemplateBuilderService {
         else if (this._docObj && this._docData.documentType === "deliveryNote") {
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
-            var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData(printData, this._doc);
+            var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData();
             tplOrderPaymentData.appendChild(delNoteTransDiv);
             paymentDataDiv.classList += ' border-bottom';
         }
@@ -455,6 +473,7 @@ export default class TemplateBuilderService {
         var creditDataDiv = this._doc.createElement('div');
         creditDataDiv.id = "creditDataDiv";
 
+
         if (
             this._docData.documentType === 'invoice' &&
             this._printData.collections.CREDIT_PAYMENTS &&
@@ -538,13 +557,25 @@ export default class TemplateBuilderService {
 
         // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
-        if (this._docObj && (this._docData.documentType ===
-            ('invoice' || 'CreditCardPayment' || 'CreditCardRefund' || 'CashPayment' || 'GiftCard' || 'CashRefund' || 'ChequePayment' || 'ChequeRefund'))) {
+
+        if (this._docObj && [
+            'invoice',
+            'CreditCardPayment',
+            'CreditCardRefund',
+            'CashPayment',
+            'GiftCard',
+            'CashRefund',
+            'ChequePayment',
+            'ChequeRefund',
+            'refundInvoice'
+        ].indexOf(this._docData.documentType) > -1) {
+
+
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);
         }
         else if (this._docObj && (this._docData.documentType === 'deliveryNote')) {
-            return tplOrderTotals
+            return tplOrderTotals;
         }
         else {
             var OrderTotalsDiv = this._doc.createElement('div');
@@ -591,18 +622,19 @@ export default class TemplateBuilderService {
             return tplOrderPaymentsDiv;
         }
 
-        else if (this._docObj && this._docData.documentType === "invoice") {
+        else if (this._docObj && ["invoice", "refundInvoice"].indexOf(this._docData.documentType) > -1) {
+
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
 
-                if (this._docObj.md && this._docObj.md.signature && !this._isUS && this._docObj.docPaymentType === "CreditCardPayment") {
+                if (_.get(this, '_docObj.md.signature') && !this._isUS && this._docObj.docPaymentType === "CreditCardPayment") {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
                     signatureArea.className += ' item-div';
 
                     tplOrderPaymentsDiv.appendChild(signatureArea);
-                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(this._docObj, signatureArea, this._doc));
+                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
                 }
             }
             else if (this._docObj.docPaymentType === ("GiftCard")) {

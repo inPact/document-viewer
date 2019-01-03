@@ -1,22 +1,33 @@
 
 
+import DocumentFactory from '../helpers/documentFactory.service';
+import HtmlCreator from '../helpers/htmlCreator.service';
 
 export default class SignatureService {
-    constructor() {
 
+    constructor() {
+        this.$htmlCreator = new HtmlCreator();
     }
 
-    getSignature(docObjChosen, element, doc) {
+    getSignature(element) {
 
-        this._doc = doc;
+        this._doc = DocumentFactory.get();
+        let documentInfo = DocumentFactory.getDocumentInfo();
 
-        let signatureData = docObjChosen.md.signature;
+        if (_.get(documentInfo, 'md.signature') === undefined)
+            return;
 
-        let contenier = this._doc.createElement('div');
-        contenier.id = 'signatureDiv';
-        contenier.classList += " signature-container";
-        contenier.setAttribute("width", "100%");
-        contenier.setAttribute("height", "30px");
+        let signatureData = documentInfo.md.signature;
+
+        let contenier = this.$htmlCreator.create({
+            type: 'div',
+            id: 'signature-contenier',
+            classList: ['signature-container'],
+            attributes: [
+                { key: "width", value: "100%" },
+                { key: "height", value: "30px" },
+            ]
+        })
 
         let elementSvg = this.makeSVG('svg', {
             'id': "svg",

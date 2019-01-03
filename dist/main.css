@@ -23,6 +23,9 @@
 .section-element {
   padding: 10px 0px; }
 
+.hidden-element {
+  display: none; }
+
 .basicTemplate {
   background-color: white;
   font-family: "Courier New", Courier, monospace;

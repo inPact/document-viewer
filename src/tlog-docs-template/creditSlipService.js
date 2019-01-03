@@ -186,14 +186,14 @@ export default class CreditSlipService {
             creditSlipDiv.appendChild(totalDiv)
 
             //Add signature 
-            if (docObjChosen.md && docObjChosen.md.signature) {
+            if (_.get(docObjChosen, 'md.signature')) {
 
                 var signatureArea = this._doc.createElement('div');
                 signatureArea.id = 'signatureArea';
                 signatureArea.className += ' item-div';
 
                 creditSlipDiv.appendChild(signatureArea);
-                creditSlipDiv.appendChild(this.$signatureService.getSignature(docObjChosen, signatureArea, this._doc));
+                creditSlipDiv.appendChild(this.$signatureService.getSignature(signatureArea));
 
             }
 

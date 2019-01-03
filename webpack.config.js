@@ -1,8 +1,15 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
+const pkg = require("./package.json");
+
 const extractPlugin = new ExtractTextPlugin({
     filename: 'main.css',
 });
+
+const definePlugin = new webpack.DefinePlugin({
+    VERSION: JSON.stringify(pkg.version)
+})
 
 module.exports = {
     entry: './src/index.js',
@@ -39,6 +46,9 @@ module.exports = {
             }
         ]
     },
-    plugins: [extractPlugin],
+    plugins: [
+        extractPlugin,
+        definePlugin
+    ],
     //mode: 'development'
 };
