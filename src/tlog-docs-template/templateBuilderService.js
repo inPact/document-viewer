@@ -51,11 +51,6 @@ export default class TemplateBuilderService {
 
     createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
 
-
-        console.log("-----createHTMLFromPrintDATA-----");
-        console.log(printData);
-        console.log("-----createHTMLFromPrintDATA-----");
-
         this._doc = DocumentFactory.get({
             createNew: true,
             documentInfo, documentInfo,
@@ -631,7 +626,7 @@ export default class TemplateBuilderService {
                     signatureArea.className += ' item-div';
 
                     tplOrderPaymentsDiv.appendChild(signatureArea);
-                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(this._docObj, signatureArea, this._doc));
+                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
                 }
             }
             else if (this._docObj.docPaymentType === ("GiftCard")) {

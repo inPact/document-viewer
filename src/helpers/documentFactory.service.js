@@ -14,17 +14,10 @@ class DocumentFactory {
         }
 
         if (options && options.createNew === true) {
-
-            console.log("--- options in factory");
-
-            console.log(options);
-
-            console.log("--- options in factory");
-
-            this.rootElement === undefined;
+            this.rootElement = undefined;
             this.rootElement = document.implementation.createHTMLDocument();
             this.documentInfo = _.get(options, 'documentInfo') || undefined;
-            this.printData == _.get(options, 'printData') || undefined;
+            this.printData = _.get(options, 'printData') || undefined;
         }
 
         return this.rootElement;

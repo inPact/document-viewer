@@ -4,6 +4,7 @@ import VatTemplateService from './vatTemplateService';
 
 import HouseAccountPayment from '../services/houseAccountPayment.service';
 import DocumentFactory from '../helpers/documentFactory.service';
+import HtmlCreator from '../helpers/htmlCreator.serivce';
 
 export default class DeliveryNoteTransactionDataService {
     constructor(options) {
@@ -12,6 +13,7 @@ export default class DeliveryNoteTransactionDataService {
         this.$vatTemplateService = new VatTemplateService(options);
         this.$utils = new Utils();
         this.$houseAccountPayment = new HouseAccountPayment(options);
+        this.$htmlCreator = new HtmlCreator();
     }
 
     createDeliveryNoteTransactionData() {
@@ -114,21 +116,18 @@ export default class DeliveryNoteTransactionDataService {
         }
 
 
-        if (_.get(docObjChosen, 'md.signature')) {
+        if (_.get(documentInfo, 'md.signature')) {
 
+            let elementSignatureArea = this.$htmlCreator.create({
+                type: 'div',
+                id: 'signature-area',
+                classList: ['item-div']
+            });
+
+            let elementSignature = this.$signatureService.getSignature(elementSignatureArea);
+
+            dNoteChargeAccntDiv.appendChild(elementSignature);
         }
-
-        // //Add signature 
-        // if (_.get(docObjChosen, 'md.signature')) {
-
-        //     var signatureArea = this._doc.createElement('div');
-        //     signatureArea.id = 'signatureArea';
-        //     signatureArea.className += ' item-div';
-
-        //     giftCardSlipDiv.appendChild(signatureArea);
-        //     giftCardSlipDiv.appendChild(this.$signatureService.getSignature(docObjChosen, signatureArea, this._doc));
-
-        // }
 
 
 

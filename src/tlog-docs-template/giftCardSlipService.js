@@ -190,7 +190,7 @@ export default class GiftCardSlipService {
                 signatureArea.className += ' item-div';
 
                 giftCardSlipDiv.appendChild(signatureArea);
-                giftCardSlipDiv.appendChild(this.$signatureService.getSignature(docObjChosen, signatureArea, this._doc));
+                giftCardSlipDiv.appendChild(this.$signatureService.getSignature(signatureArea));
 
             }
 
