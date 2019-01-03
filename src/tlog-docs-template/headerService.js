@@ -1,6 +1,6 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
-import HtmlCreator from '../helpers/htmlCreator.serivce';
+import HtmlCreator from '../helpers/htmlCreator.service';
 
 
 export default class HeaderService {
@@ -20,6 +20,7 @@ export default class HeaderService {
         //creating a div to populate and return
         var headerDiv = this._doc.createElement('div');
         headerDiv.id = "headerDiv";
+        
 
 
         //setting header constants div for display

@@ -1,5 +1,5 @@
 
-import DocumentFactory from '../helpers/documentFactory.service';
+import DocumentFactory from './documentFactory.service';
 
 export default class HtmlCreator {
 

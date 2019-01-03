@@ -5,7 +5,7 @@ import SignatureService from './signatureService';
 
 import HouseAccountPayment from '../services/houseAccountPayment.service';
 import DocumentFactory from '../helpers/documentFactory.service';
-import HtmlCreator from '../helpers/htmlCreator.serivce';
+import HtmlCreator from '../helpers/htmlCreator.service';
 
 export default class DeliveryNoteTransactionDataService {
     constructor(options) {
@@ -25,13 +25,6 @@ export default class DeliveryNoteTransactionDataService {
         let printData = DocumentFactory.getPrintData();
         let documentInfo = DocumentFactory.getDocumentInfo();
 
-        console.log("printData");
-        console.log(printData);
-        console.log("printData");
-
-        console.log("documentInfo");
-        console.log(documentInfo);
-        console.log("documentInfo");
 
         var deliveryNoteTransactionDiv = this._doc.createElement('div');
         deliveryNoteTransactionDiv.id = 'deliveryNoteTransactionDiv';

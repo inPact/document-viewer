@@ -1,7 +1,7 @@
 
 
 import DocumentFactory from '../helpers/documentFactory.service';
-import HtmlCreator from '../helpers/htmlCreator.serivce';
+import HtmlCreator from '../helpers/htmlCreator.service';
 
 export default class SignatureService {
 

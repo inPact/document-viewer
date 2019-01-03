@@ -9,7 +9,7 @@ import CreditSlipService from './creditSlipService';
 import GiftCardSlipService from './giftCardSlipService'
 import SignatureService from './signatureService'
 import Utils from '../helpers/utils.service';
-import HtmlCreator from '../helpers/htmlCreator.serivce';
+import HtmlCreator from '../helpers/htmlCreator.service';
 import Localization from '../helpers/localization.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 import CreditTransaction from '../services/creditTransaction.service';
@@ -89,6 +89,17 @@ export default class TemplateBuilderService {
             docTemplate.classList += ' ltr'
             docTemplate.classList.remove('rtl')
         }
+
+        // Set pkg version (hidden element).
+        let elementVersion = this.$htmlCreator.create({
+            type: 'div',
+            id: 'version',
+            classList: ['hidden-element'],
+            value: VERSION
+        });
+
+        docTemplate.appendChild(elementVersion);
+
 
         if (!this._excludeHeader) {
             var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
@@ -227,14 +238,14 @@ export default class TemplateBuilderService {
             }
         }
 
-        let elementVersion = this.$htmlCreator.create({
-            type: 'div',
-            id: 'version',
-            classList: ['hidden-element'],
-            value: VERSION
-        });
+        // let elementVersion = this.$htmlCreator.create({
+        //     type: 'div',
+        //     id: 'version',
+        //     classList: ['hidden-element'],
+        //     value: VERSION
+        // });
 
-        docTemplate.appendChild(elementVersion);
+        //docTemplate.appendChild(elementVersion);
 
         return docTemplate;
     }
