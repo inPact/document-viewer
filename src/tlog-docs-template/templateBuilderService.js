@@ -69,11 +69,6 @@ export default class TemplateBuilderService {
 
     createDocTemplate(docObjChosen, options = {}) {
 
-        // switch (docObjChosen.type) {
-        //     case 'clubMember': {
-        //         return clubMemberService.get();
-        //     }
-        // }
 
         this._excludeHeader = options.excludeHeader ? options.excludeHeader : false;
         var docTemplate = this._doc.createElement('div');
@@ -97,6 +92,8 @@ export default class TemplateBuilderService {
             classList: ['hidden-element'],
             value: VERSION
         });
+
+        console.log('elementVersion : ' + VERSION);
 
         docTemplate.appendChild(elementVersion);
 
