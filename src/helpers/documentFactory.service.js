@@ -28,7 +28,7 @@ class DocumentFactory {
     }
 
     getPrintData() {
-        return this.printData;
+        return this.printData.printData;
     }
 
 }
