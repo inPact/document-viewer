@@ -3,7 +3,7 @@ class DocumentFactory {
 
     constructor(options) {
         this.rootElement = undefined;
-        this.document = undefined;
+        this.documentInfo = undefined;
         this.printData = undefined;
     }
 
@@ -14,6 +14,13 @@ class DocumentFactory {
         }
 
         if (options && options.createNew === true) {
+
+            console.log("--- options in factory");
+
+            console.log(options);
+
+            console.log("--- options in factory");
+
             this.rootElement === undefined;
             this.rootElement = document.implementation.createHTMLDocument();
             this.documentInfo = _.get(options, 'documentInfo') || undefined;
