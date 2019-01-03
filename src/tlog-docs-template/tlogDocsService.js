@@ -340,10 +340,16 @@ export default class TlogDocsService {
             case 'chargeAccount':
                 documentInfo.docPaymentType = 'ChargeAccountPayment';
                 break;
-
         }
 
-        documentInfo.title = this.$slipService.getTitle({ type: documentInfo.documentType, number: document.printData.variables.ORDER_NO })
+        let number;
+        if (['refundInvoice', 'invoice', 'deliveryNote', 'refundDeliveryNote'].indexOf(document.documentType) > -1) {
+            number = document.printData.variables.DOCUMENT_NO;
+        } else {
+            number = document.printData.variables.ORDER_NO;
+        }
+
+        documentInfo.title = this.$slipService.getTitle({ type: documentInfo.documentType, number: number });
 
         documentInfo.documentNumber = _.get(document, 'printData.variables.DOCUMENT_NO');
         return this.getHTMLDocument(documentInfo, document, options);
