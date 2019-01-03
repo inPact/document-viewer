@@ -14,6 +14,7 @@ import Localization from '../helpers/localization.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 import CreditTransaction from '../services/creditTransaction.service';
 import ClubMembersService from '../services/clubMembers.service';
+import _ from 'lodash';
 
 
 
@@ -48,21 +49,21 @@ export default class TemplateBuilderService {
 
     }
 
-    _createRootElement() {
-        let rootElement = DocumentFactory.get({ createNew: true });
-        return rootElement;
-    }
+    createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
 
-    createHTMLFromPrintDATA(documentInfo, document, options = {}) {
+        this._doc = DocumentFactory.get({
+            createNew: true,
+            documentInfo, documentInfo,
+            printData: printData
+        });
 
-
-        this._doc = this._createRootElement();
         this._docObj = documentInfo;
-        this._docData = document;
-        this._printData = this.$billService.resolvePrintData(document.printData, this._isUS);
+        this._docData = printData;
+        this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
         this._printData.isRefund = documentInfo.isRefund;
         let template = this.createDocTemplate(documentInfo, options);
         this._doc.body.appendChild(template);
+
         return (new XMLSerializer()).serializeToString(this._doc);
     }
 
@@ -259,7 +260,7 @@ export default class TemplateBuilderService {
         else if (this._docObj && this._docData.documentType === "deliveryNote") {
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
-            var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData(printData, this._doc);
+            var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData();
             tplOrderPaymentData.appendChild(delNoteTransDiv);
             paymentDataDiv.classList += ' border-bottom';
         }
@@ -549,10 +550,6 @@ export default class TemplateBuilderService {
         // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
 
-        console.log("printData");
-        console.log(printData);
-        console.log("printData");
-
         if (this._docObj && [
             'invoice',
             'CreditCardPayment',
@@ -565,13 +562,6 @@ export default class TemplateBuilderService {
             'refundInvoice'
         ].indexOf(this._docData.documentType) > -1) {
 
-
-            console.log('createVatTemplate');
-            console.log('createVatTemplate');
-            console.log('createVatTemplate');
-            console.log('createVatTemplate');
-            console.log('createVatTemplate');
-            console.log('createVatTemplate');
 
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);

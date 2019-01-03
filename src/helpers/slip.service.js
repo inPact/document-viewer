@@ -12,9 +12,6 @@ export default class SlipService {
         let type = options.type;
         let number = options.number;
 
-        console.log("getTitle");
-        console.log(options);
-
         switch (type) {
             case "orderBill": {
                 return `${this.$translate.getText('order')} ${number}`;

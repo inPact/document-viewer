@@ -3,6 +3,7 @@ import TlogDocsTranslateService from './tlogDocsTranslate';
 import VatTemplateService from './vatTemplateService';
 
 import HouseAccountPayment from '../services/houseAccountPayment.service';
+import DocumentFactory from '../helpers/documentFactory.service';
 
 export default class DeliveryNoteTransactionDataService {
     constructor(options) {
@@ -13,8 +14,21 @@ export default class DeliveryNoteTransactionDataService {
         this.$houseAccountPayment = new HouseAccountPayment(options);
     }
 
-    createDeliveryNoteTransactionData(printData, doc) {
-        this._doc = doc;
+    createDeliveryNoteTransactionData() {
+
+        this._doc = DocumentFactory.get();
+
+        let printData = DocumentFactory.getPrintData();
+        let documentInfo = DocumentFactory.getDocumentInfo();
+
+        console.log("printData");
+        console.log(printData);
+        console.log("printData");
+
+        console.log("documentInfo");
+        console.log(documentInfo);
+        console.log("documentInfo");
+
         var deliveryNoteTransactionDiv = this._doc.createElement('div');
         deliveryNoteTransactionDiv.id = 'deliveryNoteTransactionDiv';
 
@@ -98,6 +112,23 @@ export default class DeliveryNoteTransactionDataService {
 
             dNoteChargeAccntDiv.appendChild(elementHouseAccountPayment);
         }
+
+
+        if (_.get(docObjChosen, 'md.signature')) {
+
+        }
+
+        // //Add signature 
+        // if (_.get(docObjChosen, 'md.signature')) {
+
+        //     var signatureArea = this._doc.createElement('div');
+        //     signatureArea.id = 'signatureArea';
+        //     signatureArea.className += ' item-div';
+
+        //     giftCardSlipDiv.appendChild(signatureArea);
+        //     giftCardSlipDiv.appendChild(this.$signatureService.getSignature(docObjChosen, signatureArea, this._doc));
+
+        // }
 
 
 

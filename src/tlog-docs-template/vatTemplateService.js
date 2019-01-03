@@ -141,8 +141,6 @@ export default class VatTemplateService {
 
     createVatDataTemplate(vat, isMulti) {
 
-        console.log("isMulti: " + isMulti);
-        console.log(vat[0]);
 
         let vatDataTemplate = this._doc.createElement('div');
         vatDataTemplate.id = "VatDataTemplate";
@@ -186,11 +184,6 @@ export default class VatTemplateService {
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_EX_VAT) ? beforeVatTranslate : "") + "</div>" + " " +
                 "<div class='total-amount " + this.isNegative(vat.TOTAL_EX_VAT) + "'>" + (this.notEmpty(vat.TOTAL_EX_VAT) ? Number(vat.TOTAL_EX_VAT).toFixed(2) : "") + "</div>" +
                 "</div>";
-
-
-            console.log("vat.   ");
-            console.log(vat.TOTAL_INCLUDED_TAX);
-            console.log("vat.TOTAL_INCLUDED_TAX");
 
             vatTextDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_INCLUDED_TAX) ? vatTranslate : "") + " " + vat.VAT_PERCENT + "%" + "</div>" + " " +
