@@ -1,6 +1,7 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import VatTemplateService from './vatTemplateService';
+import SignatureService from './signatureService';
 
 import HouseAccountPayment from '../services/houseAccountPayment.service';
 import DocumentFactory from '../helpers/documentFactory.service';
@@ -14,6 +15,7 @@ export default class DeliveryNoteTransactionDataService {
         this.$utils = new Utils();
         this.$houseAccountPayment = new HouseAccountPayment(options);
         this.$htmlCreator = new HtmlCreator();
+        this.$signatureService = new SignatureService();
     }
 
     createDeliveryNoteTransactionData() {
