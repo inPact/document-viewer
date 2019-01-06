@@ -14,6 +14,7 @@ import Localization from '../helpers/localization.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 import CreditTransaction from '../services/creditTransaction.service';
 import ClubMembersService from '../services/clubMembers.service';
+import HouseAccountPayment from '../services/houseAccountPayment.service';
 import _ from 'lodash';
 
 
@@ -41,6 +42,7 @@ export default class TemplateBuilderService {
         this.$htmlCreator = new HtmlCreator();
         this.$creditTransaction = new CreditTransaction(options);
         this.$clubMembersService = new ClubMembersService(options);
+        this.$houseAccountPayment = new HouseAccountPayment(options);
     }
 
     _configure(options) {
@@ -168,19 +170,6 @@ export default class TemplateBuilderService {
 
 
 
-                /**
-                      * Add House Account Payment Section.
-                      */
-                // if (hAccountPayments) {
-
-                //     let elementHouseAccountPayment = this.$houseAccountPayment.get({
-                //         data: hAccountPayments
-                //     })
-
-                //     dNoteChargeAccntDiv.appendChild(elementHouseAccountPayment);
-                // }
-
-
 
                 var tplOrderPayments = this.createPaymentsData(this._printData);
 
@@ -230,6 +219,31 @@ export default class TemplateBuilderService {
                 if (this._printData.variables.CUSTOMER_MESSAGE && docObjChosen.isFullOrderBill) {
                     var customerMessageDiv = this.createCustomerMessage(this._printData, this._doc);
                     if (customerMessageDiv !== null) docTemplate.appendChild(customerMessageDiv)
+                }
+
+
+
+
+                if (this._docData.documentType === 'refundDeliveryNote') {
+
+                    console.log('refundDeliveryNote');
+                    console.log('refundDeliveryNote');
+                    console.log('refundDeliveryNote');
+                    console.log('refundDeliveryNote');
+
+
+                    /**
+                   * Add House Account Payment Section.
+                   */
+                    if (_.get(this, 'printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]')) {
+
+                        let elementHouseAccountPayment = this.$houseAccountPayment.get({
+                            data: this.printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]
+                        })
+
+                        docTemplate.appendChild(elementHouseAccountPayment);
+                    }
+
                 }
             }
 
