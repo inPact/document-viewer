@@ -380,7 +380,7 @@ export default class BillService {
             }
 
             //if it is a returned order, the tip is negative and needs to be presented
-            if (collections.PAYMENT_LIST[0].TRANS_TYPE === this.Enums().TransTypes.Return) {
+            if (_.get(collections, 'PAYMENT_LIST[0].TRANS_TYPE') === this.Enums().TransTypes.Return) {
                 if (collections.PAYMENT_LIST[0].TIP_AMOUNT !== 0) {
                     totals.push({
                         type: 'tips',
