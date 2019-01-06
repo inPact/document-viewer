@@ -163,14 +163,6 @@ export default class TemplateBuilderService {
                 // var tplOrderPaymentData = createOrderPaymentData(_printData);
                 var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
 
-
-                console.log("tplOrderTotals");
-                console.log(tplOrderTotals);
-                console.log("tplOrderTotals");
-
-
-
-
                 var tplOrderPayments = this.createPaymentsData(this._printData);
 
                 // tplOrderPaymentData.id = 'tplOrderPaymentData';
@@ -225,12 +217,6 @@ export default class TemplateBuilderService {
 
 
                 if (this._docData.documentType === 'refundDeliveryNote') {
-
-                    console.log('refundDeliveryNote');
-                    console.log('refundDeliveryNote');
-                    console.log('refundDeliveryNote');
-                    console.log('refundDeliveryNote');
-
 
                     /**
                    * Add House Account Payment Section.
