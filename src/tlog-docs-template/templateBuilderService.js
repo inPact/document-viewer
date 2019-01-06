@@ -134,7 +134,8 @@ export default class TemplateBuilderService {
 
             if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
                 var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen);
-                docTemplate.appendChild(mediaExchangeDiv)
+                docTemplate.appendChild(mediaExchangeDiv);
+
             }
             if (isCreditSlip !== null && isCreditSlip) {
                 var tplCreditSlipTemplate = this.$creditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
@@ -255,6 +256,41 @@ export default class TemplateBuilderService {
             if (this._printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
                 docTemplate.appendChild(this.createReturnOrderText(this._printData));
             }
+
+            if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
+
+                let payments = _.get(this._printData, 'collections.PAYMENT_LIST');
+                let giftCardPayment = payments.find(c => c.P_TENDER_TYPE === "creditCard");
+
+                if (giftCardPayment) {
+
+                    let elementCreditTransaction = this.$creditTransaction.get({
+                        isUS: this._isUS,
+                        data: giftCardPayment
+                    });
+
+                    docTemplate.appendChild(elementCreditTransaction);
+
+                }
+
+            }
+
+            // if (this._isGiftCardBill) {
+
+            //     let payments = _.get(printData, 'collections.PAYMENT_LIST');
+            //     let giftCardPayment = payments.find(c => c.P_TENDER_TYPE === "giftCard");
+
+            //     if (giftCardPayment) {
+
+            //         let elementCreditTransaction = this.$creditTransaction.get({
+            //             isUS: this._isUS,
+            //             data: giftCardPayment
+            //         });
+
+            //         docTemplate.appendChild(elementCreditTransaction);
+
+            //     }
+            // }
         }
 
         // let elementVersion = this.$htmlCreator.create({
