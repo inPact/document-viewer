@@ -379,15 +379,8 @@ export default class BillService {
                 }
             }
 
-
-            console.log("collections");
-            console.log("TRANS_TYPE");
-            console.log(collections);
-            console.log("TRANS_TYPE");
-            console.log("collections");
-
             //if it is a returned order, the tip is negative and needs to be presented
-            if (collections.PAYMENT_LIST[0].TRANS_TYPE === this.Enums().TransTypes.Return) {
+            if (collections.PAYMENT_LIST && collections.PAYMENT_LIST[0].TRANS_TYPE === this.Enums().TransTypes.Return) {
                 if (collections.PAYMENT_LIST[0].TIP_AMOUNT !== 0) {
                     totals.push({
                         type: 'tips',
@@ -419,8 +412,7 @@ export default class BillService {
 
         // filter payments by ommitted property removes cancelled and refund payments once the order goes shva offline
 
-        //let filteredPyaments = this.filterOmittedPayments(collections.PAYMENT_LIST);
-        let filteredPyaments = collections.PAYMENT_LIST;
+        let filteredPyaments = this.filterOmittedPayments(collections.PAYMENT_LIST);
 
         let payments = [];
 
