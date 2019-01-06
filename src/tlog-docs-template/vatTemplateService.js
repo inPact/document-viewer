@@ -54,6 +54,8 @@ export default class VatTemplateService {
 
                 }
 
+                console.log("11 !!!!1");
+
 
                 vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
