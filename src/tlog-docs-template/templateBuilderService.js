@@ -141,7 +141,7 @@ export default class TemplateBuilderService {
                 console.log(this.isMediaExchange);
                 console.log("this.isMediaExchange");
 
-                let payments = _.get(printData, 'collections.PAYMENT_LIST');
+                let payments = _.get(this._printData, 'collections.PAYMENT_LIST');
                 let giftCardPayment = payments.find(c => c.P_TENDER_TYPE === "giftCard");
 
                 if (giftCardPayment) {
