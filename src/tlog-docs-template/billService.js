@@ -419,7 +419,8 @@ export default class BillService {
 
         // filter payments by ommitted property removes cancelled and refund payments once the order goes shva offline
 
-        let filteredPyaments = this.filterOmittedPayments(collections.PAYMENT_LIST);
+        //let filteredPyaments = this.filterOmittedPayments(collections.PAYMENT_LIST);
+        let filteredPyaments = collections.PAYMENT_LIST;
 
         let payments = [];
 
