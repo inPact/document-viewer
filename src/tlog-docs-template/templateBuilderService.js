@@ -160,6 +160,28 @@ export default class TemplateBuilderService {
 
                 // var tplOrderPaymentData = createOrderPaymentData(_printData);
                 var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
+
+
+                console.log("tplOrderTotals");
+                console.log(tplOrderTotals);
+                console.log("tplOrderTotals");
+
+
+
+                /**
+                      * Add House Account Payment Section.
+                      */
+                // if (hAccountPayments) {
+
+                //     let elementHouseAccountPayment = this.$houseAccountPayment.get({
+                //         data: hAccountPayments
+                //     })
+
+                //     dNoteChargeAccntDiv.appendChild(elementHouseAccountPayment);
+                // }
+
+
+
                 var tplOrderPayments = this.createPaymentsData(this._printData);
 
                 // tplOrderPaymentData.id = 'tplOrderPaymentData';
