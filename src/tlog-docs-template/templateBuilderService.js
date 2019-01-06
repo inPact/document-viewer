@@ -267,12 +267,6 @@ export default class TemplateBuilderService {
         }
         else if (this._docObj && (this._docData.documentType === "deliveryNote" || this._docData.documentType === "refundDeliveryNote")) {
 
-
-            console.log("this._docData.documentType");
-            console.log(this._docData.documentType);
-            console.log("this._docData.documentType");
-
-
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
             var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData();
@@ -564,8 +558,6 @@ export default class TemplateBuilderService {
 
         // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
-        console.log('refundDeliveryNote 123123123123');
-
         if (this._docObj && [
             'invoice',
             'CreditCardPayment',
@@ -579,9 +571,6 @@ export default class TemplateBuilderService {
             'refundDeliveryNote'
         ].indexOf(this._docData.documentType) > -1) {
 
-
-            console.log("this._docData.documentType");
-            console.log(this._docData.documentType);
 
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);

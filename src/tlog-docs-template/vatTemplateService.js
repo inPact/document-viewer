@@ -54,8 +54,6 @@ export default class VatTemplateService {
 
                 }
 
-                console.log("11 !!!!1");
-
 
                 vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
                     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
@@ -93,12 +91,6 @@ export default class VatTemplateService {
 
 
             }
-
-
-            console.log("TOTAL_EX_VAT");
-            console.log("printData.variables");
-            console.log(printData.variables);
-            console.log("TOTAL_EX_VAT");
 
 
             vat.TOTAL_EX_VAT = printData.variables.TOTAL_EX_VAT;
