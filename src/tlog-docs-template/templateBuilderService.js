@@ -235,10 +235,10 @@ export default class TemplateBuilderService {
                     /**
                    * Add House Account Payment Section.
                    */
-                    if (_.get(this, 'printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]')) {
+                    if (_.get(this, '_printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]')) {
 
                         let elementHouseAccountPayment = this.$houseAccountPayment.get({
-                            data: this.printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]
+                            data: this._printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]
                         })
 
                         docTemplate.appendChild(elementHouseAccountPayment);
