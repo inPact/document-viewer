@@ -255,6 +255,18 @@ export default class TemplateBuilderService {
             if (this._printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
                 docTemplate.appendChild(this.createReturnOrderText(this._printData));
             }
+
+            if (this._isGiftCardBill) {
+
+                let creditData = _.get(printData, 'collections.CREDIT_PAYMENTS[0]');
+
+                let elementCreditTransaction = this.$creditTransaction.get({
+                    isUS: this._isUS,
+                    data: creditData
+                });
+
+                docTemplate.appendChild(elementCreditTransaction);
+            }
         }
 
         // let elementVersion = this.$htmlCreator.create({
