@@ -29,7 +29,12 @@ export default class DeliveryNoteTransactionDataService {
         var deliveryNoteTransactionDiv = this._doc.createElement('div');
         deliveryNoteTransactionDiv.id = 'deliveryNoteTransactionDiv';
 
-        var deliveryVat = this.$vatTemplateService.createVatTemplate(printData, this._doc)
+        console.log("deliveryVat ! ");
+        console.log("deliveryVat ! ");
+        console.log("deliveryVat ! ");
+        console.log("deliveryVat ! ");
+
+        var deliveryVat = this.$vatTemplateService.createVatTemplate(printData, this._doc);
         deliveryVat.id = 'deliveryVat';
 
         deliveryVat.classList += ' padding-bottom';
