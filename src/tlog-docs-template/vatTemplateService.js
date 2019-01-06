@@ -91,6 +91,8 @@ export default class VatTemplateService {
 
 
             }
+
+
             vat.TOTAL_EX_VAT = printData.variables.TOTAL_EX_VAT;
             vat.TOTAL_INCLUDED_TAX = printData.variables.TOTAL_INCLUDED_TAX;
             vat.VAT_PERCENT = this.twoDecimals(printData.variables.VAT_PERCENT);

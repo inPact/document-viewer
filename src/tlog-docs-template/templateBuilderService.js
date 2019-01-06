@@ -14,6 +14,7 @@ import Localization from '../helpers/localization.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 import CreditTransaction from '../services/creditTransaction.service';
 import ClubMembersService from '../services/clubMembers.service';
+import HouseAccountPayment from '../services/houseAccountPayment.service';
 import _ from 'lodash';
 
 
@@ -41,6 +42,7 @@ export default class TemplateBuilderService {
         this.$htmlCreator = new HtmlCreator();
         this.$creditTransaction = new CreditTransaction(options);
         this.$clubMembersService = new ClubMembersService(options);
+        this.$houseAccountPayment = new HouseAccountPayment(options);
     }
 
     _configure(options) {
@@ -160,6 +162,7 @@ export default class TemplateBuilderService {
 
                 // var tplOrderPaymentData = createOrderPaymentData(_printData);
                 var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
+
                 var tplOrderPayments = this.createPaymentsData(this._printData);
 
                 // tplOrderPaymentData.id = 'tplOrderPaymentData';
@@ -208,6 +211,25 @@ export default class TemplateBuilderService {
                 if (this._printData.variables.CUSTOMER_MESSAGE && docObjChosen.isFullOrderBill) {
                     var customerMessageDiv = this.createCustomerMessage(this._printData, this._doc);
                     if (customerMessageDiv !== null) docTemplate.appendChild(customerMessageDiv)
+                }
+
+
+
+
+                if (this._docData.documentType === 'refundDeliveryNote') {
+
+                    /**
+                   * Add House Account Payment Section.
+                   */
+                    if (_.get(this, '_printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]')) {
+
+                        let elementHouseAccountPayment = this.$houseAccountPayment.get({
+                            data: this._printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]
+                        })
+
+                        docTemplate.appendChild(elementHouseAccountPayment);
+                    }
+
                 }
             }
 
@@ -265,7 +287,8 @@ export default class TemplateBuilderService {
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
         }
-        else if (this._docObj && this._docData.documentType === "deliveryNote") {
+        else if (this._docObj && (this._docData.documentType === "deliveryNote" || this._docData.documentType === "refundDeliveryNote")) {
+
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
             var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData();
@@ -273,7 +296,7 @@ export default class TemplateBuilderService {
             paymentDataDiv.classList += ' border-bottom';
         }
 
-        return tplOrderPaymentData
+        return tplOrderPaymentData;
     }
 
     fillItemsData(htmlElement, data, printData) {
@@ -557,7 +580,6 @@ export default class TemplateBuilderService {
 
         // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
-
         if (this._docObj && [
             'invoice',
             'CreditCardPayment',
@@ -567,7 +589,8 @@ export default class TemplateBuilderService {
             'CashRefund',
             'ChequePayment',
             'ChequeRefund',
-            'refundInvoice'
+            'refundInvoice',
+            'refundDeliveryNote'
         ].indexOf(this._docData.documentType) > -1) {
 
 
