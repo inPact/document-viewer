@@ -257,15 +257,7 @@ export default class TemplateBuilderService {
                 docTemplate.appendChild(this.createReturnOrderText(this._printData));
             }
 
-            console.log("this._isGiftCardBill");
-            console.log(this._isGiftCardBill);
-            console.log("this._isGiftCardBill");
-
             if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
-
-                console.log("this.isMediaExchange");
-                console.log(this.isMediaExchange);
-                console.log("this.isMediaExchange");
 
                 let payments = _.get(this._printData, 'collections.PAYMENT_LIST');
                 let giftCardPayment = payments.find(c => c.P_TENDER_TYPE === "creditCard");
