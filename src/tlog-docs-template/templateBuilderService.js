@@ -136,25 +136,6 @@ export default class TemplateBuilderService {
                 var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen);
                 docTemplate.appendChild(mediaExchangeDiv);
 
-
-                console.log("this.isMediaExchange");
-                console.log(this.isMediaExchange);
-                console.log("this.isMediaExchange");
-
-                let payments = _.get(this._printData, 'collections.PAYMENT_LIST');
-                let giftCardPayment = payments.find(c => c.P_TENDER_TYPE === "creditCard");
-
-                if (giftCardPayment) {
-
-                    let elementCreditTransaction = this.$creditTransaction.get({
-                        isUS: this._isUS,
-                        data: giftCardPayment
-                    });
-
-                    docTemplate.appendChild(elementCreditTransaction);
-
-                }
-
             }
             if (isCreditSlip !== null && isCreditSlip) {
                 var tplCreditSlipTemplate = this.$creditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
@@ -279,6 +260,28 @@ export default class TemplateBuilderService {
             console.log("this._isGiftCardBill");
             console.log(this._isGiftCardBill);
             console.log("this._isGiftCardBill");
+
+            if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
+
+                console.log("this.isMediaExchange");
+                console.log(this.isMediaExchange);
+                console.log("this.isMediaExchange");
+
+                let payments = _.get(this._printData, 'collections.PAYMENT_LIST');
+                let giftCardPayment = payments.find(c => c.P_TENDER_TYPE === "creditCard");
+
+                if (giftCardPayment) {
+
+                    let elementCreditTransaction = this.$creditTransaction.get({
+                        isUS: this._isUS,
+                        data: giftCardPayment
+                    });
+
+                    docTemplate.appendChild(elementCreditTransaction);
+
+                }
+
+            }
 
             // if (this._isGiftCardBill) {
 
