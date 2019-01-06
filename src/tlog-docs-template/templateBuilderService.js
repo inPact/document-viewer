@@ -564,6 +564,7 @@ export default class TemplateBuilderService {
 
         // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
+        console.log('refundDeliveryNote 123123123123');
 
         if (this._docObj && [
             'invoice',
@@ -574,9 +575,13 @@ export default class TemplateBuilderService {
             'CashRefund',
             'ChequePayment',
             'ChequeRefund',
-            'refundInvoice'
+            'refundInvoice',
+            'refundDeliveryNote'
         ].indexOf(this._docData.documentType) > -1) {
 
+
+            console.log("this._docData.documentType");
+            console.log(this._docData.documentType);
 
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);
