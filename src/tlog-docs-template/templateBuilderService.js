@@ -265,7 +265,7 @@ export default class TemplateBuilderService {
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
         }
-        else if (this._docObj && this._docData.documentType === "deliveryNote") {
+        else if (this._docObj && (this._docData.documentType === "deliveryNote" || this._docData.documentType === "refundDeliveryNote")) {
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
             var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData();
