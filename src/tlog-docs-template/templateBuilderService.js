@@ -256,16 +256,25 @@ export default class TemplateBuilderService {
                 docTemplate.appendChild(this.createReturnOrderText(this._printData));
             }
 
+            console.log("this._isGiftCardBill");
+            console.log(this._isGiftCardBill);
+            console.log("this._isGiftCardBill");
+
             if (this._isGiftCardBill) {
 
-                let creditData = _.get(printData, 'collections.CREDIT_PAYMENTS[0]');
+                let payments = _.get(printData, 'collections.PAYMENT_LIST');
+                let giftCardPayment = payments.find(c => c.P_TENDER_TYPE === "giftCard");
 
-                let elementCreditTransaction = this.$creditTransaction.get({
-                    isUS: this._isUS,
-                    data: creditData
-                });
+                if (giftCardPayment) {
 
-                docTemplate.appendChild(elementCreditTransaction);
+                    let elementCreditTransaction = this.$creditTransaction.get({
+                        isUS: this._isUS,
+                        data: giftCardPayment
+                    });
+
+                    docTemplate.appendChild(elementCreditTransaction);
+
+                }
             }
         }
 
