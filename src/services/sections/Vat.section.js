@@ -81,7 +81,7 @@ export default class VatSection {
         });
 
         let classList = ['total-amount'];
-        let negativeClass = this.$utils.isNegative(variables.ITEM_AMOUNT);
+        let negativeClass = this.$utils.isNegative(value);
         if (negativeClass !== "") {
             classList.push(negativeClass);
         }
