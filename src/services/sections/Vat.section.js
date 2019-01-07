@@ -2,6 +2,7 @@
 
 import HtmlCreator from '../../helpers/htmlCreator.service';
 import Utils from '../../helpers/utils.service';
+import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 
 
 export default class VatSection {
