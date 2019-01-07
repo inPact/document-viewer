@@ -26,6 +26,9 @@
 .hidden-element {
   display: none; }
 
+.header-container {
+  margin: 6px 0px; }
+
 .refund-delivery-note .section-element {
   border-bottom: solid #E8E8E8 1px;
   padding: 10px 0 10px 0; }
@@ -98,7 +101,8 @@
 .basicTemplate .total-name {
   display: flex;
   justify-content: flex-start;
-  flex: 6; }
+  flex: 6;
+  margin: 0px 5px; }
 
 .basicTemplate .number-data {
   display: flex;

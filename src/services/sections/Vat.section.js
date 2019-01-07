@@ -94,7 +94,7 @@ export default class VatSection {
 
         let elementTotalContainer = this.$htmlCreator.create({
             id: 'total-container',
-            classList: ['itemDiv', 'bold'],
+            classList: ['itemDiv', 'bold', 'header-container'],
             children: [
                 elementTotalText,
                 elementTotalValue
