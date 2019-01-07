@@ -58,6 +58,8 @@ export default class VatSection {
         vatContainer.appendChild(elementTotalExVatContainer);
         vatContainer.appendChild(elementTotalIncludedTaxContainer);
         vatContainer.appendChild(elementTotalInVatContainer);
+
+        return vatContainer;
     }
 
     // ITEM_AMOUNT or TOTAL_AMOUNT
@@ -140,7 +142,7 @@ export default class VatSection {
     }
 
     // ITEM_VAT_AMOUNT or TOTAL_INCLUDED_TAX
-    _getElementTotalIncludedTaxContainer(options) { 
+    _getElementTotalIncludedTaxContainer(options) {
 
         let isRefund = options.isRefund;
         let variables = options.variables;
