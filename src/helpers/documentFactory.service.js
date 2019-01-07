@@ -33,4 +33,4 @@ class DocumentFactory {
 
 }
 
-module.exports = new DocumentFactory();
+export default new DocumentFactory();

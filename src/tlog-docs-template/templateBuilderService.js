@@ -75,6 +75,10 @@ export default class TemplateBuilderService {
 
 
         this._excludeHeader = options.excludeHeader ? options.excludeHeader : false;
+
+
+        this._doc = DocumentFactory.get();
+
         var docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');

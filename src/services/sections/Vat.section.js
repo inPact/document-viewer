@@ -140,7 +140,7 @@ export default class VatSection {
     }
 
     // ITEM_VAT_AMOUNT or TOTAL_INCLUDED_TAX
-    _getElementTotalIncludedTaxContainer(options) {
+    _getElementTotalIncludedTaxContainer(options) { 
 
         let isRefund = options.isRefund;
         let variables = options.variables;
