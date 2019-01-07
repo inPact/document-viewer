@@ -616,6 +616,9 @@ export default class TemplateBuilderService {
 
         // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
 
+        // ,
+        // 'refundDeliveryNote'
+
         if (this._docObj && [
             'invoice',
             'CreditCardPayment',
@@ -625,8 +628,7 @@ export default class TemplateBuilderService {
             'CashRefund',
             'ChequePayment',
             'ChequeRefund',
-            'refundInvoice',
-            'refundDeliveryNote'
+            'refundInvoice'
         ].indexOf(this._docData.documentType) > -1) {
 
 
