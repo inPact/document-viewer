@@ -29,29 +29,30 @@ export default class VatSection {
         let elementTotalContainer = this._getElementTotalContainer({
             isRefund: isRefund,
             variables: variables,
-            collections: collections
+            collections: collections,
+            value: isMulti ? _.get(collections, 'DOCUMENT_ITEMS[0].ITEM_AMOUNT') : variables.TOTAL_AMOUNT
         });
 
         let elementTotalExVatContainer = this._getElementTotalExVatContainer({
             isRefund: isRefund,
             variables: variables,
             collections: collections,
-            value: isMulti ? collections.DOCUMENT_ITEMS[0].ITEM_AMOUNT_EX_VAT : variables.TOTAL_EX_VAT
+            value: isMulti ? _.get(collections, 'DOCUMENT_ITEMS[0].ITEM_AMOUNT_EX_VAT') : variables.TOTAL_EX_VAT
         });
 
         let elementTotalIncludedTaxContainer = this._getElementTotalIncludedTaxContainer({
             isRefund: isRefund,
             variables: variables,
             collections: collections,
-            value: isMulti ? collections.DOCUMENT_ITEMS[0].ITEM_VAT_AMOUNT : variables.TOTAL_INCLUDED_TAX,
-            percent: isMulti ? collections.DOCUMENT_ITEMS[0].ITEM_VAT_PERCENT : variables.VAT_PERCENT
+            value: isMulti ? _.get(collections, 'DOCUMENT_ITEMS[0].ITEM_VAT_AMOUNT') : variables.TOTAL_INCLUDED_TAX,
+            percent: isMulti ? _.get(collections, 'DOCUMENT_ITEMS[0].ITEM_VAT_PERCENT') : variables.VAT_PERCENT
         });
 
         let elementTotalInVatContainer = this._getElementTotalInVatContainer({
             isRefund: isRefund,
             variables: variables,
             collections: collections,
-            value: isMulti ? collections.DOCUMENT_ITEMS[0].ITEM_AMOUNT : variables.TOTAL_IN_VAT
+            value: isMulti ? _.get(collections, 'DOCUMENT_ITEMS[0].ITEM_AMOUNT') : variables.TOTAL_IN_VAT
         });
 
         vatContainer.appendChild(elementTotalContainer);
@@ -226,7 +227,7 @@ export default class VatSection {
         let ORDER_DOCUMENT_PRINT = options.ORDER_DOCUMENT_PRINT;
 
         if (isRefund) {
-            return this.$translate.getText('refund');
+            return this.$translate.getText('RETURN');
         }
         else if (ORDER_DOCUMENT_PRINT === 'SINGLE_DOC') {
             return this.$translate.getText('BUSINESS_MEAL');
