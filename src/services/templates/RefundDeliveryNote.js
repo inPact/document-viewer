@@ -1,11 +1,13 @@
 
 
+import HtmlCreator from '../../helpers/htmlCreator.service';
 import VatSection from '../sections/Vat.section';
 
 export default class RefundDeliveryNote {
 
     constructor(options) {
         this.$vatSection = new VatSection(options);
+        this.$htmlCreator = new HtmlCreator();
     }
 
     get(options) {
@@ -14,13 +16,59 @@ export default class RefundDeliveryNote {
         let variables = options.variables;
         let collections = options.collections;
 
+        let elementRefundDeliveryNote = this.$htmlCreator.create({
+            id: 'refund-delivery-note',
+            classList: ['refund-delivery-note']
+        });
+
+        let houseAccountPayment = _.get(collections, 'HOUSE_ACCOUNT_PAYMENTS[0]');
+
+
+        // START VAT SECRION
         let elementVatSection = this.$vatSection.get({
             isRefund: isRefund,
             variables: variables,
             collections: collections
         });
+        // END VAT SECRION
 
-        return elementVatSection;
+
+        // START CHARGE ACCOUNT SECTION
+        let elementChargeAccountSection = this.$htmlCreator.createSection({
+            id: 'return-in-charge-account-from-section',
+            classList: ['charge-account-section',],
+        });
+
+        let elementChargeAccountText = this.$htmlCreator.create({
+            id: 'return-in-charge-account-from-section',
+            classList: ['charge-account-text'],
+            value: `${this.$translate.getText('RETURND_IN_CHARCHACCOUNT_FROM')} ${houseAccountPayment.CHARGE_ACCOUNT_NAME}`
+        });
+
+        let elementChargeAccountValue = this.$htmlCreator.create({
+            id: 'return-in-charge-account-from-section',
+            classList: ['charge-account-value'],
+            value: houseAccountPayment.P_AMOUNT
+        });
+
+        let elementChargeAccountContainer = this.$htmlCreator.create({
+            id: 'charge-account-container',
+            classList: ['charge-account-container', 'itemDiv'],
+            children: [
+                elementChargeAccountText,
+                elementChargeAccountValue
+            ]
+        });
+
+        elementChargeAccountSection.appendChild(elementChargeAccountContainer);
+        // END CHARGE ACCOUNT SECTION
+
+
+        elementRefundDeliveryNote.appendChild(elementVatSection);
+
+        elementRefundDeliveryNote.appendChild(elementChargeAccountSection);
+
+        return elementRefundDeliveryNote;
 
     }
 

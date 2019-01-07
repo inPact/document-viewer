@@ -194,7 +194,7 @@ export default class VatSection {
         let elementTotalInVatText = this.$htmlCreator.create({
             id: 'total-in-vat-text',
             classList: ['total-name'],
-            value: this.$translate.getText('VAT')
+            value: this.$translate.getText('INCLUDE_VAT')
         });
 
         let classList = ['total-amount'];
