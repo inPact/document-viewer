@@ -15,6 +15,7 @@ import DocumentFactory from '../helpers/documentFactory.service';
 import CreditTransaction from '../services/creditTransaction.service';
 import ClubMembersService from '../services/clubMembers.service';
 import HouseAccountPayment from '../services/houseAccountPayment.service';
+import RefundDeliveryNote from '../services/templates/RefundDeliveryNote';
 import _ from 'lodash';
 
 
@@ -43,6 +44,7 @@ export default class TemplateBuilderService {
         this.$creditTransaction = new CreditTransaction(options);
         this.$clubMembersService = new ClubMembersService(options);
         this.$houseAccountPayment = new HouseAccountPayment(options);
+        this.$refundDeliveryNote = new RefundDeliveryNote(options);
     }
 
     _configure(options) {
@@ -142,6 +144,18 @@ export default class TemplateBuilderService {
             console.log("ttttttttttttttttttt");
             console.log("ttttttttttttttttttt");
             console.log("ttttttttttttttttttt");
+
+
+            if (docObjChosen.type === "refundDeliveryNote") {
+
+                let elementRefundDeliveryNote = this.$refundDeliveryNote.get({
+                    isRefund: documentInfo.isRefund,
+                    variables: this._printData.variables,
+                    collections: this._printData.collections
+                });
+
+                docTemplate.appendChild(elementRefundDeliveryNote);
+            }
 
 
             this._isGiftCardBill = docObjChosen.isGiftCardBill ? true : false;
