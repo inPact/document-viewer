@@ -27,7 +27,7 @@ export default class HouseAccountPayment {
 
         let houseAccountPaymentContainer = this.$htmlCreator.createSection({
             id: 'house-account-payment',
-            classList: ['house-account-payment']
+            classList: ['house-account-payment', 'hide-bottom-border']
         });
 
         if (houseAccountPayment.PROVIDER_TRANS_ID) {
