@@ -3,6 +3,7 @@
 import HtmlCreator from '../../helpers/htmlCreator.service';
 import VatSection from '../sections/Vat.section';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
+import Utils from '../../helpers/utils.service';
 
 export default class RefundDeliveryNote {
 
@@ -10,6 +11,7 @@ export default class RefundDeliveryNote {
         this.$vatSection = new VatSection(options);
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
+        this.$utils = new Utils();
     }
 
     get(options) {
@@ -50,7 +52,7 @@ export default class RefundDeliveryNote {
         let elementChargeAccountValue = this.$htmlCreator.create({
             id: 'return-in-charge-account-from-section',
             classList: ['charge-account-value'],
-            value: houseAccountPayment.P_AMOUNT
+            value: this.$utils.toFixedSafe(houseAccountPayment.P_AMOUNT || 0, 2) || ''
         });
 
         let elementChargeAccountContainer = this.$htmlCreator.create({
