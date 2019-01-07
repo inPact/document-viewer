@@ -101,10 +101,7 @@ export default class TemplateBuilderService {
             value: VERSION
         });
 
-        console.log('doc-viewer version : ' + VERSION);
-
         docTemplate.appendChild(elementVersion);
-
 
         if (!this._excludeHeader) {
             var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
@@ -129,26 +126,6 @@ export default class TemplateBuilderService {
 
             docTemplate.appendChild(elementClubMember);
         } else {
-
-
-            console.log("ttttttttttttttttttt");
-            console.log("ttttttttttttttttttt");
-            console.log("ttttttttttttttttttt");
-            console.log("");
-
-            console.log("docObjChosen");
-            console.log(docObjChosen);
-
-            console.log("");
-
-            console.log("this._printData");
-            console.log(this._printData);
-
-            console.log("");
-            console.log("ttttttttttttttttttt");
-            console.log("ttttttttttttttttttt");
-            console.log("ttttttttttttttttttt");
-
 
             if (docObjChosen.type === "refundDeliveryNote") {
 
@@ -717,16 +694,6 @@ export default class TemplateBuilderService {
 
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
-
-        console.log("createPaymentsData");
-        console.log("createPaymentsData");
-        console.log("createPaymentsData");
-        console.log("createPaymentsData");
-        console.log("createPaymentsData");
-        console.log("createPaymentsData");
-        console.log("createPaymentsData");
-        console.log("createPaymentsData");
-        console.log("createPaymentsData");
 
         if (this._docObj && this._docData.documentType === "deliveryNote") {
             return tplOrderPaymentsDiv;
