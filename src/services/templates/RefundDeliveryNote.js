@@ -2,12 +2,14 @@
 
 import HtmlCreator from '../../helpers/htmlCreator.service';
 import VatSection from '../sections/Vat.section';
+import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 
 export default class RefundDeliveryNote {
 
     constructor(options) {
         this.$vatSection = new VatSection(options);
         this.$htmlCreator = new HtmlCreator();
+        this.$translate = new TlogDocsTranslateService(options);
     }
 
     get(options) {
