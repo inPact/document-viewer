@@ -1,13 +1,13 @@
 
 
-import HtmlCreator from '../../helpers/htmlCreator.service';
-import VatSection from '../sections/Vat.section';
-import ReturnChargeAccount from '../sections/ReturnChargeAccount';
-import HouseAccountPayment from '../houseAccountPayment.service';
-import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
-import Utils from '../../helpers/utils.service';
-import DocumentFactory from '../../helpers/documentFactory.service';
-import SignatureService from '../../tlog-docs-template/signatureService';
+import HtmlCreator from '../../../helpers/htmlCreator.service';
+import VatSection from '../../sections/Vat.section';
+import ReturnChargeAccount from '../../sections/ReturnChargeAccount';
+import HouseAccountPayment from '../../houseAccountPayment.service';
+import TlogDocsTranslateService from '../../../tlog-docs-template/tlogDocsTranslate';
+import Utils from '../../../helpers/utils.service';
+import DocumentFactory from '../../../helpers/documentFactory.service';
+import SignatureService from '../../../tlog-docs-template/signatureService';
 
 export default class RefundDeliveryNote {
 

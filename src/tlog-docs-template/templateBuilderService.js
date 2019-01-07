@@ -15,7 +15,7 @@ import DocumentFactory from '../helpers/documentFactory.service';
 import CreditTransaction from '../services/creditTransaction.service';
 import ClubMembersService from '../services/clubMembers.service';
 import HouseAccountPayment from '../services/houseAccountPayment.service';
-import RefundDeliveryNote from '../services/templates/RefundDeliveryNote';
+import RefundDeliveryNote from '../services/templates/RefundDeliveryNote/RefundDeliveryNote';
 import _ from 'lodash';
 
 

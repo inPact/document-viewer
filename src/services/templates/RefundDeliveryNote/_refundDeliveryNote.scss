@@ -1,0 +1,11 @@
+.refund-delivery-note {
+
+    .section-element {
+        border-bottom: solid #E8E8E8 1px;
+        padding: 10px 0 10px 0;
+
+        &:last-child {
+            border-bottom:none;
+        }
+    }
+}
