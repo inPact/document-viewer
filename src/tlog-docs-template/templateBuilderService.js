@@ -124,6 +124,14 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(elementClubMember);
         } else {
 
+
+            console.log("ttttttttttttttttttt");
+            console.log("ttttttttttttttttttt");
+            console.log("ttttttttttttttttttt");
+            console.log("ttttttttttttttttttt");
+            console.log("ttttttttttttttttttt");
+
+
             this._isGiftCardBill = docObjChosen.isGiftCardBill ? true : false;
             this._isTaxExempt = this._printData.data.isTaxExempt;
 
