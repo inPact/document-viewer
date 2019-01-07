@@ -69,6 +69,7 @@ export default class VatSection {
         let isRefund = options.isRefund;
         let variables = options.variables;
         let collections = options.collections;
+        let value = options.value;
 
         let elementTotalText = this.$htmlCreator.create({
             id: 'total-text',
@@ -88,7 +89,7 @@ export default class VatSection {
         let elementTotalValue = this.$htmlCreator.create({
             id: 'total-value',
             classList: classList,
-            value: this.$utils.toFixedSafe(variables.ITEM_AMOUNT || 0, 2) || ''
+            value: this.$utils.toFixedSafe(value || 0, 2) || ''
         });
 
         let elementTotalContainer = this.$htmlCreator.create({
