@@ -149,7 +149,7 @@ export default class TemplateBuilderService {
             if (docObjChosen.type === "refundDeliveryNote") {
 
                 let elementRefundDeliveryNote = this.$refundDeliveryNote.get({
-                    isRefund: documentInfo.isRefund,
+                    isRefund: docObjChosen.isRefund,
                     variables: this._printData.variables,
                     collections: this._printData.collections
                 });
