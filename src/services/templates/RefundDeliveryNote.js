@@ -7,18 +7,22 @@ import HouseAccountPayment from '../houseAccountPayment.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 import Utils from '../../helpers/utils.service';
 import DocumentFactory from '../../helpers/documentFactory.service';
+import SignatureService from '../../tlog-docs-template/signatureService';
 
 export default class RefundDeliveryNote {
 
     constructor(options) {
 
-        this.$vatSection = new VatSection(options);
-        this.$returnChargeAccount = new ReturnChargeAccount(options);
-        this.$houseAccountPayment = new HouseAccountPayment(options);
-
+        // extensions.
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
+
+        // services.
+        this.$vatSection = new VatSection(options);
+        this.$returnChargeAccount = new ReturnChargeAccount(options);
+        this.$houseAccountPayment = new HouseAccountPayment(options);
+        this.$signatureService = new SignatureService();
     }
 
     get(options) {
