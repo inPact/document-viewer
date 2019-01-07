@@ -128,6 +128,18 @@ export default class TemplateBuilderService {
             console.log("ttttttttttttttttttt");
             console.log("ttttttttttttttttttt");
             console.log("ttttttttttttttttttt");
+            console.log("");
+
+            console.log("docObjChosen");
+            console.log(docObjChosen);
+
+            console.log("");
+
+            console.log("this._printData");
+            console.log(this._printData);
+
+            console.log("");
+            console.log("ttttttttttttttttttt");
             console.log("ttttttttttttttttttt");
             console.log("ttttttttttttttttttt");
 
