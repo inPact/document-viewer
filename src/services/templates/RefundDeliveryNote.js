@@ -45,13 +45,13 @@ export default class RefundDeliveryNote {
 
         let elementChargeAccountText = this.$htmlCreator.create({
             id: 'return-in-charge-account-from-section',
-            classList: ['charge-account-text'],
+            classList: ['total-name'],
             value: `${this.$translate.getText('RETURND_IN_CHARCHACCOUNT_FROM')} ${houseAccountPayment.CHARGE_ACCOUNT_NAME}`
         });
 
         let elementChargeAccountValue = this.$htmlCreator.create({
             id: 'return-in-charge-account-from-section',
-            classList: ['charge-account-value'],
+            classList: ['total-amount'],
             value: this.$utils.toFixedSafe(houseAccountPayment.P_AMOUNT || 0, 2) || ''
         });
 
