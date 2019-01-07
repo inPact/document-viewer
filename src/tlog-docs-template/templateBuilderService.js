@@ -687,11 +687,20 @@ export default class TemplateBuilderService {
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
 
+        console.log("createPaymentsData");
+        console.log("createPaymentsData");
+        console.log("createPaymentsData");
+        console.log("createPaymentsData");
+        console.log("createPaymentsData");
+        console.log("createPaymentsData");
+        console.log("createPaymentsData");
+        console.log("createPaymentsData");
+        console.log("createPaymentsData");
+
         if (this._docObj && this._docData.documentType === "deliveryNote") {
             return tplOrderPaymentsDiv;
         }
-
-        else if (this._docObj && ["invoice", "refundInvoice",'refundDeliveryNote'].indexOf(this._docData.documentType) > -1) {
+        else if (this._docObj && ["invoice", "refundInvoice", 'refundDeliveryNote'].indexOf(this._docData.documentType) > -1) {
 
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
