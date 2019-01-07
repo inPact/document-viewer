@@ -691,7 +691,7 @@ export default class TemplateBuilderService {
             return tplOrderPaymentsDiv;
         }
 
-        else if (this._docObj && ["invoice", "refundInvoice"].indexOf(this._docData.documentType) > -1) {
+        else if (this._docObj && ["invoice", "refundInvoice",'refundDeliveryNote'].indexOf(this._docData.documentType) > -1) {
 
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
