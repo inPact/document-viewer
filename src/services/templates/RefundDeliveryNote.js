@@ -6,6 +6,7 @@ import ReturnChargeAccount from '../sections/ReturnChargeAccount';
 import HouseAccountPayment from '../houseAccountPayment.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 import Utils from '../../helpers/utils.service';
+import DocumentFactory from '../../helpers/documentFactory.service';
 
 export default class RefundDeliveryNote {
 
@@ -25,6 +26,8 @@ export default class RefundDeliveryNote {
         let isRefund = options.isRefund;
         let variables = options.variables;
         let collections = options.collections;
+
+        let documentInfo = DocumentFactory.getDocumentInfo();
 
         let elementRefundDeliveryNote = this.$htmlCreator.create({
             id: 'refund-delivery-note',
@@ -56,12 +59,26 @@ export default class RefundDeliveryNote {
         });
         // END  HOUSE ACCOUNT PAYMENT
 
-
         elementRefundDeliveryNote.appendChild(elementVatSection);
 
         elementRefundDeliveryNote.appendChild(elementReturnChargeAccountSection);
 
         elementRefundDeliveryNote.appendChild(elementHouseAccountPaymentSection);
+
+        // START SIGNATURE
+        if (_.get(documentInfo, 'md.signature')) {
+
+            let elementSignatureArea = this.$htmlCreator.create({
+                type: 'div',
+                id: 'signature-area',
+                classList: ['item-div']
+            });
+
+            let elementSignature = this.$signatureService.getSignature(elementSignatureArea);
+
+            elementRefundDeliveryNote.appendChild(elementSignature);
+        }
+        // END SIGNATURE
 
         return elementRefundDeliveryNote;
 
