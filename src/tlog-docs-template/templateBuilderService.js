@@ -636,7 +636,8 @@ export default class TemplateBuilderService {
             'CashRefund',
             'ChequePayment',
             'ChequeRefund',
-            'refundInvoice'
+            'refundInvoice',
+            'deliveryNote'
         ].indexOf(this._docData.documentType) > -1) {
 
 
