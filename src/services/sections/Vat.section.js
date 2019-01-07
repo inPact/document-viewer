@@ -63,6 +63,10 @@ export default class VatSection {
     // ITEM_AMOUNT or TOTAL_AMOUNT
     _getElementTotalContainer(options) {
 
+        let isRefund = options.isRefund;
+        let variables = options.variables;
+        let collections = options.collections;
+
         let elementTotalText = this.$htmlCreator.create({
             id: 'total-text',
             classList: ['total-name'],
