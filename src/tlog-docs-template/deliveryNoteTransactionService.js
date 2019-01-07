@@ -46,6 +46,7 @@ export default class DeliveryNoteTransactionDataService {
         dNoteChargeAccntDiv.id = 'dNoteChargeAccntDiv';
         if (printData.isRefund === true) {
 
+            /// !!!
             var returnText = this.$translate.getText('RETURND_IN_CHARCHACCOUNT_FROM')
             var refundTextDiv = this._doc.createElement('div')
             refundTextDiv.id = "refundTextDiv";
@@ -104,7 +105,8 @@ export default class DeliveryNoteTransactionDataService {
         if (hAccountPayments) {
 
             let elementHouseAccountPayment = this.$houseAccountPayment.get({
-                data: hAccountPayments
+                variables: printData.variables,
+                collections: printData.collections
             })
 
             dNoteChargeAccntDiv.appendChild(elementHouseAccountPayment);

@@ -20,15 +20,17 @@ export default class HouseAccountPayment {
 
     get(options) {
 
-        let houseAccountPayment = options.data;
+        let variables = options.variables;
+        let collections = options.collections;
+
+        let houseAccountPayment = _.get(collections, 'HOUSE_ACCOUNT_PAYMENTS[0]');
 
         let houseAccountPaymentContainer = this.$htmlCreator.createSection({
             id: 'house-account-payment',
-            classList: []
+            classList: ['house-account-payment']
         });
 
         if (houseAccountPayment.PROVIDER_TRANS_ID) {
-
 
             let elementChargeTransactionText = this.$htmlCreator.create({
                 type: 'div',

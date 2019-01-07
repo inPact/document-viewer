@@ -263,7 +263,8 @@ export default class TemplateBuilderService {
                     if (_.get(this, '_printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]')) {
 
                         let elementHouseAccountPayment = this.$houseAccountPayment.get({
-                            data: this._printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]
+                            variables: this._printData.variables,
+                            collections: this._printData.collections
                         })
 
                         docTemplate.appendChild(elementHouseAccountPayment);
