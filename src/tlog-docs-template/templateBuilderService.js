@@ -127,7 +127,7 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(elementClubMember);
         } else {
 
-            if (docObjChosen.type === "refundDeliveryNote") {
+            if (docObjChosen.type === "refundDeliveryNote" || docObjChosen.documentType === "refundDeliveryNote") {
 
                 let elementRefundDeliveryNote = this.$refundDeliveryNote.get({
                     isRefund: docObjChosen.isRefund,
