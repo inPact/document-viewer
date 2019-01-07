@@ -19,7 +19,7 @@ export default class VatSection {
         let variables = options.variables;
         let collections = options.collections;
 
-        let isMulti = collections.DOCUMENT_ITEMS.length > 0;
+        let isMulti = _.get(collections, 'DOCUMENT_ITEMS') && collections.DOCUMENT_ITEMS.length > 0;
 
         let vatContainer = this.$htmlCreator.createSection({
             id: 'vat-section',
