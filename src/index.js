@@ -3,11 +3,17 @@ import TlogDocsService from './tlog-docs-template/tlogDocsService';
 
 window.DocumentViewer = class DocumentViewer {
     constructor(options = {}) {
+
+
+        console.log('DocumentViewer version : ' + VERSION);
+
         options.locale = options.locale || 'he-IL';
         if (options.isUS === undefined)
             options.isUS = options.locale === 'en-US';
 
         this._tlogDocsService = new TlogDocsService(options);
+
+
     }
 
     getDocumentsInfoFromTlog(tlog, printData, isOrderClosed) {
