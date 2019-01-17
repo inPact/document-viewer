@@ -110,9 +110,13 @@ export default class BillService {
                             item.units = offer.OFFER_UNITS;
                             items.push(item);
                         }
-                        else if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2)
-                            items.push(item);
+                        else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
+
+                            if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_AMOUNT !== 0) {
+                                item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
+                                items.push(item);
+                            }
+
                         } else if (isSplitCheck === true) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
@@ -194,8 +198,12 @@ export default class BillService {
                             item.amount = this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_AMOUNT, 2);
                             items.push(item);
                         } else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
-                            items.push(item);
+
+                            if (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_AMOUNT !== 0) {
+                                item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
+                                items.push(item);
+                            }
+
                         } else if (isSplitCheck === true) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
                             items.push(item);
