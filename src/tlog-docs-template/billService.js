@@ -193,7 +193,7 @@ export default class BillService {
                         if (isReturnOrder) {
                             item.amount = this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_AMOUNT, 2);
                             items.push(item);
-                        } else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false && (offer.OFFER_CALC_AMT !== 0 && offer.OFFER_CALC_AMT)) { // if the offer amount is 0 not need to show 
+                        } else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
                             items.push(item);
                         } else if (isSplitCheck === true) {
