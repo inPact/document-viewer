@@ -115,7 +115,7 @@ export default class BillService {
                         else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
 
                             if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
-                                item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                                item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
                                 items.push(item);
                             }
 
@@ -191,9 +191,6 @@ export default class BillService {
                         qty: offerQty
                     }
 
-                    console.log("ComplexOne / Combo");
-                    console.log(item);
-
                     if (offer.ON_THE_HOUSE) {
                         item.amount = this.$translate.getText('OTH');
                         oth.push(item)
@@ -205,7 +202,7 @@ export default class BillService {
                         } else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
 
                             if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
-                                item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                                item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
                                 items.push(item);
                             }
 
@@ -673,12 +670,6 @@ export default class BillService {
         let data = {};
 
         let _details = this.resolveItems(variables, collections);
-
-        console.log("resolveItems =>");
-        console.log("");
-        console.log(_details);
-        console.log("");
-        console.log("resolveItems");
 
         data.items = _details.items;
         data.oth = _details.oth;
