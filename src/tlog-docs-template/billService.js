@@ -88,7 +88,9 @@ export default class BillService {
                 } else {
                     offerQty = offer.OFFER_QTY;
                 }
+
                 if (offer.OFFER_TYPE == this.Enums().OfferTypes.Simple) {
+
                     let item = {
                         isOffer: true,
                         name: offer.OFFER_NAME,
@@ -188,6 +190,9 @@ export default class BillService {
                         name: offer.OFFER_NAME,
                         qty: offerQty
                     }
+
+                    console.log("ComplexOne / Combo");
+                    console.log(item);
 
                     if (offer.ON_THE_HOUSE) {
                         item.amount = this.$translate.getText('OTH');
