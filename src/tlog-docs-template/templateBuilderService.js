@@ -16,6 +16,7 @@ import CreditTransaction from '../services/creditTransaction.service';
 import ClubMembersService from '../services/clubMembers.service';
 import HouseAccountPayment from '../services/houseAccountPayment.service';
 import RefundDeliveryNote from '../services/templates/RefundDeliveryNote/RefundDeliveryNote';
+import BalanceSection from '../services/sections/Balance.section';
 import _ from 'lodash';
 
 
@@ -45,6 +46,8 @@ export default class TemplateBuilderService {
         this.$clubMembersService = new ClubMembersService(options);
         this.$houseAccountPayment = new HouseAccountPayment(options);
         this.$refundDeliveryNote = new RefundDeliveryNote(options);
+        this.$refundDeliveryNote = new RefundDeliveryNote(options);
+        this.$balanceSection = new BalanceSection(options);
     }
 
     _configure(options) {
@@ -194,8 +197,21 @@ export default class TemplateBuilderService {
                     if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
                         docTemplate.appendChild(tplOrderPaymentData);
                     }
+
                     tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
                     tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
+
+                    /// ADD Balance Section to tempalte.
+                    if (this._printData.variables.BAL_DUE) {
+
+                        let balanceSection = this.$balanceSection.get({
+                            variables: this._printData.variables,
+                            variables: this._printData.collections,
+                        });
+
+                        docTemplate.appendChild(balanceSection);
+
+                    }
 
                     //if gift card
                     if (this._isGiftCardBill) {
