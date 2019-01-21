@@ -22,11 +22,11 @@ export default class BalanceSection {
 
         let elementBalanceText = this.$htmlCreator.create({
             id: 'balance-text',
-            classList: ['balance-name'],
+            classList: ['total-name'],
             value: this.$translate.getText('Balance')
         });
 
-        let classList = ['balance-amount'];
+        let classList = ['total-amount'];
         let negativeClass = this.$utils.isNegative(variables.BAL_DUE);
         if (negativeClass !== "") {
             classList.push(negativeClass);

@@ -202,7 +202,7 @@ export default class TemplateBuilderService {
                     tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
 
                     /// ADD Balance Section to tempalte.
-                    if (this._printData.variables.BAL_DUE) {
+                    if (docObjChosen.isFullOrderBill && this._printData.variables.BAL_DUE) {
 
                         let balanceSection = this.$balanceSection.get({
                             variables: this._printData.variables,
