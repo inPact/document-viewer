@@ -206,7 +206,7 @@ export default class TemplateBuilderService {
 
                         let balanceSection = this.$balanceSection.get({
                             variables: this._printData.variables,
-                            variables: this._printData.collections,
+                            collections: this._printData.collections,
                         });
 
                         docTemplate.appendChild(balanceSection);
