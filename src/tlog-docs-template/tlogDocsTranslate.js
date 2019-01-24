@@ -535,7 +535,7 @@ export default class TlogDocsTranslateService {
                 "gram": "גרם",
                 "kg": "ק\"ג",
                 "dlrPerlb": "דולרים לליברה",
-                "Balance": "יתרה",
+                "Balance": "יתרה לתשלום",
                 "uid": "מספר מזהה",
                 "rrn": "מזהה עסקה ייחודי"
 
