@@ -123,8 +123,7 @@ export default class BillService {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
-
-                        if (offer.OPEN_PRICE) {
+                        else if (offer.OPEN_PRICE) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
