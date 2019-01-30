@@ -103,11 +103,9 @@ export default class BillService {
                     } else {
 
                         if (isReturnOrder) {
-                            console.log("1- isReturnOrder");
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
                             items.push(item);
                         } else if (isWeight) {
-                            console.log("2- isWeight");
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
                             item.isWeight = isWeight;
                             item.weightAmount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
@@ -116,19 +114,16 @@ export default class BillService {
                         }
                         else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false && !offer.OPEN_PRICE) { // if the offer amount is 0 not need to show 
 
-                            console.log("3- if the offer amount is 0 not need to show");
                             if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
                                 item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
                                 items.push(item);
                             }
 
                         } else if (isSplitCheck === true) {
-                            console.log("4- isSplitCheck");
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
                         else if (offer.OPEN_PRICE) {
-                            console.log("5- OPEN_PRICE");
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
