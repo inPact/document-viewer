@@ -112,7 +112,7 @@ export default class BillService {
                             item.units = offer.OFFER_UNITS;
                             items.push(item);
                         }
-                        else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show 
+                        else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false && !offer.OPEN_PRICE) { // if the offer amount is 0 not need to show 
 
                             if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
                                 item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
@@ -123,8 +123,7 @@ export default class BillService {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
-
-                        if (offer.OPEN_PRICE) {
+                        else if (offer.OPEN_PRICE) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
