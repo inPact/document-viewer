@@ -286,7 +286,7 @@ export default class TlogDocsTranslateService {
                 "gram": "gram",
                 "kg": "kg",
                 "dlrPerlb": "Dollars per lb",
-                "Balance": "BALANCE",
+                "Balance": "Bal Due",
                 "uid": "IDENTIFICATION NUMBER",
                 "rrn": "UNIQUE TRANSACTION ID",
                 "lb": 'lb'
