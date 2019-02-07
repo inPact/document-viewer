@@ -16,8 +16,8 @@ window.DocumentViewer = class DocumentViewer {
 
     }
 
-    getDocumentsInfoFromTlog(tlog, printData, isOrderClosed) {
-        return this._tlogDocsService.getDocs(tlog, printData, isOrderClosed);
+    getDocumentsInfoFromTlog(tlog, options) {
+        return this._tlogDocsService.getDocs(tlog, options);
     }
 
     /**
