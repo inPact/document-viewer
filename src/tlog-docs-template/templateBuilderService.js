@@ -376,6 +376,9 @@ export default class TemplateBuilderService {
 
         if (!printData.isRefund) {
 
+            console.log("data.items");
+            console.log(data.items);
+
             data.items.forEach((item, index) => {
 
                 //in case it is return order, we don't want to show return of item the did not cost anything
