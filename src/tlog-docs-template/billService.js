@@ -239,7 +239,7 @@ export default class BillService {
                                             isItem: true,
                                             name: modifier.MODIFIER_NAME,
                                             qty: null,
-                                            amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(item.ITEM_AMOUNT, 2)
+                                            amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(item.MODIFIER_PRICE, 2)
                                         })
                                     })
                                 }
