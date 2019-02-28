@@ -312,32 +312,7 @@ export default class TemplateBuilderService {
 
             }
 
-            // if (this._isGiftCardBill) {
-
-            //     let payments = _.get(printData, 'collections.PAYMENT_LIST');
-            //     let giftCardPayment = payments.find(c => c.P_TENDER_TYPE === "giftCard");
-
-            //     if (giftCardPayment) {
-
-            //         let elementCreditTransaction = this.$creditTransaction.get({
-            //             isUS: this._isUS,
-            //             data: giftCardPayment
-            //         });
-
-            //         docTemplate.appendChild(elementCreditTransaction);
-
-            //     }
-            // }
         }
-
-        // let elementVersion = this.$htmlCreator.create({
-        //     type: 'div',
-        //     id: 'version',
-        //     classList: ['hidden-element'],
-        //     value: VERSION
-        // });
-
-        //docTemplate.appendChild(elementVersion);
 
         return docTemplate;
     }
@@ -589,51 +564,6 @@ export default class TemplateBuilderService {
             });
 
             creditDataDiv.appendChild(elementCreditTransaction);
-
-            // var lastFourText = this.$translate.getText(creditData.LAST_4 ? 'LAST_4' : "");
-            // var transactTimeText = this.$translate.getText(creditData.PROVIDER_PAYMENT_DATE ? 'TRANSACTION_TIME' : "");
-            // var transactNumText = this.$translate.getText(creditData.PROVIDER_TRANS_ID ? 'TRANSACTION_NO' : "");
-            // var approvalText = this.$translate.getText(creditData.CONFIRMATION_NUMBER ? 'APPROVAL_NO' : "");
-
-
-            // var lastFourDiv = this._doc.createElement('div');
-            // if (lastFourText) {
-            //     lastFourDiv.innerHTML = "<div class='itemDiv'>" +
-            //         "<div class='total-name'>" + (lastFourText ? lastFourText : " ") + "</div>"
-            //         + " " + "<div class='number-data'>" + (creditData.LAST_4 ? creditData.LAST_4 : " ") + "</div>" + "</div>"
-
-            // }
-            // creditDataDiv.appendChild(lastFourDiv);
-
-            // let providerPaymentDate = this.$utils.toDate({
-            //     _isUS: this._isUS,
-            //     date: creditData.PROVIDER_PAYMENT_DATE
-            // });
-
-            // var transactionTimeDiv = this._doc.createElement('div')
-
-            // transactionTimeDiv.innerHTML = "<div class='itemDiv'>" +
-            //     "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + "</div>" + "<div class='number-data'>" + (transactTimeText ? providerPaymentDate : "") + "</div>" +
-            //     "</div>"
-
-            // creditDataDiv.appendChild(transactionTimeDiv);
-
-            // var transactNumDiv = this._doc.createElement('div');
-            // if (creditData.PROVIDER_TRANS_ID) {
-            //     transactNumDiv.innerHTML = "<div class='itemDiv'>" +
-            //         "<div class='total-name'>" + (transactNumText ? transactNumText : " ") + "</div>" +
-            //         "<div class='number-data'>" + (creditData.PROVIDER_TRANS_ID ? creditData.PROVIDER_TRANS_ID : " ") + "</div>" + "</div>"
-            // }
-            // creditDataDiv.appendChild(transactNumDiv);
-
-            // var approvalDiv = this._doc.createElement('div');
-            // if (creditData.CONFIRMATION_NUMBER) {
-            //     approvalDiv.innerHTML = "<div class='itemDiv'>" +
-            //         "<div class='total-name'>" + (approvalText ? approvalText : " ") + "</div>" +
-            //         "<div class='number-data'>" + (creditData.CONFIRMATION_NUMBER ? creditData.CONFIRMATION_NUMBER : " ") + "</div>" + "</div>"
-            // }
-            // creditDataDiv.appendChild(approvalDiv);
-
         }
 
         return creditDataDiv
@@ -643,18 +573,6 @@ export default class TemplateBuilderService {
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
-
-        // if (!isTaxExempt) {
-        //     var taxDataDiv = this.$addTaxData.addTaxDataFunc(printData, this._doc, this._isGiftCardBill);
-        //     if (taxDataDiv !== null) {
-        //         tplOrderTotals.appendChild(taxDataDiv);
-        //     }
-        // }
-
-        // if (taxDataDiv && !isGiftCardBill && !isTaxExempt) { tplOrderTotals.appendChild(taxDataDiv); }
-
-        // ,
-        // 'refundDeliveryNote'
 
         if (this._docObj && [
             'invoice',
