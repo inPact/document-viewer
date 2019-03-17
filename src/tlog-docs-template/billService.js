@@ -39,6 +39,7 @@ export default class BillService {
             },
             OfferTypes: {
                 Simple: "Simple",
+                Single: "Single",
                 Combo: 'Combo',
                 ComplexOne: 'Complex-One',
                 ComplexMulti: 'Complex-Multi'
@@ -90,7 +91,7 @@ export default class BillService {
                     offerQty = offer.OFFER_QTY;
                 }
 
-                if (offer.OFFER_TYPE == this.Enums().OfferTypes.Simple) {
+                if (offer.OFFER_TYPE === this.Enums().OfferTypes.Simple || offer.OFFER_TYPE == this.Enums().OfferTypes.Single) {
 
                     let item = {
                         isOffer: true,
