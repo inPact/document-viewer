@@ -39,6 +39,7 @@ export default class BillService {
             },
             OfferTypes: {
                 Simple: "Simple",
+                Single : "Single",
                 Combo: 'Combo',
                 ComplexOne: 'Complex-One',
                 ComplexMulti: 'Complex-Multi'
