@@ -40,7 +40,8 @@ export default class BillService {
             OfferTypes: {
                 Simple: "Simple",
                 Combo: 'Combo',
-                ComplexOne: 'Complex-One'
+                ComplexOne: 'Complex-One',
+                ComplexMulti: 'Complex-Multi'
             },
             TransTypes: {
                 Reversal: "Reversal",
@@ -181,7 +182,7 @@ export default class BillService {
 
                 }
 
-                if ([this.Enums().OfferTypes.ComplexOne, this.Enums().OfferTypes.Combo].indexOf(offer.OFFER_TYPE) > -1) {
+                if ([this.Enums().OfferTypes.ComplexOne, this.Enums().OfferTypes.Combo, this.Enums().OfferTypes.ComplexMulti].indexOf(offer.OFFER_TYPE) > -1) {
 
 
                     let item = {
