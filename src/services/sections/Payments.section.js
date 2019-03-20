@@ -70,8 +70,8 @@ export default class PaymentSection {
             if (payment.HOTEL_NAME || payment.GUEST_NAME || payment.ROOM_NUMBER) {
 
                 let elementHotelDetails = this.$htmlCreator.create({
-                    id: 'hotel-details',
-                    classList: ['hotel-details'],
+                    id: 'hotel-item hotel-details',
+                    classList: ['hotel-item ', 'hotel-details'],
                     value: `&nbsp;${payment.HOTEL_NAME}&nbsp;/&nbsp;${payment.ROOM_NUMBER}`
                 });
 
@@ -79,8 +79,8 @@ export default class PaymentSection {
 
                 let elementGuestName = this.$htmlCreator.create({
                     id: 'guest-name',
-                    classList: ['guest-name'],
-                    value: `${payment.GUEST_NAME}`
+                    classList: ['hotel-item ', 'guest-name'],
+                    value: `&nbsp;${payment.GUEST_NAME}`
                 });
 
                 paymentSection.append(elementGuestName);
