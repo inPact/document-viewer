@@ -82,7 +82,7 @@ export default class DeliveryNoteTransactionDataService {
 
             let elementChargeAccountContainer = this.$htmlCreator.create({
                 id: 'charge-account-refund-container',
-                classList: ['itemDiv'],
+                classList: ['itemDiv', 'border-bottom'],
                 children: [
                     elementChargeAccountText,
                     elementChargeAccountValue
@@ -114,7 +114,7 @@ export default class DeliveryNoteTransactionDataService {
 
             let elementChargeAccountContainer = this.$htmlCreator.create({
                 id: 'charge-account-refund-container',
-                classList: ['itemDiv'],
+                classList: ['itemDiv', 'border-bottom'],
                 children: [
                     elementChargeAccountText,
                     elementChargeAccountValue
