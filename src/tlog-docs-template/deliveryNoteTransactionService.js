@@ -48,6 +48,12 @@ export default class DeliveryNoteTransactionDataService {
         var dNoteChargeAccntDiv = this._doc.createElement('div');
         dNoteChargeAccntDiv.id = 'dNoteChargeAccntDiv';
 
+        let elementChargeAccountSection = this.$htmlCreator.createSection({
+            id: 'charge-account-section',
+            classList: ['border-bottom']
+        });
+
+
         if (IS_REFUND === true) {
 
             let elementChargeAccountText = this.$htmlCreator.create({
@@ -70,7 +76,7 @@ export default class DeliveryNoteTransactionDataService {
 
             let elementChargeAccountContainer = this.$htmlCreator.create({
                 id: 'charge-account-refund-container',
-                classList: ['itemDiv', 'border-bottom'],
+                classList: ['itemDiv'],
                 children: [
                     elementChargeAccountText,
                     elementChargeAccountValue
@@ -78,7 +84,7 @@ export default class DeliveryNoteTransactionDataService {
             });
 
 
-            dNoteChargeAccntDiv.appendChild(elementChargeAccountContainer);
+            elementChargeAccountSection.appendChild(elementChargeAccountContainer);
 
 
             if (hAccountPayments.HOTEL_NAME || hAccountPayments.GUEST_NAME || hAccountPayments.ROOM_NUMBER) {
@@ -89,7 +95,7 @@ export default class DeliveryNoteTransactionDataService {
                     value: `&nbsp;${hAccountPayments.HOTEL_NAME}&nbsp;/&nbsp;${hAccountPayments.ROOM_NUMBER}`
                 });
 
-                dNoteChargeAccntDiv.append(elementHotelDetails);
+                elementChargeAccountSection.append(elementHotelDetails);
 
                 let elementGuestName = this.$htmlCreator.create({
                     id: 'guest-name',
@@ -97,7 +103,7 @@ export default class DeliveryNoteTransactionDataService {
                     value: `&nbsp;${hAccountPayments.GUEST_NAME}`
                 });
 
-                dNoteChargeAccntDiv.append(elementGuestName);
+                elementChargeAccountSection.append(elementGuestName);
 
             }
 
@@ -124,14 +130,14 @@ export default class DeliveryNoteTransactionDataService {
 
             let elementChargeAccountContainer = this.$htmlCreator.create({
                 id: 'charge-account-refund-container',
-                classList: ['itemDiv', 'border-bottom'],
+                classList: ['itemDiv'],
                 children: [
                     elementChargeAccountText,
                     elementChargeAccountValue
                 ]
             });
 
-            dNoteChargeAccntDiv.appendChild(elementChargeAccountContainer);
+            elementChargeAccountSection.appendChild(elementChargeAccountContainer);
 
             if (hAccountPayments.HOTEL_NAME || hAccountPayments.GUEST_NAME || hAccountPayments.ROOM_NUMBER) {
 
@@ -141,7 +147,7 @@ export default class DeliveryNoteTransactionDataService {
                     value: `&nbsp;${hAccountPayments.HOTEL_NAME}&nbsp;/&nbsp;${hAccountPayments.ROOM_NUMBER}`
                 });
 
-                dNoteChargeAccntDiv.append(elementHotelDetails);
+                elementChargeAccountSection.append(elementHotelDetails);
 
                 let elementGuestName = this.$htmlCreator.create({
                     id: 'guest-name',
@@ -149,7 +155,7 @@ export default class DeliveryNoteTransactionDataService {
                     value: `&nbsp;${hAccountPayments.GUEST_NAME}`
                 });
 
-                dNoteChargeAccntDiv.append(elementGuestName);
+                elementChargeAccountSection.append(elementGuestName);
 
             }
 
@@ -183,8 +189,11 @@ export default class DeliveryNoteTransactionDataService {
                     ]
                 });
 
-                dNoteChargeAccntDiv.appendChild(elementTotalCashbackContainer);
+                elementChargeAccountSection.appendChild(elementTotalCashbackContainer);
             }
+
+
+            dNoteChargeAccntDiv.append(elementChargeAccountSection);
 
 
         }
