@@ -341,6 +341,11 @@ export default class TemplateBuilderService {
 
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
+
+            console.log("printData.isRefund");
+            console.log(printData);
+            console.log(printData.isRefund);
+
             var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData();
             tplOrderPaymentData.appendChild(delNoteTransDiv);
             paymentDataDiv.classList += ' border-bottom';

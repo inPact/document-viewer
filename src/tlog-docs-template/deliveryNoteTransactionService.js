@@ -44,6 +44,7 @@ export default class DeliveryNoteTransactionDataService {
         }
         var dNoteChargeAccntDiv = this._doc.createElement('div');
         dNoteChargeAccntDiv.id = 'dNoteChargeAccntDiv';
+        
         if (printData.isRefund === true) {
 
             // var returnText = this.$translate.getText('RETURND_IN_CHARCHACCOUNT_FROM')
