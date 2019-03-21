@@ -20,7 +20,7 @@ export default class DeliveryNoteTransactionDataService {
 
     createDeliveryNoteTransactionData(options) {
 
-        console.log("createDeliveryNoteTransactionData");
+        console.log("createDeliveryNoteTransactionData");   
 
         const IS_REFUND = options.IS_REFUND;
 
@@ -92,7 +92,7 @@ export default class DeliveryNoteTransactionDataService {
             dNoteChargeAccntDiv.appendChild(elementChargeAccountContainer);
 
         }
-        else if (!printData.IS_REFUND && hAccountPayments && hAccountPayments.P_AMOUNT) {
+        else if (!IS_REFUND && hAccountPayments && hAccountPayments.P_AMOUNT) {
 
 
             if (hAccountPayments.P_CHANGE > 0) {
