@@ -17,6 +17,7 @@ import ClubMembersService from '../services/clubMembers.service';
 import HouseAccountPayment from '../services/houseAccountPayment.service';
 import RefundDeliveryNote from '../services/templates/RefundDeliveryNote/RefundDeliveryNote';
 import BalanceSection from '../services/sections/Balance.section';
+import PaymentSection from '../services/sections/Payments.section';
 import _ from 'lodash';
 
 
@@ -48,6 +49,7 @@ export default class TemplateBuilderService {
         this.$refundDeliveryNote = new RefundDeliveryNote(options);
         this.$refundDeliveryNote = new RefundDeliveryNote(options);
         this.$balanceSection = new BalanceSection(options);
+        this.$paymentSection = new PaymentSection(options);
     }
 
     _configure(options) {
@@ -339,7 +341,11 @@ export default class TemplateBuilderService {
 
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
-            var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData();
+
+            var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData({
+                IS_REFUND: printData.isRefund
+            });
+
             tplOrderPaymentData.appendChild(delNoteTransDiv);
             paymentDataDiv.classList += ' border-bottom';
         }
@@ -667,10 +673,19 @@ export default class TemplateBuilderService {
 
         }
         else {
-            var OrderPaymentsDiv = this.fillPaymentsData(printData);
-            OrderPaymentsDiv.id = "OrderPaymentsDiv";
-            tplOrderPaymentsDiv.appendChild(OrderPaymentsDiv);
+            /// TODO !
+
+            let paymentSection = this.$paymentSection.get({
+                variables: this._printData.variables,
+                collections: this._printData.collections,
+                payments: this._printData.data.payments
+            });
+
+            // var OrderPaymentsDiv = this.fillPaymentsData(printData);
+            // OrderPaymentsDiv.id = "OrderPaymentsDiv";
+            tplOrderPaymentsDiv.appendChild(paymentSection);
         }
+
         return tplOrderPaymentsDiv;
     }
 
@@ -680,6 +695,7 @@ export default class TemplateBuilderService {
 
         if (printData.data.payments.length > 0) {
             printData.data.payments.forEach(payment => {
+
                 var paymentDiv = this._doc.createElement('div');
                 var pAmount;
                 var changeAmountZero;

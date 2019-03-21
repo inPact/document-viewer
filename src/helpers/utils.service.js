@@ -6,7 +6,7 @@ export default class Utils {
 
     toFixedSafe(value, num) {
         if (value && value !== undefined) {
-            return value.toFixed(num);
+            return Number(value).toFixed(num);
         }
         return "0.00";
     }

@@ -184,8 +184,8 @@ export default class BillService {
                 }
 
                 if ([this.Enums().OfferTypes.ComplexOne, this.Enums().OfferTypes.Combo,
-                    this.Enums().OfferTypes.ComplexMulti,
-                    this.Enums().OfferTypes.Single].indexOf(offer.OFFER_TYPE) > -1) {
+                this.Enums().OfferTypes.ComplexMulti,
+                this.Enums().OfferTypes.Single].indexOf(offer.OFFER_TYPE) > -1) {
 
 
                     let item = {
@@ -430,11 +430,18 @@ export default class BillService {
         let payments = [];
 
         filteredPyaments.forEach(payment => {
-            payments.push({
+
+            let paymentData = {
                 name: this.resolvePaymentName(payment),
                 amount: payment.PAYMENT_TYPE ? this.$utils.toFixedSafe(payment.P_AMOUNT * -1, 2) : this.$utils.toFixedSafe(payment.P_AMOUNT, 2),
                 holderName: payment.CUSTOMER_NAME !== undefined ? payment.CUSTOMER_NAME : ''
-            });
+            }
+
+            if (payment.GUEST_NAME) paymentData.GUEST_NAME = payment.GUEST_NAME;
+            if (payment.HOTEL_NAME) paymentData.HOTEL_NAME = payment.HOTEL_NAME;
+            if (payment.ROOM_NUMBER) paymentData.ROOM_NUMBER = payment.ROOM_NUMBER;
+
+            payments.push(paymentData);
         });
 
         payments.push({

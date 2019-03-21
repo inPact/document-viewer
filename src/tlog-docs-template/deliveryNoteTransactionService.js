@@ -18,7 +18,12 @@ export default class DeliveryNoteTransactionDataService {
         this.$signatureService = new SignatureService();
     }
 
-    createDeliveryNoteTransactionData() {
+
+    createDeliveryNoteTransactionData(options) {
+
+        console.log("createDeliveryNoteTransactionData");
+
+        const IS_REFUND = options.IS_REFUND;
 
         this._doc = DocumentFactory.get();
 
@@ -38,62 +43,157 @@ export default class DeliveryNoteTransactionDataService {
 
         deliveryNoteTransactionDiv.appendChild(deliveryVat);
 
-        var hAccountPayments;
-        if (printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]) {
-            hAccountPayments = printData.collections.HOUSE_ACCOUNT_PAYMENTS[0];
-        }
+
+        let hAccountPayments = _.get(printData, 'collections.HOUSE_ACCOUNT_PAYMENTS[0]');
         var dNoteChargeAccntDiv = this._doc.createElement('div');
         dNoteChargeAccntDiv.id = 'dNoteChargeAccntDiv';
-        if (printData.isRefund === true) {
 
-            /// !!!
-            var returnText = this.$translate.getText('RETURND_IN_CHARCHACCOUNT_FROM')
-            var refundTextDiv = this._doc.createElement('div')
-            refundTextDiv.id = "refundTextDiv";
-            refundTextDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (hAccountPayments ? returnText + " " + hAccountPayments.CHARGE_ACCOUNT_NAME : "") + "</div>" +
-                "<div class='total-amount " + this.$utils.isNegative(hAccountPayments.P_AMOUNT) + "'>" + (hAccountPayments.P_AMOUNT ? hAccountPayments.P_AMOUNT : "") + "</div>" +
-                "</div>";
+        let elementChargeAccountSection = this.$htmlCreator.createSection({
+            id: 'charge-account-section',
+            classList: ['border-bottom']
+        });
 
-            refundTextDiv.classList += " padding-bottom";
-            refundTextDiv.classList += " padding-top";
-            refundTextDiv.classList += " tpl-body-div";
 
-            dNoteChargeAccntDiv.appendChild(refundTextDiv);
+        if (IS_REFUND === true) {
 
+            let elementChargeAccountText = this.$htmlCreator.create({
+                id: 'charge-account-text',
+                classList: ['total-name'],
+                value: this.$translate.getText('RETURND_IN_CHARCHACCOUNT_FROM') + " " + hAccountPayments.CHARGE_ACCOUNT_NAME
+            });
+
+            let classList = ['total-amount'];
+            let negativeClass = this.$utils.isNegative(hAccountPayments.P_AMOUNT);
+            if (negativeClass !== "") {
+                classList.push(negativeClass);
+            }
+
+            let elementChargeAccountValue = this.$htmlCreator.create({
+                id: 'charge-account-value',
+                classList: classList,
+                value: this.$utils.toFixedSafe(hAccountPayments.P_AMOUNT || 0, 2) || ''
+            });
+
+            let elementChargeAccountContainer = this.$htmlCreator.create({
+                id: 'charge-account-refund-container',
+                classList: ['itemDiv'],
+                children: [
+                    elementChargeAccountText,
+                    elementChargeAccountValue
+                ]
+            });
+
+
+            elementChargeAccountSection.appendChild(elementChargeAccountContainer);
+
+
+            if (hAccountPayments.HOTEL_NAME || hAccountPayments.GUEST_NAME || hAccountPayments.ROOM_NUMBER) {
+
+                let elementHotelDetails = this.$htmlCreator.create({
+                    id: 'hotel-details',
+                    classList: ['hotel-item', 'hotel-details'],
+                    value: `&nbsp;${hAccountPayments.HOTEL_NAME}&nbsp;/&nbsp;${hAccountPayments.ROOM_NUMBER}`
+                });
+
+                elementChargeAccountSection.append(elementHotelDetails);
+
+                let elementGuestName = this.$htmlCreator.create({
+                    id: 'guest-name',
+                    classList: ['hotel-item', 'guest-name'],
+                    value: `&nbsp;${hAccountPayments.GUEST_NAME}`
+                });
+
+                elementChargeAccountSection.append(elementGuestName);
+
+            }
 
         }
-        else if (!printData.isRefund && hAccountPayments && hAccountPayments.P_AMOUNT) {
+        else if (!IS_REFUND && hAccountPayments && hAccountPayments.P_AMOUNT) {
 
+            let elementChargeAccountText = this.$htmlCreator.create({
+                id: 'charge-account-text',
+                classList: ['total-name'],
+                value: this.$translate.getText('PAID_IN_CHARCHACCOUNT_FROM') + " " + hAccountPayments.CHARGE_ACCOUNT_NAME
+            });
 
-            var returnText = this.$translate.getText('PAID_IN_CHARCHACCOUNT_FROM')
-            var refundTextDiv = this._doc.createElement('div')
-            refundTextDiv.id = 'refundTextDiv';
-            refundTextDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (hAccountPayments ? returnText + " " + hAccountPayments.CHARGE_ACCOUNT_NAME : "") + "</div>" +
-                "<div class='total-amount " + this.$utils.isNegative(hAccountPayments.P_AMOUNT) + "'>" + (hAccountPayments.P_AMOUNT ? Number(hAccountPayments.P_AMOUNT).toFixed(2) : "") + "</div > " +
-                "</div>";
+            let classList = ['total-amount'];
+            let negativeClass = this.$utils.isNegative(hAccountPayments.P_AMOUNT);
+            if (negativeClass !== "") {
+                classList.push(negativeClass);
+            }
 
-            refundTextDiv.classList.add('padding-bottom');
-            refundTextDiv.classList.add('padding-top');
+            let elementChargeAccountValue = this.$htmlCreator.create({
+                id: 'charge-account-value',
+                classList: classList,
+                value: this.$utils.toFixedSafe(hAccountPayments.P_AMOUNT || 0, 2) || ''
+            });
 
-            dNoteChargeAccntDiv.appendChild(refundTextDiv);
+            let elementChargeAccountContainer = this.$htmlCreator.create({
+                id: 'charge-account-refund-container',
+                classList: ['itemDiv'],
+                children: [
+                    elementChargeAccountText,
+                    elementChargeAccountValue
+                ]
+            });
+
+            elementChargeAccountSection.appendChild(elementChargeAccountContainer);
+
+            if (hAccountPayments.HOTEL_NAME || hAccountPayments.GUEST_NAME || hAccountPayments.ROOM_NUMBER) {
+
+                let elementHotelDetails = this.$htmlCreator.create({
+                    id: 'hotel-details',
+                    classList: ['hotel-item', 'hotel-details'],
+                    value: `&nbsp;${hAccountPayments.HOTEL_NAME}&nbsp;/&nbsp;${hAccountPayments.ROOM_NUMBER}`
+                });
+
+                elementChargeAccountSection.append(elementHotelDetails);
+
+                let elementGuestName = this.$htmlCreator.create({
+                    id: 'guest-name',
+                    classList: ['hotel-item', 'guest-name'],
+                    value: `&nbsp;${hAccountPayments.GUEST_NAME}`
+                });
+
+                elementChargeAccountSection.append(elementGuestName);
+
+            }
 
             if (hAccountPayments.P_CHANGE > 0) {
-                var cashBackText = this.$translate.getText('TOTAL_CASHBACK')
-                var cashBackDiv = this._doc.createElement('div');
-                cashBackDiv.classList.add('tpl-body-div');
-                cashBackDiv.classList.add('padding-top-0');
 
-                cashBackDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (hAccountPayments ? cashBackText : "") + "</div>" +
-                    "<div class='total-amount " + this.$utils.isNegative(hAccountPayments.P_CHANGE) + "'>" + (hAccountPayments.P_CHANGE ? Number(hAccountPayments.P_CHANGE).toFixed(2) : "") + "</div>" +
-                    "</div>";
 
-                dNoteChargeAccntDiv.appendChild(cashBackDiv);
-            } else {
-                refundTextDiv.classList += " tpl-body-div";
+                let elementTotalCashbackText = this.$htmlCreator.create({
+                    id: 'total-cash-back-text',
+                    classList: ['total-name'],
+                    value: this.$translate.getText('TOTAL_CASHBACK')
+                });
+
+                let classList = ['total-amount'];
+                let negativeClass = this.$utils.isNegative(hAccountPayments.P_CHANGE);
+                if (negativeClass !== "") {
+                    classList.push(negativeClass);
+                }
+
+                let elementTotalCashbackValue = this.$htmlCreator.create({
+                    id: 'total-cash-back-value',
+                    classList: classList,
+                    value: this.$utils.toFixedSafe(hAccountPayments.P_CHANGE || 0, 2) || ''
+                });
+
+                let elementTotalCashbackContainer = this.$htmlCreator.create({
+                    id: 'total-cash-back-container',
+                    classList: ['itemDiv'],
+                    children: [
+                        elementTotalCashbackText,
+                        elementTotalCashbackValue
+                    ]
+                });
+
+                elementChargeAccountSection.appendChild(elementTotalCashbackContainer);
             }
+
+
+            dNoteChargeAccntDiv.append(elementChargeAccountSection);
 
 
         }
