@@ -18,7 +18,9 @@ export default class DeliveryNoteTransactionDataService {
         this.$signatureService = new SignatureService();
     }
 
-    createDeliveryNoteTransactionData() {
+    createDeliveryNoteTransactionData(options) {
+
+        const IS_REFUND = options.IS_REFUND;
 
         this._doc = DocumentFactory.get();
 
@@ -38,14 +40,12 @@ export default class DeliveryNoteTransactionDataService {
 
         deliveryNoteTransactionDiv.appendChild(deliveryVat);
 
-        var hAccountPayments;
-        if (printData.collections.HOUSE_ACCOUNT_PAYMENTS[0]) {
-            hAccountPayments = printData.collections.HOUSE_ACCOUNT_PAYMENTS[0];
-        }
+
+        let hAccountPayments = _.get(printData, 'collections.HOUSE_ACCOUNT_PAYMENTS[0]');
         var dNoteChargeAccntDiv = this._doc.createElement('div');
         dNoteChargeAccntDiv.id = 'dNoteChargeAccntDiv';
-        
-        if (printData.isRefund === true) {
+
+        if (IS_REFUND === true) {
 
             // var returnText = this.$translate.getText('RETURND_IN_CHARCHACCOUNT_FROM')
             // var refundTextDiv = this._doc.createElement('div')
@@ -90,7 +90,7 @@ export default class DeliveryNoteTransactionDataService {
             dNoteChargeAccntDiv.appendChild(elementChargeAccountContainer);
 
         }
-        else if (!printData.isRefund && hAccountPayments && hAccountPayments.P_AMOUNT) {
+        else if (!printData.IS_REFUND && hAccountPayments && hAccountPayments.P_AMOUNT) {
 
 
             if (hAccountPayments.P_CHANGE > 0) {
