@@ -20,6 +20,10 @@
 .margin-15-0 {
   margin: 15px 0px; }
 
+.border-bottom {
+  border-bottom: solid #E8E8E8 1px;
+  padding-bottom: 10px; }
+
 .section-element {
   padding: 10px 0px; }
 
@@ -28,6 +32,10 @@
 
 .header-container {
   margin: 6px 0px; }
+
+.hotel-item {
+  font-size: 11px;
+  padding: 1px 10px; }
 
 .refund-delivery-note .section-element {
   border-bottom: solid #E8E8E8 1px;
