@@ -20,6 +20,8 @@ export default class CreaditSection {
 
     get(options) {
 
+        let that = this;
+
         function getCreaditFromText(options) {
 
             let isRefund = options.isRefund;
@@ -28,9 +30,9 @@ export default class CreaditSection {
             let result = "";
 
             if (isRefund) {
-                result += this.$translate.getText('RETURNED_IN_CREDIT_FROM');
+                result += that.$translate.getText('RETURNED_IN_CREDIT_FROM');
             } else {
-                result += this.$translate.getText('PAID_IN_CREDIT_FROM');
+                result += that.$translate.getText('PAID_IN_CREDIT_FROM');
             }
 
             result += ` ${issuer}`;
@@ -90,7 +92,7 @@ export default class CreaditSection {
         if (!_.isEmpty(variables.P_CHANGE) && payment.P_CHANGE !== 0) {
 
             let elementChangeText = this.$htmlCreator.create({
-                id: 'creadit-card-text',
+                id: 'creadit-change-text',
                 classList: ['total-name'],
                 value: this.$translate.getText('TOTAL_CASHBACK')
             });
@@ -102,7 +104,7 @@ export default class CreaditSection {
             }
 
             let elementChangeValue = this.$htmlCreator.create({
-                id: 'creadit-card-value',
+                id: 'creadit-change-value',
                 classList: classList,
                 value: this.$utils.toFixedSafe(payment.P_CHANGE || 0, 2) || ''
             });
