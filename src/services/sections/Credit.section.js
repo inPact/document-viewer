@@ -89,12 +89,12 @@ export default class CreaditSection {
 
         //#region Creadit change 
 
-        if (!_.isEmpty(variables.P_CHANGE) && payment.P_CHANGE !== 0) {
+        if (!_.isEmpty(payment.P_CHANGE) && payment.P_CHANGE !== 0) {
 
             let elementChangeText = this.$htmlCreator.create({
                 id: 'creadit-change-text',
                 classList: ['total-name'],
-                value: this.$translate.getText('TOTAL_CASHBACK')
+                value: this.$translate.getText('TOTAL_CASHBACK') + "-test"
             });
 
             let classList = ['total-amount'];
