@@ -2,6 +2,11 @@ export default class Localization {
 
     constructor(options) {
         this.currency = options.isUS ? 'USD' : 'ILS';
+        this.isUS = options.isUS;
+    }
+
+    isUS() {
+        return this.isUS;
     }
 
     getSymbol() {
