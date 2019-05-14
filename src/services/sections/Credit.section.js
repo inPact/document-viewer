@@ -16,6 +16,8 @@ export default class CreaditSection {
         this.$emvService = new EmvService(options);
         this.$creditTransaction = new CreditTransaction(options);
         this.$localization = new Localization(options);
+
+        console.log(this.$localization);
     }
 
     get(options) {
