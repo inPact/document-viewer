@@ -95,7 +95,7 @@ export default class CreaditSection {
             let elementChangeText = this.$htmlCreator.create({
                 id: 'creadit-change-text',
                 classList: ['total-name'],
-                value: this.$translate.getText('TOTAL_CASHBACK') + "-test"
+                value: this.$translate.getText('CHANGE_TIP')
             });
 
             let classList = ['total-amount'];
