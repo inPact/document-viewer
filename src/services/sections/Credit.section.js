@@ -89,7 +89,8 @@ export default class CreaditSection {
 
         //#region Creadit change 
 
-        if (!_.isEmpty(payment.P_CHANGE) && payment.P_CHANGE !== 0) {
+        let P_CHANGE = _.get(payment, 'P_CHANGE');
+        if (P_CHANGE && P_CHANGE !== 0) {
 
             let elementChangeText = this.$htmlCreator.create({
                 id: 'creadit-change-text',

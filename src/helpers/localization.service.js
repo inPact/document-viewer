@@ -5,10 +5,6 @@ export default class Localization {
         this.isUS = options.isUS;
     }
 
-    isUS() {
-        return this.isUS;
-    }
-
     getSymbol() {
 
         if (this.currency === 'ILS') {
