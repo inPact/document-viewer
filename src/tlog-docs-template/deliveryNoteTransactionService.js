@@ -165,7 +165,7 @@ export default class DeliveryNoteTransactionDataService {
                 let elementTotalCashbackText = this.$htmlCreator.create({
                     id: 'total-cash-back-text',
                     classList: ['total-name'],
-                    value: this.$translate.getText('TOTAL_CASHBACK')
+                    value: this.$translate.getText('CHANGE_TIP')
                 });
 
                 let classList = ['total-amount'];

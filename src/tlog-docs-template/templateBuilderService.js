@@ -18,6 +18,8 @@ import HouseAccountPayment from '../services/houseAccountPayment.service';
 import RefundDeliveryNote from '../services/templates/RefundDeliveryNote/RefundDeliveryNote';
 import BalanceSection from '../services/sections/Balance.section';
 import PaymentSection from '../services/sections/Payments.section';
+import CreaditSection from '../services/sections/Credit.section';
+
 import _ from 'lodash';
 
 
@@ -50,6 +52,8 @@ export default class TemplateBuilderService {
         this.$refundDeliveryNote = new RefundDeliveryNote(options);
         this.$balanceSection = new BalanceSection(options);
         this.$paymentSection = new PaymentSection(options);
+        this.$creaditSection = new CreaditSection(options);
+
     }
 
     _configure(options) {
@@ -485,6 +489,17 @@ export default class TemplateBuilderService {
     }
 
     createCreditTemplate(printData) {
+
+
+        return this.$creaditSection.get({
+            collections: printData.collections,
+            variables: printData.variables,
+            isRefund: printData.printData,
+            documentInfo: this._docData
+        })
+
+
+        /**
         var CreditTemplate = this._doc.createElement('div');
         CreditTemplate.id = "CreditTemplate";
         var CreditHeaderDiv = this._doc.createElement('div');
@@ -544,6 +559,7 @@ export default class TemplateBuilderService {
 
         }
         return CreditTemplate;
+         */
     }
 
     createCreditDataTemplate(creditData, printData) {

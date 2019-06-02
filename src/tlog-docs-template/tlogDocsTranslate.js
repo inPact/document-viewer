@@ -277,6 +277,7 @@ export default class TlogDocsTranslateService {
                 "PAID_CASH": "PAID IN CASH",
                 "RETURNED_CASH": "RETURNED IN CASH",
                 "TOTAL_CASHBACK": "CHANGE",
+                "CHANGE_TIP": "TIP CHANGE",
                 "PAID_CHEQUE": "PAID BY CHEQUE",
                 "RETURNED_CHEQUE": "RETURNED IN CHEQUE",
                 "chargeAccountRefundInvoice": "REFUND INVOICE",
@@ -527,6 +528,7 @@ export default class TlogDocsTranslateService {
                 "PAID_CASH": "התקבל במזומן",
                 "RETURNED_CASH": "הוחזר במזומן",
                 "TOTAL_CASHBACK": "עודף",
+                "CHANGE_TIP": "עודף טיפ",
                 "PAID_CHEQUE": "התקבל בהמחאה",
                 "RETURNED_CHEQUE": "הוחזר בהמחאה",
                 "chargeAccountRefundInvoice": "חשבונית זיכוי",
@@ -542,7 +544,6 @@ export default class TlogDocsTranslateService {
             }
         }
     }
-
 
     configure(options) {
         if (options.locale) this._options.locale = options.locale;
