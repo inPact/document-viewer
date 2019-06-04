@@ -134,6 +134,8 @@ export default class TemplateBuilderService {
                 ]
             });
 
+            console.log(elementImageContainer);
+
             docTemplate.appendChild(elementImageContainer);
         }
 
