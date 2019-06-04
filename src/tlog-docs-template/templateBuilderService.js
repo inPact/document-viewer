@@ -128,7 +128,7 @@ export default class TemplateBuilderService {
             let elementImageContainer = this.$htmlCreator.create({
                 type: 'div',
                 id: 'container-logo',
-                classList: ['flex a-center j-center'],
+                classList: ['flex', 'a-center', 'j-center'],
                 children: [
                     elementImage
                 ]
