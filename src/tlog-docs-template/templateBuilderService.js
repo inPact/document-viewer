@@ -358,7 +358,7 @@ export default class TemplateBuilderService {
             let elementFooterText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'element-footer-text',
-                classList: [''],
+                classList: [],
                 value: 'Powered by'
             });
 
@@ -374,7 +374,7 @@ export default class TemplateBuilderService {
             let elementFooter = this.$htmlCreator.create({
                 type: 'div',
                 id: 'element-footer',
-                classList: [''],
+                classList: [],
                 children: [
                     elementFooterText,
                     elementFooterImage
@@ -390,7 +390,7 @@ export default class TemplateBuilderService {
                 ]
             });
 
-            docTemplate.appendChild(elementImageContainer);
+            docTemplate.appendChild(elemenFooterContainer);
 
         }
 
