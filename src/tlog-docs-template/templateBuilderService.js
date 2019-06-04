@@ -358,12 +358,14 @@ export default class TemplateBuilderService {
             let elementFooterText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'element-footer-text',
+                classList: [],
                 value: 'Powered by'
             });
 
             let elementFooterImage = this.$htmlCreator.create({
                 type: 'div',
                 id: 'element-footer-image',
+                classList: [],
                 attributes: [
                     { key: 'src', value: TABIT_LOGO }
                 ]
@@ -372,6 +374,7 @@ export default class TemplateBuilderService {
             let elementFooter = this.$htmlCreator.create({
                 type: 'div',
                 id: 'element-footer',
+                classList: [],
                 children: [
                     elementFooterText,
                     elementFooterImage
