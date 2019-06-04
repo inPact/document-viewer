@@ -120,7 +120,9 @@ export default class TemplateBuilderService {
                 type: 'img',
                 id: 'logo',
                 classList: ['logo-image'],
-                attributes: { key: 'src', value: logoUrl }
+                attributes: [
+                    { key: 'src', value: logoUrl }
+                ]
             });
 
             let elementImageContainer = this.$htmlCreator.create({
@@ -135,7 +137,7 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(elementImageContainer);
         }
 
-        if (!excludeHeader) {
+        if (excludeHeader) {
             var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
             templateHeader.classList += ' text-center';
 
