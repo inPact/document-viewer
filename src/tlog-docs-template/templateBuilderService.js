@@ -20,10 +20,7 @@ import BalanceSection from '../services/sections/Balance.section';
 import PaymentSection from '../services/sections/Payments.section';
 import CreaditSection from '../services/sections/Credit.section';
 
-import TABIT_LOGO from '../images/tabit_logo.png';
-
 import _ from 'lodash';
-
 
 
 export default class TemplateBuilderService {
@@ -86,6 +83,7 @@ export default class TemplateBuilderService {
 
 
         let logoUrl = _.get(options, 'logoUrl') || undefined;
+        let tabitLogo = _.get(options, 'tabitLogo') || undefined;
         let excludeHeader = _.get(options, 'excludeHeader') || false;
         let excludeFooter = _.get(options, 'excludeFooter') || false;
 
@@ -354,7 +352,6 @@ export default class TemplateBuilderService {
 
         if (excludeFooter) {
 
-
             let elementFooterText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'element-footer-text',
@@ -367,7 +364,7 @@ export default class TemplateBuilderService {
                 id: 'element-footer-image',
                 classList: [],
                 attributes: [
-                    { key: 'src', value: TABIT_LOGO }
+                    { key: 'src', value: tabitLogo }
                 ]
             });
 
