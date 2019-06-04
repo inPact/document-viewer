@@ -120,7 +120,7 @@ export default class TemplateBuilderService {
                 type: 'img',
                 id: 'logo',
                 classList: ['logo-image'],
-                value: logoUrl
+                attributes: { key: 'src', value: logoUrl }
             });
 
             let elementImageContainer = this.$htmlCreator.create({
