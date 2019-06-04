@@ -133,6 +133,16 @@
   padding: 10px;
   margin-top: 20px; }
 
+.footer .tabit-logo {
+  width: 50px;
+  height: 20px;
+  margin: 0px 5px; }
+
+.footer .text {
+  margin: 0px 5px;
+  font-size: 20px;
+  font-weight: 600; }
+
 .section-element {
   padding: 10px 0px; }
 
