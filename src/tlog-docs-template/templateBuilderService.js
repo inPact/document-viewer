@@ -83,8 +83,9 @@ export default class TemplateBuilderService {
     createDocTemplate(docObjChosen, options = {}) {
 
 
-        this._excludeHeader = options.excludeHeader ? options.excludeHeader : false;
-
+        let logoUrl = _.get(options, 'logoUrl') || undefined;
+        let excludeHeader = _.get(options, 'excludeHeader') || false;
+        let excludeFooter = _.get(options, 'excludeFooter') || false;
 
         this._doc = DocumentFactory.get();
 
@@ -110,9 +111,31 @@ export default class TemplateBuilderService {
             value: VERSION
         });
 
+
         docTemplate.appendChild(elementVersion);
 
-        if (!this._excludeHeader) {
+        if (!_.isEmpty(logoUrl)) {
+
+            let elementImage = this.$htmlCreator.create({
+                type: 'img',
+                id: 'logo',
+                classList: ['logo-image'],
+                value: logoUrl
+            });
+
+            let elementImageContainer = this.$htmlCreator.create({
+                type: 'div',
+                id: 'container-logo',
+                classList: [],
+                children: [
+                    elementImage
+                ]
+            });
+
+            docTemplate.appendChild(elementImageContainer);
+        }
+
+        if (!_excludeHeader) {
             var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
             templateHeader.classList += ' text-center';
 
