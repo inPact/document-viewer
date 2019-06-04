@@ -371,7 +371,7 @@ export default class TemplateBuilderService {
             let elementFooter = this.$htmlCreator.create({
                 type: 'div',
                 id: 'element-footer',
-                classList: ['footer'],
+                classList: ['flex', 'a-center', 'j-center', 'footer'],
                 children: [
                     elementFooterImage,
                     elementFooterText
