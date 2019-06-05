@@ -23,7 +23,6 @@ import CreaditSection from '../services/sections/Credit.section';
 import _ from 'lodash';
 
 
-
 export default class TemplateBuilderService {
     constructor(options) {
         this._isUS;
@@ -83,8 +82,10 @@ export default class TemplateBuilderService {
     createDocTemplate(docObjChosen, options = {}) {
 
 
-        this._excludeHeader = options.excludeHeader ? options.excludeHeader : false;
-
+        let logoUrl = _.get(options, 'logoUrl') || undefined;
+        let tabitLogo = _.get(options, 'tabitLogo') || undefined;
+        let excludeHeader = _.get(options, 'excludeHeader') || false;
+        let excludeFooter = _.get(options, 'excludeFooter') || false;
 
         this._doc = DocumentFactory.get();
 
@@ -110,9 +111,35 @@ export default class TemplateBuilderService {
             value: VERSION
         });
 
+
         docTemplate.appendChild(elementVersion);
 
-        if (!this._excludeHeader) {
+
+        if (!excludeHeader) {
+
+            if (!_.isEmpty(logoUrl)) {
+
+                let elementImage = this.$htmlCreator.create({
+                    type: 'img',
+                    id: 'logo',
+                    classList: ['logo-image'],
+                    attributes: [
+                        { key: 'src', value: logoUrl }
+                    ]
+                });
+
+                let elementImageContainer = this.$htmlCreator.create({
+                    type: 'div',
+                    id: 'container-logo',
+                    classList: ['flex', 'a-center', 'j-center'],
+                    children: [
+                        elementImage
+                    ]
+                });
+
+                docTemplate.appendChild(elementImageContainer);
+            }
+
             var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
             templateHeader.classList += ' text-center';
 
@@ -317,6 +344,50 @@ export default class TemplateBuilderService {
                 }
 
             }
+
+        }
+
+
+        // Footer Element
+
+        if (!excludeFooter && tabitLogo !== undefined) {
+
+            let elementFooterText = this.$htmlCreator.create({
+                type: 'div',
+                id: 'element-footer-text',
+                classList: ['text'],
+                value: 'Powered by'
+            });
+
+            let elementFooterImage = this.$htmlCreator.create({
+                type: 'img',
+                id: 'element-footer-image',
+                classList: ['tabit-logo'],
+                attributes: [
+                    { key: 'src', value: tabitLogo }
+                ]
+            });
+
+            let elementFooter = this.$htmlCreator.create({
+                type: 'div',
+                id: 'element-footer',
+                classList: ['flex', 'a-center', 'j-center', 'footer'],
+                children: [
+                    elementFooterImage,
+                    elementFooterText
+                ]
+            });
+
+            let elemenFooterContainer = this.$htmlCreator.create({
+                type: 'div',
+                id: 'container-footer',
+                classList: ['flex', 'a-center', 'j-center'],
+                children: [
+                    elementFooter
+                ]
+            });
+
+            docTemplate.appendChild(elemenFooterContainer);
 
         }
 

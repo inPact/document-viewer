@@ -307,6 +307,7 @@ export default class TlogDocsService {
     }
 
     getHTMLDocumentWithoutTlog(document, options = {}) {
+        
         let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
         documentInfo.documentType = document.documentType;
 

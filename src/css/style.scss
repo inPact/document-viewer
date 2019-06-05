@@ -1,4 +1,6 @@
 
+@import 'flex';
+
 .text-transform-none {
     text-transform: none;
 }
@@ -30,4 +32,28 @@
 .border-bottom {
     border-bottom: solid #E8E8E8 1px;
     padding-bottom: 10px;
+}
+
+.logo-image {
+    width: 20%;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.footer {
+    padding: 10px;
+    margin-top: 20px;
+
+    .tabit-logo {
+        width: 50px;
+        height: 20px;
+        margin: 0px 5px;
+    }
+
+    .text {
+        margin: 0px 5px;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
 }
