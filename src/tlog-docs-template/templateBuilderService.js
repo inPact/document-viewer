@@ -115,7 +115,7 @@ export default class TemplateBuilderService {
         docTemplate.appendChild(elementVersion);
 
 
-        if (excludeHeader) {
+        if (!excludeHeader) {
 
             if (!_.isEmpty(logoUrl)) {
 
@@ -350,7 +350,7 @@ export default class TemplateBuilderService {
 
         // Footer Element
 
-        if (excludeFooter) {
+        if (!excludeFooter) {
 
             let elementFooterText = this.$htmlCreator.create({
                 type: 'div',
