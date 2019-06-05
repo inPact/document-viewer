@@ -350,7 +350,7 @@ export default class TemplateBuilderService {
 
         // Footer Element
 
-        if (!excludeFooter) {
+        if (!excludeFooter && tabitLogo !== undefined) {
 
             let elementFooterText = this.$htmlCreator.create({
                 type: 'div',
