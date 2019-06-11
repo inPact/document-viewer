@@ -56,8 +56,9 @@ export default class TlogDocsService {
 
         var checkGiftcardExists = tlog.order &&
             tlog.order.length > 0 &&
-            tlog.order[0].allDocuments.length === 1 &&
-            tlog.order[0].allDocuments[0].payments.length > 0
+            tlog.order[0].allDocuments.length === 0 
+            //&&
+            //tlog.order[0].allDocuments[0].payments.length > 0
             //&& tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false; /// TODO : is gift card only in index 0 ?????
 
         if (checkGiftcardExists) {
@@ -66,7 +67,7 @@ export default class TlogDocsService {
                 id: tlog._id,
                 type: tlog._type,
                 title: this.$slipService.getTitle({ type: tlog._type, number: tlog.number }),
-                ep: `tlogs/${tlog._id}/bill`,
+                ep: `tlogs/${tlog._id}/bill`, 
                 isRefund: false,
                 isFullOrderBill: true,
                 isGiftCardBill: true
