@@ -213,7 +213,7 @@ export default class HeaderService {
                 if (printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE) {
                     var typeTranslate = this.$translate.getText("ORDER_TYPE")
 
-                    let isTAB = isOrderTypeTAB({
+                    let isTAB = this.isOrderTypeTAB({
                         table: printData.variables.TABLE_NO,
                         type: printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE
                     });
