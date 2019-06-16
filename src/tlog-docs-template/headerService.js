@@ -20,7 +20,7 @@ export default class HeaderService {
         //creating a div to populate and return
         var headerDiv = this._doc.createElement('div');
         headerDiv.id = "headerDiv";
-        
+
 
 
         //setting header constants div for display
@@ -155,6 +155,17 @@ export default class HeaderService {
         });
     }
 
+    isOrderTypeTAB(options) {
+
+        let type = _.get(options, 'type');
+        let table = _.get(options, 'table');
+
+        if (table === undefined && type === 'SEATED') {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     fillOrderHeaderData(printData, htmlElement) {
 
@@ -201,7 +212,17 @@ export default class HeaderService {
             case 'tplOrderType': {
                 if (printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE) {
                     var typeTranslate = this.$translate.getText("ORDER_TYPE")
+
+                    let isTAB = isOrderTypeTAB({
+                        table: printData.variables.TABLE_NO,
+                        type: printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE
+                    });
+
                     var orderType = "ORDER_TYPES_" + (printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE);
+                    if (isTAB) {
+                        orderType = "ORDER_TYPES_TAB";
+                    }
+
                     var typeDataTranslate = this.$translate.getText(orderType);
                     htmlElement.innerHTML = "<div class='centralize' style='justify-content:center;'>" + this.orderWordsByLocale(typeTranslate, typeDataTranslate, printData.variables.ORDER_NO) + "</div > "
                     htmlElement.setAttribute('class', 'med-chars');
