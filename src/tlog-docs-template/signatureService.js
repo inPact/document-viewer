@@ -7,7 +7,7 @@ const helper = {
     getDimensionSafe(dimension) {
 
         let result = dimension;
-        let exclude = ["{{", "}}", ","];
+        let exclude = ["{{", "{", "}}", "}", ","];
         exclude.forEach(item => {
             result = _.replace(result, new RegExp(item, "g"), "");
         });
