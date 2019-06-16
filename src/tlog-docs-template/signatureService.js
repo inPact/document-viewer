@@ -32,6 +32,7 @@ export default class SignatureService {
 
         let signatureData = documentInfo.md.signature;
         let dimension = helper.getDimensionSafe(_.get(signatureData, 'dimension') || '300 50 150 380');
+        console.log(dimension);
 
         let contenier = this.$htmlCreator.create({
             type: 'div',
