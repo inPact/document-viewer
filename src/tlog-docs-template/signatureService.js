@@ -18,6 +18,7 @@ export default class SignatureService {
             return;
 
         let signatureData = documentInfo.md.signature;
+        let dimension = _.get(signatureData, 'dimension') || '300 50 150 380';
 
         let contenier = this.$htmlCreator.create({
             type: 'div',
@@ -34,7 +35,7 @@ export default class SignatureService {
             'width': "100%",
             'height': "70",
             'transform': "translate(0,0)",
-            'viewBox': "300 50 150 380",
+            'viewBox': dimension,
             'style': "width: 100%;"
         });
 
