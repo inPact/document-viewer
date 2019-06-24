@@ -1,11 +1,14 @@
 import HtmlCreator from '../../helpers/htmlCreator.service';
 import Utils from '../../helpers/utils.service';
-import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
+import Localization from '../../helpers/localization.service';
+import DocumentFactory from '../../helpers/documentFactory.service';
 
+import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 import EmvService from '../../tlog-docs-template/emvService';
 
 import CreditTransaction from '../../services/creditTransaction.service';
-import Localization from '../../helpers/localization.service';
+
+
 
 export default class CreaditSection {
 
@@ -16,6 +19,9 @@ export default class CreaditSection {
         this.$emvService = new EmvService(options);
         this.$creditTransaction = new CreditTransaction(options);
         this.$localization = new Localization(options);
+
+
+        this._doc = DocumentFactory.get();
     }
 
     get(options) {
@@ -131,7 +137,10 @@ export default class CreaditSection {
 
         if (documentInfo.documentType === 'invoice' && len > 0) {
 
-            let elementEmv = this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc);
+            let elementEmv = this.$emvService.createEmvTemplate(documentInfo.documentType, {
+                variables: variables,
+                collections: collections
+            }, this._doc);
 
             creaditContainer.append(elementEmv);
 
