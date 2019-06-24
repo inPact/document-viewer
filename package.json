@@ -1,6 +1,6 @@
 {
   "name": "document-viewer",
-  "version": "1.4.11",
+  "version": "1.4.13",
   "description": "",
   "private": true,
   "main": "./src/index.js",
