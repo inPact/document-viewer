@@ -56,12 +56,12 @@ export default class TlogDocsService {
 
         var checkGiftcardExists = tlog.order &&
             tlog.order.length > 0 &&
-            tlog.order[0].allDocuments.length === 0 
-            //&&
-            //tlog.order[0].allDocuments[0].payments.length > 0
-            //&& tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false; /// TODO : is gift card only in index 0 ?????
+            tlog.order[0].allDocuments.length === 0
+        //&&
+        //tlog.order[0].allDocuments[0].payments.length > 0
+        //&& tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false; /// TODO : is gift card only in index 0 ?????
 
-            
+
         if (checkGiftcardExists) {
             orderSelection.push({
                 tlogId: tlog._id,
@@ -295,6 +295,9 @@ export default class TlogDocsService {
     //create the data for the documents list
 
     getDocs(tlog, options) {
+
+        debugger
+
         let docsArray;
 
         let _billService = new BillService(this._options);
@@ -310,7 +313,7 @@ export default class TlogDocsService {
     }
 
     getHTMLDocumentWithoutTlog(document, options = {}) {
-        
+
         let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
         documentInfo.documentType = document.documentType;
 
