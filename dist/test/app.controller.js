@@ -4,8 +4,10 @@ angular.module('app')
     .controller('appCtrl', function ($scope, $q, OrderService, CheckService, AuthService) {
 
         // USER INPUT.
-        let TLOG_ID = "5d1316c9f35b79da3acc9e4c";
+        let TLOG_ID = "5d1b20f0c14a9f169f522b8a";
         let STATUS = "closed";
+
+        let tlog;
 
 
         let appComponent = {
@@ -195,6 +197,7 @@ angular.module('app')
                         appComponent.printData = result.printData;
 
                         let data = resolveDataByStatus({ status: STATUS, data: result.data });
+                        tlog = data;
 
                         let docs = documentViewer.getDocumentsInfoFromTlog(data, {});
 
@@ -240,7 +243,7 @@ angular.module('app')
             if (documentItem.isFullOrderBill) {
 
                 //patch
-                appComponent.printData.printData.variables.ORDER_BILL_TYPE = billData.ORDER_BILL_TYPE;
+                appComponent.printData.printData.variables.ORDER_BILL_TYPE = enrichPrintData.billData.ORDER_BILL_TYPE;
                 //end patch
 
                 let tpl = documentViewer.getHTMLDocument($scope.component.selectedDocument, appComponent.printData);
@@ -292,9 +295,9 @@ angular.module('app')
                 }
 
                 //patch
-                documentData.printData.variables.F_NAME = _.get(serverName, 'F_NAME')
-                documentData.printData.variables.L_NAME = _.get(serverName, 'F_NAME')
-                documentData.printData.variables.ORDER_BILL_TYPE = billData.ORDER_BILL_TYPE;
+                documentData.printData.variables.F_NAME = _.get(enrichPrintData.serverName, 'F_NAME')
+                documentData.printData.variables.L_NAME = _.get(enrichPrintData.serverName, 'F_NAME')
+                documentData.printData.variables.ORDER_BILL_TYPE = enrichPrintData.billData.ORDER_BILL_TYPE;
                 //end patch
 
                 let tpl = documentViewer.getHTMLDocument(documentItem, {

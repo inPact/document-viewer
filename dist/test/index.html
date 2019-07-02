@@ -8,7 +8,7 @@
     <title>Document</title>
 
 
-    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="./../main.css">
 
     <style>
         .tpl {
@@ -24,20 +24,20 @@
 
 <body>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.8/angular.min.js"></script>
-    <script src="./bundle.js"></script>
+    <script src="./../bundle.js"></script>
 
 
     <body ng-controller="appCtrl">
 
         <!-- APP -->
-        <script src="./test/app.js"></script>
-        <script src="./test/app.controller.js"></script>
-        <script src="./test/app.config.js"></script>
-        <script src="./test/app.token.interceptor.js"></script>
+        <script src="./app.js"></script>
+        <script src="./app.controller.js"></script>
+        <script src="./app.config.js"></script>
+        <script src="./app.token.interceptor.js"></script>
 
-        <script src="./test/services/order.service.js"></script>
-        <script src="./test/services/auth.service.js"></script>
-        <script src="./test/services/check.service.js"></script>
+        <script src="./services/order.service.js"></script>
+        <script src="./services/auth.service.js"></script>
+        <script src="./services/check.service.js"></script>
 
         <a class="btn btn-default" ng-repeat="documentItem in documentsList" ng-click="onSelectDocument(documentItem);"
             ng-class="{'active': documentItem.id === component.selectedDocument.id}">
