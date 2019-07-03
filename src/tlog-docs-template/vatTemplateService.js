@@ -115,12 +115,17 @@ export default class VatTemplateService {
             vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
 
 
-            let elementTotalOrderAndTip = this.createElementTotalOrderAndTip({
-                variables: printData.variables,
-                collections: printData.collections,
-            });
+            /**
+             * Show tip line only in 'SINGLE_DOC' mode (only in one payment).
+             */
+            if (printData.variables.ORDER_DOCUMENT_PRINT === 'SINGLE_DOC') {
+                let elementTotalOrderAndTip = this.createElementTotalOrderAndTip({
+                    variables: printData.variables,
+                    collections: printData.collections,
+                });
 
-            vatTemplate.appendChild(elementTotalOrderAndTip);
+                vatTemplate.appendChild(elementTotalOrderAndTip);
+            }
 
             let elementTotalAmountText = this.$htmlCreator.create({
                 type: 'div',
