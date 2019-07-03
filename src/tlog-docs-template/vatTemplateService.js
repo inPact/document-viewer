@@ -250,8 +250,6 @@ export default class VatTemplateService {
         let collections = _.get(options, 'collections');
         let variables = _.get(options, 'variables');
 
-        console.log(variables);
-
         /// Total Order Element.
 
         let totalsContainer = this.$htmlCreator.create({
@@ -278,16 +276,13 @@ export default class VatTemplateService {
         let elementTotalOrder = this.$htmlCreator.create({
             type: 'div',
             id: 'total-order',
-            classList: ['itemDiv', 'bold'],
+            classList: ['itemDiv'],
             value: undefined,
             children: [
                 elementTotalOrderText,
                 elementTotalOrderValue
             ]
         });
-
-        totalsContainer.appendChild(elementTotalOrder);
-
 
         // Total Tips Element.
 
@@ -308,7 +303,7 @@ export default class VatTemplateService {
         let elementTotalTip = this.$htmlCreator.create({
             type: 'div',
             id: 'total-tip',
-            classList: ['itemDiv', 'bold'],
+            classList: ['itemDiv'],
             value: undefined,
             children: [
                 elementTotalTipText,
@@ -317,7 +312,8 @@ export default class VatTemplateService {
         });
 
         if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS > 0) {
-            totalsContainer.appendChild(elementTotalTip);
+            totalsContainer.appendChild(elementTotalOrder); // Add total order element.
+            totalsContainer.appendChild(elementTotalTip); // Add total tip element.
         }
 
         return totalsContainer;
