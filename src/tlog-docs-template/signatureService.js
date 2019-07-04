@@ -3,6 +3,19 @@
 import DocumentFactory from '../helpers/documentFactory.service';
 import HtmlCreator from '../helpers/htmlCreator.service';
 
+const helper = {
+    getDimensionSafe(dimension) {
+
+        let result = dimension;
+        let exclude = ["{{", "{", "}}", "}", ","];
+        exclude.forEach(item => {
+            result = _.replace(result, new RegExp(item, "g"), "");
+        });
+
+        return result;
+    }
+}
+
 export default class SignatureService {
 
     constructor() {
@@ -18,6 +31,8 @@ export default class SignatureService {
             return;
 
         let signatureData = documentInfo.md.signature;
+        let dimension = helper.getDimensionSafe(_.get(signatureData, 'dimension') || '300 50 150 380');
+        console.log(dimension);
 
         let contenier = this.$htmlCreator.create({
             type: 'div',
@@ -34,7 +49,7 @@ export default class SignatureService {
             'width': "100%",
             'height': "70",
             'transform': "translate(0,0)",
-            'viewBox': "300 50 150 380",
+            'viewBox': dimension,
             'style': "width: 100%;"
         });
 
@@ -62,5 +77,6 @@ export default class SignatureService {
             el.setAttributeNS(null, k, attrs[k]);
         return el;
     }
+
 
 }

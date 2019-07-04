@@ -22,6 +22,7 @@ export default class VatTemplateService {
     }
 
     createVatTemplate(printData, doc) {
+
         this._doc = doc;
         let vatTemplate = this._doc.createElement('div');
         vatTemplate.id = "vatTemplate";
@@ -55,7 +56,7 @@ export default class VatTemplateService {
                 }
 
 
-                vatHeaderDiv.innerHTML = "<div class='itemDiv'>" +
+                vatHeaderDiv.innerHTML = "<div class='itemDiv bold'>" +
                     "<div class='total-name'>" + (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") + "</div>" + " " +
                     "<div class='total-amount " + this.isNegative(item.ITEM_AMOUNT) + "'>" + (this.notEmpty(item.ITEM_AMOUNT) ? this.twoDecimals(item.ITEM_AMOUNT) : "") + "</div>" +
                     "</div>"
@@ -63,7 +64,21 @@ export default class VatTemplateService {
 
             })
 
-            let vatDataTemplateDiv = this.createVatDataTemplate(vat, true)
+            // let elementTotalOrderAndTip = this.createElementTotalOrderAndTip({
+            //     variables: printData.variables,
+            //     collections: printData.collections,
+            // });
+
+            // vatTemplate.appendChild(elementTotalOrderAndTip);
+
+
+            let vatDataTemplateDiv = this.createVatDataTemplate({
+                vat: vat,
+                isMulti: true,
+                variables: printData.variables,
+                collections: printData.collections
+            });
+
             vatTemplate.appendChild(vatDataTemplateDiv);
 
         }
@@ -100,6 +115,17 @@ export default class VatTemplateService {
             vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
 
 
+            /**
+             * Show tip line only in 'SINGLE_DOC' mode (only in one payment).
+             */
+            if (printData.variables.ORDER_DOCUMENT_PRINT === 'SINGLE_DOC') {
+                let elementTotalOrderAndTip = this.createElementTotalOrderAndTip({
+                    variables: printData.variables,
+                    collections: printData.collections,
+                });
+
+                vatTemplate.appendChild(elementTotalOrderAndTip);
+            }
 
             let elementTotalAmountText = this.$htmlCreator.create({
                 type: 'div',
@@ -124,7 +150,7 @@ export default class VatTemplateService {
             let elementTotalAmount = this.$htmlCreator.create({
                 type: 'div',
                 id: 'total-amount',
-                classList: ['itemDiv'],
+                classList: ['itemDiv', 'bold'],
                 children: [
                     elementTotalAmountText,
                     elementTotalAmountValue
@@ -133,7 +159,13 @@ export default class VatTemplateService {
 
             vatTemplate.appendChild(elementTotalAmount);
 
-            let vatDataTemplateDiv = this.createVatDataTemplate(vat, false)
+            let vatDataTemplateDiv = this.createVatDataTemplate({
+                vat: vat,
+                isMulti: false,
+                variables: printData.variables,
+                collections: printData.collections
+            });
+
             vatTemplate.appendChild(vatDataTemplateDiv);
         }
 
@@ -141,8 +173,14 @@ export default class VatTemplateService {
 
     }
 
-    createVatDataTemplate(vat, isMulti) {
+    createVatDataTemplate(options) {
 
+        let vat = _.get(options, 'vat');
+        let isMulti = _.get(options, 'isMulti');
+        let collections = _.get(options, 'collections');
+        let variables = _.get(options, 'variables');
+
+        // Old 
 
         let vatDataTemplate = this._doc.createElement('div');
         vatDataTemplate.id = "VatDataTemplate";
@@ -204,5 +242,80 @@ export default class VatTemplateService {
 
         vatDataTemplate.appendChild(vatDataDiv);
         return vatDataTemplate;
+    }
+
+
+    createElementTotalOrderAndTip(options) {
+
+        let collections = _.get(options, 'collections');
+        let variables = _.get(options, 'variables');
+
+        /// Total Order Element.
+
+        let totalsContainer = this.$htmlCreator.create({
+            type: 'div',
+            id: 'totals-container',
+            classList: [],
+            value: undefined
+        });
+
+        let elementTotalOrderText = this.$htmlCreator.create({
+            type: 'div',
+            id: 'total-order-text',
+            classList: ['total-name'],
+            value: this.$translate.getText('TOTAL_ORDER')
+        });
+
+        let elementTotalOrderValue = this.$htmlCreator.create({
+            type: 'div',
+            id: 'total-order-value',
+            classList: ['total-amount'],
+            value: this.$utils.toFixedSafe(variables.TOTAL_SALES_AMOUNT, 2) || ''
+        });
+
+        let elementTotalOrder = this.$htmlCreator.create({
+            type: 'div',
+            id: 'total-order',
+            classList: ['itemDiv'],
+            value: undefined,
+            children: [
+                elementTotalOrderText,
+                elementTotalOrderValue
+            ]
+        });
+
+        // Total Tips Element.
+
+        let elementTotalTipText = this.$htmlCreator.create({
+            type: 'div',
+            id: 'total-tip-text',
+            classList: ['total-name'],
+            value: this.$translate.getText('TOTAL_TIPS')
+        });
+
+        let elementTotalTipValue = this.$htmlCreator.create({
+            type: 'div',
+            id: 'total-tip-value',
+            classList: ['total-amount'],
+            value: this.$utils.toFixedSafe(variables.TOTAL_TIPS, 2) || ''
+        });
+
+        let elementTotalTip = this.$htmlCreator.create({
+            type: 'div',
+            id: 'total-tip',
+            classList: ['itemDiv'],
+            value: undefined,
+            children: [
+                elementTotalTipText,
+                elementTotalTipValue
+            ]
+        });
+
+        if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS > 0) {
+            totalsContainer.appendChild(elementTotalOrder); // Add total order element.
+            totalsContainer.appendChild(elementTotalTip); // Add total tip element.
+        }
+
+        return totalsContainer;
     }
 }

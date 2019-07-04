@@ -17,6 +17,7 @@ window.DocumentViewer = class DocumentViewer {
     }
 
     getDocumentsInfoFromTlog(tlog, options) {
+        debugger
         return this._tlogDocsService.getDocs(tlog, options);
     }
 
