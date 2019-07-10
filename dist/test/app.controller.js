@@ -4,7 +4,7 @@ angular.module('app')
     .controller('appCtrl', function ($scope, $q, OrderService, CheckService, AuthService, ENV) {
 
         // USER INPUT.
-        let TLOG_ID = "5d256f11e7080d71a381b187";
+        let TLOG_ID = "5d22a9bb3f029e91abb6fea3";
         let STATUS = "closed";
 
         let tlog;

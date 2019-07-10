@@ -2,6 +2,7 @@ import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import HtmlCreator from '../helpers/htmlCreator.service';
 
+import ReturnTransactionSection from '../services/sections/ReturnTransaction.section';
 
 export default class HeaderService {
 
@@ -10,6 +11,7 @@ export default class HeaderService {
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
         this.$htmlCreator = new HtmlCreator();
+        this.$returnTransactionSection = new ReturnTransactionSection(options);
     }
 
 
@@ -288,7 +290,13 @@ export default class HeaderService {
         //check if this is a retrun order and prints if it is
 
         if (printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
-            tplOrderInfoText.appendChild(this.createReturnOrderText(printData));
+
+            let elementReturnTransaction = this.$returnTransactionSection.get({
+                variables: printData.variables,
+                collections: printData.collections
+            });
+
+            tplOrderInfoText.appendChild(elementReturnTransaction);
         }
 
         //check if this is order is tax exempted  and prints if it is
@@ -338,26 +346,6 @@ export default class HeaderService {
         }
 
         return tplOrderInfoText;
-    }
-
-
-
-    createReturnOrderText(printData) {
-        var returnOrderDiv = this._doc.createElement('div')
-        returnOrderDiv.classList += ' centralize';
-        var isReturnOrderTextDiv = this._doc.createElement('div');
-        isReturnOrderTextDiv.id = "isReturnOrderTextDiv";
-        isReturnOrderTextDiv.innerHTML = "<div class= bigBold>" + (this.$translate.getText('RETURN_TRANSACTION')) + "</div>";
-        returnOrderDiv.appendChild(isReturnOrderTextDiv);
-        //return order comment
-        if (printData.variables.RETURN_COMMENT) {
-            var returnOrderCommentDiv = this._doc.createElement('div');
-            returnOrderCommentDiv.id = "returnOrderCommentDiv";
-            returnOrderCommentDiv.innerHTML = printData.variables.RETURN_COMMENT;
-            returnOrderDiv.appendChild(returnOrderCommentDiv);
-        }
-
-        return returnOrderDiv;
     }
 
     appendChildren(target, array) {

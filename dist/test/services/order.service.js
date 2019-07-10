@@ -2,9 +2,9 @@
 
 angular.module('app')
     .constant("ENV", {
-        ep: 'https://us-int-ros.tabit-stage.com',
+        ep: 'https://us-ros-rp.tabit.cloud',
         //ep: 'https://il-int-ros.tabit-stage.com'
-        org: '5a243c76359e2325003eb01e',
+        org: '5bb20e04c125c001007e9e9b',
         //locale : 'he-IL',
         locale: 'en-US'
     })

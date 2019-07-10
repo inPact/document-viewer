@@ -19,6 +19,8 @@ import RefundDeliveryNote from '../services/templates/RefundDeliveryNote/RefundD
 import BalanceSection from '../services/sections/Balance.section';
 import PaymentSection from '../services/sections/Payments.section';
 import CreaditSection from '../services/sections/Credit.section';
+import ReturnTransactionSection from '../services/sections/ReturnTransaction.section';
+
 
 import _ from 'lodash';
 
@@ -52,6 +54,7 @@ export default class TemplateBuilderService {
         this.$balanceSection = new BalanceSection(options);
         this.$paymentSection = new PaymentSection(options);
         this.$creaditSection = new CreaditSection(options);
+        this.$returnTransactionSection = new ReturnTransactionSection(options);
 
     }
 
@@ -322,7 +325,14 @@ export default class TemplateBuilderService {
                     emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
                 }
                 if (this._printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
-                    docTemplate.appendChild(this.createReturnOrderText(this._printData));
+
+
+                    let elementReturnTransaction = this.$returnTransactionSection.get({
+                        variables: this._printData.variables,
+                        collections: this._printData.collections
+                    });
+
+                    docTemplate.appendChild(elementReturnTransaction);
                 }
 
                 if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
@@ -977,25 +987,6 @@ export default class TemplateBuilderService {
         }
 
         return chequeDiv;
-    }
-
-
-    createReturnOrderText(printData) {
-        var returnOrderDiv = this._doc.createElement('div')
-
-        var isReturnOrderTextDiv = this._doc.createElement('div');
-        isReturnOrderTextDiv.id = "isReturnOrderTextDiv";
-        isReturnOrderTextDiv.innerHTML = "<div class='bigBold text-center margin-15-0'>" + (this.$translate.getText('RETURN_TRANSACTION')) + "</div>";
-        returnOrderDiv.appendChild(isReturnOrderTextDiv);
-        //return order comment
-        if (printData.variables.RETURN_COMMENT) {
-            var returnOrderCommentDiv = this._doc.createElement('div');
-            returnOrderCommentDiv.id = "returnOrderCommentDiv";
-            returnOrderCommentDiv.innerHTML = printData.variables.RETURN_COMMENT;
-            returnOrderDiv.appendChild(returnOrderCommentDiv);
-        }
-
-        return returnOrderDiv;
     }
 
     createCustomerMessage(printData, doc) {
