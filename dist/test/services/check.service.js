@@ -4,7 +4,6 @@
 angular.module('app')
     .factory('CheckService', function ($http, ENV) {
 
-
         let EP = ENV.ep;
 
         const URL_ORDER = "/orders";
