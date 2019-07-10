@@ -1,9 +1,16 @@
 "use strict";
 
 angular.module('app')
-    .factory('OrderService', function ($http) {
+    .constant("ENV", {
+        ep: 'https://us-int-ros.tabit-stage.com',
+        //ep: 'https://il-int-ros.tabit-stage.com'
+        org: '5a243c76359e2325003eb01e',
+        //locale : 'he-IL',
+        locale: 'en-US'
+    })
+    .factory('OrderService', function ($http, ENV) {
 
-        let EP = 'https://il-int-ros.tabit-stage.com';
+        let EP = ENV.ep;
 
         const TLOGS_URL = 'tlogs';
         const ORDERS_URL = 'orders';

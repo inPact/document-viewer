@@ -1,5 +1,5 @@
 angular.module('app')
-    .factory('TokenInterceptor', function ($q, $window, $injector) {
+    .factory('TokenInterceptor', function (ENV) {
 
         return {
             request: function (config) {
@@ -10,7 +10,7 @@ angular.module('app')
 
                 config.headers.Authorization = 'Bearer ' + currentAccessToken;
 
-                config.headers['ros-organization'] = '56e92e0ba33e1c030054a5ec';
+                config.headers['ros-organization'] = ENV.org;
 
                 return config;
             }

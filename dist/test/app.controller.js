@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('app')
-    .controller('appCtrl', function ($scope, $q, OrderService, CheckService, AuthService) {
+    .controller('appCtrl', function ($scope, $q, OrderService, CheckService, AuthService, ENV) {
 
         // USER INPUT.
-        let TLOG_ID = "5d1c813250886a3f36e1db46";
+        let TLOG_ID = "5d256f11e7080d71a381b187";
         let STATUS = "closed";
 
         let tlog;
@@ -31,7 +31,7 @@ angular.module('app')
 
         let documentViewer = new DocumentViewer({
             isUS: false,
-            locale: 'he-IL',
+            locale: ENV.locale,
         });
 
         /**

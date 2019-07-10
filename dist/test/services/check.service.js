@@ -2,10 +2,10 @@
 "use strict";
 
 angular.module('app')
-    .factory('CheckService', function ($http) {
+    .factory('CheckService', function ($http, ENV) {
 
 
-        let EP = 'https://il-int-ros.tabit-stage.com';
+        let EP = ENV.ep;
 
         const URL_ORDER = "/orders";
         const URL_TLOGS = "/tlogs";

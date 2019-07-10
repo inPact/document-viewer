@@ -213,13 +213,16 @@ export default class HeaderService {
                 if (printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE) {
                     var typeTranslate = this.$translate.getText("ORDER_TYPE")
 
+
                     let isTAB = this.isOrderTypeTAB({
                         table: printData.variables.TABLE_NO,
                         type: printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE
                     });
 
                     var orderType = "ORDER_TYPES_" + (printData.variables.ORDER_BILL_TYPE || printData.variables.ORDER_TYPE);
-                    if (isTAB) {
+
+                    // is Open Table and not Return Order.
+                    if (isTAB && !printData.data.isReturnOrder) {
                         orderType = "ORDER_TYPES_TAB";
                     }
 
