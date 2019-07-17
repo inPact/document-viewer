@@ -238,8 +238,6 @@ export default class VatTemplateService {
 
         if (DOCUMENT_ITEMS && DOCUMENT_ITEMS.length > 0) {
 
-            console.log("DOCUMENT_ITEMS 1");
-
             let elementDocumentItems = this.getVatDocumentItems({
                 DOCUMENT_ITEMS: DOCUMENT_ITEMS,
                 isRefund: isRefund,
@@ -260,10 +258,6 @@ export default class VatTemplateService {
             vatContainer.appendChild(vatDataTemplateDiv);
         }
         else {
-
-            console.log("DOCUMENT_ITEMS 2");
-
-
 
             /**
              * Show tip line only in 'SINGLE_DOC' mode (only in one payment).

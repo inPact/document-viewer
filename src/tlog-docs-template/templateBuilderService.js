@@ -218,8 +218,6 @@ export default class TemplateBuilderService {
                     // var tplOrderPaymentData = createOrderPaymentData(_printData);
                     var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
 
-                    console.log(tplOrderTotals);
-
                     var tplOrderPayments = this.createPaymentsData(this._printData);
 
                     // tplOrderPaymentData.id = 'tplOrderPaymentData';
@@ -628,10 +626,6 @@ export default class TemplateBuilderService {
             'ChequeRefund',
             'refundInvoice'
         ].indexOf(this._docData.documentType) > -1) {
-
-
-
-            console.log("asdfghjkhsdfgh");
 
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);
