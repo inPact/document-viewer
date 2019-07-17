@@ -218,6 +218,8 @@ export default class TemplateBuilderService {
                     // var tplOrderPaymentData = createOrderPaymentData(_printData);
                     var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
 
+                    console.log(tplOrderTotals);
+
                     var tplOrderPayments = this.createPaymentsData(this._printData);
 
                     // tplOrderPaymentData.id = 'tplOrderPaymentData';
@@ -571,76 +573,12 @@ export default class TemplateBuilderService {
 
     createCreditTemplate(printData) {
 
-
         return this.$creaditSection.get({
             collections: printData.collections,
             variables: printData.variables,
             isRefund: printData.printData,
             documentInfo: this._docData
-        })
-
-
-        /**
-        var CreditTemplate = this._doc.createElement('div');
-        CreditTemplate.id = "CreditTemplate";
-        var CreditHeaderDiv = this._doc.createElement('div');
-        CreditHeaderDiv.id = "CreditHeaderDiv";
-        CreditHeaderDiv.classList += ' border-bottom';
-        let credPayments = {}
-        if (printData.collections.CREDIT_PAYMENTS && printData.collections.CREDIT_PAYMENTS.length > 0) {
-            credPayments = printData.collections.CREDIT_PAYMENTS[0];
-
-            var retrunedCredFromText = null;
-            var paidCredFromText = null;
-            var issuer = credPayments.ISSUER
-            var paymentAmount = credPayments.P_AMOUNT;
-            //check if refun, if does   refund text
-            if (printData.isRefund) {
-                var retrunedCredFromTranslate = this.$translate.getText('RETURNED_IN_CREDIT_FROM')
-                CreditHeaderDiv.classList.add("bold");
-                retrunedCredFromText = retrunedCredFromTranslate;
-                CreditHeaderDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (!(retrunedCredFromText === null) ? retrunedCredFromText : "") + " " + (issuer ? issuer : "") + "</div>" + " " +
-                    "<div class='total-amount " + this.$utils.isNegative(paymentAmount) + "'>" + (paymentAmount ? Number(paymentAmount).toFixed(2) : "") + "</div>" +
-                    "</div>"
-                CreditTemplate.appendChild(CreditHeaderDiv);
-
-            }
-            else {
-                var paidCredFromTranslate = this.$translate.getText('PAID_IN_CREDIT_FROM')
-                CreditHeaderDiv.classList.add("bold");
-                paidCredFromText = paidCredFromTranslate;
-                CreditHeaderDiv.innerHTML = "<div class='itemDiv'>" +
-                    "<div class='total-name'>" + (!(paidCredFromText === null) ? paidCredFromText : "") + " " + (issuer ? issuer : "") + "</div>" + " " +
-                    "<div class='total-amount " + this.$utils.isNegative(paymentAmount) + "'>" + (paymentAmount ? Number(paymentAmount).toFixed(2) : "") + "</div>" +
-                    "</div>"
-                CreditTemplate.appendChild(CreditHeaderDiv);
-
-            }
-
-
-            var cashBackText = this.$translate.getText(printData.variables.CHANGE ? 'TOTAL_CASHBACK' : "");
-            var cashBackDiv = this._doc.createElement('div');
-            var pChange = printData.collections.PAYMENT_LIST[0].P_CHANGE;
-
-            if (pChange && pChange !== 0) {
-                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom'>" +
-                    "<div class='total-name'>" + (cashBackText ? cashBackText : " ") + "</div>" +
-                    "<div class='total-amount'>" + ((pChange && pChange !== 0) ? this.$utils.twoDecimals(pChange) : " ") + "</div>"
-                    + "</div >"
-
-                CreditHeaderDiv.appendChild(cashBackDiv);
-            }
-            else {
-                cashBackDiv.innerHTML = "<div class='changeDiv padding-bottom '></div>"
-            }
-
-            var creditDataTemplate = this.createCreditDataTemplate(credPayments, printData)
-            CreditTemplate.appendChild(creditDataTemplate)
-
-        }
-        return CreditTemplate;
-         */
+        });
     }
 
     createCreditDataTemplate(creditData, printData) {
@@ -673,6 +611,8 @@ export default class TemplateBuilderService {
     }
 
     createTotalsData(printData, isGiftCardBill, isTaxExempt) {
+
+
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
@@ -690,6 +630,9 @@ export default class TemplateBuilderService {
         ].indexOf(this._docData.documentType) > -1) {
 
 
+
+            console.log("asdfghjkhsdfgh");
+
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
             tplOrderTotals.appendChild(vatTemplateDiv);
         }
@@ -704,7 +647,7 @@ export default class TemplateBuilderService {
 
             this.fillOrderTotals(OrderTotalsDiv, printData);
         }
-        return tplOrderTotals
+        return tplOrderTotals;
     }
 
     fillOrderTotals(htmlElement, printData) {
