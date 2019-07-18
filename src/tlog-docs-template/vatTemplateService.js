@@ -1,6 +1,7 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import HtmlCreator from '../helpers/htmlCreator.service';
+import DocumentFactory from '../helpers/documentFactory.service';
 
 export default class VatTemplateService {
     constructor(options) {
@@ -72,7 +73,7 @@ export default class VatTemplateService {
             let elementVatHeader = this.$htmlCreator.create({
                 type: 'div',
                 id: 'vat-header',
-                classList: ['bold'],
+                classList: ['itemDiv', 'bold'],
                 children: [
                     elementVatHeaderText,
                     elementVatHeaderValue
@@ -189,18 +190,19 @@ export default class VatTemplateService {
         resultCollection.push(elementOrderTotal);
 
         let ORDER_DISCOUNTS_LIST = _.get(collections, 'ORDER_DISCOUNTS_LIST', []);
+
         ORDER_DISCOUNTS_LIST.forEach(orderDiscounts => {
 
             let elementOrderDiscountText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'order-discount-text',
                 classList: ['total-name'],
-                value: orderDiscounts.DISCOUNT_NAME
+                value: orderDiscounts.DISCOUNT_NAME || this.$translate.getText('ORDER_DISCOUNT')
             });
 
             let elementOrderDiscountValue = this.$htmlCreator.create({
                 type: 'div',
-                id: 'order-discount-text',
+                id: 'order-discount-value',
                 classList: ['total-amount', 'negative'],
                 value: this.$utils.toFixedSafe(_.get(orderDiscounts, 'DISCOUNT_AMOUNT', 0) * -1, 2) || ''
             });
@@ -222,11 +224,12 @@ export default class VatTemplateService {
         return resultCollection;
     }
 
-    createVatTemplate(printData, doc) {
+    createVatTemplate(options) {
 
-        this._doc = doc;
+        this._doc = DocumentFactory.get();
 
-        let isRefund = printData.isRefund;
+        let isRefund = _.get(options, 'isRefund');
+        let printData = _.get(options, 'printData');
 
         let vatContainer = this.$htmlCreator.create({
             type: 'div',
@@ -241,7 +244,7 @@ export default class VatTemplateService {
             let elementDocumentItems = this.getVatDocumentItems({
                 DOCUMENT_ITEMS: DOCUMENT_ITEMS,
                 isRefund: isRefund,
-                variables: _.get(printData, ' variables')
+                variables: _.get(printData, 'variables')
             });
 
             elementDocumentItems.forEach(element => {
