@@ -627,7 +627,11 @@ export default class TemplateBuilderService {
             'refundInvoice'
         ].indexOf(this._docData.documentType) > -1) {
 
-            var vatTemplateDiv = this.$vatTemplateService.createVatTemplate(printData, this._doc);
+            var vatTemplateDiv = this.$vatTemplateService.createVatTemplate({
+                isRefund: printData.isRefund,
+                printData: printData
+            });
+
             tplOrderTotals.appendChild(vatTemplateDiv);
         }
         else if (this._docObj && (this._docData.documentType === 'deliveryNote')) {

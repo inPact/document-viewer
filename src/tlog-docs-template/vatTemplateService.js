@@ -265,7 +265,7 @@ export default class VatTemplateService {
             /**
              * Show tip line only in 'SINGLE_DOC' mode (only in one payment).
              */
-            if (printData.variables.ORDER_DOCUMENT_PRINT === 'SINGLE_DOC') {
+            if (_.get(printData, 'variables.ORDER_DOCUMENT_PRINT') === 'SINGLE_DOC') {
 
                 // if is a 'SINGLE_DOC' and has a discount in the order.
                 let orderDiscountElements = this.getOrderDiscount({
