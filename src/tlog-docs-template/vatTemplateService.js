@@ -163,33 +163,37 @@ export default class VatTemplateService {
         let variables = _.get(options, 'variables');
         let collections = _.get(options, 'collections');
 
-        let elementOrderTotalText = this.$htmlCreator.create({
-            type: 'div',
-            id: 'order-total-text',
-            classList: ['total-name'],
-            value: this.$translate.getText('TOTAL_ORDER')
-        });
-
-        let elementOrderTotalValue = this.$htmlCreator.create({
-            type: 'div',
-            id: 'order-total-text',
-            classList: ['total-amount'],
-            value: this.$utils.toFixedSafe(variables.TOTAL_SALES_AMOUNT, 2) || ''
-        });
-
-        let elementOrderTotal = this.$htmlCreator.create({
-            type: 'div',
-            id: 'order-total',
-            classList: ['itemDiv'],
-            children: [
-                elementOrderTotalText,
-                elementOrderTotalValue
-            ]
-        });
-
-        resultCollection.push(elementOrderTotal);
-
         let ORDER_DISCOUNTS_LIST = _.get(collections, 'ORDER_DISCOUNTS_LIST', []);
+
+
+        if (ORDER_DISCOUNTS_LIST.length > 0) {
+            let elementOrderTotalText = this.$htmlCreator.create({
+                type: 'div',
+                id: 'order-total-text',
+                classList: ['total-name'],
+                value: this.$translate.getText('TOTAL_ORDER')
+            });
+
+            let elementOrderTotalValue = this.$htmlCreator.create({
+                type: 'div',
+                id: 'order-total-text',
+                classList: ['total-amount'],
+                value: this.$utils.toFixedSafe(variables.TOTAL_SALES_AMOUNT, 2) || ''
+            });
+
+            let elementOrderTotal = this.$htmlCreator.create({
+                type: 'div',
+                id: 'order-total',
+                classList: ['itemDiv'],
+                children: [
+                    elementOrderTotalText,
+                    elementOrderTotalValue
+                ]
+            });
+
+            resultCollection.push(elementOrderTotal);
+
+        }
 
         ORDER_DISCOUNTS_LIST.forEach(orderDiscounts => {
 
