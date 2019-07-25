@@ -58,9 +58,13 @@ export default class Utils {
         let day = date.getDate();
         let month = (date.getMonth() + 1);
         let year = date.getFullYear();
-        let hour = (date.getHours() > 12 ? (date.getHours() - 12) : date.getHours());
-        let minute = (date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes();
-        let a = (date.getHours() > 12 ? "PM" : "AM");
+
+        let timeStr = date.toLocaleTimeString();
+        let timeArr = timeStr.split(':');
+        let a = timeArr[2].split(" ")[1];
+
+        let hour = timeArr[0];
+        let minute = timeArr[1];
 
         if (day < 10) {
             day = `0${day}`;
@@ -102,6 +106,9 @@ export default class Utils {
         let date = options.date;
 
         if (isUS) {
+
+            console.log("test");
+
             result = this.formatDateUS(date);
         } else {
             result = this.formatDateIL(date);

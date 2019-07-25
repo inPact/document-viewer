@@ -21,8 +21,6 @@ export default class DeliveryNoteTransactionDataService {
 
     createDeliveryNoteTransactionData(options) {
 
-        console.log("createDeliveryNoteTransactionData");
-
         const IS_REFUND = options.IS_REFUND;
 
         this._doc = DocumentFactory.get();
@@ -34,7 +32,11 @@ export default class DeliveryNoteTransactionDataService {
         var deliveryNoteTransactionDiv = this._doc.createElement('div');
         deliveryNoteTransactionDiv.id = 'deliveryNoteTransactionDiv';
 
-        var deliveryVat = this.$vatTemplateService.createVatTemplate(printData, this._doc);
+        var deliveryVat = this.$vatTemplateService.createVatTemplate({
+            isRefund: IS_REFUND,
+            printData: printData
+        });
+        printData, this._doc
         deliveryVat.id = 'deliveryVat';
 
         deliveryVat.classList += ' padding-bottom';

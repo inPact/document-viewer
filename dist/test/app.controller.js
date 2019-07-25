@@ -4,7 +4,7 @@ angular.module('app')
     .controller('appCtrl', function ($scope, $q, OrderService, CheckService, AuthService, ENV) {
 
         // USER INPUT.
-        let TLOG_ID = "5d22a9bb3f029e91abb6fea3";
+        let TLOG_ID = ENV.tlog;
         let STATUS = "closed";
 
         let tlog;
@@ -30,7 +30,7 @@ angular.module('app')
         }
 
         let documentViewer = new DocumentViewer({
-            isUS: false,
+            isUS: true,
             locale: ENV.locale,
         });
 
