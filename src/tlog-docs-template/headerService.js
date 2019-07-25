@@ -196,6 +196,9 @@ export default class HeaderService {
                         date: printData.variables.CREATED_AT
                     });
 
+                    console.log("createdDate");
+                    console.log(createdDate);
+
                     htmlElement.innerHTML = createdDate;
                     htmlElement.setAttribute('class', 'med-chars');
 
