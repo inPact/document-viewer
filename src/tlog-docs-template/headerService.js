@@ -125,6 +125,12 @@ export default class HeaderService {
         var tplOrderDateTime = this._doc.createElement('div');
         tplOrderDateTime.id = "tplOrderDateTime";
         tplOrderDateTime.classList.add('mystyle');
+
+        var tplOriginDateTime = this._doc.createElement('div');
+        tplOriginDateTime.id = "tplOriginDateTime";
+        tplOriginDateTime.classList.add('mystyle');
+
+
         var tplOrderTitle = this._doc.createElement('div');
         tplOrderTitle.id = "tplOrderTitle";
         var tplOrderType = this._doc.createElement('div');
@@ -137,7 +143,7 @@ export default class HeaderService {
         var tplcCheckNumber = this._doc.createElement('div');
         tplcCheckNumber.id = "tplcCheckNumber";
         //create array for the appendChildren function
-        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber];
+        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOriginDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber];
 
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
@@ -191,18 +197,44 @@ export default class HeaderService {
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
 
-                    let createdDate = this.$utils.toDate({
+                    let issuedAtDate = this.$utils.toDate({
                         isUS: this._isUS,
                         date: printData.variables.CREATED_AT
                     });
 
-                    console.log("createdDate");
-                    console.log(createdDate);
+                    let elementCreatedDate = this.$htmlCreator.create({
+                        id: 'created-date',
+                        type: 'div',
+                        classList: ['med-chars', 'centralize'],
+                        value: `${this.$translate.getText("CREATED_AT")} ${issuedAtDate}`
+                    });
 
-                    htmlElement.innerHTML = createdDate;
-                    htmlElement.setAttribute('class', 'med-chars');
+                    htmlElement.appendChild(elementCreatedDate);
 
                 }
+                break;
+            }
+
+            case "tplOriginDateTime": {
+
+                if (printData.variables.ISSUED_AT) {
+
+                    let issuedAtDate = this.$utils.toDate({
+                        isUS: this._isUS,
+                        date: printData.variables.ISSUED_AT
+                    });
+
+                    let elementIssuedAt = this.$htmlCreator.create({
+                        id: 'issued-at-date',
+                        type: 'div',
+                        classList: ['med-chars', 'centralize'],
+                        value: `${this.$translate.getText("ISSUED_AT")} ${issuedAtDate}`
+                    });
+
+                    htmlElement.appendChild(elementIssuedAt);
+
+                }
+
                 break;
             }
 
