@@ -4,8 +4,8 @@ angular.module('app')
     .constant("ENV", {
         // ep: 'https://ros-rp.tabit.cloud',
         ep: 'https://il-int-ros.tabit-stage.com',
-        org: '56e92e0ba33e1c030054a5ec',
-        tlog: '5d342c2e18119950165a64e2',
+        org: '598c49b50beeaa22008697cb',
+        tlog: '5d42c157c09390b053594d1e',
         locale: 'he-IL',
         //locale: 'en-US',
         username: 'admin@tabit.cloud',
