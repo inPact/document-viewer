@@ -143,7 +143,7 @@ export default class HeaderService {
         var tplcCheckNumber = this._doc.createElement('div');
         tplcCheckNumber.id = "tplcCheckNumber";
         //create array for the appendChildren function
-        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOriginDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber];
+        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber, tplOriginDateTime];
 
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
@@ -206,7 +206,7 @@ export default class HeaderService {
                         id: 'created-date',
                         type: 'div',
                         classList: ['med-chars', 'centralize'],
-                        value: `${this.$translate.getText("CREATED_AT")} ${issuedAtDate}`
+                        value: `${issuedAtDate}`
                     });
 
                     htmlElement.appendChild(elementCreatedDate);
@@ -227,7 +227,7 @@ export default class HeaderService {
                     let elementIssuedAt = this.$htmlCreator.create({
                         id: 'issued-at-date',
                         type: 'div',
-                        classList: ['med-chars', 'centralize'],
+                        classList: ['centralize'],
                         value: `${this.$translate.getText("ISSUED_AT")} ${issuedAtDate}`
                     });
 
