@@ -316,7 +316,7 @@ export default class BillService {
              *  in US is 'TOTAL_BEFORE_EXCLUDED_TAX'.
              *  in IL is 'TOTAL_SALES_AMOUNT'.
              */
-            let TOTAL_SALES = this._isUS ? variables.TOTAL_SALES_AMOUNT : variables.TOTAL_BEFORE_EXCLUDED_TAX;
+            let TOTAL_SALES = this._isUS ? variables.TOTAL_BEFORE_EXCLUDED_TAX : variables.TOTAL_SALES_AMOUNT;
 
             totals.push({
                 name: this.$translate.getText('TOTAL_ORDER'),
