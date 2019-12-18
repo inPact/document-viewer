@@ -4,6 +4,7 @@ import moment from 'moment';
 
 export default class BillService {
     constructor(options) {
+
         this._isUS = options.isUS === undefined ? true : options.isUS;
         this._locale = options.locale;
         this.$utils = new Utils();
@@ -309,10 +310,18 @@ export default class BillService {
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
             variables.TOTAL_TIPS !== undefined ||
             (this._isUS && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0))) {
+
+            /**
+             * SUBTOTAL (TOTAL_ORDER) : 
+             *  in US is 'TOTAL_BEFORE_EXCLUDED_TAX'.
+             *  in IL is 'TOTAL_SALES_AMOUNT'.
+             */
+            let TOTAL_SALES = this._isUS ? variables.TOTAL_SALES_AMOUNT : variables.TOTAL_BEFORE_EXCLUDED_TAX;
+
             totals.push({
                 name: this.$translate.getText('TOTAL_ORDER'),
-                amount: this.$utils.toFixedSafe(variables.TOTAL_SALES_AMOUNT, 2)
-            })
+                amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
+            });
         }
 
         if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {

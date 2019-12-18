@@ -30,7 +30,7 @@ angular.module('app')
         }
 
         let documentViewer = new DocumentViewer({
-            isUS: false,
+            isUS: true,
             locale: ENV.locale,
         });
 

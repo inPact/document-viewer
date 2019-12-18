@@ -106,9 +106,6 @@ export default class Utils {
         let date = options.date;
 
         if (isUS) {
-
-            console.log("test");
-
             result = this.formatDateUS(date);
         } else {
             result = this.formatDateIL(date);

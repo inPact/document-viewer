@@ -66,8 +66,6 @@ export default class TemplateBuilderService {
 
     createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
 
-        console.log("createHTMLFromPrintDATA");
-
         this._doc = DocumentFactory.get({
             createNew: true,
             documentInfo, documentInfo,
