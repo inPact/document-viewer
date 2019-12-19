@@ -313,10 +313,10 @@ export default class BillService {
 
             /**
              * SUBTOTAL (TOTAL_ORDER) : 
-             *  in US is 'TOTAL_BEFORE_EXCLUDED_TAX'.
+             *  in US is 'TOTAL_BEFORE_EXCLUDED_TAX_BEFORE_DISCOUNTS'.
              *  in IL is 'TOTAL_SALES_AMOUNT'.
              */
-            let TOTAL_SALES = this._isUS ? variables.TOTAL_BEFORE_EXCLUDED_TAX : variables.TOTAL_SALES_AMOUNT;
+            let TOTAL_SALES = this._isUS ? variables.TOTAL_BEFORE_EXCLUDED_TAX_BEFORE_DISCOUNTS : variables.TOTAL_SALES_AMOUNT;
 
             totals.push({
                 name: this.$translate.getText('TOTAL_ORDER'),
