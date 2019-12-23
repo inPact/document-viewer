@@ -5,7 +5,7 @@ angular.module('app')
 
         // USER INPUT.
         let TLOG_ID = ENV.tlog;
-        let STATUS = "opened";
+        let STATUS = "closed";
 
         let tlog;
 
@@ -182,9 +182,6 @@ angular.module('app')
         })();
 
         function init() {
-
-            debugger
-
 
             AuthService.authenticate()
                 .then(res => {
