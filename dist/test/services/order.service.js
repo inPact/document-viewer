@@ -5,7 +5,7 @@ angular.module('app')
         // ep: 'https://ros-rp.tabit.cloud',
         ep: 'https://il-int-ros.tabit-stage.com',
         org: '56e92e0ba33e1c030054a5ec',
-        tlog: '5e00ce1a67abb54e6ab2bc42',
+        tlog: '5e0212826e117b762ce3618b',
         locale: 'he-IL',
         //locale: 'en-US',
         username: 'admin@tabit.cloud',

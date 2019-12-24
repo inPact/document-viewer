@@ -30,7 +30,7 @@ angular.module('app')
         }
 
         let documentViewer = new DocumentViewer({
-            isUS: true,
+            isUS: false,
             locale: ENV.locale,
         });
 
@@ -86,9 +86,8 @@ angular.module('app')
             function create(docs) {
 
                 let isChecksLoaded = false;
-                debugger
-                docs.forEach(doc => {
 
+                docs.forEach(doc => {
 
                     $scope.component.documents[doc.id] = {
                         id: doc.id,

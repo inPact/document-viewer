@@ -97,17 +97,12 @@ export default class VatTemplateService {
 
         let vatData = {
             TOTAL_EX_VAT: _.get(variables, 'TOTAL_EX_VAT'),
-            TOTAL_INCLUDED_TAX: _.get(variables, 'TOTAL_INCLUDED_TAX'),
+            VAT_AMOUNT: _.get(variables, 'VAT_AMOUNT'),
             VAT_PERCENT: this.twoDecimals(_.get(variables, 'VAT_PERCENT', 0)),
             TOTAL_IN_VAT: _.get(variables, 'TOTAL_IN_VAT'),
             ITEM_AMOUNT: _.get(variables, 'TOTAL_AMOUNT')
         }
 
-        // vat.TOTAL_EX_VAT = printData.variables.TOTAL_EX_VAT;
-        // vat.TOTAL_INCLUDED_TAX = printData.variables.TOTAL_INCLUDED_TAX;
-        // vat.VAT_PERCENT = this.twoDecimals(printData.variables.VAT_PERCENT);
-        // vat.TOTAL_IN_VAT = printData.variables.TOTAL_IN_VAT;
-        // vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
 
         let elementTotalAmountText = this.$htmlCreator.create({
             type: 'div',
@@ -299,78 +294,6 @@ export default class VatTemplateService {
                 vatContainer.appendChild(element);
             });
 
-
-            // let refundText = null;
-            // let buisnessMealText = null;
-            // let totalAmountText = null;
-            // if (printData.isRefund) {
-            //     let refundTranslate = this.$translate.getText('refund');
-            //     vatHeader.classList.add("bold");
-            //     refundText = refundTranslate;
-            // }
-            // //else, if not refund but multi doc, add buisness meal text
-            // else if (!printData.isRefund && printData.variables.ORDER_DOCUMENT_PRINT === 'MULTI_DOC') {
-            //     let buisnessMealTranslate = this.$translate.getText('BUSINESS_MEAL');
-            //     vatHeader.classList.add("bold");
-            //     buisnessMealText = buisnessMealTranslate;
-            // }
-            // //else, if not refund but single doc, add buisness meal text
-            // else if (!printData.isRefund && printData.variables.ORDER_DOCUMENT_PRINT === 'SINGLE_DOC') {
-            //     let totalAmountTranslate = this.$translate.getText('TOTAL_AMOUNT');
-            //     vatHeader.classList.add("bold");
-            //     totalAmountText = totalAmountTranslate;
-
-
-            // }
-
-
-            // vat.TOTAL_EX_VAT = printData.variables.TOTAL_EX_VAT;
-            // vat.TOTAL_INCLUDED_TAX = printData.variables.TOTAL_INCLUDED_TAX;
-            // vat.VAT_PERCENT = this.twoDecimals(printData.variables.VAT_PERCENT);
-            // vat.TOTAL_IN_VAT = printData.variables.TOTAL_IN_VAT;
-            // vat.ITEM_AMOUNT = printData.variables.TOTAL_AMOUNT;
-
-
-            // let elementTotalAmountText = this.$htmlCreator.create({
-            //     type: 'div',
-            //     id: 'total-amount-text',
-            //     classList: ['total-name'],
-            //     value: (!(refundText === null) ? refundText : "") + (buisnessMealText ? buisnessMealText : "") + (totalAmountText ? totalAmountText : "") // copy from ilan code.
-            // });
-
-            // let classList = ['total-amount'];
-            // let negativeClass = this.$utils.isNegative(printData.variables.TOTAL_AMOUNT);
-            // if (negativeClass !== "") {
-            //     classList.push(negativeClass);
-            // }
-
-            // let elementTotalAmountValue = this.$htmlCreator.create({
-            //     type: 'div',
-            //     id: 'total-amount-value',
-            //     classList: classList,
-            //     value: this.$utils.toFixedSafe(printData.variables.TOTAL_AMOUNT, 2)
-            // });
-
-            // let elementTotalAmount = this.$htmlCreator.create({
-            //     type: 'div',
-            //     id: 'total-amount',
-            //     classList: ['itemDiv', 'bold'],
-            //     children: [
-            //         elementTotalAmountText,
-            //         elementTotalAmountValue
-            //     ]
-            // });
-
-            // vatContainer.appendChild(elementTotalAmount);
-
-            // let vatDataTemplateDiv = this.createVatDataTemplate({
-            //     vat: DOCUMENT_ITEMS,
-            //     isMulti: false,
-            //     variables: printData.variables,
-            //     collections: printData.collections
-            // });
-
-            // vatContainer.appendChild(vatDataTemplateDiv);
         }
 
         return vatContainer;
@@ -424,6 +347,10 @@ export default class VatTemplateService {
         }
         else {
 
+            console.log("asdsajkdgh`akdlassd");
+
+            console.log(vat);
+
             beforeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_EX_VAT) ? beforeVatTranslate : "") + "</div>" + " " +
                 "<div class='total-amount " + this.isNegative(vat.TOTAL_EX_VAT) + "'>" + (this.notEmpty(vat.TOTAL_EX_VAT) ? Number(vat.TOTAL_EX_VAT).toFixed(2) : "") + "</div>" +
@@ -440,6 +367,7 @@ export default class VatTemplateService {
                 "</div>";
         }
 
+        console.log("asdsajkdgh`akdlassd");
         vatDataDiv.appendChild(beforeVatDiv);
         vatDataDiv.appendChild(vatTextDiv);
         vatDataDiv.appendChild(includeVatDiv);

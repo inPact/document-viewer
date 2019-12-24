@@ -44,7 +44,7 @@ export default class VatSection {
             isRefund: isRefund,
             variables: variables,
             collections: collections,
-            value: isMulti ? _.get(collections, 'DOCUMENT_ITEMS[0].ITEM_VAT_AMOUNT') : variables.TOTAL_INCLUDED_TAX,
+            value: isMulti ? _.get(collections, 'DOCUMENT_ITEMS[0].ITEM_VAT_AMOUNT') : variables.VAT_AMOUNT,
             percent: isMulti ? _.get(collections, 'DOCUMENT_ITEMS[0].ITEM_VAT_PERCENT') : variables.VAT_PERCENT
         });
 
@@ -143,7 +143,6 @@ export default class VatSection {
 
     }
 
-    // ITEM_VAT_AMOUNT or TOTAL_INCLUDED_TAX
     _getElementTotalIncludedTaxContainer(options) {
 
         let isRefund = options.isRefund;
