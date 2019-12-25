@@ -319,7 +319,7 @@ export default class BillService {
              */
             let TOTAL_SALES = 0;
             if (this._isUS) {
-                TOTAL_SALES = _.get(variables, 'TOTAL_BEFORE_EXCLUDED_TAX_BEFORE_DISCOUNTS', variables.TOTAL_SALES_AMOUNT);
+                TOTAL_SALES = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             } else {
                 TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
             }
