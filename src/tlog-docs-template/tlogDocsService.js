@@ -179,7 +179,9 @@ export default class TlogDocsService {
                                 case this.Enums().DOC_TYPES.REFUND_INVOICE: {
                                     if (doc.payments[0]._type === 'ChequeRefund' ||
                                         doc.payments[0]._type === 'CashRefund' ||
-                                        doc.payments[0]._type === 'CreditCardRefund') {
+                                        doc.payments[0]._type === 'CreditCardRefund' ||
+                                        doc.payments[0]._type === 'GiftCardLoad' ||
+                                    ) {
                                         orderSelection.push({
                                             tlogId: tlog._id,
                                             id: doc._id,
