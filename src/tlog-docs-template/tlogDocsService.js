@@ -162,6 +162,14 @@ export default class TlogDocsService {
                                             isGiftCardBill: false,
                                             isFakeDocument: true
                                         });
+
+                                        // when _type is mediaExchange we need to remove refunds
+                                        if (document._type === 'mediaExchange') {
+                                            let paymentIndex = orderSelection.findIndex(p => _.get(p,'md.paymentId') === payment._id);
+                                            if(paymentIndex !== -1) {
+                                                orderSelection.splice(paymentIndex, 1);
+                                            }
+                                        }
                                     }
                                 })
                             }
@@ -253,7 +261,7 @@ export default class TlogDocsService {
             }
 
         }
-
+    console.log(orderSelection)
         return orderSelection;
 
     }
@@ -296,8 +304,6 @@ export default class TlogDocsService {
     //create the data for the documents list
 
     getDocs(tlog, options) {
-
-        debugger
 
         let docsArray;
 
