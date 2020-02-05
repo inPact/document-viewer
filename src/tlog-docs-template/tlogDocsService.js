@@ -261,7 +261,6 @@ export default class TlogDocsService {
             }
 
         }
-    console.log(orderSelection)
         return orderSelection;
 
     }
