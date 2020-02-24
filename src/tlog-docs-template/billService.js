@@ -422,7 +422,7 @@ export default class BillService {
         if (!this._isUS) {
             totals.push({
                 name: this.$translate.getText('TOTAL_INC_VAT'),
-                amount: this.$utils.toFixedSafe(variables.TOTAL_IN_VAT || 0, 2)
+                amount: this.$utils.toFixedSafe(_.get(variables,'TOTAL_BEFORE_TAX',variables.TOTAL_IN_VAT) || 0, 2)
             })
         }
 
