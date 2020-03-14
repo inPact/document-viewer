@@ -363,7 +363,7 @@ export default class VatTemplateService {
 
             includeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_IN_VAT) ? includeVatTranslate : "") + "</div>" + " " +
-                "<div class='total-amount " + this.isNegative(vat.TOTAL_IN_VAT) + "'>" + this.$utils.toFixedSafe(vat.TOTAL_IN_VAT, 2) + "</div>" +
+                "<div class='total-amount " + this.isNegative(vat.ITEM_AMOUNT) + "'>" + this.$utils.toFixedSafe(vat.ITEM_AMOUNT, 2) + "</div>" +
                 "</div>";
         }
 
