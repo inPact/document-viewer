@@ -100,7 +100,8 @@ export default class VatTemplateService {
             VAT_AMOUNT: _.get(variables, 'VAT_AMOUNT'),
             VAT_PERCENT: this.twoDecimals(_.get(variables, 'VAT_PERCENT', 0)),
             TOTAL_IN_VAT: _.get(variables, 'TOTAL_IN_VAT'),
-            ITEM_AMOUNT: _.get(variables, 'TOTAL_AMOUNT')
+            ITEM_AMOUNT: _.get(variables, 'TOTAL_AMOUNT'),
+            TIP_AMOUNT: _.get(variables, 'TOTAL_TIPS', 0)
         }
 
 
@@ -321,12 +322,15 @@ export default class VatTemplateService {
 
         let beforeVatTranslate = this.$translate.getText('BEFORE_VAT');
         let vatTranslate = this.$translate.getText('VAT');
+        let tipTranslate = this.$translate.getText('TIP');
         let includeVatTranslate = this.$translate.getText('INCLUDE_VAT');
 
         let beforeVatDiv = this._doc.createElement('div');
         let vatTextDiv = this._doc.createElement('div');
+        let TipDiv = this._doc.createElement('div');
         let includeVatDiv = this._doc.createElement('div');
 
+        console.log(isMulti)
         if (isMulti) {
             beforeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat[0].ITEM_AMOUNT_EX_VAT) ? beforeVatTranslate : "") + "</div>" + " " +
@@ -338,6 +342,10 @@ export default class VatTemplateService {
                 "<div class='total-amount " + this.isNegative(vat[0].ITEM_VAT_AMOUNT) + "'>" + (this.notEmpty(vat[0].ITEM_VAT_AMOUNT) ? Number(vat[0].ITEM_VAT_AMOUNT).toFixed(2) : "") + "</div>" +
                 "</div>";
 
+            TipDiv.innerHTML = "<div class='itemDiv'>" +
+                "<div class='total-name'>" + (this.notEmpty(vat[0].ITEM_TIP) ? tipTranslate : "") + "</div>" + " " +
+                "<div class='total-amount " + this.isNegative(vat[0].ITEM_TIP) + "'>" + (this.notEmpty(vat[0].ITEM_TIP) ? Number(vat[0].ITEM_TIP).toFixed(2) : "") + "</div>" +
+                "</div>";
 
             includeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat[0].ITEM_AMOUNT) ? includeVatTranslate : "") + "</div>" + " " +
@@ -346,10 +354,6 @@ export default class VatTemplateService {
 
         }
         else {
-
-            console.log("asdsajkdgh`akdlassd");
-
-            console.log(vat);
 
             beforeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_EX_VAT) ? beforeVatTranslate : "") + "</div>" + " " +
@@ -361,15 +365,20 @@ export default class VatTemplateService {
                 "<div class='total-amount " + this.isNegative(vat.VAT_AMOUNT) + "'>" + this.$utils.toFixedSafe(vat.VAT_AMOUNT, 2) + "</div>" +
                 "</div>";
 
+            TipDiv.innerHTML = "<div class='itemDiv'>" +
+                "<div class='total-name'>" + (this.notEmpty(vat.TIP_AMOUNT) ? tipTranslate : "") + "</div>" + " " +
+                "<div class='total-amount " + this.isNegative(vat.TIP_AMOUNT) + "'>" + this.$utils.toFixedSafe(vat.TIP_AMOUNT, 2) + "</div>" +
+                "</div>";
+
             includeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_IN_VAT) ? includeVatTranslate : "") + "</div>" + " " +
                 "<div class='total-amount " + this.isNegative(vat.ITEM_AMOUNT) + "'>" + this.$utils.toFixedSafe(vat.ITEM_AMOUNT, 2) + "</div>" +
                 "</div>";
         }
 
-        console.log("asdsajkdgh`akdlassd");
         vatDataDiv.appendChild(beforeVatDiv);
         vatDataDiv.appendChild(vatTextDiv);
+        vatDataDiv.appendChild(TipDiv);
         vatDataDiv.appendChild(includeVatDiv);
 
         vatDataTemplate.appendChild(vatDataDiv);
