@@ -330,7 +330,7 @@ export default class VatTemplateService {
         let TipDiv = this._doc.createElement('div');
         let includeVatDiv = this._doc.createElement('div');
 
-        console.log(isMulti)
+        let tipAmount = 0;
         if (isMulti) {
             beforeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat[0].ITEM_AMOUNT_EX_VAT) ? beforeVatTranslate : "") + "</div>" + " " +
@@ -342,6 +342,7 @@ export default class VatTemplateService {
                 "<div class='total-amount " + this.isNegative(vat[0].ITEM_VAT_AMOUNT) + "'>" + (this.notEmpty(vat[0].ITEM_VAT_AMOUNT) ? Number(vat[0].ITEM_VAT_AMOUNT).toFixed(2) : "") + "</div>" +
                 "</div>";
 
+            tipAmount = vat[0].ITEM_TIP;
             TipDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat[0].ITEM_TIP) ? tipTranslate : "") + "</div>" + " " +
                 "<div class='total-amount " + this.isNegative(vat[0].ITEM_TIP) + "'>" + (this.notEmpty(vat[0].ITEM_TIP) ? Number(vat[0].ITEM_TIP).toFixed(2) : "") + "</div>" +
@@ -365,6 +366,7 @@ export default class VatTemplateService {
                 "<div class='total-amount " + this.isNegative(vat.VAT_AMOUNT) + "'>" + this.$utils.toFixedSafe(vat.VAT_AMOUNT, 2) + "</div>" +
                 "</div>";
 
+            tipAmount = vat.TIP_AMOUNT;
             TipDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TIP_AMOUNT) ? tipTranslate : "") + "</div>" + " " +
                 "<div class='total-amount " + this.isNegative(vat.TIP_AMOUNT) + "'>" + this.$utils.toFixedSafe(vat.TIP_AMOUNT, 2) + "</div>" +
@@ -378,7 +380,9 @@ export default class VatTemplateService {
 
         vatDataDiv.appendChild(beforeVatDiv);
         vatDataDiv.appendChild(vatTextDiv);
-        vatDataDiv.appendChild(TipDiv);
+        if (tipAmount > 0) {
+            vatDataDiv.appendChild(TipDiv);
+        }
         vatDataDiv.appendChild(includeVatDiv);
 
         vatDataTemplate.appendChild(vatDataDiv);
