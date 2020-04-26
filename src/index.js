@@ -19,7 +19,7 @@ window.DocumentViewer = class DocumentViewer {
             }
 
             this._tlogDocsService = new TlogDocsService(options);
-            this.orderViewService = new window.DocumentViewer.OrderViewService();
+            this.orderViewService = new window.DocumentViewer.OrderViewService(options);
         }
     }
 
