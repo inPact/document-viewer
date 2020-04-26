@@ -2,18 +2,25 @@ import './css/tlogDocsTemplate.scss';
 import TlogDocsService from './tlog-docs-template/tlogDocsService';
 
 window.DocumentViewer = class DocumentViewer {
-    constructor(options = {}) {
 
+    constructor(options = {}) {
+        this.initial = false;
 
         console.log('DocumentViewer version : ' + VERSION);
 
-        options.locale = options.locale || 'he-IL';
-        if (options.isUS === undefined)
-            options.isUS = options.locale === 'en-US';
+        if(JSON.stringify(options) === '{}') {
+            console.log('error - no option was supplied to DocumentViewer library');
+        } else {
+            this.initial = true;
 
-        this._tlogDocsService = new TlogDocsService(options);
+            options.locale = options.locale || 'he-IL';
+            if (options.isUS === undefined) {
+                options.isUS = options.locale === 'en-US';
+            }
 
-
+            this._tlogDocsService = new TlogDocsService(options);
+            this.orderViewService = new window.DocumentViewer.OrderViewService();
+        }
     }
 
     getDocumentsInfoFromTlog(tlog, options) {
@@ -27,10 +34,27 @@ window.DocumentViewer = class DocumentViewer {
      * @returns {*}
      */
     getHTMLDocument(documentInfo, printData) {
-        return this._tlogDocsService.getHTMLDocument(documentInfo, printData);
+        if(this.initial) {
+            return this._tlogDocsService.getHTMLDocument(documentInfo, printData);
+        } else {
+            return {};
+        }
     }
 
     getDocumentHtml(document, options = {}) {
-        return this._tlogDocsService.getHTMLDocumentWithoutTlog(document, options);
+        if(this.initial) {
+            return this._tlogDocsService.getHTMLDocumentWithoutTlog(document, options);
+        } else {
+            return {};
+        }
+    }
+
+    // get the enrichOrder
+    getEnrichOrder(tlog, tables, items, users, promotions, modifierGroups, tlogId, offers) {
+        if(this.initial) {
+            return this.orderViewService.TimeLine.enrichOrder({tlog, tables, items, users, promotions, modifierGroups, tlogId, offers});
+        } else {
+            return {};
+        }
     }
 };

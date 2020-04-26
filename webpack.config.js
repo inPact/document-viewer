@@ -12,7 +12,26 @@ const definePlugin = new webpack.DefinePlugin({
 })
 
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+        'bundle.js': [
+            path.resolve(__dirname, 'src/index.js'),
+            path.resolve(__dirname, 'src/enrich-order/OrderView.js'),
+            path.resolve(__dirname, 'src/enrich-order/EnrichOrderTranslate.js'),
+            path.resolve(__dirname, 'src/enrich-order/EnrichOrderUtils.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/User.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/TimeLine.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Table.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Segmentations.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Promotions.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Payments.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Oth.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Items.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Histories.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Dishes.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Discounts.js'),
+            path.resolve(__dirname, 'src/enrich-order/services/Courses.js'),
+        ]
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
