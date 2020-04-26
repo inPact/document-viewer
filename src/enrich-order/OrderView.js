@@ -23,7 +23,7 @@ window.DocumentViewer.OrderViewService = (function () {
   const _options = {};
 
   function _configure(options) {
-    if (options.local) _options.local = options.local;
+    if (options.locale) _options.local = options.locale;
     if (options.isUS !== undefined) {
       _options.isUS = options.isUS;
       isUS = options.isUS;
