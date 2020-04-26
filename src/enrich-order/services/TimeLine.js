@@ -28,7 +28,7 @@ window.DocumentViewer.TimeLineService = (function () {
 
         utils = new window.DocumentViewer.Utils();
 
-        translateService = new window.DocumentViewer.TranslateService({
+        translateService = new window.DocumentViewer.EnrichOrderTranslateService({
             local: options.local
         });
 
