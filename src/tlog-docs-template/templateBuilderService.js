@@ -68,7 +68,7 @@ export default class TemplateBuilderService {
 
         this._doc = DocumentFactory.get({
             createNew: true,
-            documentInfo, documentInfo,
+            documentInfo,
             printData: printData
         });
 
