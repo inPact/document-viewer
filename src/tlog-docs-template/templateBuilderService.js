@@ -453,11 +453,13 @@ export default class TemplateBuilderService {
                         value: item.qty
                     });
 
+                    let name = item.name.replace(/</ig,'');
+                    name = name.replace(/>/ig,'');
                     let elementItemName = this.$htmlCreator.create({
                         type: 'div',
                         id: `item-name-${index}`,
                         classList: ['item-name'],
-                        value: item.isOffer ? `${item.name || ''}` : `&nbsp;&nbsp;${item.name || ''}`
+                        value: item.isOffer ? `${name || ''}` : `&nbsp;&nbsp;${name || ''}`
                     });
 
                     let classList = ['total-amount'];
