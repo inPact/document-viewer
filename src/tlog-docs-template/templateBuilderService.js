@@ -453,6 +453,7 @@ export default class TemplateBuilderService {
                         value: item.qty
                     });
 
+                    // remove special chars (html chars as it not render)
                     let name = item.name.replace(/</ig,'');
                     name = name.replace(/>/ig,'');
                     let elementItemName = this.$htmlCreator.create({
