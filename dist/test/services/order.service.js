@@ -2,14 +2,14 @@
 
 angular.module('app')
     .constant("ENV", {
-        // ep: 'https://ros-rp.tabit.cloud',
-        ep: 'https://ros-rp-beta.tabit.cloud',
-        org: '5e4140bdee7d4904b7a3a325',
-        tlog: '5ee3368c8510aaa620e1e455',
-        locale: 'he-IL',
-        // locale: 'en-US',
-        username: 'eyal@tabit.cloud',
-        pass: 'eyal1003'
+          // ep: 'https://ros-rp.tabit.cloud',
+          ep: 'https://us-ros.tabit-stage.com',
+          org: '5a243c69359e2325003eb015',
+          tlog: '5ee5cb81e4733c6898a6a99b',
+          // locale: 'he-IL',
+          locale: 'en-US',
+          username: 'admin@tabit.cloud',
+          pass: 'tabitros'
     })
     .factory('OrderService', function ($http, ENV) {
 

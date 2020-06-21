@@ -229,7 +229,7 @@ angular.module('app')
         }
 
         $scope.onSelectDocument = function (documentItem) {
-
+debugger
             $scope.component.selectedDocument = documentItem;
 
             if (!$scope.component.documents) {

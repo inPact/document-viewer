@@ -5,8 +5,8 @@ import moment from 'moment';
 export default class BillService {
     constructor(options) {
 
-        this._isUS = options.isUS === undefined ? true : options.isUS;
-        this._locale = options.locale;
+        this._isUS = true;
+        this._locale = 'en-US';
         this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService(options);
     }
@@ -318,8 +318,12 @@ export default class BillService {
              *  Backward compatibility - default is 'TOTAL_SALES_AMOUNT'
              */
             let TOTAL_SALES = 0;
+            let TOTAL_DISCOUNTS = 0;
+            let INCLUSIVE_NET_AMOUNT = 0;
             if (this._isUS) {
                 TOTAL_SALES = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+                TOTAL_DISCOUNTS =  _.get(variables, 'TOTAL_DISCOUNTS') ?  _.get(variables, 'TOTAL_DISCOUNTS') * -1 : 0;
+                INCLUSIVE_NET_AMOUNT = _.get(variables, 'INCLUSIVE_NET_AMOUNT');
             } else {
                 TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
             }
@@ -328,6 +332,16 @@ export default class BillService {
                 name: this.$translate.getText('TOTAL_ORDER'),
                 amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
             });
+            if(this._isUS) {
+                totals.push({
+                    name: this.$translate.getText('TOTAL_DISCOUNTS'),
+                    amount: this.$utils.toFixedSafe(TOTAL_DISCOUNTS, 2)
+                });
+                totals.push({
+                    name: this.$translate.getText('INCLUSIVE_NET_AMOUNT'),
+                    amount: this.$utils.toFixedSafe(INCLUSIVE_NET_AMOUNT, 2)
+                });
+            }
         }
 
         if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
@@ -680,7 +694,7 @@ export default class BillService {
 
     resolvePrintData(printData, isUS) {
 
-
+debugger
         let DataBill = function (collections, variables, data, printByOrder, waiterDiners) {
             this.collections = printData.collections;
             this.variables = printData.variables;

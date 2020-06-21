@@ -18,9 +18,11 @@ export default class TlogDocsTranslateService {
     _translate() {
         return {
             "en-US": {
+                "TOTAL_DISCOUNTS":"DISCOUNT",
+                "INCLUSIVE_NET_AMOUNT":"SUB TOTAL",
                 "OTH": "OTH",
                 "MANUAL_ITEM_DISCOUNT": "MANUAL DISCOUNT",
-                "TOTAL_ORDER": "SUBTOTAL",
+                "TOTAL_ORDER": "SUBTOTAL BEFORE DISCOUNT",
                 "ORDER_DISCOUNT": "ORDER DISCOUNT",
                 "ECVLUSIVE_TAX": "EXCLUSIVE TAX",
                 "SERVICE_CHARGE": "SERVICE CHARGE",
@@ -297,6 +299,8 @@ export default class TlogDocsTranslateService {
                 "lb": 'lb'
             },
             "he-IL": {
+                "TOTAL_DISCOUNTS":"הנחות",
+                "INCLUSIVE_NET_AMOUNT":"סך הכל אחרי הנחות",
                 "OTH": "על חשבון הבית",
                 "MANUAL_ITEM_DISCOUNT": "הנחה יזומה",
                 "TOTAL_ORDER": "סה\"כ הזמנה",
