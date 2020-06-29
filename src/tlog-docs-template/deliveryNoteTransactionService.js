@@ -119,10 +119,7 @@ export default class DeliveryNoteTransactionDataService {
     
                     elementChargeAccountSection.append(elementHotelCheckNumber);
                 }
-              
-
             }
-
         }
         else if (!IS_REFUND && hAccountPayments && hAccountPayments.P_AMOUNT) {
 
