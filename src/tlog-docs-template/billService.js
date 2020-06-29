@@ -455,6 +455,7 @@ export default class BillService {
             if (payment.GUEST_NAME) paymentData.GUEST_NAME = payment.GUEST_NAME;
             if (payment.HOTEL_NAME) paymentData.HOTEL_NAME = payment.HOTEL_NAME;
             if (payment.ROOM_NUMBER) paymentData.ROOM_NUMBER = payment.ROOM_NUMBER;
+            if (payment.HOTEL_CHECK_NUMBER) paymentData.HOTEL_CHECK_NUMBER = payment.HOTEL_CHECK_NUMBER;
 
             payments.push(paymentData);
         });

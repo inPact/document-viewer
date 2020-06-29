@@ -18,6 +18,7 @@ export default class TlogDocsTranslateService {
     _translate() {
         return {
             "en-US": {
+                "HOTEL_CHECK_NUMBER":"Hotel Check Number",
                 "OTH": "OTH",
                 "MANUAL_ITEM_DISCOUNT": "MANUAL DISCOUNT",
                 "TOTAL_ORDER": "SUBTOTAL",
@@ -297,6 +298,7 @@ export default class TlogDocsTranslateService {
                 "lb": 'lb'
             },
             "he-IL": {
+                "HOTEL_CHECK_NUMBER":"מס' עסקה",
                 "OTH": "על חשבון הבית",
                 "MANUAL_ITEM_DISCOUNT": "הנחה יזומה",
                 "TOTAL_ORDER": "סה\"כ הזמנה",

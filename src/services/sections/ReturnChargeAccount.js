@@ -48,7 +48,7 @@ export default class ReturnChargeAccount {
         elementChargeAccountSection.appendChild(elementChargeAccountContainer);
 
         if (houseAccountPayment.HOTEL_NAME || houseAccountPayment.GUEST_NAME || houseAccountPayment.ROOM_NUMBER) {
-
+            
             let elementHotelDetails = this.$htmlCreator.create({
                 id: 'hotel-details',
                 classList: ['hotel-item', 'hotel-details'],
