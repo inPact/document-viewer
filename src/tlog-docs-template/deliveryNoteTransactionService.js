@@ -96,7 +96,6 @@ export default class DeliveryNoteTransactionDataService {
                         classList: ['hotel-item', 'hotel-details'],
                         value: `&nbsp;${hAccountPayments.HOTEL_NAME}&nbsp;/&nbsp;${hAccountPayments.ROOM_NUMBER}`
                     });
-    
                     elementChargeAccountSection.append(elementHotelDetails);
                 }
               
