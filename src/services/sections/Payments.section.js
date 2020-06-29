@@ -79,7 +79,7 @@ export default class PaymentSection {
                 }
 
 
-                if (payment.GUEST_NAME) {
+                if (payment.GUEST_NAME.replace(/\s/g, '').length > 0) {
                     let elementGuestName = this.$htmlCreator.create({
                         id: 'guest-name',
                         classList: ['hotel-item', 'guest-name'],
