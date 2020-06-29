@@ -90,7 +90,6 @@ export default class DeliveryNoteTransactionDataService {
 
 
             if (hAccountPayments.HOTEL_NAME || hAccountPayments.GUEST_NAME || hAccountPayments.ROOM_NUMBER || hAccountPayments.HOTEL_CHECK_NUMBER) {
-                
                 if(hAccountPayments.HOTEL_NAME || hAccountPayments.ROOM_NUMBER) {
                     let elementHotelDetails = this.$htmlCreator.create({
                         id: 'hotel-details',
