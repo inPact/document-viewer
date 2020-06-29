@@ -90,7 +90,7 @@ export default class DeliveryNoteTransactionDataService {
 
 
             if (hAccountPayments.HOTEL_NAME || hAccountPayments.GUEST_NAME || hAccountPayments.ROOM_NUMBER || hAccountPayments.HOTEL_CHECK_NUMBER) {
-                if(hAccountPayments.HOTEL_NAME || hAccountPayments.ROOM_NUMBER) {
+                if (hAccountPayments.HOTEL_NAME || hAccountPayments.ROOM_NUMBER) {
                     let elementHotelDetails = this.$htmlCreator.create({
                         id: 'hotel-details',
                         classList: ['hotel-item', 'hotel-details'],
@@ -98,25 +98,25 @@ export default class DeliveryNoteTransactionDataService {
                     });
                     elementChargeAccountSection.append(elementHotelDetails);
                 }
-              
-                if(hAccountPayments.GUEST_NAME.replace(/\s/g, '').length > 0) {
+
+                if (hAccountPayments.GUEST_NAME.replace(/\s/g, '').length > 0) {
                     let elementGuestName = this.$htmlCreator.create({
                         id: 'guest-name',
                         classList: ['hotel-item', 'guest-name'],
                         value: `&nbsp;${hAccountPayments.GUEST_NAME}`
                     });
-    
+
                     elementChargeAccountSection.append(elementGuestName);
-    
+
                 }
-               
-                if(hAccountPayments.HOTEL_CHECK_NUMBER) {
+
+                if (hAccountPayments.HOTEL_CHECK_NUMBER) {
                     let elementHotelCheckNumber = this.$htmlCreator.create({
                         id: 'hotel-check-number',
                         classList: ['hotel-item', 'guest-name'],
                         value: `&nbsp;${this.$translate.getText('HOTEL_CHECK_NUMBER')}&nbsp;${hAccountPayments.HOTEL_CHECK_NUMBER}`
                     });
-    
+
                     elementChargeAccountSection.append(elementHotelCheckNumber);
                 }
             }
@@ -154,29 +154,37 @@ export default class DeliveryNoteTransactionDataService {
 
             if (hAccountPayments.HOTEL_NAME || hAccountPayments.GUEST_NAME || hAccountPayments.ROOM_NUMBER || hAccountPayments.HOTEL_CHECK_NUMBER) {
 
-                let elementHotelDetails = this.$htmlCreator.create({
-                    id: 'hotel-details',
-                    classList: ['hotel-item', 'hotel-details'],
-                    value: `&nbsp;${hAccountPayments.HOTEL_NAME}&nbsp;/&nbsp;${hAccountPayments.ROOM_NUMBER}`
-                });
+                if (hAccountPayments.HOTEL_NAME || hAccountPayments.ROOM_NUMBER) {
+                    let elementHotelDetails = this.$htmlCreator.create({
+                        id: 'hotel-details',
+                        classList: ['hotel-item', 'hotel-details'],
+                        value: `&nbsp;${hAccountPayments.HOTEL_NAME}&nbsp;/&nbsp;${hAccountPayments.ROOM_NUMBER}`
+                    });
 
-                elementChargeAccountSection.append(elementHotelDetails);
+                    elementChargeAccountSection.append(elementHotelDetails);
+                }
 
-                let elementGuestName = this.$htmlCreator.create({
-                    id: 'guest-name',
-                    classList: ['hotel-item', 'guest-name'],
-                    value: `&nbsp;${hAccountPayments.GUEST_NAME}`
-                });
+                if (hAccountPayments.GUEST_NAME) { 
+                    let elementGuestName = this.$htmlCreator.create({
+                        id: 'guest-name',
+                        classList: ['hotel-item', 'guest-name'],
+                        value: `&nbsp;${hAccountPayments.GUEST_NAME}`
+                    });
+    
+                    elementChargeAccountSection.append(elementGuestName);
+                }
+              
+                if(hAccountPayments.HOTEL_CHECK_NUMBER) {
+                    let elementHotelCheckNumber = this.$htmlCreator.create({
+                        id: 'hotel-check-number',
+                        classList: ['hotel-item', 'guest-name'],
+                        value: `&nbsp;${this.$translate.getText('HOTEL_CHECK_NUMBER')}${hAccountPayments.HOTEL_CHECK_NUMBER}`
+                    });
+    
+                    elementChargeAccountSection.append(elementHotelCheckNumber);
+                }
 
-                elementChargeAccountSection.append(elementGuestName);
-
-                let elementHotelCheckNumber = this.$htmlCreator.create({
-                    id: 'hotel-check-number',
-                    classList: ['hotel-item', 'guest-name'],
-                    value: `&nbsp;${this.$translate.getText('HOTEL_CHECK_NUMBER')}${hAccountPayments.HOTEL_CHECK_NUMBER}`
-                });
-
-                elementChargeAccountSection.append(elementHotelCheckNumber);
+            
 
 
             }
