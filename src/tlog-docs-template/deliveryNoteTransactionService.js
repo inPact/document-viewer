@@ -164,7 +164,7 @@ export default class DeliveryNoteTransactionDataService {
                     elementChargeAccountSection.append(elementHotelDetails);
                 }
 
-                if (hAccountPayments.GUEST_NAME) { 
+                if (hAccountPayments.GUEST_NAME.replace(/\s/g, '').length > 0) { 
                     let elementGuestName = this.$htmlCreator.create({
                         id: 'guest-name',
                         classList: ['hotel-item', 'guest-name'],
