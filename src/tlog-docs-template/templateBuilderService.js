@@ -645,6 +645,7 @@ export default class TemplateBuilderService {
             tplOrderTotals.appendChild(OrderTotalsDiv);
             OrderTotalsDiv.hasChildNodes() ? OrderTotalsDiv.classList += " tpl-body-div" : '';
 
+            console.log(printData)
             this.fillOrderTotals(OrderTotalsDiv, printData);
         }
         return tplOrderTotals;
