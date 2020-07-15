@@ -651,6 +651,7 @@ export default class TemplateBuilderService {
     }
 
     fillOrderTotals(htmlElement, printData) {
+        debugger
         if (printData.data.totals.length > 0) {
 
             // if (!_isUS) {
