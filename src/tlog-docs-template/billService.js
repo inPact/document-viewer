@@ -317,17 +317,22 @@ export default class BillService {
              *  in IL is 'TOTAL_SALES_AMOUNT'.
              *  Backward compatibility - default is 'TOTAL_SALES_AMOUNT'
              */
-            let TOTAL_SALES = 0;
+
             if (this._isUS) {
-                TOTAL_SALES = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+                let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+                totals.push({
+                    name: this.$translate.getText('INCLUSIVE_GROSS_AMOUNT'),
+                    amount: this.$utils.toFixedSafe(INCLUSIVE_GROSS_AMOUNT, 2)
+                });
             } else {
-                TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
+                let TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
+                totals.push({
+                    name: this.$translate.getText('TOTAL_ORDER'),
+                    amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
+                });
             }
 
-            totals.push({
-                name: this.$translate.getText('TOTAL_ORDER'),
-                amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
-            });
+
         }
 
         if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
@@ -338,6 +343,16 @@ export default class BillService {
                 })
             })
         }
+
+        // subtotal in us after discount
+        if (this._isUS) {
+            let TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+            totals.push({
+                name: this.$translate.getText('TOTAL_ORDER'),
+                amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
+            });
+        }
+
         if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this._isUS) {
             collections.EXCLUSIVE_TAXES.forEach(tax => {
                 totals.push({

@@ -84,7 +84,6 @@ export default class TemplateBuilderService {
 
     createDocTemplate(docObjChosen, options = {}) {
 
-
         let logoUrl = _.get(options, 'logoUrl') || undefined;
         let tabitLogo = _.get(options, 'tabitLogo') || undefined;
         let excludeHeader = _.get(options, 'excludeHeader') || false;
@@ -612,7 +611,6 @@ export default class TemplateBuilderService {
 
     createTotalsData(printData, isGiftCardBill, isTaxExempt) {
 
-
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
@@ -652,7 +650,7 @@ export default class TemplateBuilderService {
     }
 
     fillOrderTotals(htmlElement, printData) {
-        debugger
+
         if (printData.data.totals.length > 0) {
 
             // if (!_isUS) {
