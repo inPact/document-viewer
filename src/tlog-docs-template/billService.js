@@ -324,6 +324,18 @@ export default class BillService {
                     name: this.$translate.getText('INCLUSIVE_GROSS_AMOUNT'),
                     amount: this.$utils.toFixedSafe(INCLUSIVE_GROSS_AMOUNT, 2)
                 });
+                let DISCOUNT = _.get(variables, 'TOTAL_DISCOUNTS', 0);
+                if (DISCOUNT > 0) {
+                    totals.push({
+                        name: this.$translate.getText('ORDER_DISCOUNT_US'),
+                        amount: this.$utils.toFixedSafe(DISCOUNT * -1, 2)
+                    })
+                }
+                let TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+                totals.push({
+                    name: this.$translate.getText('TOTAL_ORDER'),
+                    amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
+                });
             } else {
                 let TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
                 totals.push({
@@ -335,22 +347,15 @@ export default class BillService {
 
         }
 
-        if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
-            collections.ORDER_DISCOUNTS_LIST.forEach(discount => {
-                totals.push({
-                    name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('ORDER_DISCOUNT'),
-                    amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
+        if ( !this._isUS) {
+            if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
+                collections.ORDER_DISCOUNTS_LIST.forEach(discount => {
+                    totals.push({
+                        name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('ORDER_DISCOUNT'),
+                        amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
+                    })
                 })
-            })
-        }
-
-        // subtotal in us after discount
-        if (this._isUS) {
-            let TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
-            totals.push({
-                name: this.$translate.getText('TOTAL_ORDER'),
-                amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
-            });
+            }
         }
 
         if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this._isUS) {
