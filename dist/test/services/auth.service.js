@@ -5,7 +5,6 @@ angular.module('app')
     .factory('AuthService', function ($http, ENV) {
 
         let EP = ENV.ep;
-        let timezone = null;
 
         const AUTH_URL = '/oauth2/token';
         const _authClientId = 'VbXPFm2RMiq8I2eV7MP4ZQ';
