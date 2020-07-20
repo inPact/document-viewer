@@ -13,6 +13,7 @@ export default class CreditTransaction {
             isUS: options.isUS,
             locale: options.locale
         });
+        this.timezone = options.timezone;
     }
 
     get(options) {
@@ -57,8 +58,8 @@ export default class CreditTransaction {
 
 
         if (creditTransaction.PROVIDER_PAYMENT_DATE) {
-
             let providerPaymentDate = this.$utils.toDate({
+                timezone: this.timezone,
                 isUS: isUS,
                 date: creditTransaction.PROVIDER_PAYMENT_DATE
             });

@@ -12,12 +12,14 @@ export default class GiftCardSlipService {
         this._locale;
         this._isUS;
         this._doc;
+        this.timezone;
         this.configure(options)
 
     }
     configure(options) {
         if (options.locale) this._locale = options.locale;
         if (options.isUS) this._isUS = options.isUS;
+        this.timezone = options.timezone;
 
     }
     createGiftCardSlip(printData, docObjChosen, doc) {
@@ -82,6 +84,7 @@ export default class GiftCardSlipService {
             let giftCardSlipTimeDiv = this._doc.createElement('div')
 
             let providerPaymentDate = this.$utils.toDate({
+                timezone: this.timezone,
                 isUS: this._isUS,
                 date: giftCardSlipDoc.PROVIDER_PAYMENT_DATE
             });

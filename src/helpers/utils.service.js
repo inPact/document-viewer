@@ -1,3 +1,6 @@
+import * as moment from 'moment';
+import 'moment-timezone';
+
 export default class Utils {
 
     constructor(options) {
@@ -50,65 +53,25 @@ export default class Utils {
         return false
     }
 
-
-    formatDateUS(stringDate) {
-
-        let date = new Date(stringDate);
-
-        let day = date.getDate();
-        let month = (date.getMonth() + 1);
-        let year = date.getFullYear();
-
-        let timeStr = date.toLocaleTimeString();
-        let timeArr = timeStr.split(':');
-        let a = timeArr[2].split(" ")[1];
-
-        let hour = timeArr[0];
-        let minute = timeArr[1];
-
-        if (day < 10) {
-            day = `0${day}`;
-        }
-
-        if (month < 10) {
-            month = `0${month}`;
-        }
-
-        return `${month}/${day}/${year} ${hour}:${minute} ${a}`;
-    }
-
-    formatDateIL(stringDate) {
-
-        let date = new Date(stringDate);
-
-        let day = date.getDate();
-        let month = (date.getMonth() + 1);
-        let year = date.getFullYear();
-        let hour = (date.getHours() > 9) ? date.getHours() : "0" + date.getHours();
-        let minute = (date.getMinutes() > 9) ? date.getMinutes() : "0" + date.getMinutes();
-
-        if (day < 10) {
-            day = `0${day}`;
-        }
-
-        if (month < 10) {
-            month = `0${month}`;
-        }
-
-        return `${day}/${month}/${year} ${hour}:${minute}`;
-    }
-
     toDate(options) {
-
+        console.log(options)
         let result = '[DATE]';
 
         let isUS = options.isUS;
         let date = options.date;
-
+        
         if (isUS) {
-            result = this.formatDateUS(date);
+            if (options.timezone) {
+                result = moment(date).tz(`${options.timezone}`).format('MM/DD/YYYY h:mm A');
+            } else {
+                result = moment(date).format('MM/DD/YYYY h:mm A');
+            }
         } else {
-            result = this.formatDateIL(date);
+            if (options.timezone) {
+                result = moment(date).tz(`${options.timezone}`).format('DD/MM/YYYY H:mm');
+            } else {
+                result = moment(date).format('MM/DD/YYYY HH:mm');
+            }
         }
 
         return result;

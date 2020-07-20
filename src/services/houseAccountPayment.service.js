@@ -16,6 +16,7 @@ export default class HouseAccountPayment {
             isUS: options.isUS,
             locale: options.locale
         });
+        this.timezone = options.timezone;
     }
 
     get(options) {
@@ -155,8 +156,8 @@ export default class HouseAccountPayment {
         }
 
         if (houseAccountPayment.PROVIDER_PAYMENT_DATE) {
-
             let providerPaymentDate = this.$utils.toDate({
+                timezone: this.timezone,
                 isUS: this._isUS,
                 date: houseAccountPayment.PROVIDER_PAYMENT_DATE
             });

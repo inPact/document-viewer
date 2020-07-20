@@ -3,13 +3,13 @@
 angular.module('app')
     .constant("ENV", {
         // ep: 'https://ros-rp.tabit.cloud',
-        ep: 'https://il-int-ros.tabit-stage.com',
-        org: '58c7afbf0fd96f220086e881',
-        tlog: '5e60ff34952be8afbc9ca65f',
-        locale: 'he-IL',
-        // locale: 'en-US',
+        ep: 'https://us-int-ros.tabit-stage.com',
+        org: '5a243c76359e2325003eb01e',
+        tlog: '5f062cdd649cd40e6917255e',
+        // locale: 'he-IL',
+        locale: 'en-US',
         username: 'admin@tabit.cloud',
-        pass: 'tabitros'
+        pass: 'tabitros',
     })
     .factory('OrderService', function ($http, ENV) {
 
@@ -49,12 +49,12 @@ angular.module('app')
             return $http.get(`${EP}/${DOCUMENTS_URL}/${id}/${PRINT_DATA}`)
                 .then(result => result.data);
         }
+       
 
         return {
             findOne: findOne,
             getBillPrintData: getBillPrintData,
             getPrintData: getPrintData
-
         }
 
 

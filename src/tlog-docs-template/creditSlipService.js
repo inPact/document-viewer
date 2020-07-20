@@ -12,14 +12,16 @@ export default class CreditSlipService {
         this._locale;
         this._isUS;
         this._doc;
+        this.timezone;
         this.configure(options)
 
     }
     configure(options) {
         if (options.locale) this._locale = options.locale;
         if (options.isUS) this._isUS = options.isUS;
-
+        this.timezone = options.timezone;
     }
+
     createCreditSlip(printData, docObjChosen, doc) {
         docObjChosen.md = docObjChosen.md || {};
         this._doc = doc;
@@ -87,6 +89,7 @@ export default class CreditSlipService {
 
 
             let providerPaymentDate = this.$utils.toDate({
+                timezone: this.timezone,
                 isUS: this._isUS,
                 date: creditSlipDoc.PROVIDER_PAYMENT_DATE
             });

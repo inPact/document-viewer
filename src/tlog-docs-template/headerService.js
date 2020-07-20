@@ -7,6 +7,7 @@ import ReturnTransactionSection from '../services/sections/ReturnTransaction.sec
 export default class HeaderService {
 
     constructor(options) {
+        this.timezone = options.timezone;
         this._isUS = options.isUS;
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
@@ -196,8 +197,9 @@ export default class HeaderService {
 
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
-
+debugger
                     let issuedAtDate = this.$utils.toDate({
+                        timezone: this.timezone,
                         isUS: this._isUS,
                         date: printData.variables.CREATED_AT
                     });
@@ -218,8 +220,9 @@ export default class HeaderService {
             case "tplOriginDateTime": {
 
                 if (printData.variables.ISSUED_AT) {
-
+debugger
                     let issuedAtDate = this.$utils.toDate({
+                        timezone: this.timezone,
                         isUS: this._isUS,
                         date: printData.variables.ISSUED_AT
                     });
