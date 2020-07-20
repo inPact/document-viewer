@@ -31,7 +31,8 @@ angular.module('app')
 
         let documentViewer = new DocumentViewer({
             isUS: false,
-            locale: ENV.locale
+            locale: ENV.locale,
+            timezone: 'America/Chicago'
         });
 
         /**

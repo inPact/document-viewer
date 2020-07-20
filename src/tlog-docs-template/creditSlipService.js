@@ -86,8 +86,7 @@ export default class CreditSlipService {
             let transactTimeText = this.$translate.getText('transactTimeText');
             let creditSlipTimeDiv = this._doc.createElement('div');
             creditSlipTimeDiv.classList += " creditSlipTimeDiv";
-
-
+            console.log('creditslip')
             let providerPaymentDate = this.$utils.toDate({
                 timezone: this.timezone,
                 isUS: this._isUS,

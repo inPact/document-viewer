@@ -58,6 +58,7 @@ export default class CreditTransaction {
 
 
         if (creditTransaction.PROVIDER_PAYMENT_DATE) {
+            console.log('creditTransaction')
             let providerPaymentDate = this.$utils.toDate({
                 timezone: this.timezone,
                 isUS: isUS,

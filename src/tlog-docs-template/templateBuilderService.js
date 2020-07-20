@@ -176,7 +176,6 @@ export default class TemplateBuilderService {
 
                 docTemplate.appendChild(elementRefundDeliveryNote);
             } else {
-
                 this._isGiftCardBill = (docObjChosen.isGiftCardBill && docObjChosen.docPaymentType === 'GiftCardPayment') ? true : false;
                 this._isTaxExempt = this._printData.data.isTaxExempt;
 
