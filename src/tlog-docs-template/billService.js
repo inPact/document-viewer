@@ -185,8 +185,8 @@ export default class BillService {
                 }
 
                 if ([this.Enums().OfferTypes.ComplexOne, this.Enums().OfferTypes.Combo,
-                this.Enums().OfferTypes.ComplexMulti,
-                this.Enums().OfferTypes.Single].indexOf(offer.OFFER_TYPE) > -1) {
+                    this.Enums().OfferTypes.ComplexMulti,
+                    this.Enums().OfferTypes.Single].indexOf(offer.OFFER_TYPE) > -1) {
 
 
                     let item = {
@@ -306,20 +306,34 @@ export default class BillService {
 
     resolveTotals(variables, collections) {
         let totals = [];
+        if(this._isUS) {
+            let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+            totals.push({
+                name: this.$translate.getText('INCLUSIVE_GROSS_AMOUNT'),
+                amount: this.$utils.toFixedSafe(INCLUSIVE_GROSS_AMOUNT, 2)
+            });
+            let DISCOUNT = _.get(variables, 'TOTAL_DISCOUNTS', 0);
+            if (DISCOUNT > 0) {
+                totals.push({
+                    name: this.$translate.getText('ORDER_DISCOUNT_US'),
+                    amount: this.$utils.toFixedSafe(DISCOUNT * -1, 2)
+                })
+            }
+        }
 
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
             variables.TOTAL_TIPS !== undefined ||
             (this._isUS && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0))) {
 
             /**
-             * SUBTOTAL (TOTAL_ORDER) : 
+             * SUBTOTAL (TOTAL_ORDER) :
              *  in US is 'TOTAL_BEFORE_EXCLUDED_TAX_BEFORE_DISCOUNTS'.
              *  in IL is 'TOTAL_SALES_AMOUNT'.
              *  Backward compatibility - default is 'TOTAL_SALES_AMOUNT'
              */
             let TOTAL_SALES = 0;
             if (this._isUS) {
-                TOTAL_SALES = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+                TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             } else {
                 TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
             }
@@ -329,14 +343,15 @@ export default class BillService {
                 amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
             });
         }
-
-        if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
-            collections.ORDER_DISCOUNTS_LIST.forEach(discount => {
-                totals.push({
-                    name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('ORDER_DISCOUNT'),
-                    amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
+        if ( !this._isUS) {
+            if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
+                collections.ORDER_DISCOUNTS_LIST.forEach(discount => {
+                    totals.push({
+                        name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('ORDER_DISCOUNT'),
+                        amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
+                    })
                 })
-            })
+            }
         }
         if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this._isUS) {
             collections.EXCLUSIVE_TAXES.forEach(tax => {
