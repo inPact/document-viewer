@@ -333,7 +333,7 @@ export default class BillService {
              */
             let TOTAL_SALES = 0;
             if (this._isUS) {
-                TOTAL_SALES = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+                TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             } else {
                 TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
             }
