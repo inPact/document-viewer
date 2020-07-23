@@ -197,7 +197,6 @@ export default class HeaderService {
 
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
-                    console.log('headerservice')
                     let issuedAtDate = this.$utils.toDate({
                         timezone: this.timezone,
                         isUS: this._isUS,
@@ -220,7 +219,6 @@ export default class HeaderService {
             case "tplOriginDateTime": {
 
                 if (printData.variables.ISSUED_AT) {
-                    console.log('headerservice')
                     let issuedAtDate = this.$utils.toDate({
                         timezone: this.timezone,
                         isUS: this._isUS,

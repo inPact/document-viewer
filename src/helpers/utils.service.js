@@ -54,7 +54,6 @@ export default class Utils {
     }
 
     toDate(options) {
-        console.log(options)
         let result = '[DATE]';
 
         let isUS = options.isUS;

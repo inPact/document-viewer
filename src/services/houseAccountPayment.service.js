@@ -156,7 +156,6 @@ export default class HouseAccountPayment {
         }
 
         if (houseAccountPayment.PROVIDER_PAYMENT_DATE) {
-            console.log('houseaccount')
             let providerPaymentDate = this.$utils.toDate({
                 timezone: this.timezone,
                 isUS: this._isUS,

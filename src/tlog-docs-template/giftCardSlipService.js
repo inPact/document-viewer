@@ -82,7 +82,6 @@ export default class GiftCardSlipService {
 
             let transactTimeText = this.$translate.getText('transactTimeText');
             let giftCardSlipTimeDiv = this._doc.createElement('div')
-            console.log('giftcardslip')
             let providerPaymentDate = this.$utils.toDate({
                 timezone: this.timezone,
                 isUS: this._isUS,

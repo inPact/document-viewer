@@ -200,7 +200,6 @@ angular.module('app')
 
                         // create doc request from the server.
                         $scope.documentsList = documentRequestsService.create(docs);
-                        console.log($scope.documentsList)
 
                         // set the first doc (bill doc).
                         $scope.component.selectedDocument = $scope.documentsList[0];
