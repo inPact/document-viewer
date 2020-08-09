@@ -309,10 +309,13 @@ export default class BillService {
         debugger
         if(this._isUS) {
             let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
-            totals.push({
-                name: this.$translate.getText('INCLUSIVE_GROSS_AMOUNT'),
-                amount: this.$utils.toFixedSafe(INCLUSIVE_GROSS_AMOUNT, 2)
-            });
+            let totalSales = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+            if(INCLUSIVE_GROSS_AMOUNT !== totalSales) {
+                totals.push({
+                    name: this.$translate.getText('INCLUSIVE_GROSS_AMOUNT'),
+                    amount: this.$utils.toFixedSafe(INCLUSIVE_GROSS_AMOUNT, 2)
+                });
+            }
             let DISCOUNT = _.get(variables, 'TOTAL_DISCOUNTS', 0);
             if (DISCOUNT > 0) {
                 totals.push({
