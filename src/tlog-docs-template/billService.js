@@ -306,7 +306,6 @@ export default class BillService {
 
     resolveTotals(variables, collections) {
         let totals = [];
-        debugger
         if(this._isUS) {
             let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             let totalSales = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);

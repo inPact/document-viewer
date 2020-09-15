@@ -84,7 +84,6 @@ export default class TemplateBuilderService {
 
     createDocTemplate(docObjChosen, options = {}) {
 
-
         let logoUrl = _.get(options, 'logoUrl') || undefined;
         let tabitLogo = _.get(options, 'tabitLogo') || undefined;
         let excludeHeader = _.get(options, 'excludeHeader') || false;
@@ -154,7 +153,6 @@ export default class TemplateBuilderService {
         if (this._locale == 'he-IL' && docObjChosen.documentType === 'check') {
             checkInIL = true;
         }
-
         if (docObjChosen.type === 'clubMembers') {
 
 
@@ -213,17 +211,23 @@ export default class TemplateBuilderService {
 
                     }
 
-                    // var tplOrderPaymentData = createOrderPaymentData(_printData);
-                    var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
+                    if (_.get(this._printData.collections, 'RETURNED_OFFERS_LIST', []).length > 0) {
 
+                    }
+
+                    // var tplOrderPaymentData = createOrderPaymentData(_printData);
+                    var tplOrderReturnItems = this.createReturnItemsData(this._printData);
+                    var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
                     var tplOrderPayments = this.createPaymentsData(this._printData);
 
                     // tplOrderPaymentData.id = 'tplOrderPaymentData';
+                    tplOrderReturnItems.id = 'tplOrderReturnItems';
                     tplOrderTotals.id = 'tplOrderTotals';
                     tplOrderPayments.id = 'tplOrderPayments';
 
                     //adding styling to the template divs
                     // tplOrderPaymentData.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
+                    tplOrderReturnItems.hasChildNodes() ? tplOrderReturnItems.classList += ' body-div tpl-body-div' : '';
                     tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' body-div tpl-body-div' : '';
                     tplOrderPayments.hasChildNodes() ? tplOrderPayments.classList += ' body-div tpl-body-div' : '';
 
@@ -232,6 +236,7 @@ export default class TemplateBuilderService {
                         docTemplate.appendChild(tplOrderPaymentData);
                     }
 
+                    tplOrderReturnItems.hasChildNodes() ? docTemplate.appendChild(tplOrderReturnItems) : null;
                     tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
                     tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
 
@@ -647,6 +652,88 @@ export default class TemplateBuilderService {
             this.fillOrderTotals(OrderTotalsDiv, printData);
         }
         return tplOrderTotals;
+    }
+
+    createReturnItemsData(printData) {
+        // here
+        var returnItems = this._doc.createElement('div');
+
+        const returnOffers = _.get(printData, 'collections.RETURNED_OFFERS_LIST', []);
+        const items = [];
+        returnOffers.forEach(o => {
+            items.push({
+                qty: 1,
+                name: o['OFFER_NAME'],
+                amount: o['OFFER_AMOUNT'],
+                isOffer: true,
+            })
+
+            const OrderedItemsList = _.get(o,'ORDERED_ITEMS_LIST',[]);
+            OrderedItemsList.forEach(i => {
+                items.push({
+                    qty: 1,
+                    name: i['ITEM_NAME'],
+                    amount: '',
+                    isOffer: false,
+                })
+            })
+        })
+
+        items.forEach((item, index) => {
+
+            if(item.isOffer) {
+                // Return items Header
+                const returnItemsHeader = this._doc.createElement('div');
+                returnItemsHeader.id = "returnItemsHeader";
+                returnItemsHeader.innerHTML = this.$translate.getText('ReturnedItem');
+                returnItemsHeader.style.margin = index === 0 ? "0px 0 5px 0" : "10px 0 5px 0" ;
+                returnItemsHeader.classList += "bold";
+                returnItems.append(returnItemsHeader);
+            }
+
+            let elementItemQty = this.$htmlCreator.create({
+                type: 'div',
+                id: `item-qty-${index}`,
+                classList: ['item-qty'],
+                value: item.qty
+            });
+
+            // remove special chars (html chars as it not render)
+            let itemName = _.get(item, 'name', '');
+            let name = itemName.replace(/</ig, '').replace(/>/ig, '');
+            let elementItemName = this.$htmlCreator.create({
+                type: 'div',
+                id: `item-name-${index}`,
+                classList: ['item-name'],
+                value: item.isOffer ? `${name || ''}` : `&nbsp;&nbsp;${name || ''}`
+            });
+
+            let classList = ['total-amount'];
+            let negativeClass = this.$utils.isNegative(item.amount);
+            if (negativeClass !== "") {
+                classList.push(negativeClass);
+            }
+
+            let elementItemAmount = this.$htmlCreator.create({
+                type: 'div',
+                id: `item-amount-${index}`,
+                classList: classList,
+                value: this.$utils.twoDecimals(item.amount)
+            });
+
+            let elementItemContainer = this.$htmlCreator.create({
+                type: 'div',
+                id: `item-${index}`,
+                classList: item.isOffer ? ['itemDiv', 'bold'] : ['itemDiv'],
+                children: [
+                    elementItemQty,
+                    elementItemName,
+                    elementItemAmount
+                ]
+            });
+            returnItems.appendChild(elementItemContainer);
+        })
+        return returnItems
     }
 
     fillOrderTotals(htmlElement, printData) {
