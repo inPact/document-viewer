@@ -69,7 +69,7 @@ export default class Utils {
             if (options.timezone) {
                 result = moment(date).tz(`${options.timezone}`).format('DD/MM/YYYY H:mm');
             } else {
-                result = moment(date).format('DD/MM/YYYY HH:mm');
+                result = moment(date).format('DD/MM/YYYY H:mm');
             }
         }
 
