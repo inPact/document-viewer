@@ -296,15 +296,15 @@ export default class HeaderService {
                 break;
             }
 
-            case 'tplcCheckNumber': {
-                var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
-                if (this._docData.documentType === "invoice" && invoiceNum) {
-                    var checkTranslate = this.$translate.getText("INVOICE")
-                    printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
-                    htmlElement.innerHTML = `<span> ` + checkTranslate + " " + invoiceNum + `</span>`;
-                }
-                break;
-            }
+            // case 'tplcCheckNumber': {
+            //     var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
+            //     if (this._docData.documentType === "invoice" && invoiceNum) {
+            //         var checkTranslate = this.$translate.getText("INVOICE")
+            //         printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
+            //         htmlElement.innerHTML = `<span> ` + checkTranslate + " " + invoiceNum + `</span>`;
+            //     }
+            //     break;
+            // }
 
         }
         return htmlElement;
