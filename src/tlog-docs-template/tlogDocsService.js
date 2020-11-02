@@ -292,8 +292,14 @@ export default class TlogDocsService {
 
     }
 
+<<<<<<< Updated upstream
     getHTMLDocument(documentInfo, document, options = {}) {
         return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options);
+=======
+    getHTMLDocument(documentInfo, printData, options = {}) {
+        debugger
+        return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, printData, options);
+>>>>>>> Stashed changes
     }
 
     getHTMLDocumentWithoutTlog(document, options = {}) {
