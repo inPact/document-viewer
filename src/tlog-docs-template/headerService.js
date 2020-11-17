@@ -288,7 +288,7 @@ export default class HeaderService {
                 var dinersTranslate = this.$translate.getText("Diners")
                 var firstName = printData.variables.F_NAME && printData.variables.F_NAME !== null ? printData.variables.F_NAME : '';
                 var lastName = printData.variables.L_NAME && printData.variables.L_NAME !== null ? printData.variables.L_NAME : '';
-                if(_.get(printData, 'variables.source ', '') !== '') {
+                if(_.get(printData, 'variables.SOURCE', '') !== '') {
                     firstName = printData.variables.source ;
                     lastName = '';
                 }
