@@ -289,7 +289,7 @@ export default class HeaderService {
                 var firstName = printData.variables.F_NAME && printData.variables.F_NAME !== null ? printData.variables.F_NAME : '';
                 var lastName = printData.variables.L_NAME && printData.variables.L_NAME !== null ? printData.variables.L_NAME : '';
                 if(_.get(printData, 'variables.SOURCE', '') !== '') {
-                    firstName = printData.variables.source ;
+                    firstName = printData.variables.SOURCE ;
                     lastName = '';
                 }
                 htmlElement.classList.add('flex-center');
