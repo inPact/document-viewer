@@ -1,23 +1,27 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
+import SignatureService from './signatureService';
 
-export default class CreateCreditSlipService {
+export default class CreditSlipService {
 
     constructor(options) {
         this._options = {};
         this.$translate = new TlogDocsTranslateService(options);
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
+        this.$signatureService = new SignatureService();
         this._locale;
         this._isUS;
         this._doc;
+        this.timezone;
         this.configure(options)
 
     }
     configure(options) {
         if (options.locale) this._locale = options.locale;
         if (options.isUS) this._isUS = options.isUS;
-
+        this.timezone = options.timezone;
     }
+
     createCreditSlip(printData, docObjChosen, doc) {
         docObjChosen.md = docObjChosen.md || {};
         this._doc = doc;
@@ -25,7 +29,7 @@ export default class CreateCreditSlipService {
         creditSlipDiv.id = 'creditSlipDiv';
 
         let creditSlipDoc;
-        if(!_.get(docObjChosen, 'md.paymentId') && printData.collections.PAYMENT_LIST.length === 1) {
+        if (!_.get(docObjChosen, 'md.paymentId') && printData.collections.PAYMENT_LIST.length === 1) {
             creditSlipDoc = printData.collections.PAYMENT_LIST[0];
         } else if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length) {
             printData.collections.PAYMENT_LIST.forEach(payment => {
@@ -78,18 +82,18 @@ export default class CreateCreditSlipService {
             }
 
 
-            let dateTimeStr = creditSlipDoc.PROVIDER_PAYMENT_DATE;
-            let dateTimeResult;
+
             let transactTimeText = this.$translate.getText('transactTimeText');
             let creditSlipTimeDiv = this._doc.createElement('div');
             creditSlipTimeDiv.classList += " creditSlipTimeDiv";
+            let providerPaymentDate = this.$utils.toDate({
+                timezone: this.timezone,
+                isUS: this._isUS,
+                date: creditSlipDoc.PROVIDER_PAYMENT_DATE
+            });
 
-            if (this._isUS) dateTimeResult = this.$utils.formatDateUS(dateTimeStr);
-            else if (!this._isUS) {
-                dateTimeResult = this.$utils.formatDateIL(dateTimeStr);
-            }
             creditSlipTimeDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + ": " + (transactTimeText ? dateTimeResult : "") + "</div>" +
+                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + ": " + (transactTimeText ? providerPaymentDate : "") + "</div>" +
                 "</div>";
 
             creditSlipTimeDiv.classList += ' padding-bottom';
@@ -183,57 +187,20 @@ export default class CreateCreditSlipService {
             creditSlipDiv.appendChild(totalDiv)
 
             //Add signature 
+            if (_.get(docObjChosen, 'md.signature')) {
 
-            if (docObjChosen.md.signature) {
+                var signatureArea = this._doc.createElement('div');
+                signatureArea.id = 'signatureArea';
+                signatureArea.className += ' item-div';
 
-                let signatureData = docObjChosen.md.signature;
-                let signatureDiv = this._doc.createElement('div');
-                signatureDiv.id = 'signatureDiv';
-                signatureDiv.classList += " signature-container";
+                creditSlipDiv.appendChild(signatureArea);
+                creditSlipDiv.appendChild(this.$signatureService.getSignature(signatureArea));
 
-                let elementSVGDiv = this._doc.createElement('div');
-                elementSVGDiv.id = 'elementSVGDiv'
-                elementSVGDiv.classList += " signature-container";
-                let newSVG = this._doc.createElement('div');
-                newSVG.id = 'newSVG';
-
-                elementSVGDiv.appendChild(newSVG)
-                newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='100' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
-                let svgNode = elementSVGDiv.getElementsByTagName('svg')[0];
-                svgNode.classList += " signature-container";
-
-                elementSVGDiv.appendChild(svgNode);
-
-                signatureDiv.appendChild(elementSVGDiv)
-
-                let elementSVG = signatureDiv.getElementsByTagName('svg')[0];
-                elementSVG.id = 'elementSVG';
-
-                let path = this.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-40) scale(0.4,0.4)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
-                path.setAttribute("width", "50%");
-                path.setAttribute("height", "auto");
-
-                elementSVG.setAttribute("width", "100");
-                elementSVG.setAttribute("height", "auto");
-
-                elementSVG.innerHTML = "";
-                elementSVG.appendChild(path);
-                elementSVG.setAttribute("width", "100%");
-                elementSVG.setAttribute("height", "auto");
-
-                elementSVGDiv.appendChild(elementSVG);
-                creditSlipDiv.appendChild(signatureDiv)
             }
+
         }
 
         return creditSlipDiv;
-    }
-
-    makeSVG(tag, attrs) {
-        var el = this._doc.createElementNS('http://www.w3.org/2000/svg', tag);
-        for (var k in attrs)
-            el.setAttribute(k, attrs[k]);
-        return el;
     }
 
 }

@@ -1,12 +1,13 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import moment from 'moment';
 
 export default class BillService {
     constructor(options) {
+
         this._isUS = options.isUS === undefined ? true : options.isUS;
         this._locale = options.locale;
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService(options);
     }
 
@@ -39,8 +40,10 @@ export default class BillService {
             },
             OfferTypes: {
                 Simple: "Simple",
+                Single: "Single",
                 Combo: 'Combo',
-                ComplexOne: 'Complex-One'
+                ComplexOne: 'Complex-One',
+                ComplexMulti: 'Complex-Multi'
             },
             TransTypes: {
                 Reversal: "Reversal",
@@ -74,13 +77,23 @@ export default class BillService {
         if (offersList && offersList.length > 0) {
             offersList.forEach(offer => {
 
+                let isSplitCheck = false;
+                let isWeight = false;
+
+                if (offer.OFFER_UNITS !== undefined && offer.OFFER_UNITS !== null && offer.OFFER_UNITS > 0) {
+                    isWeight = true;
+                }
+
                 let offerQty = 0;
                 if (offer.SPLIT_DENOMINATOR && offer.SPLIT_NUMERATOR && offer.SPLIT_DENOMINATOR !== 100 && offer.SPLIT_NUMERATOR !== 100) {
                     offerQty = `${offer.SPLIT_NUMERATOR}/${offer.SPLIT_DENOMINATOR}`;
+                    isSplitCheck = true;
                 } else {
-                    offerQty = offer.OFFER_QTY
+                    offerQty = offer.OFFER_QTY;
                 }
-                if (offer.OFFER_TYPE == this.Enums().OfferTypes.Simple) {
+
+                if (offer.OFFER_TYPE === this.Enums().OfferTypes.Simple) {
+
                     let item = {
                         isOffer: true,
                         name: offer.OFFER_NAME,
@@ -92,18 +105,28 @@ export default class BillService {
                         oth.push(item)
                     } else {
 
-                        // if (offer.OFFER_PRICE && offer.OFFER_QTY > 0) { // if the offer amount is 0 not need to show 
-                        //     item.amount = this.$utils.toFixedSafe(offer.OFFER_PRICE, 2)
-                        //     items.push(item);
-                        // }
                         if (isReturnOrder) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
                             items.push(item);
-                        } else if (offer.OFFER_CALC_AMT  !== 0 && offer.OFFER_CALC_AMT  !== null) { // if the offer amount is 0 not need to show 
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT , 2)
+                        } else if (isWeight) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                            item.isWeight = isWeight;
+                            item.weightAmount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
+                            item.units = offer.OFFER_UNITS;
                             items.push(item);
                         }
-                        if (offer.OPEN_PRICE) {
+                        else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false && !offer.OPEN_PRICE) { // if the offer amount is 0 not need to show
+
+                            if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
+                                item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
+                                items.push(item);
+                            }
+
+                        } else if (isSplitCheck === true) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
+                            items.push(item);
+                        }
+                        else if (offer.OPEN_PRICE) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
                         }
@@ -161,14 +184,42 @@ export default class BillService {
 
                 }
 
-                if ([this.Enums().OfferTypes.ComplexOne, this.Enums().OfferTypes.Combo].indexOf(offer.OFFER_TYPE) > -1) {
+                if ([this.Enums().OfferTypes.ComplexOne, this.Enums().OfferTypes.Combo,
+                    this.Enums().OfferTypes.ComplexMulti,
+                    this.Enums().OfferTypes.Single].indexOf(offer.OFFER_TYPE) > -1) {
 
-                    items.push({
+
+                    let item = {
                         isOffer: true,
                         name: offer.OFFER_NAME,
-                        qty: offerQty,
-                        amount: offer.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_AMOUNT, 2)
-                    });
+                        qty: offerQty
+                    }
+
+                    if (offer.ON_THE_HOUSE) {
+                        item.amount = this.$translate.getText('OTH');
+                        oth.push(item)
+                    } else {
+
+                        if (isReturnOrder) {
+                            item.amount = this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_AMOUNT, 2);
+                            items.push(item);
+                        } else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show
+
+                            if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
+                                item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
+                                items.push(item);
+                            }
+
+                        } else if (isSplitCheck === true) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                            items.push(item);
+                        }
+
+                        if (offer.OPEN_PRICE) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                            items.push(item);
+                        }
+                    }
 
                     if (!isReturnOrder) {
                         if (offer.ORDERED_ITEMS_LIST && offer.ORDERED_ITEMS_LIST.length > 0)
@@ -193,7 +244,7 @@ export default class BillService {
                                             isItem: true,
                                             name: modifier.MODIFIER_NAME,
                                             qty: null,
-                                            amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(item.ITEM_AMOUNT, 2)
+                                            amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(modifier.MODIFIER_PRICE, 2)
                                         })
                                     })
                                 }
@@ -255,23 +306,56 @@ export default class BillService {
 
     resolveTotals(variables, collections) {
         let totals = [];
+        if(this._isUS) {
+            let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+            let totalSales = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+            if(INCLUSIVE_GROSS_AMOUNT !== totalSales) {
+                totals.push({
+                    name: this.$translate.getText('INCLUSIVE_GROSS_AMOUNT'),
+                    amount: this.$utils.toFixedSafe(INCLUSIVE_GROSS_AMOUNT, 2)
+                });
+            }
+            let DISCOUNT = _.get(variables, 'TOTAL_DISCOUNTS', 0);
+            if (DISCOUNT > 0) {
+                totals.push({
+                    name: this.$translate.getText('ORDER_DISCOUNT_US'),
+                    amount: this.$utils.toFixedSafe(DISCOUNT * -1, 2)
+                })
+            }
+        }
 
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
             variables.TOTAL_TIPS !== undefined ||
             (this._isUS && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0))) {
+
+            /**
+             * SUBTOTAL (TOTAL_ORDER) :
+             *  in US is 'TOTAL_BEFORE_EXCLUDED_TAX_BEFORE_DISCOUNTS'.
+             *  in IL is 'TOTAL_SALES_AMOUNT'.
+             *  Backward compatibility - default is 'TOTAL_SALES_AMOUNT'
+             */
+            let TOTAL_SALES = 0;
+            if (this._isUS) {
+                TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+
+            } else {
+                TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
+            }
+
             totals.push({
                 name: this.$translate.getText('TOTAL_ORDER'),
-                amount: this.$utils.toFixedSafe(variables.TOTAL_SALES_AMOUNT, 2)
-            })
+                amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
+            });
         }
-
-        if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
-            collections.ORDER_DISCOUNTS_LIST.forEach(discount => {
-                totals.push({
-                    name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('ORDER_DISCOUNT'),
-                    amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
+        if ( !this._isUS) {
+            if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
+                collections.ORDER_DISCOUNTS_LIST.forEach(discount => {
+                    totals.push({
+                        name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('ORDER_DISCOUNT'),
+                        amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
+                    })
                 })
-            })
+            }
         }
         if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this._isUS) {
             collections.EXCLUSIVE_TAXES.forEach(tax => {
@@ -279,10 +363,12 @@ export default class BillService {
                     type: 'exclusive_tax',
                     name: tax.NAME ? tax.NAME : this.$translate.getText('ECVLUSIVE_TAX'),
                     amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
-                    rate: tax.RATE
+                    rate: this.$utils.toFixedSafe(tax.RATE, 2)
                 })
             })
         }
+
+        let isServiceCharge = false;
 
         if (collections.TIPS) {
 
@@ -300,35 +386,48 @@ export default class BillService {
                         }
 
                         if (tip.AMOUNT !== 0) {
+                            isServiceCharge = true;
                             totals.push({
                                 type: 'service_charge',
                                 name: _name,
                                 amount: this.$utils.toFixedSafe(tip.AMOUNT, 2)
-                            })
-
+                            });
                         }
 
-                    })
+                    });
                 }
             }
 
         }
 
-        if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined || variables.TOTAL_TIPS !== undefined) {
+        if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined && variables.TOTAL_TIPS_ON_PAYMENTS > 0 && isServiceCharge == true) {
+
+            totals.push({
+                type: 'tips',
+                name: this.$translate.getText('TIP'),
+                amount: this.$utils.toFixedSafe(variables.TOTAL_TIPS_ON_PAYMENTS, 2)
+            });
+
+        }
+        else if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined || variables.TOTAL_TIPS !== undefined) {
 
             let tipAmount = 0;
             if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined && variables.TOTAL_TIPS_ON_PAYMENTS !== 0) { tipAmount = variables.TOTAL_TIPS_ON_PAYMENTS; }
             else if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS !== 0) { tipAmount = variables.TOTAL_TIPS; }
 
             if (tipAmount > 0) {
-                totals.push({
-                    type: 'tips',
-                    name: this.$translate.getText('TIP'),
-                    amount: this.$utils.toFixedSafe(tipAmount, 2)
-                })
+
+                if (isServiceCharge === false) {
+                    totals.push({
+                        type: 'tips',
+                        name: this.$translate.getText('TIP'),
+                        amount: this.$utils.toFixedSafe(tipAmount, 2)
+                    });
+                }
             }
+
             //if it is a returned order, the tip is negative and needs to be presented
-            if (collections.PAYMENT_LIST[0].TRANS_TYPE === this.Enums().TransTypes.Return) {
+            if (_.get(collections, 'PAYMENT_LIST[0].TRANS_TYPE') === this.Enums().TransTypes.Return) {
                 if (collections.PAYMENT_LIST[0].TIP_AMOUNT !== 0) {
                     totals.push({
                         type: 'tips',
@@ -342,7 +441,7 @@ export default class BillService {
         if (!this._isUS) {
             totals.push({
                 name: this.$translate.getText('TOTAL_INC_VAT'),
-                amount: this.$utils.toFixedSafe(variables.TOTAL_IN_VAT || 0, 2)
+                amount: this.$utils.toFixedSafe(_.get(variables,'TOTAL_BEFORE_TAX',variables.TOTAL_IN_VAT) || 0, 2)
             })
         }
 
@@ -365,17 +464,25 @@ export default class BillService {
         let payments = [];
 
         filteredPyaments.forEach(payment => {
-            payments.push({
+
+            let paymentData = {
                 name: this.resolvePaymentName(payment),
                 amount: payment.PAYMENT_TYPE ? this.$utils.toFixedSafe(payment.P_AMOUNT * -1, 2) : this.$utils.toFixedSafe(payment.P_AMOUNT, 2),
                 holderName: payment.CUSTOMER_NAME !== undefined ? payment.CUSTOMER_NAME : ''
-            });
+            }
+
+            if (payment.GUEST_NAME) paymentData.GUEST_NAME = payment.GUEST_NAME;
+            if (payment.HOTEL_NAME) paymentData.HOTEL_NAME = payment.HOTEL_NAME;
+            if (payment.ROOM_NUMBER) paymentData.ROOM_NUMBER = payment.ROOM_NUMBER;
+            if (payment.HOTEL_CHECK_NUMBER) paymentData.HOTEL_CHECK_NUMBER = payment.HOTEL_CHECK_NUMBER;
+
+            payments.push(paymentData);
         });
 
         payments.push({
             type: 'change',
             name: this.$translate.getText('CHANGE'),
-            amount: this.$utils.toFixedSafe(variables.CHANGE, 2)
+            amount: variables.CHANGE
         });
 
         return payments;
@@ -401,7 +508,8 @@ export default class BillService {
                 taxes.InclusiveTaxes.push({
                     type: 'inclusive_tax',
                     name: tax.NAME ? tax.NAME : this.$translate.getText('INCLUSIVE_TAXES'),
-                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2)
+                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
+                    rate: this.$utils.toFixedSafe(tax.RATE, 2)
                 })
             })
         }
@@ -418,7 +526,8 @@ export default class BillService {
                 taxes.ExemptedTaxes.push({
                     type: 'exempted_tax',
                     name: tax.NAME ? tax.NAME : this.$translate.getText('EXEMPTED_TAX'),
-                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2)
+                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
+                    rate: this.$utils.toFixedSafe(tax.RATE, 2)
                 })
             });
         }
@@ -448,7 +557,12 @@ export default class BillService {
         if (payment.P_TENDER_TYPE === 'creditCard' || payment.P_TENDER_TYPE === 'gidtCard') {
             paymentName = refund !== '' ? `${refund} (${payment.CARD_TYPE} ${payment.LAST_4})` : `${payment.CARD_TYPE} ${payment.LAST_4}`;
         } else {
-            paymentName = `${refund} ${payment.P_NAME}`;
+
+            if (this._isUS) {
+                paymentName = `${payment.P_NAME} ${refund}`;
+            } else {
+                paymentName = `${refund} ${payment.P_NAME}`;
+            }
         }
 
         return paymentName;
@@ -578,17 +692,18 @@ export default class BillService {
         return checkBill;
     }
 
- 
-  
 
 
- 
+
+
+
 
     resolvePrintData(printData, isUS) {
 
+
         let DataBill = function (collections, variables, data, printByOrder, waiterDiners) {
-            this.collections = collections;
-            this.variables = variables;
+            this.collections = printData.collections;
+            this.variables = printData.variables;
             this.data = data;
             this.print_by_order = printByOrder;
             this.waiter_diners = waiterDiners;

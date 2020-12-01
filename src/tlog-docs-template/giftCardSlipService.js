@@ -1,21 +1,25 @@
-import TlogDocsUtils from './tlogDocsUtils';
+import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
+import SignatureService from './signatureService';
 
-export default class CreateGiftCardSlipService {
+export default class GiftCardSlipService {
 
     constructor(options = {}) {
         this._options = {};
         this.$translate = new TlogDocsTranslateService(options);
-        this.$utils = new TlogDocsUtils();
+        this.$utils = new Utils();
+        this.$signatureService = new SignatureService();
         this._locale;
         this._isUS;
         this._doc;
+        this.timezone;
         this.configure(options)
 
     }
     configure(options) {
         if (options.locale) this._locale = options.locale;
         if (options.isUS) this._isUS = options.isUS;
+        this.timezone = options.timezone;
 
     }
     createGiftCardSlip(printData, docObjChosen, doc) {
@@ -75,16 +79,17 @@ export default class CreateGiftCardSlipService {
             }
 
 
-            let dateTimeStr = giftCardSlipDoc.PROVIDER_PAYMENT_DATE;
-            let dateTimeResult;
+
             let transactTimeText = this.$translate.getText('transactTimeText');
             let giftCardSlipTimeDiv = this._doc.createElement('div')
-            if (this._isUS) dateTimeResult = this.$utils.formatDateUS(dateTimeStr);
-            else if (!this._isUS) {
-                dateTimeResult = this.$utils.formatDateIL(dateTimeStr);
-            }
+            let providerPaymentDate = this.$utils.toDate({
+                timezone: this.timezone,
+                isUS: this._isUS,
+                date: giftCardSlipDoc.PROVIDER_PAYMENT_DATE
+            });
+
             giftCardSlipTimeDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + ": " + (transactTimeText ? dateTimeResult : "") + "</div>" +
+                "<div class='total-name'>" + (transactTimeText ? transactTimeText : "") + ": " + (transactTimeText ? providerPaymentDate : "") + "</div>" +
                 "</div>";
 
             giftCardSlipTimeDiv.classList += ' padding-bottom';
@@ -180,57 +185,20 @@ export default class CreateGiftCardSlipService {
             giftCardSlipDiv.appendChild(totalDiv)
 
             //Add signature 
+            if (_.get(docObjChosen, 'md.signature')) {
 
-            if (docObjChosen.md.signature) {
+                var signatureArea = this._doc.createElement('div');
+                signatureArea.id = 'signatureArea';
+                signatureArea.className += ' item-div';
 
-                let signatureData = docObjChosen.md.signature;
-                let signatureDiv = this._doc.createElement('div');
-                signatureDiv.id = 'signatureDiv';
-                signatureDiv.classList += " signature-container";
+                giftCardSlipDiv.appendChild(signatureArea);
+                giftCardSlipDiv.appendChild(this.$signatureService.getSignature(signatureArea));
 
-                let elementSVGDiv = this._doc.createElement('div');
-                elementSVGDiv.id = 'elementSVGDiv'
-                elementSVGDiv.classList += " signature-container";
-                let newSVG = this._doc.createElement('div');
-                newSVG.id = 'newSVG';
-
-                elementSVGDiv.appendChild(newSVG)
-                newSVG.outerHTML += `<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id='svg' width='100%' height='100' transform='translate(0, 0)'  viewBox="0 0 500 150" ></svg>`
-                let svgNode = elementSVGDiv.getElementsByTagName('svg')[0];
-                svgNode.classList += " signature-container";
-
-                elementSVGDiv.appendChild(svgNode);
-
-                signatureDiv.appendChild(elementSVGDiv)
-
-                let elementSVG = signatureDiv.getElementsByTagName('svg')[0];
-                elementSVG.id = 'elementSVG';
-
-                let path = this.makeSVG('path', { d: signatureData, version: "1.1", xmlns: "http://www.w3.org/2000/svg", stroke: "#06067f", 'stroke-width': "2", height: "auto", transform: 'translate(50,-80) scale(0.5,0.5)', 'stroke-linecap': "butt", fill: "none", 'stroke-linejoin': "miter" });
-                path.setAttribute("width", "50%");
-                path.setAttribute("height", "auto");
-
-                elementSVG.setAttribute("width", "100");
-                elementSVG.setAttribute("height", "auto");
-
-                elementSVG.innerHTML = "";
-                elementSVG.appendChild(path);
-                elementSVG.setAttribute("width", "100%");
-                elementSVG.setAttribute("height", "auto");
-
-                elementSVGDiv.appendChild(elementSVG);
-                giftCardSlipDiv.appendChild(signatureDiv)
             }
+
         }
 
         return giftCardSlipDiv;
-    }
-
-    makeSVG(tag, attrs) {
-        var el = this._doc.createElementNS('http://www.w3.org/2000/svg', tag);
-        for (var k in attrs)
-            el.setAttribute(k, attrs[k]);
-        return el;
     }
 
 }

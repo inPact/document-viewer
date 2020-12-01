@@ -2,6 +2,8 @@ import TemplateBuilderService from './templateBuilderService';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import BillService from './billService';
 import _ from 'lodash';
+import Utils from '../helpers/utils.service';
+import SlipService from '../helpers/slip.service';
 
 export default class TlogDocsService {
 
@@ -13,6 +15,8 @@ export default class TlogDocsService {
 
         this.$templateBuilder = new TemplateBuilderService(options);
         this.$translate = new TlogDocsTranslateService(options);
+        this.$utils = new Utils();
+        this.$slipService = new SlipService(options);
     }
 
     Enums() {
@@ -41,82 +45,94 @@ export default class TlogDocsService {
         if (options.isUS) this._isUS = options.isUS;
 
     }
+
+
     //Create the Buttons
-    orderTypesListCreator(tlog, billData, isClosedOrder) {
+    orderTypesListCreator(tlog, options) {
+
         //the array of orders for use of the buttons or other needs
         var orderSelection = [];
         //the type tlog is made for the template builder service which returns regular bill
-        if (!isClosedOrder) {
+
+        var checkGiftcardExists = tlog.order &&
+            tlog.order.length > 0 &&
+            tlog.order[0].allDocuments.length === 0
+        //&&
+        //tlog.order[0].allDocuments[0].payments.length > 0
+        //&& tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false; /// TODO : is gift card only in index 0 ?????
+
+
+        if (checkGiftcardExists) {
             orderSelection.push({
-                tlogId: '',
-                id: 'openOrder',
-                type: 'tlog',
-                title: this.$translate.getText('order') + ' ',
-                ep: '',
+                tlogId: tlog._id,
+                id: tlog._id,
+                type: tlog._type,
+                title: this.$slipService.getTitle({ type: tlog._type, number: tlog.number }),
+                ep: `tlogs/${tlog._id}/bill`,
                 isRefund: false,
-                isFullOrderBill: false,
+                isFullOrderBill: true,
+                isGiftCardBill: true
             });
         }
         else {
-            var checkGiftcardExists = tlog.order &&
-                tlog.order.length > 0 &&
-                tlog.order[0].allDocuments.length > 0 &&
-                tlog.order[0].allDocuments[0].payments.length > 0 &&
-                tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false;
-            if (checkGiftcardExists) {
+            orderSelection.push({
+                tlogId: tlog._id,
+                id: tlog._id,
+                type: tlog._type,
+                title: this.$slipService.getTitle({ type: tlog._type, number: tlog.number }),
+                ep: `tlogs/${tlog._id}/bill`,
+                isRefund: false,
+                isFullOrderBill: true,
+            });
+
+            if (tlog.order[0].clubMembers && tlog.order[0].clubMembers.length) {
                 orderSelection.push({
                     tlogId: tlog._id,
                     id: tlog._id,
                     type: tlog._type,
-                    title: this.$translate.getText('order') + ' ' + tlog.number,
-                    ep: `tlogs/${tlog._id}/bill`,
-                    isRefund: false,
-                    isFullOrderBill: true,
-                    isGiftCardBill: true
+                    title: this.$slipService.getTitle({ type: 'clubMembers' }),
+                    ep: `documents/v2/${doc._id}/printdata`,
+                    isRefund: false
                 });
             }
-            else {
-                orderSelection.push({
-                    tlogId: tlog._id,
-                    id: tlog._id,
-                    type: tlog._type,
-                    title: this.$translate.getText('order') + ' ' + tlog.number,
-                    ep: `tlogs/${tlog._id}/bill`,
-                    isRefund: false,
-                    isFullOrderBill: true,
-                });
 
-                if (tlog.order[0].clubMembers && tlog.order[0].clubMembers.length) {
+            if (tlog.order[0].checks && tlog.order[0].checks.length > 1) {
+
+
+                //set check in split check to 'orderOptions' (the option btns on the PopupBill)
+                tlog.order[0].checks.forEach(check => {
+                    let hasPaymentList = check.payments.length > 0 ? true : false;
+                    let paymentId = hasPaymentList ? check.payments[0].paymentId : '';
                     orderSelection.push({
                         tlogId: tlog._id,
-                        id: tlog._id,
-                        type: tlog._type,
-                        title: this.$translate.getText('clubMembers'),
-                        ep: `documents/v2/${doc._id}/printdata`,
-                        isRefund: false
+                        id: check._id,
+                        type: 'check',
+                        title: this.$slipService.getTitle({ type: 'check', number: check.number }),
+                        ep: `tlogs/${tlog._id}/checks`,
+                        md: {
+                            paymentId: paymentId,
+                            checkNumber: check.number
+                        }
                     });
-                }
-                if (tlog.order[0].checks && tlog.order[0].checks.length > 1) {
-
-
-                    //set check in split check to 'orderOptions' (the option btns on the PopupBill)
-                    tlog.order[0].checks.forEach(check => {
-                        let hasPaymentList = check.payments.length > 0 ? true : false;
-                        let paymentId = hasPaymentList ? check.payments[0].paymentId : '';
-                        orderSelection.push({
-                            tlogId: tlog._id,
-                            id: check._id,
-                            type: 'check',
-                            title: this.$translate.getText('CHECK') + ` ${check.number}`, //this.$translate.getText('CHECK') + ` ${check.variables.CHECK_NO}`,
-                            ep: `tlogs/${tlog._id}/checks`,
-                            md: {
-                                paymentId: paymentId,
-                                checkNumber: check.number
-                            }
-                        });
-                    });
-                }
+                });
             }
+
+            let members = tlog.order[0].diners.filter(c => c.member !== undefined && c.member !== null);
+
+            if (members.length > 0) {
+
+                orderSelection.push({
+                    tlogId: tlog._id,
+                    id: this.$utils.generateGuid({ count: 3 }),// 'clubMembers', // patch id
+                    type: 'clubMembers',
+                    title: this.$slipService.getTitle({ type: 'clubMembers' }),
+                    ep: `tlogs/${tlog._id}/bill`,
+                    isRefund: false,
+                    isFakeDocument: true
+                });
+            }
+
+
 
             if (this._isUS) {
                 if (tlog.order) {
@@ -128,14 +144,14 @@ export default class TlogDocsService {
 
                                     var typeTitle = "";
                                     if (payment.tenderType === 'creditCard') typeTitle = this.$translate.getText('CreditSlip');
-                                    if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); document.id = document.id + 'giftCard' }
+                                    if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); }
                                     if (payment.tenderType === 'creditCard' || payment.tenderType === 'giftCard') {
                                         payment.number = `${tlog.order[0].number}/${payment.number}`;
                                         orderSelection.push({
                                             tlogId: tlog._id,
-                                            id: document.id,
+                                            id: this.$utils.generateGuid({ count: 3 }),
                                             type: payment.tenderType,
-                                            title: typeTitle + "-" + payment.number,
+                                            title: this.$slipService.getTitle({ type: payment.tenderType, number: payment.number }),
                                             ep: `documents/v2/${payment._id}/printdata`,
                                             md: {
                                                 paymentId: payment._id,
@@ -143,8 +159,17 @@ export default class TlogDocsService {
                                             },
                                             docPaymentType: (payment.tenderType ? payment.tenderType : ''),
                                             isRefund: payment.tenderType.toUpperCase().includes('REFUND'),
-                                            isGiftCardBill: false
+                                            isGiftCardBill: false,
+                                            isFakeDocument: true
                                         });
+
+                                        // when _type is mediaExchange we need to remove refunds
+                                        if (document._type === 'mediaExchange') {
+                                            let paymentIndex = orderSelection.findIndex(p => _.get(p,'md.paymentId') === payment._id);
+                                            if(paymentIndex !== -1) {
+                                                orderSelection.splice(paymentIndex, 1);
+                                            }
+                                        }
                                     }
                                 })
                             }
@@ -168,7 +193,7 @@ export default class TlogDocsService {
                                         tlogId: tlog._id,
                                         id: doc._id,
                                         type: doc._type,
-                                        title: this.$translate.getText('invoice_number') + doc.number,
+                                        title: this.$slipService.getTitle({ type: this.Enums().DOC_TYPES.INVOICE, number: doc.number }),
                                         ep: `documents/v2/${doc._id}/printdata`,
                                         docPaymentType: (doc.payments[0]._type ? doc.payments[0]._type : ''),
                                         isRefund: false
@@ -179,12 +204,13 @@ export default class TlogDocsService {
                                 case this.Enums().DOC_TYPES.REFUND_INVOICE: {
                                     if (doc.payments[0]._type === 'ChequeRefund' ||
                                         doc.payments[0]._type === 'CashRefund' ||
-                                        doc.payments[0]._type === 'CreditCardRefund') {
+                                        doc.payments[0]._type === 'CreditCardRefund' ||
+                                        doc.payments[0]._type === 'GiftCardLoad' ) {
                                         orderSelection.push({
                                             tlogId: tlog._id,
                                             id: doc._id,
                                             type: doc._type,
-                                            title: this.$translate.getText('credit_invoice_number') + doc.number,
+                                            title: this.$slipService.getTitle({ type: this.Enums().DOC_TYPES.REFUND_INVOICE, number: doc.number }),
                                             ep: `documents/v2/${doc._id}/printdata`,
                                             docPaymentType: doc.payments[0]._type,
                                             isRefund: true
@@ -199,7 +225,7 @@ export default class TlogDocsService {
                                             tlogId: tlog._id,
                                             id: doc._id,
                                             type: doc._type,
-                                            title: this.$translate.getText('delivery_note_number') + doc.number,
+                                            title: this.$slipService.getTitle({ type: 'deliveryNote', number: doc.number }),
                                             ep: `documents/v2/${doc._id}/printdata`,
                                             docPaymentType: doc.payments[0]._type,
                                             isRefund: doc._type.toUpperCase().includes('REFUND')
@@ -215,7 +241,7 @@ export default class TlogDocsService {
                                             tlogId: tlog._id,
                                             id: doc._id,
                                             type: doc._type,
-                                            title: this.$translate.getText('refund_note_number') + doc.number,
+                                            title: this.$slipService.getTitle({ type: 'refundDeliveryNote', number: doc.number }),
                                             ep: `documents/v2/${doc._id}/printdata`,
                                             docPaymentType: doc.payments[0]._type,
                                             isRefund: true
@@ -233,8 +259,7 @@ export default class TlogDocsService {
 
                 }
             }
-            console.log('orderSelection');
-            console.log(orderSelection);
+
         }
         return orderSelection;
 
@@ -277,28 +302,27 @@ export default class TlogDocsService {
 
     //create the data for the documents list
 
-    getDocs(tlog, billData, isClosedOrder) {
+    getDocs(tlog, options) {
+
         let docsArray;
 
         let _billService = new BillService(this._options);
-        let _enrichPrintData = _billService.resolvePrintData({
-            collections: billData.printData.collections,
-            variables: billData.printData.variables
-        }, this._isUS);
 
-        docsArray = this.orderTypesListCreator(tlog, _enrichPrintData, isClosedOrder);
+        docsArray = this.orderTypesListCreator(tlog, options);
 
         return docsArray;
 
     }
 
-    getHTMLDocument(documentInfo, document, options = {}) {
-        return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, document, options);
+    getHTMLDocument(documentInfo, printData, options = {}) {
+        return this.$templateBuilder.createHTMLFromPrintDATA(documentInfo, printData, options);
     }
 
     getHTMLDocumentWithoutTlog(document, options = {}) {
+
         let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
         documentInfo.documentType = document.documentType;
+
 
         switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
             case 'cash':
@@ -316,8 +340,16 @@ export default class TlogDocsService {
             case 'chargeAccount':
                 documentInfo.docPaymentType = 'ChargeAccountPayment';
                 break;
-
         }
+
+        let number;
+        if (['refundInvoice', 'invoice', 'deliveryNote', 'refundDeliveryNote'].indexOf(document.documentType) > -1) {
+            number = document.printData.variables.DOCUMENT_NO;
+        } else {
+            number = document.printData.variables.ORDER_NO;
+        }
+
+        documentInfo.title = this.$slipService.getTitle({ type: documentInfo.documentType, number: number });
 
         documentInfo.documentNumber = _.get(document, 'printData.variables.DOCUMENT_NO');
         return this.getHTMLDocument(documentInfo, document, options);

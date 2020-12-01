@@ -1,7 +1,17 @@
+
+@import 'style.scss';
+@import 'elements.scss';
+
+@import '../services/templates/RefundDeliveryNote/refundDeliveryNote';
+
 .basicTemplate {
   background-color: white;
   font-family: "Courier New", Courier, monospace;
   padding: 5px 15px 5px 15px;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
 }
 
 .basicTemplate .header-div {
@@ -64,18 +74,20 @@
   justify-content: flex-start;
   text-align: start;
   flex: 5;
+  margin: 0px 2px;
 }
 
 .basicTemplate .item-amount {
   display: flex;
   justify-content: flex-start;
-  flex: 3;
+  flex: 4;
 }
 
 .basicTemplate .total-name {
   display: flex;
   justify-content: flex-start;
   flex: 6;
+  margin: 0px 5px;
 }
 
  
@@ -87,7 +99,7 @@
 
 .basicTemplate .total-amount {
   display: flex;
-  padding:0 20px 0 20px;
+  padding: 0 0px 0 3px;
   justify-content: flex-start;
   flex: 3;
 }
@@ -159,13 +171,21 @@
   font-size: 18px;
 }
 
+.basicTemplate .small-chars {
+  font-size: 12px;
+}
+
+.basicTemplate .emv-chars {
+  font-size: 11px;
+}
+
 .basicTemplate .bold{
   font-weight: bold;
 }
 
 .basicTemplate .bigBold{
   font-weight: bold;
-  font-size: 26px;
+  font-size: 21px;
 }
 
 .basicTemplate.rtl .customerMessage{
@@ -181,7 +201,6 @@
 .basicTemplate .total-amount.negative {
   direction: ltr !important;
   text-align: right;
-  padding: 0 20px 0 20px;
   display: block;
 }
 
@@ -203,13 +222,24 @@
   justify-content: center;
 }
 
+.basicTemplate.ltr {
+    .align-text {
+      text-align: left;
+    }
+}
 
-.basicTemplate .text-center {
-  text-align: center;
+.basicTemplate.rtl {
+  .align-text {
+    text-align: right;
+  }
+}
+
+.basicTemplate .m-bottom-10 {
+  margin-bottom: 10px;
 }
 
 .basicTemplate.ltr .total-amount{
-  padding: 0 20px 0 40px;
+  padding: 0 20px 0 18px;
   justify-content: flex-end;
   direction:ltr !important;
   text-align: right !important;
@@ -219,4 +249,18 @@
   padding-bottom:10px;
   border-bottom: solid #E8E8E8 1px;
 
+}
+.border-top{
+  padding-top:5px;
+  border-bottom: solid #E8E8E8 1px;
+
+}
+
+.emv-div{
+  display:flex;
+}
+
+.emv-text{
+  display:flex;
+  flex:1;
 }
