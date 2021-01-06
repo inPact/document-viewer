@@ -155,6 +155,35 @@ export default class HouseAccountPayment {
 
         }
 
+        if (variables.CARD_BALANCE) {
+
+            let elementCardBalanceText = this.$htmlCreator.create({
+                type: 'div',
+                id: 'card-balance-text',
+                classList: ['total-name'],
+                value: this.$translate.getText('CARD_BALANCE')
+            });
+
+            let elementCardBalanceValue = this.$htmlCreator.create({
+                type: 'div',
+                id: 'card-balance-value',
+                classList: ['number-data'],
+                value: variables.CARD_BALANCE || ''
+            });
+
+            let elementCardBalance = this.$htmlCreator.create({
+                type: 'div',
+                id: 'card-balance',
+                classList: ['itemDiv'],
+                value: undefined,
+                children: [
+                    elementCardBalanceText,
+                    elementCardBalanceValue
+                ]
+            });
+            houseAccountPaymentContainer.appendChild(elementCardBalance);
+        }
+
         if (houseAccountPayment.PROVIDER_PAYMENT_DATE) {
             let providerPaymentDate = this.$utils.toDate({
                 timezone: this.timezone,
