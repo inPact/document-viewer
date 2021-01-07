@@ -668,8 +668,8 @@ export default class TemplateBuilderService {
                 isOffer: true,
             })
 
-            if (o.ORDERED_OFFER_DISCOUNTS && o.ORDERED_OFFER_DISCOUNTS.length > 0) {
-                o.ORDERED_OFFER_DISCOUNTS.forEach(discount => {
+            if (o.RETURNED_OFFER_DISCOUNTS && o.RETURNED_OFFER_DISCOUNTS.length > 0) {
+                o.RETURNED_OFFER_DISCOUNTS.forEach(discount => {
                     items.push({
                         isOfferDiscount: true,
                         name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('MANUAL_ITEM_DISCOUNT'),
