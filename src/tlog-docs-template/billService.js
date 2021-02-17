@@ -445,6 +445,13 @@ export default class BillService {
             })
         }
 
+        if (this._isUS && _.get(variables,'TOTAL_FEES', null)) {
+            totals.push({
+                name: this.$translate.getText('FEE'),
+                amount: this.$utils.toFixedSafe(variables.TOTAL_FEES , 2)
+            })
+        }
+
         if (this._isUS) {
             totals.push({
                 name: this.$translate.getText('TOTAL_INC_VAT'),
