@@ -29,7 +29,7 @@ export default class TlogDocsTranslateService {
                 "SERVICE_CHARGE": "SERVICE CHARGE",
                 "TIP": "TIP",
                 "TOTAL_INC_VAT": "CHECK TOTAL",
-                "FEE": "FEE",
+                "FEE": "FEES",
                 "CHANGE": "Change",
                 "INCLUSIVE_TAXES": "INCLUSIVE TAXES",
                 "EXEMPTED_TAXES": "EXEMPTED TAXES",

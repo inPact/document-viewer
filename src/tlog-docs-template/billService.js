@@ -5,6 +5,7 @@ import moment from 'moment';
 export default class BillService {
     constructor(options) {
 
+
         this._isUS = options.isUS === undefined ? true : options.isUS;
         this._locale = options.locale;
         this.$utils = new Utils();
@@ -326,7 +327,8 @@ export default class BillService {
 
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
             variables.TOTAL_TIPS !== undefined ||
-            (this._isUS && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0))) {
+            (this._isUS && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0)) ||
+            (this._isUS && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
 
             /**
              * SUBTOTAL (TOTAL_ORDER) :
@@ -357,6 +359,14 @@ export default class BillService {
                 })
             }
         }
+
+        if (this._isUS && _.get(variables,'TOTAL_FEES', null)) {
+            totals.push({
+                name: this.$translate.getText('FEE'),
+                amount: this.$utils.toFixedSafe(variables.TOTAL_FEES , 2)
+            })
+        }
+
         if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this._isUS) {
             collections.EXCLUSIVE_TAXES.forEach(tax => {
                 totals.push({
@@ -442,13 +452,6 @@ export default class BillService {
             totals.push({
                 name: this.$translate.getText('TOTAL_INC_VAT'),
                 amount: this.$utils.toFixedSafe(_.get(variables,'TOTAL_BEFORE_TAX',variables.TOTAL_IN_VAT) || 0, 2)
-            })
-        }
-
-        if (this._isUS && _.get(variables,'TOTAL_FEES', null)) {
-            totals.push({
-                name: this.$translate.getText('FEE'),
-                amount: this.$utils.toFixedSafe(variables.TOTAL_FEES , 2)
             })
         }
 
