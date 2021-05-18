@@ -425,7 +425,7 @@ export default class BillService {
             if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined && variables.TOTAL_TIPS_ON_PAYMENTS !== 0) { tipAmount = variables.TOTAL_TIPS_ON_PAYMENTS; }
             else if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS !== 0) { tipAmount = variables.TOTAL_TIPS; }
 
-            if (tipAmount > 0) {
+            if (tipAmount > 0 || !this._isUS) {
 
                 if (isServiceCharge === false) {
                     totals.push({
