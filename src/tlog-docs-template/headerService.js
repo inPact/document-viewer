@@ -194,7 +194,6 @@ export default class HeaderService {
                 break;
             }
 
-
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
                     let issuedAtDate = this.$utils.toDate({
