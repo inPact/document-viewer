@@ -306,6 +306,7 @@ export default class BillService {
     }
 
     resolveTotals(variables, collections) {
+        console.log('resolveTotals')
         let totals = [];
         if(this._isUS) {
             let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
@@ -379,7 +380,7 @@ export default class BillService {
         }
 
         let isServiceCharge = false;
-
+        console.log('collections.TIPS', collections.TIPS)
         if (collections.TIPS) {
 
             let autoGratuityTips = collections.TIPS.filter(c => c.SCOPE === "order");
@@ -426,7 +427,7 @@ export default class BillService {
             else if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS !== 0) { tipAmount = variables.TOTAL_TIPS; }
 
             if (tipAmount > 0 || !this._isUS) {
-
+                console.log('enter if')
                 if (isServiceCharge === false) {
                     totals.push({
                         type: 'tips',
