@@ -418,7 +418,6 @@ export default class BillService {
                 name: this.$translate.getText('TIP'),
                 amount: this.$utils.toFixedSafe(variables.TOTAL_TIPS_ON_PAYMENTS, 2)
             });
-
         }
         else if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined || variables.TOTAL_TIPS !== undefined) {
 
