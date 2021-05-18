@@ -28,7 +28,7 @@ angular.module('app')
             documents: {},
             selectedDocument: undefined
         }
-
+ 
         let documentViewer = new DocumentViewer({
             isUS: false,
             locale: ENV.locale,
