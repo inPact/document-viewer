@@ -404,6 +404,7 @@ export default class VatTemplateService {
             value: undefined
         });
 
+        // Total After Discount
         let elementTotalOrderAfterDiscountText = this.$htmlCreator.create({
             type: 'div',
             id: 'total-order-text',
@@ -426,6 +427,33 @@ export default class VatTemplateService {
             children: [
                 elementTotalOrderAfterDiscountText,
                 elementTotalOrderAfterDiscountValue
+            ]
+        });
+
+        // Total Without Discount
+
+        let elementTotalOrderText = this.$htmlCreator.create({
+            type: 'div',
+            id: 'total-order-text',
+            classList: ['total-name'],
+            value: this.$translate.getText('TOTAL_ORDER')
+        });
+
+        let elementTotalOrderValue = this.$htmlCreator.create({
+            type: 'div',
+            id: 'total-order-value',
+            classList: ['total-amount'],
+            value: this.$utils.toFixedSafe(variables.TOTAL_SALES_AMOUNT, 2) || ''
+        });
+
+        let elementTotalOrder = this.$htmlCreator.create({
+            type: 'div',
+            id: 'total-order',
+            classList: ['itemDiv'],
+            value: undefined,
+            children: [
+                elementTotalOrderText,
+                elementTotalOrderValue
             ]
         });
 
@@ -456,8 +484,13 @@ export default class VatTemplateService {
             ]
         });
 
-        if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS > 0) {
+        if (variables.TOTAL_DISCOUNTS !== undefined && variables.TOTAL_DISCOUNTS > 0) {
             totalsContainer.appendChild(elementTotalOrderAfterDiscount); // Add total order element.
+        } else {
+            totalsContainer.appendChild(elementTotalOrder); // Add total order element.
+        }
+
+        if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS > 0) {
             totalsContainer.appendChild(elementTotalTip); // Add total tip element.
         }
 
