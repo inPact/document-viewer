@@ -4,10 +4,12 @@ import HtmlCreator from '../helpers/htmlCreator.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 
 export default class VatTemplateService {
+
     constructor(options) {
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
         this.$htmlCreator = new HtmlCreator();
+        this.totalAmountRowExist = false;
     }
 
     isNegative(number) {
@@ -128,6 +130,7 @@ export default class VatTemplateService {
             value: this.$utils.toFixedSafe(variables.TOTAL_AMOUNT, 2)
         });
 
+
         let elementTotalAmount = this.$htmlCreator.create({
             type: 'div',
             id: 'total-amount',
@@ -187,6 +190,7 @@ export default class VatTemplateService {
                 ]
             });
 
+            this.totalAmountRowExist = true;
             resultCollection.push(elementOrderTotal);
 
         }
@@ -308,7 +312,7 @@ export default class VatTemplateService {
         let collections = _.get(options, 'collections');
         let variables = _.get(options, 'variables');
 
-        // Old 
+        // Old
 
         let vatDataTemplate = this._doc.createElement('div');
         vatDataTemplate.id = "VatDataTemplate";
@@ -484,7 +488,7 @@ export default class VatTemplateService {
             ]
         });
 
-        if (variables.TOTAL_SALES_AMOUNT !== variables.TOTAL_AMOUNT) {
+        if (variables.TOTAL_SALES_AMOUNT !== variables.TOTAL_AMOUNT && !this.totalAmountRowExist) {
             totalsContainer.appendChild(elementTotalOrder); // Add total order element.
         }
 
