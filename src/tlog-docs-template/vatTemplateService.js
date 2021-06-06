@@ -416,7 +416,7 @@ export default class VatTemplateService {
             type: 'div',
             id: 'total-order-value',
             classList: ['total-amount'],
-            value: this.$utils.toFixedSafe(variables.TOTAL_AMOUNT - variables.TOTAL_TIPS, 2)
+            value: this.$utils.toFixedSafe(variables.TOTAL_SALES_AMOUNT - variables.TOTAL_ORDER_DISCOUNTS, 2)
         });
 
         let elementTotalOrderAfterDiscount = this.$htmlCreator.create({
@@ -484,13 +484,16 @@ export default class VatTemplateService {
             ]
         });
 
-        if (variables.TOTAL_DISCOUNTS !== undefined && variables.TOTAL_DISCOUNTS > 0) {
-            totalsContainer.appendChild(elementTotalOrderAfterDiscount); // Add total order element.
-        } else {
+        if (variables.TOTAL_SALES_AMOUNT !== variables.TOTAL_AMOUNT) {
             totalsContainer.appendChild(elementTotalOrder); // Add total order element.
         }
 
+        if (variables.TOTAL_ORDER_DISCOUNTS > 0 && variables.TOTAL_TIPS > 0) {
+            totalsContainer.appendChild(elementTotalOrderAfterDiscount); // Add total order after discount element.
+        }
+
         if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS > 0) {
+
             totalsContainer.appendChild(elementTotalTip); // Add total tip element.
         }
 
