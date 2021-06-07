@@ -2,6 +2,7 @@ import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import HtmlCreator from '../helpers/htmlCreator.service';
 import DocumentFactory from '../helpers/documentFactory.service';
+import _ from "lodash";
 
 export default class VatTemplateService {
 
@@ -392,7 +393,6 @@ export default class VatTemplateService {
         vatDataTemplate.appendChild(vatDataDiv);
         return vatDataTemplate;
     }
-
 
     createElementTotalOrderAndTip(options) {
 

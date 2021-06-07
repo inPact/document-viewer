@@ -20,7 +20,6 @@ export default class DeliveryNoteTransactionDataService {
 
 
     createDeliveryNoteTransactionData(options) {
-
         const IS_REFUND = options.IS_REFUND;
 
         this._doc = DocumentFactory.get();

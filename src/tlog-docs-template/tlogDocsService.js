@@ -303,7 +303,6 @@ export default class TlogDocsService {
     //create the data for the documents list
 
     getDocs(tlog, options) {
-
         let docsArray;
 
         let _billService = new BillService(this._options);
@@ -319,7 +318,6 @@ export default class TlogDocsService {
     }
 
     getHTMLDocumentWithoutTlog(document, options = {}) {
-
         let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
         documentInfo.documentType = document.documentType;
 

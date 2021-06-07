@@ -15,7 +15,6 @@ export default class emvService {
         return this.createEmvHtmlTemplate(data);
     }
 
-
     getEMVData(documentType, printData) {
         let emvData;
 
@@ -32,7 +31,6 @@ export default class emvService {
 
         return emvData
     }
-
 
     resolveEmvData(collection) {
 
@@ -71,8 +69,6 @@ export default class emvService {
 
         return list;
     }
-
-
 
     createEmvHtmlTemplate(data) {
         let emvDiv = this._doc.createElement('div');

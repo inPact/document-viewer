@@ -1,6 +1,7 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import moment from 'moment';
+import _ from "lodash";
 
 export default class BillService {
     constructor(options) {
@@ -623,6 +624,7 @@ export default class BillService {
         return RESULT_TEXT;
 
     }
+
     filterOmittedPayments(payments) {
 
         let omittedOrders = [];
@@ -701,11 +703,98 @@ export default class BillService {
         return checkBill;
     }
 
+    createReturnItemsData(printData) {
+        // here
+        var returnItems = this._doc.createElement('div');
 
+        const returnOffers = _.get(printData, 'collections.RETURNED_OFFERS_LIST', []);
+        const items = [];
+        returnOffers.forEach(o => {
+            items.push({
+                qty: 1,
+                name: o['OFFER_NAME'],
+                amount: o['OFFER_AMOUNT'],
+                isOffer: true,
+            })
 
+            if (o.RETURNED_OFFER_DISCOUNTS && o.RETURNED_OFFER_DISCOUNTS.length > 0) {
+                o.RETURNED_OFFER_DISCOUNTS.forEach(discount => {
+                    items.push({
+                        isOfferDiscount: true,
+                        name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('MANUAL_ITEM_DISCOUNT'),
+                        qty: null,
+                        amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT, 2)
+                    })
+                });
+            }
 
+            const OrderedItemsList = _.get(o,'ORDERED_ITEMS_LIST',[]);
+            OrderedItemsList.forEach(i => {
+                items.push({
+                    qty: 1,
+                    name: i['ITEM_NAME'],
+                    amount: '',
+                    isOffer: false,
+                })
+            })
+        })
 
+        items.forEach((item, index) => {
 
+            if(item.isOffer) {
+                // Return items Header
+                const returnItemsHeader = this._doc.createElement('div');
+                returnItemsHeader.id = "returnItemsHeader";
+                returnItemsHeader.innerHTML = this.$translate.getText('ReturnedItem');
+                returnItemsHeader.style.margin = index === 0 ? "0px 0 5px 0" : "10px 0 5px 0" ;
+                returnItemsHeader.classList += "bold";
+                returnItems.append(returnItemsHeader);
+            }
+
+            let elementItemQty = this.$htmlCreator.create({
+                type: 'div',
+                id: `item-qty-${index}`,
+                classList: ['item-qty'],
+                value: item.qty
+            });
+
+            // remove special chars (html chars as it not render)
+            let itemName = _.get(item, 'name', '');
+            let name = itemName.replace(/</ig, '').replace(/>/ig, '');
+            let elementItemName = this.$htmlCreator.create({
+                type: 'div',
+                id: `item-name-${index}`,
+                classList: ['item-name'],
+                value: item.isOffer ? `${name || ''}` : `&nbsp;&nbsp;${name || ''}`
+            });
+
+            let classList = ['total-amount'];
+            let negativeClass = this.$utils.isNegative(item.amount);
+            if (negativeClass !== "") {
+                classList.push(negativeClass);
+            }
+
+            let elementItemAmount = this.$htmlCreator.create({
+                type: 'div',
+                id: `item-amount-${index}`,
+                classList: classList,
+                value: this.$utils.twoDecimals(item.amount)
+            });
+
+            let elementItemContainer = this.$htmlCreator.create({
+                type: 'div',
+                id: `item-${index}`,
+                classList: item.isOffer ? ['itemDiv', 'bold'] : ['itemDiv'],
+                children: [
+                    elementItemQty,
+                    elementItemName,
+                    elementItemAmount
+                ]
+            });
+            returnItems.appendChild(elementItemContainer);
+        })
+        return returnItems
+    }
 
     resolvePrintData(printData, isUS) {
 
