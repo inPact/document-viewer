@@ -8,7 +8,7 @@ export default class Utils {
     }
 
     toFixedSafe(value, num) {
-        if (value && value !== undefined) {
+        if (value) {
             return Number(value).toFixed(num);
         }
         return "0.00";
