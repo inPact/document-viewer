@@ -308,6 +308,7 @@ export default class BillService {
 
     resolveTotals(variables, collections) {
         let totals = [];
+        let cashTotal = null;
         if(this._isUS) {
             let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             let totalSales = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
@@ -357,6 +358,12 @@ export default class BillService {
                         name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('ORDER_DISCOUNT'),
                         amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
                     })
+                    if (discount.DISCOUNT_NAME === 'Cash discount') {
+                        cashTotal = {
+                            name:  this.$translate.getText('CASH_DISCOUNT_TOTAL'),
+                            amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1 + variables.TOTAL_SALES_AMOUNT, 2)
+                        }
+                    }
                 })
             }
         }
@@ -460,6 +467,10 @@ export default class BillService {
                 name: this.$translate.getText('TOTAL_INC_VAT'),
                 amount: this.$utils.toFixedSafe(variables.TOTAL_AMOUNT || 0, 2)
             })
+        }
+
+        if (cashTotal) {
+            totals.push(cashTotal)
         }
 
         return totals;
