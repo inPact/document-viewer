@@ -472,7 +472,7 @@ export default class BillService {
                 });
                 totals.push({
                     name: this.$translate.getText('MAX_CASH_DISCOUNT'),
-                    amount: this.$utils.toFixedSafe(variables.MAX_CASH_DISCOUNT, 2)
+                    amount: this.$utils.toFixedSafe(variables.MAX_CASH_DISCOUNT * -1, 2)
                 });
             }
         }
