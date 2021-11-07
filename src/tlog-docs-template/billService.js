@@ -309,6 +309,7 @@ export default class BillService {
     resolveTotals(variables, collections) {
         let totals = [];
         let cashTotal = null;
+     
         if(this._isUS) {
             let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             let totalSales = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
@@ -358,12 +359,6 @@ export default class BillService {
                         name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('ORDER_DISCOUNT'),
                         amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
                     })
-                    if (discount.DISCOUNT_NAME === 'Cash discount') {
-                        cashTotal = {
-                            name:  this.$translate.getText('CASH_DISCOUNT_TOTAL'),
-                            amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1 + variables.TOTAL_SALES_AMOUNT, 2)
-                        }
-                    }
                 })
             }
         }
@@ -469,9 +464,19 @@ export default class BillService {
             })
         }
 
-        if (cashTotal) {
-            totals.push(cashTotal)
+        if(this._isUS) {
+            if(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS !== undefined) {
+                totals.push({
+                    name: this.$translate.getText('TOTAL_AMOUNT_AFTER_CASH_BONUS'),
+                    amount: this.$utils.toFixedSafe(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS, 2)
+                });
+                totals.push({
+                    name: this.$translate.getText('MAX_CASH_DISCOUNT'),
+                    amount: this.$utils.toFixedSafe(variables.MAX_CASH_DISCOUNT, 2)
+                });
+            }
         }
+        
 
         return totals;
     }
@@ -485,7 +490,6 @@ export default class BillService {
         let payments = [];
 
         filteredPyaments.forEach(payment => {
-
             let paymentData = {
                 name: this.resolvePaymentName(payment),
                 amount: payment.PAYMENT_TYPE ? this.$utils.toFixedSafe(payment.P_AMOUNT * -1, 2) : this.$utils.toFixedSafe(payment.P_AMOUNT, 2),
@@ -496,6 +500,8 @@ export default class BillService {
             if (payment.HOTEL_NAME) paymentData.HOTEL_NAME = payment.HOTEL_NAME;
             if (payment.ROOM_NUMBER) paymentData.ROOM_NUMBER = payment.ROOM_NUMBER;
             if (payment.HOTEL_CHECK_NUMBER) paymentData.HOTEL_CHECK_NUMBER = payment.HOTEL_CHECK_NUMBER;
+            if (payment.P_BONUS_AMOUNT) paymentData.P_BONUS_AMOUNT = payment.P_BONUS_AMOUNT;
+            if (payment.CASH_BAL_DUE) paymentData.CASH_BAL_DUE  = payment.CASH_BAL_DUE ;
 
             payments.push(paymentData);
         });

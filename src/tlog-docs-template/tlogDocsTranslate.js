@@ -293,7 +293,12 @@ export default class TlogDocsTranslateService {
                 "Balance": "Bal Due",
                 "uid": "IDENTIFICATION NUMBER",
                 "rrn": "UNIQUE TRANSACTION ID",
-                "lb": 'lb'
+                "lb": 'lb',
+                "TOTAL_AMOUNT_AFTER_CASH_BONUS": "CASH TOTALS",
+                "MAX_CASH_DISCOUNT": "Cash Discount",
+                "P_BONUS_AMOUNT": "Cash Discount",
+                "CASH_BAL_DUE": "Cash Bal. Due"
+
             },
             "he-IL": {
                 "HOTEL_CHECK_NUMBER":"מס' עסקה",
@@ -546,7 +551,7 @@ export default class TlogDocsTranslateService {
                 "dlrPerlb": "דולרים לליברה",
                 "Balance": "יתרה לתשלום",
                 "uid": "מספר מזהה",
-                "rrn": "מזהה עסקה ייחודי"
+                "rrn": "מזהה עסקה ייחודי",
 
             }
         }

@@ -23,7 +23,6 @@ export default class PaymentSection {
 
 
         payments.forEach(payment => {
-
             let elementText = this.$htmlCreator.create({
                 id: 'payment-text',
                 classList: ['total-name'],
@@ -54,7 +53,58 @@ export default class PaymentSection {
                 ]
             });
 
+       
+
             paymentSection.append(elementPaymentContainer);
+
+            if (payment.name.includes('Cash') && payment.P_BONUS_AMOUNT !== undefined) {
+                let elementText = this.$htmlCreator.create({
+                    id: 'payment-text',
+                    classList: ['total-name'],
+                    value: this.$translate.getText("P_BONUS_AMOUNT") || ''
+                });
+
+                let elementValue = this.$htmlCreator.create({
+                    id: 'payment-value',
+                    classList: classList,
+                    value: this.$utils.toFixedSafe(payment.P_BONUS_AMOUNT || 0, 2) || ''
+                });
+
+                let elementPaymentContainer = this.$htmlCreator.create({
+                    id: 'payment-container',
+                    classList: classListContainer,
+                    children: [
+                        elementText,
+                        elementValue
+                    ]
+                });
+                paymentSection.append(elementPaymentContainer);
+            }
+            
+            if (payment.CASH_BAL_DUE !== undefined) {
+                let elementText = this.$htmlCreator.create({
+                    id: 'payment-text',
+                    classList: ['total-name'],
+                    value: this.$translate.getText("CASH_BAL_DUE") || ''
+                });
+
+                let elementValue = this.$htmlCreator.create({
+                    id: 'payment-value',
+                    classList: classList,
+                    value: this.$utils.toFixedSafe(payment.CASH_BAL_DUE || 0, 2) || ''
+                });
+
+                let elementPaymentContainer = this.$htmlCreator.create({
+                    id: 'payment-container',
+                    classList: classListContainer,
+                    children: [
+                        elementText,
+                        elementValue
+                    ]
+                });
+                paymentSection.append(elementPaymentContainer);
+            }
+
 
             if (payment.holderName) {
 
