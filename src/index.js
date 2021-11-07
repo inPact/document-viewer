@@ -10,9 +10,8 @@ window.DocumentViewer = class DocumentViewer {
         options.locale = options.locale || 'he-IL';
         if (options.isUS === undefined)
             options.isUS = options.locale === 'en-US';
-
+            
         this._tlogDocsService = new TlogDocsService(options);
-
 
     }
 

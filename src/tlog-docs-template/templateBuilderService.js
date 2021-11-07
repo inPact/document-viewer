@@ -810,7 +810,7 @@ export default class TemplateBuilderService {
         }
         else {
             /// TODO !
-
+            
             let paymentSection = this.$paymentSection.get({
                 variables: this._printData.variables,
                 collections: this._printData.collections,
