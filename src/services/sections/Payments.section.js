@@ -67,7 +67,7 @@ export default class PaymentSection {
                 let elementValue = this.$htmlCreator.create({
                     id: 'payment-value',
                     classList: classList,
-                    value: this.$utils.toFixedSafe(payment.P_BONUS_AMOUNT || 0, 2) || ''
+                    value: this.$utils.toFixedSafe(payment.P_BONUS_AMOUNT * -1, 2) || ''
                 });
 
                 let elementPaymentContainer = this.$htmlCreator.create({
@@ -91,7 +91,7 @@ export default class PaymentSection {
                 let elementValue = this.$htmlCreator.create({
                     id: 'payment-value',
                     classList: classList,
-                    value: this.$utils.toFixedSafe(payment.CASH_BAL_DUE || 0, 2) || ''
+                    value: this.$utils.toFixedSafe(payment.CASH_BAL_DUE, 2) || ''
                 });
 
                 let elementPaymentContainer = this.$htmlCreator.create({
