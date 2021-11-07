@@ -464,7 +464,7 @@ export default class BillService {
             })
         }
 
-        // if(this._isUS) {
+        if(this._isUS) {
             if(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS !== undefined) {
                 totals.push({
                     name: this.$translate.getText('TOTAL_AMOUNT_AFTER_CASH_BONUS'),
@@ -475,7 +475,7 @@ export default class BillService {
                     amount: this.$utils.toFixedSafe(variables.MAX_CASH_DISCOUNT, 2)
                 });
             }
-        // }
+        }
         
 
         return totals;
