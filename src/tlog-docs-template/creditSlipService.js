@@ -33,9 +33,7 @@ export default class CreditSlipService {
             creditSlipDoc = printData.collections.PAYMENT_LIST[0];
         } else if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length) {
             printData.collections.PAYMENT_LIST.forEach(payment => {
-                if (payment.P_TENDER_TYPE === 'creditCard' &&
-                    payment.P_ID === docObjChosen.md.paymentId
-                ) {
+                if (payment.P_TENDER_TYPE === 'creditCard' && payment.P_ID === docObjChosen.md.paymentId) {
                     creditSlipDoc = payment;
                 }
             })

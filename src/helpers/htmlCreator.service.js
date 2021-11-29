@@ -39,19 +39,23 @@ export default class HtmlCreator {
         let attributes = options.attributes;
 
         let element;
-        if (type !== undefined)
+        if (type !== undefined) {
             element = doc.createElement(type);
-        else
+        } else {
             element = doc.createElement('div');
+        }
 
-        element.id = id;
+        if (id) {
+            element.id = id;
+        }
 
         classList.forEach(c => {
             element.classList.add(c);
         });
 
-        if (value !== undefined)
+        if (value !== undefined) {
             element.innerHTML = value;
+        }
 
         if (children && children.length > 0) {
 

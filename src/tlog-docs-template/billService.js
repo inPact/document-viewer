@@ -486,7 +486,6 @@ export default class BillService {
         // filter payments by ommitted property removes cancelled and refund payments once the order goes shva offline
 
         let filteredPyaments = this.filterOmittedPayments(collections.PAYMENT_LIST);
-
         let payments = [];
 
         filteredPyaments.forEach(payment => {
@@ -501,7 +500,9 @@ export default class BillService {
             if (payment.ROOM_NUMBER) paymentData.ROOM_NUMBER = payment.ROOM_NUMBER;
             if (payment.HOTEL_CHECK_NUMBER) paymentData.HOTEL_CHECK_NUMBER = payment.HOTEL_CHECK_NUMBER;
             if (payment.P_BONUS_AMOUNT) paymentData.P_BONUS_AMOUNT = payment.P_BONUS_AMOUNT;
-            if (payment.CASH_BAL_DUE) paymentData.CASH_BAL_DUE  = payment.CASH_BAL_DUE ;
+            if (payment.CASH_BAL_DUE) paymentData.CASH_BAL_DUE = payment.CASH_BAL_DUE ;
+            if (payment.CURRENCY_AMOUNT) paymentData.CURRENCY_AMOUNT = payment.CURRENCY_AMOUNT;
+            if (payment.CURRENCY_SYMBOL) paymentData.CURRENCY_SYMBOL = payment.CURRENCY_SYMBOL;
 
             payments.push(paymentData);
         });

@@ -87,7 +87,16 @@
   display: flex;
   justify-content: flex-start;
   flex: 6;
-  margin: 0px 5px;
+  margin: 0 5px;
+}
+
+.basicTemplate .payment-currency {
+  direction: ltr;
+  display: inline-block;
+  margin: 0 5px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #0774c2;
 }
 
  

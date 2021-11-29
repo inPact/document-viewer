@@ -11,7 +11,6 @@ export default class PaymentSection {
     }
 
     get(options) {
-        
         let variables = options.variables;
         let collections = options.collections;
         let payments = options.payments;
@@ -41,6 +40,17 @@ export default class PaymentSection {
                 value: this.$utils.toFixedSafe(payment.amount || 0, 2) || ''
             });
 
+            if (payment.CURRENCY_AMOUNT) {
+                const currencyValue = this.$utils.toFixedSafe(payment.CURRENCY_AMOUNT, 2);
+                const currencySymbol = payment.CURRENCY_SYMBOL;
+                const temp = this.$htmlCreator.create({
+                    classList: ['payment-currency'],
+                    value: `(${currencySymbol}${currencyValue})`
+                });
+
+                elementText.appendChild(temp);
+            }
+
             let classListContainer = [];
             classListContainer.push(payment.type === 'change' ? 'changeDiv' : 'itemDiv');
 
@@ -53,7 +63,6 @@ export default class PaymentSection {
                 ]
             });
 
-       
 
             paymentSection.append(elementPaymentContainer);
 
@@ -148,15 +157,9 @@ export default class PaymentSection {
                     });
                     paymentSection.append(elementHotelCheckNumber);
                 }
-               
-
-
             }
-
         });
 
         return paymentSection;
-
     }
-
 }
