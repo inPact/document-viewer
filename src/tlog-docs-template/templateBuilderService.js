@@ -756,7 +756,7 @@ export default class TemplateBuilderService {
                 var totalDiv = this._doc.createElement('div');
                 if (total.type === 'exclusive_tax') {
                     totalDiv.innerHTML = "<div class='itemDiv small-chars'>" +
-                        "<div class='total-name'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? this.$utils.twoDecimals(total.rate) + "%" : " ") + "</div>" + " " +
+                        "<div class='total-name'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? this.$utils.getDecimals(total.rate, 3) + "%" : " ") + "</div>" + " " +
                         "<div class='total-amount " + this.$utils.isNegative(total.amount) + "'>" + (total.amount ? this.$utils.twoDecimals(total.amount) : " ") + "</div>" + "</div>"
                 }
                 else if (total.type !== 'exclusive_tax') {
