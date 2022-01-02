@@ -48,6 +48,17 @@ export default class Utils {
         return result;
     }
 
+    getDecimals(number, precision = 2) {
+
+        let result = '';
+
+        if (number) {
+            result = Number(number).toFixed(precision);
+        }
+
+        return result;
+    }
+
     notEmpty(field) {
         if (field !== undefined && field !== null) { return true; }
         return false
