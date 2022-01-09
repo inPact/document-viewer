@@ -376,7 +376,7 @@ export default class BillService {
                     type: 'exclusive_tax',
                     name: tax.NAME ? tax.NAME : this.$translate.getText('ECVLUSIVE_TAX'),
                     amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
-                    rate: this.$utils.toFixedSafe(tax.RATE, 2)
+                    rate: this.$utils.toFixedSafe(tax.RATE, 3)
                 })
             })
         }
