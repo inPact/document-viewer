@@ -355,12 +355,22 @@ export default class TemplateBuilderService {
 
         // document order number
         debugger;
-        if (this._printData.variables.SITE_ORDER_COUNTER) {
+        if (this._printData.variables.ORDER_COUNTER) {
             let docOrderNumberFooterText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'counter-site-footer-text',
                 classList: ['text', 'flex-center'],
-                value: this.$translate.getText('order_counter')  + this._printData.variables.SITE_ORDER_COUNTER
+                value: this.$translate.getText('order_counter')  + this._printData.variables.ORDER_COUNTER
+            });
+
+            docTemplate.appendChild(docOrderNumberFooterText);
+        }
+        if (this._printData.variables.FISCAL_COUNTER) {
+            let docOrderNumberFooterText = this.$htmlCreator.create({
+                type: 'div',
+                id: 'counter-site-footer-text',
+                classList: ['text', 'flex-center'],
+                value: this.$translate.getText('fiscal_counter')  + this._printData.variables.FISCAL_COUNTER
             });
 
             docTemplate.appendChild(docOrderNumberFooterText);

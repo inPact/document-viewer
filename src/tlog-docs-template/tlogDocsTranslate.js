@@ -298,7 +298,8 @@ export default class TlogDocsTranslateService {
                 "MAX_CASH_DISCOUNT": "Cash Discount",
                 "P_BONUS_AMOUNT": "Cash Discount",
                 "CASH_BAL_DUE": "Cash Bal. Due",
-                "order_counter": "Order Document Number "
+                "order_counter": "Order Document Number ",
+                "fiscal_counter": "Fiscal Document Number "
 
             },
             "he-IL": {
@@ -553,7 +554,8 @@ export default class TlogDocsTranslateService {
                 "Balance": "יתרה לתשלום",
                 "uid": "מספר מזהה",
                 "rrn": "מזהה עסקה ייחודי",
-                "order_counter": "מס' מסמך להזמנה"
+                "order_counter": "מס' מסמך להזמנה",
+                "fiscal_counter": "מס' פיסקל"
 
             }
         }
