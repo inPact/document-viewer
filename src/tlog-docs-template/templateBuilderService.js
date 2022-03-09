@@ -359,7 +359,7 @@ export default class TemplateBuilderService {
                 type: 'div',
                 id: 'counter-site-footer-text',
                 classList: ['text', 'flex-center'],
-                value: this.$translate.getText('order_counter')  + this._printData.variables.ORDER_COUNTER
+                value: this.$translate.getText('order_counter') + " "  + this._printData.variables.ORDER_COUNTER
             });
 
             docTemplate.appendChild(docOrderNumberFooterText);
@@ -369,7 +369,7 @@ export default class TemplateBuilderService {
                 type: 'div',
                 id: 'counter-site-footer-text',
                 classList: ['text', 'flex-center'],
-                value: this.$translate.getText('fiscal_counter')  + this._printData.variables.FISCAL_COUNTER
+                value: this.$translate.getText('fiscal_counter') + " "  + this._printData.variables.FISCAL_COUNTER
             });
 
             docTemplate.appendChild(docOrderNumberFooterText);
