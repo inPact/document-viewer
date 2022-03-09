@@ -354,7 +354,6 @@ export default class TemplateBuilderService {
         }
 
         // document order number
-        debugger;
         if (this._printData.variables.ORDER_COUNTER) {
             let docOrderNumberFooterText = this.$htmlCreator.create({
                 type: 'div',

@@ -6,11 +6,12 @@ angular.module('app')
         // ep: 'https://il-int-ros.tabit-stage.com',
         ep: 'https://eu-int-ros.tabit-stage.com',
         org: '608868039a306df6be7c0a1b',
-        tlog: '6225c6b5303d95710e4d6273',
+        tlog: '62285f3859a1c5390a98cc12',
         // locale: 'he-IL',
         locale: 'en-US',
         username: 'admin@tabit.cloud',
         pass: 'tabitros',
+        version: '1.34.0',
     })
     .factory('OrderService', function ($http, ENV) {
 
