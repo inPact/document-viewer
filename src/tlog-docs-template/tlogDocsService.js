@@ -87,6 +87,19 @@ export default class TlogDocsService {
                 isFullOrderBill: true,
             });
 
+            if (tlog && tlog.order && tlog.order[0].billText && tlog.order[0].billText.length > 0) {
+                orderSelection.push({
+                    tlogId: tlog._id,
+                    id: tlog._id,
+                    type: tlog._type,
+                    title: this.$slipService.getTitle({ type: 'billText', number: tlog.number }),
+                    ep: `tlogs/${tlog._id}/bill`,
+                    isRefund: false,
+                    isFullOrderBill: true,
+                    billText: _.cloneDeep(tlog.order[0].billText)
+                });
+            }
+
 
             if (tlog.order[0].clubMembers && tlog.order[0].clubMembers.length) {
                 orderSelection.push({
@@ -261,19 +274,6 @@ export default class TlogDocsService {
 
 
                 }
-            }
-
-            if (tlog && tlog.order && tlog.order[0].billText && tlog.order[0].billText.length > 0) {
-                orderSelection.push({
-                    tlogId: tlog._id,
-                    id: tlog._id,
-                    type: tlog._type,
-                    title: this.$slipService.getTitle({ type: 'billText', number: tlog.number }),
-                    ep: `tlogs/${tlog._id}/bill`,
-                    isRefund: false,
-                    isFullOrderBill: true,
-                    billText: _.cloneDeep(tlog.order[0].billText)
-                });
             }
 
         }

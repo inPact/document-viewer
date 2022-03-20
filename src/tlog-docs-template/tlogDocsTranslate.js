@@ -97,7 +97,7 @@ export default class TlogDocsTranslateService {
                 "Signature": "SIGNATURE",
                 "PrintCopy": "PRINT COPY",
                 "Check": "CHECK",
-                "billText": "BILL TEXT",
+                "billText": "RECEIPT",
                 "Server": "SERVER",
                 "Table": "TABLE",
                 "Purchase": "PURCHASE",
@@ -384,7 +384,7 @@ export default class TlogDocsTranslateService {
                 "CHARGE_TRANSACTION": "עסקת חיוב הקפה",
 
                 "CHECK": "חשבון",
-                "billText": "חשבונית טקסט",
+                "billText": "חשבון",
                 "TOTAL_TIPS": "תשר",
                 "ISSUED_AT": "תאריך הפקת מקור",
                 "CREATED_AT": "תאריך פתיחה",
