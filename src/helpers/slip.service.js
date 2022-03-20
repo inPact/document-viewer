@@ -43,6 +43,9 @@ export default class SlipService {
             case "check": {
                 return `${this.$translate.getText('CHECK')} ${number}`;
             }
+            case "billText": {
+                return `${this.$translate.getText('billText')} ${number}`;
+            }
         }
 
     }
