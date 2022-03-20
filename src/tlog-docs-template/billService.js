@@ -852,4 +852,5 @@ export default class BillService {
 
         return new DataBill(collections, variables, data, printByOrder, waiterDiners);
     }
+
 }

@@ -71,14 +71,45 @@ export default class TemplateBuilderService {
             printData: printData
         });
 
-        this._docObj = documentInfo;
-        this._docData = printData;
-        this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
-        this._printData.isRefund = documentInfo.isRefund;
-        let template = this.createDocTemplate(documentInfo, options);
-        this._doc.body.appendChild(template);
+        if (documentInfo.hasOwnProperty('billText')) {
+            this._doc.body.appendChild(this.createTextTemplate(documentInfo))
+        } else {
+            this._docObj = documentInfo;
+            this._docData = printData;
+            this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
+            this._printData.isRefund = documentInfo.isRefund;
+            let template = this.createDocTemplate(documentInfo, options);
+            this._doc.body.appendChild(template);
+        }
+
 
         return (new XMLSerializer()).serializeToString(this._doc);
+    }
+
+    createTextTemplate(documentInfo){
+        var docTemplate = this._doc.createElement('div');
+        docTemplate.id = 'docTemplate';
+        docTemplate.classList.add('basicTemplate');
+        docTemplate.classList += ' ltr';
+
+        let elementVersion = this.$htmlCreator.create({
+            type: 'div',
+            id: 'version',
+            classList: ['hidden-element'],
+            value: VERSION
+        });
+
+        docTemplate.appendChild(elementVersion);
+
+        let elementBillText = this.$htmlCreator.create({
+            type: 'p',
+            id: 'text',
+            classList: ['bill-text'],
+            value: documentInfo.billText
+        });
+
+        docTemplate.appendChild(elementBillText);
+        return docTemplate;
     }
 
     createDocTemplate(docObjChosen, options = {}) {
