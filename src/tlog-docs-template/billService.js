@@ -503,6 +503,7 @@ export default class BillService {
             if (payment.CASH_BAL_DUE) paymentData.CASH_BAL_DUE = payment.CASH_BAL_DUE ;
             if (payment.CURRENCY_AMOUNT) paymentData.CURRENCY_AMOUNT = payment.CURRENCY_AMOUNT;
             if (payment.CURRENCY_SYMBOL) paymentData.CURRENCY_SYMBOL = payment.CURRENCY_SYMBOL;
+            if (payment.PROVIDER_TRANS_ID) paymentData.PROVIDER_TRANS_ID = payment.PROVIDER_TRANS_ID;
 
             payments.push(paymentData);
         });
@@ -583,7 +584,12 @@ export default class BillService {
         }
 
         if (payment.P_TENDER_TYPE === 'creditCard' || payment.P_TENDER_TYPE === 'gidtCard') {
-            paymentName = refund !== '' ? `${refund} (${payment.CARD_TYPE} ${payment.LAST_4})` : `${payment.CARD_TYPE} ${payment.LAST_4}`;
+            if (payment.CARD_TYPE && payment.LAST_4) {
+                paymentName = refund !== '' ? `${refund} (${payment.CARD_TYPE} ${payment.LAST_4})` : `${payment.CARD_TYPE} ${payment.LAST_4}`;
+            } else {
+                paymentName = payment.P_NAME;
+            }
+
         } else {
 
             if (this._isUS) {

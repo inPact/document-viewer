@@ -300,7 +300,8 @@ export default class TlogDocsTranslateService {
                 "P_BONUS_AMOUNT": "Cash Discount",
                 "CASH_BAL_DUE": "Cash Bal. Due",
                 "order_counter": "Order Counter",
-                "fiscal_counter": "Fiscal Counter"
+                "fiscal_counter": "Fiscal Counter",
+                "PROVIDER_TRANS_ID": "Reference"
 
             },
             "he-IL": {
@@ -557,7 +558,8 @@ export default class TlogDocsTranslateService {
                 "uid": "מספר מזהה",
                 "rrn": "מזהה עסקה ייחודי",
                 "order_counter": "מס' מסמך להזמנה",
-                "fiscal_counter": "מס' פיסקלי להזמנה"
+                "fiscal_counter": "מס' פיסקלי להזמנה",
+                "PROVIDER_TRANS_ID": "מס' הפניה"
 
             }
         }

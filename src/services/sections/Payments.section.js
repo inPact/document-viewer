@@ -158,6 +158,15 @@ export default class PaymentSection {
                     paymentSection.append(elementHotelCheckNumber);
                 }
             }
+
+            if (payment.PROVIDER_TRANS_ID) {
+                let elementProviderTransId = this.$htmlCreator.create({
+                    id: 'reference-id',
+                    classList: ['hotel-item', 'hotel-details'],
+                    value: `&nbsp;${this.$translate.getText('PROVIDER_TRANS_ID')} ${payment.PROVIDER_TRANS_ID}&nbsp;`
+                });
+                paymentSection.append(elementProviderTransId);
+            }
         });
 
         return paymentSection;
