@@ -73,7 +73,10 @@ export default class TemplateBuilderService {
 
         if (documentInfo.hasOwnProperty('billText')) {
             this._doc.body.appendChild(this.createTextTemplate(documentInfo))
-        } else {
+        } else  if (documentInfo.hasOwnProperty('fiscalSignature')) {
+            this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature))
+        }
+        else {
             this._docObj = documentInfo;
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
@@ -84,6 +87,68 @@ export default class TemplateBuilderService {
 
 
         return (new XMLSerializer()).serializeToString(this._doc);
+    }
+
+    createFiscalSignatureTemplate(documentInfo) {
+        console.log('createFiscalSignatureTemplate', documentInfo);
+        var docTemplate = this._doc.createElement('div');
+        docTemplate.id = 'docTemplate';
+        docTemplate.classList.add('basicTemplate');
+        docTemplate.classList += ' ltr';
+
+        let elementVersion = this.$htmlCreator.create({
+            type: 'div',
+            id: 'version',
+            classList: ['hidden-element'],
+            value: VERSION
+        });
+
+        docTemplate.appendChild(elementVersion);
+
+        let elementFiscalSignature = this.$htmlCreator.create({
+            type: 'div',
+            id: 'fiscalSignature',
+            classList: ['fiscal-signature'],
+            value: documentInfo.fiscalSignature
+        });
+
+        docTemplate.appendChild(elementFiscalSignature);
+
+        let elementFiscalSignatureTitle = this.$htmlCreator.create({
+            type: 'h2',
+            id: 'title',
+            classList: ['title'],
+            value: 'Fiscal Signature',
+        });
+
+        docTemplate.appendChild(elementFiscalSignatureTitle);
+
+        let elementSignature = this.$htmlCreator.create({
+            type: 'div',
+            id: 'signature',
+            classList: ['signature'],
+            value: documentInfo.signature
+        });
+        docTemplate.appendChild(elementSignature);
+
+
+        let elementSignatureAddition = this.$htmlCreator.create({
+            type: 'div',
+            id: 'signatureAddition',
+            classList: ['signature-addition'],
+            value: documentInfo.signatureAddition
+        });
+        docTemplate.appendChild(elementSignatureAddition);
+
+        let elementQR = this.$htmlCreator.create({
+            type: 'div',
+            id: 'qr',
+            classList: ['qr'],
+            value: documentInfo.qrLink
+        });
+        docTemplate.appendChild(elementQR);
+
+        return docTemplate;
     }
 
     createTextTemplate(documentInfo){
@@ -109,6 +174,8 @@ export default class TemplateBuilderService {
         });
 
         docTemplate.appendChild(elementBillText);
+
+
         return docTemplate;
     }
 

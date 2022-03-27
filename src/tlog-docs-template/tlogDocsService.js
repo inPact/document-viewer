@@ -76,7 +76,7 @@ export default class TlogDocsService {
         }
         else {
 
-
+            console.log('create docs');
             orderSelection.push({
                 tlogId: tlog._id,
                 id: tlog._id,
@@ -274,6 +274,31 @@ export default class TlogDocsService {
 
 
                 }
+            }
+
+            if (tlog && _.get(tlog, 'order[0].fiscal.transmissions[0]', null)) {
+                orderSelection.push({
+                    tlogId: tlog._id,
+                    id: tlog._id,
+                    type: tlog._type,
+                    title: 'fiscal signature', // this.$slipService.getTitle({ type: 'fiscalSignature', number: tlog.number }),
+                    ep: `tlogs/${tlog._id}/signature`,
+                    isRefund: false,
+                    isFullOrderBill: true,
+                    fiscalSignature: _.cloneDeep(_.get(tlog, 'order[0].fiscal.transmissions[0]', null))
+                });
+            }
+            if (tlog && _.get(tlog, 'order[0].fiscals[0]', null)) {
+                orderSelection.push({
+                    tlogId: tlog._id,
+                    id: tlog._id,
+                    type: tlog._type,
+                    title: 'fiscal signature', //this.$slipService.getTitle({ type: 'fiscalSignature', number: tlog.number }),
+                    ep: `tlogs/${tlog._id}/signature`,
+                    isRefund: false,
+                    isFullOrderBill: true,
+                    fiscalSignature: _.cloneDeep(_.get(tlog, 'order[0].fiscals[0]', null))
+                });
             }
 
         }
