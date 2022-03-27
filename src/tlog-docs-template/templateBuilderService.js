@@ -23,6 +23,7 @@ import ReturnTransactionSection from '../services/sections/ReturnTransaction.sec
 
 
 import _ from 'lodash';
+import QRCode from "qrcode";
 
 
 export default class TemplateBuilderService {
@@ -90,7 +91,6 @@ export default class TemplateBuilderService {
     }
 
     createFiscalSignatureTemplate(documentInfo) {
-        console.log('createFiscalSignatureTemplate', documentInfo);
         var docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');
@@ -117,11 +117,11 @@ export default class TemplateBuilderService {
         let elementFiscalSignatureTitle = this.$htmlCreator.create({
             type: 'h2',
             id: 'title',
-            classList: ['title'],
+            classList: ['signature-title'],
             value: 'Fiscal Signature',
         });
 
-        docTemplate.appendChild(elementFiscalSignatureTitle);
+        elementFiscalSignature.appendChild(elementFiscalSignatureTitle);
 
         let elementSignature = this.$htmlCreator.create({
             type: 'div',
@@ -129,7 +129,7 @@ export default class TemplateBuilderService {
             classList: ['signature'],
             value: documentInfo.signature
         });
-        docTemplate.appendChild(elementSignature);
+        elementFiscalSignature.appendChild(elementSignature);
 
 
         let elementSignatureAddition = this.$htmlCreator.create({
@@ -138,16 +138,23 @@ export default class TemplateBuilderService {
             classList: ['signature-addition'],
             value: documentInfo.signatureAddition
         });
-        docTemplate.appendChild(elementSignatureAddition);
+        elementFiscalSignature.appendChild(elementSignatureAddition);
+
 
         let elementQR = this.$htmlCreator.create({
-            type: 'div',
-            id: 'qr',
+            type: 'img',
+            id: 'qrcode',
             classList: ['qr'],
-            value: documentInfo.qrLink
         });
-        docTemplate.appendChild(elementQR);
+        elementFiscalSignature.appendChild(elementQR);
 
+        QRCode.toDataURL(documentInfo.qrLink)
+            .then(url => {
+                document.getElementById('qrcode').src = url;
+            })
+            .catch(err => {
+                console.error(err)
+            })
         return docTemplate;
     }
 

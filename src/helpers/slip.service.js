@@ -47,7 +47,7 @@ export default class SlipService {
                 return `${this.$translate.getText('billText')} ${number}`;
             }
             case "fiscalSignature": {
-                return `${this.$translate.getText('billText')} ${number}`;
+                return `${this.$translate.getText('fiscalSignature')} ${number}`;
             }
         }
 

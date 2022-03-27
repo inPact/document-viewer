@@ -76,7 +76,6 @@ export default class TlogDocsService {
         }
         else {
 
-            console.log('create docs');
             orderSelection.push({
                 tlogId: tlog._id,
                 id: tlog._id,
@@ -281,7 +280,7 @@ export default class TlogDocsService {
                     tlogId: tlog._id,
                     id: tlog._id,
                     type: tlog._type,
-                    title: 'fiscal signature', // this.$slipService.getTitle({ type: 'fiscalSignature', number: tlog.number }),
+                    title: this.$slipService.getTitle({ type: 'fiscalSignature', number: '' }),
                     ep: `tlogs/${tlog._id}/signature`,
                     isRefund: false,
                     isFullOrderBill: true,
@@ -293,7 +292,7 @@ export default class TlogDocsService {
                     tlogId: tlog._id,
                     id: tlog._id,
                     type: tlog._type,
-                    title: 'fiscal signature', //this.$slipService.getTitle({ type: 'fiscalSignature', number: tlog.number }),
+                    title: this.$slipService.getTitle({ type: 'fiscalSignature', number: '' }),
                     ep: `tlogs/${tlog._id}/signature`,
                     isRefund: false,
                     isFullOrderBill: true,
