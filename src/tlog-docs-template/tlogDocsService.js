@@ -287,19 +287,6 @@ export default class TlogDocsService {
                     fiscalSignature: _.cloneDeep(_.get(tlog, 'order[0].fiscal.transmissions[0]', null))
                 });
             }
-            if (tlog && _.get(tlog, 'order[0].fiscals[0]', null)) {
-                orderSelection.push({
-                    tlogId: tlog._id,
-                    id: tlog._id,
-                    type: tlog._type,
-                    title: this.$slipService.getTitle({ type: 'fiscalSignature', number: '' }),
-                    ep: `tlogs/${tlog._id}/signature`,
-                    isRefund: false,
-                    isFullOrderBill: true,
-                    fiscalSignature: _.cloneDeep(_.get(tlog, 'order[0].fiscals[0]', null))
-                });
-            }
-
         }
         return orderSelection;
 
