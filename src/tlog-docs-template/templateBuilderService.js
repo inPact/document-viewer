@@ -147,18 +147,16 @@ export default class TemplateBuilderService {
             classList: ['qr'],
         });
         elementFiscalSignature.appendChild(elementQR);
-        setTimeout(() => {
-            QRCode.toDataURL(documentInfo.qrLink)
-                .then(url => {
-                    const qrImg = document.getElementById('qrcode');
-                    elementQR.src = url;
-                    qrImg.src = url;
-                })
-                .catch(err => {
-                    console.error(err)
-                })
-        }, 500);
 
+        QRCode.toDataURL(documentInfo.qrLink)
+            .then(url => {
+                const qrImg = document.getElementById('qrcode');
+                elementQR.src = url;
+                qrImg.src = url;
+            })
+            .catch(err => {
+                console.error(err)
+            })
         return docTemplate;
     }
 
