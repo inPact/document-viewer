@@ -152,8 +152,6 @@ export default class TemplateBuilderService {
             .then(url => {
                 const qrImg = document.getElementById('qrcode');
                 elementQR.src = url;
-                console.log(qrImg);
-                console.log(url);
                 qrImg.src = url;
             })
             .catch(err => {
