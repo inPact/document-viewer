@@ -279,7 +279,7 @@ export default class TlogDocsService {
                 orderSelection.push({
                     tlogId: tlog._id,
                     id: tlog._id,
-                    type: tlog._type,
+                    type: 'fiscal-signature',
                     title: this.$slipService.getTitle({ type: 'fiscalSignature', number: '' }),
                     ep: `tlogs/${tlog._id}/signature`,
                     isRefund: false,
