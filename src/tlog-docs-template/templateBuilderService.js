@@ -151,6 +151,7 @@ export default class TemplateBuilderService {
         QRCode.toDataURL(documentInfo.qrLink)
             .then(url => {
                 const qrImg = document.getElementById('qrcode');
+                elementQR.src = url;
                 console.log(qrImg);
                 console.log(url);
                 qrImg.src = url;
