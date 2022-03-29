@@ -560,7 +560,7 @@ export default class TlogDocsTranslateService {
                 "uid": "מספר מזהה",
                 "rrn": "מזהה עסקה ייחודי",
                 "order_counter": "מס' מסמך להזמנה",
-                "fiscal_counter": "מס' פיסקלי להזמנה",
+                "fiscal_counter": "מס' הזמנה רציף",
                 "PROVIDER_TRANS_ID": "מס' הפניה"
 
             }

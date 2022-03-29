@@ -461,7 +461,7 @@ export default class TemplateBuilderService {
         }
 
         // document order number
-        if (this._printData.variables.ORDER_COUNTER) {
+        if (this._printData.variables.ORDER_COUNTER && this._isUS) {
             let docOrderNumberFooterText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'counter-site-footer-text',
