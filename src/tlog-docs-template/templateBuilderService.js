@@ -30,6 +30,7 @@ export default class TemplateBuilderService {
     constructor(options) {
         this._isUS;
         this._locale;
+        this._realRegion;
         this._configure(options);
         this._isGiftCardBill;
         this._isTaxExempt;
@@ -62,6 +63,7 @@ export default class TemplateBuilderService {
     _configure(options) {
         if (options.locale) this._locale = options.locale;
         if (options.isUS !== undefined) this._isUS = options.isUS;
+        if (options.realRegion) this._realRegion = options.realRegion;
 
     }
 
@@ -461,7 +463,7 @@ export default class TemplateBuilderService {
         }
 
         // document order number
-        if (this._printData.variables.ORDER_COUNTER && this._isUS) {
+        if (this._printData.variables.ORDER_COUNTER && this._realRegion.toUpperCase() === 'GR') {
             let docOrderNumberFooterText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'counter-site-footer-text',
@@ -471,7 +473,7 @@ export default class TemplateBuilderService {
 
             docTemplate.appendChild(docOrderNumberFooterText);
         }
-        if (this._printData.variables.FISCAL_COUNTER) {
+        if (this._printData.variables.FISCAL_COUNTER && (this._realRegion.toUpperCase() === 'GR' || this._realRegion.toUpperCase() === 'IL')) {
             let docOrderNumberFooterText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'counter-site-footer-text',
