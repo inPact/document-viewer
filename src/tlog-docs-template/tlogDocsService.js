@@ -10,6 +10,7 @@ export default class TlogDocsService {
     constructor(options = {}) {
         this._locale;
         this._isUS;
+        this._realRegion;
         this._options = options;
         this._configure(options);
 
@@ -43,6 +44,7 @@ export default class TlogDocsService {
     _configure(options) {
         if (options.locale) this._locale = options.locale;
         if (options.isUS) this._isUS = options.isUS;
+        if (options.realRegion) this._realRegion = options._realRegion;
 
     }
 
