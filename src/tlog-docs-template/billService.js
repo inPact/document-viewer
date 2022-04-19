@@ -75,6 +75,10 @@ export default class BillService {
 
         let items = [];
         let oth = [];
+        let pointsRedeem = [];
+        if(collections.POINTS_REDEMPTION && collections.POINTS_REDEMPTION.length > 0){
+            pointsRedeem = collections.POINTS_REDEMPTION
+        }
 
         if (offersList && offersList.length > 0) {
             offersList.forEach(offer => {
@@ -299,6 +303,7 @@ export default class BillService {
 
         return {
             items: items,
+            pointsRedeem: pointsRedeem,
             oth: oth,
             isReturnOrder: isReturnOrder,
             isTaxExempt: isTaxExempt
