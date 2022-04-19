@@ -320,6 +320,11 @@ export default class TemplateBuilderService {
 
                     }
 
+                    if(_.get(this._printData.collections, 'POINTS_REDEMPTION', []).length > 1){
+                        var tplOrderPointsRedeemData = this.createOrderPointsRedeemData(this._printData)
+                        tplOrderPointsRedeemData.id = 'tplOrderPointsRedeemData';
+                    }
+
                     // var tplOrderPaymentData = createOrderPaymentData(_printData);
                     var tplOrderReturnItems = this.createReturnItemsData(this._printData);
                     var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
@@ -341,6 +346,7 @@ export default class TemplateBuilderService {
                         docTemplate.appendChild(tplOrderPaymentData);
                     }
 
+                    tplOrderPointsRedeemData && tplOrderPointsRedeemData.hasChildNodes() ?docTemplate.appendChild(tplOrderPointsRedeemData) : null;
                     tplOrderReturnItems.hasChildNodes() ? docTemplate.appendChild(tplOrderReturnItems) : null;
                     tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
                     tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
@@ -564,6 +570,26 @@ export default class TemplateBuilderService {
         return tplOrderPaymentData;
     }
 
+    createOrderPointsRedeemData(printData) {
+
+        var tplPointsRedeemData = this._doc.createElement('div');
+        let data = this.$billService.resolveItems(printData.variables, printData.collections);
+
+        tplPointsRedeemData.classList += ' tpl-body-div';
+    
+        var PointsRedeemDataDiv = this._doc.createElement('div');
+        PointsRedeemDataDiv.id = "PointsRedeemDataDiv";
+        PointsRedeemDataDiv.classList += ' padding-top';
+        PointsRedeemDataDiv.classList += ' border-bottom';
+        PointsRedeemDataDiv.classList += ' tpl-body-div';
+        PointsRedeemDataDiv.innerHTML = `<div class='bold'>${this.$translate.getText('POINTS_REDEMPTION')}</div>`;
+
+        this.fillPointsRedeemData(PointsRedeemDataDiv, data);
+        tplPointsRedeemData.appendChild(PointsRedeemDataDiv);
+
+        return tplPointsRedeemData;
+    }
+
     fillItemsData(htmlElement, data, printData) {
 
         if (!printData.isRefund) {
@@ -694,6 +720,19 @@ export default class TemplateBuilderService {
             htmlElement.appendChild(othItemDiv);
 
         })
+    }
+
+    fillPointsRedeemData(htmlElement, data) {
+        data.pointsRedeem.forEach(prItem => {
+            var prItemDiv = this._doc.createElement('div');
+            prItemDiv.innerHTML = "<div class='itemDiv'>" +
+                "<div class='item-qty' style='flex: 3;'>" + (prItem.CUSTOMER_NAME ? prItem.CUSTOMER_NAME : " ") + "</div>" + " " +
+                "<div class='item-name'>" + (prItem.CARD_NUMBER ? prItem.CARD_NUMBER : "") + "</div>" + " " +
+                "<div class='total-amount'>" + (prItem.REDEEMED_POINTS ? prItem.REDEEMED_POINTS : "") + "</div>" +
+                "</div>"
+
+            htmlElement.appendChild(prItemDiv);
+        });
     }
 
     createCreditTemplate(printData) {

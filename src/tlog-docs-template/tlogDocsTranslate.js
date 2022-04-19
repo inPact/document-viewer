@@ -18,6 +18,7 @@ export default class TlogDocsTranslateService {
     _translate() {
         return {
             "en-US": {
+                "POINTS_REDEMPTION": "Points Redemption",
                 "HOTEL_CHECK_NUMBER":"Hotel Check Number",
                 "OTH": "OTH",
                 "MANUAL_ITEM_DISCOUNT": "MANUAL DISCOUNT",
@@ -306,6 +307,7 @@ export default class TlogDocsTranslateService {
 
             },
             "he-IL": {
+                "POINTS_REDEMPTION": "מימוש נקודות",
                 "HOTEL_CHECK_NUMBER":"מס' עסקה",
                 "OTH": "על חשבון הבית",
                 "MANUAL_ITEM_DISCOUNT": "הנחה יזומה",
