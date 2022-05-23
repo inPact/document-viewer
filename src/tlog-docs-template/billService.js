@@ -324,13 +324,20 @@ export default class BillService {
                     amount: this.$utils.toFixedSafe(INCLUSIVE_GROSS_AMOUNT, 2)
                 });
             }
-            let DISCOUNT = _.get(variables, 'TOTAL_DISCOUNTS', 0);
-            if (DISCOUNT > 0) {
+            // let DISCOUNT = _.get(variables, 'TOTAL_DISCOUNTS', 0);
+            // if (DISCOUNT > 0) {
+            //     totals.push({
+            //         name: this.$translate.getText('ORDER_DISCOUNT_US'),
+            //         amount: this.$utils.toFixedSafe(DISCOUNT * -1, 2)
+            //     })
+            // }
+            const discounts = _.get(collections, 'ORDER_DISCOUNTS_LIST', []);
+            discounts.forEach(item => {
                 totals.push({
-                    name: this.$translate.getText('ORDER_DISCOUNT_US'),
-                    amount: this.$utils.toFixedSafe(DISCOUNT * -1, 2)
+                    name: item.DISCOUNT_NAME || this.$translate.getText('ORDER_DISCOUNT_US'),
+                    amount: this.$utils.toFixedSafe(item.DISCOUNT_AMOUNT * -1, 2)
                 })
-            }
+            })
         }
 
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
