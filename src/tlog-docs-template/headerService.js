@@ -84,8 +84,18 @@ export default class HeaderService {
                     break;
                 case 'ORGANIZATION_LEGAL_NAME': {
                     if (!this._isUS) {
+                        var orgString = printData.variables.ORGANIZATION_LEGAL_NAME;
                         var bnNumber = this.$translate.getText('BN_NUMBER');
-                        var orgString = printData.variables.ORGANIZATION_LEGAL_NAME + "-" + bnNumber + " " + printData.variables.ORGANIZATION_BN_NUMBER;
+                        var authorizedDealerNumber = this.$translate.getText('AUTHORIZED_DEALER_NUMBER');
+                        var bnAuthNumber = this.$translate.getText('BN_AUTH_NUMBER');
+
+                        if (printData.variables.ORGANIZATION_BN_NUMBER && printData.variables.ORGANIZATION_AUTHORIZED_DEALER){
+                             orgString = printData.variables.ORGANIZATION_LEGAL_NAME + "<br>" + bnNumber + " " + printData.variables.ORGANIZATION_BN_NUMBER + "  " + authorizedDealerNumber + " " + printData.variables.ORGANIZATION_AUTHORIZED_DEALER;
+                        } else if (printData.variables.ORGANIZATION_BN_NUMBER){
+                             orgString = printData.variables.ORGANIZATION_LEGAL_NAME + "<br>" + bnAuthNumber + " " + printData.variables.ORGANIZATION_BN_NUMBER;
+                        } else if (printData.variables.ORGANIZATION_AUTHORIZED_DEALER){
+                             orgString = printData.variables.ORGANIZATION_LEGAL_NAME + "-" + authorizedDealerNumber + " " + printData.variables.ORGANIZATION_AUTHORIZED_DEALER;
+                        }
                         tplHeaderLine.innerHTML = orgString;
                     }
                     else {
