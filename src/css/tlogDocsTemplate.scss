@@ -219,11 +219,16 @@
   color: black;
 }
 
-.basicTemplate .changeDiv {
+.basicTemplate .changeDiv , .basicTemplate .roundingDiv {
   display: flex;
   flex-direction: row;
   width: 100%;
   padding-top: 7px;
+}
+
+.basicTemplate .roundingDiv div.total-amount {
+  direction: ltr;
+  justify-content: flex-end;
 }
 
 .basicTemplate .centralize {

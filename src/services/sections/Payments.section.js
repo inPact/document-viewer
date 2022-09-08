@@ -52,7 +52,18 @@ export default class PaymentSection {
             }
 
             let classListContainer = [];
-            classListContainer.push(payment.type === 'change' ? 'changeDiv' : 'itemDiv');
+
+            switch (payment.type){
+                case 'change':
+                    classListContainer.push('changeDiv')
+                    break;
+                case 'rounding':
+                    classListContainer.push('roundingDiv')
+                    break;
+                default:
+                    classListContainer.push('itemDiv')
+                    break;
+            }
 
             let elementPaymentContainer = this.$htmlCreator.create({
                 id: 'payment-container',
@@ -89,7 +100,7 @@ export default class PaymentSection {
                 });
                 paymentSection.append(elementPaymentContainer);
             }
-            
+
             if (payment.CASH_BAL_DUE !== undefined) {
                 let elementText = this.$htmlCreator.create({
                     id: 'payment-text',

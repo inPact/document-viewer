@@ -494,7 +494,6 @@ export default class BillService {
     }
 
     resolvePayments(variables, collections) {
-
         // filter payments by ommitted property removes cancelled and refund payments once the order goes shva offline
 
         let filteredPyaments = this.filterOmittedPayments(collections.PAYMENT_LIST);
@@ -506,7 +505,6 @@ export default class BillService {
                 amount: payment.PAYMENT_TYPE ? this.$utils.toFixedSafe(payment.P_AMOUNT * -1, 2) : this.$utils.toFixedSafe(payment.P_AMOUNT, 2),
                 holderName: payment.CUSTOMER_NAME !== undefined ? payment.CUSTOMER_NAME : ''
             }
-
             if (payment.GUEST_NAME) paymentData.GUEST_NAME = payment.GUEST_NAME;
             if (payment.HOTEL_NAME) paymentData.HOTEL_NAME = payment.HOTEL_NAME;
             if (payment.ROOM_NUMBER) paymentData.ROOM_NUMBER = payment.ROOM_NUMBER;
@@ -520,12 +518,19 @@ export default class BillService {
             payments.push(paymentData);
         });
 
+        if(variables.TOTAL_ROUNDING){
+            payments.push({
+                type: 'rounding',
+                name: this.$translate.getText('ROUNDING'),
+                amount: variables.TOTAL_ROUNDING
+            });
+        }
+
         payments.push({
             type: 'change',
             name: this.$translate.getText('CHANGE'),
             amount: variables.CHANGE
         });
-
         return payments;
     }
 
