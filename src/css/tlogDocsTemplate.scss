@@ -226,6 +226,10 @@
   padding-top: 7px;
 }
 
+.basicTemplate .roundingDiv div.total-amount {
+  direction: ltr;
+  justify-content: flex-end;
+}
 
 .basicTemplate .centralize {
   display: flex;
