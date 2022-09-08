@@ -343,7 +343,7 @@
   font-size: 20px;
   color: black; }
 
-.basicTemplate .changeDiv {
+.basicTemplate .changeDiv, .basicTemplate .roundingDiv {
   display: flex;
   flex-direction: row;
   width: 100%;

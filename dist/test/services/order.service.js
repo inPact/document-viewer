@@ -5,8 +5,8 @@ angular.module('app')
         // ep: 'https://ros-rp.tabit.cloud',
         ep: 'https://il-int-ros.tabit-stage.com',
         // ep: 'https://us-int-ros.tabit-stage.com',
-        org: '5f2fb24c9393c461dc94503f',
-        tlog: '62f9deb2b34a80122072ff1e',
+        org: '60b8cb02265f524b0fa92244',
+        tlog: '6318a16bd18e378b5d587156',
         locale: 'he-IL',
         // locale: 'en-US',
         realRegion: 'IL',
@@ -14,7 +14,7 @@ angular.module('app')
         // realRegion: 'GR',
         username: 'admin@tabit.cloud',
         pass: 'tabitros',
-        version: '1.34.0',
+        version: '1.39.0',
     })
     .factory('OrderService', function ($http, ENV) {
 

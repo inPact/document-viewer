@@ -303,8 +303,8 @@ export default class TlogDocsTranslateService {
                 "CASH_BAL_DUE": "Cash Bal. Due",
                 "order_counter": "Order Counter",
                 "fiscal_counter": "Fiscal Counter",
-                "PROVIDER_TRANS_ID": "Reference"
-
+                "PROVIDER_TRANS_ID": "Reference",
+                "ROUNDING": "Rounding"
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -565,8 +565,8 @@ export default class TlogDocsTranslateService {
                 "rrn": "מזהה עסקה ייחודי",
                 "order_counter": "מס' מסמך להזמנה",
                 "fiscal_counter": "מס' הזמנה רציף",
-                "PROVIDER_TRANS_ID": "מס' הפניה"
-
+                "PROVIDER_TRANS_ID": "מס' הפניה",
+                "ROUNDING": "עיגול אג'"
             }
         }
     }
