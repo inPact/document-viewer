@@ -1130,14 +1130,13 @@ export default class TemplateBuilderService {
         // Rounding div
         if(printData.collections.PAYMENT_LIST[0].P_ROUNDING){
             const roundingDiv = this._doc.createElement('div');
+            roundingDiv.className = 'roundingDiv'
 
             const roundingText = this.$translate.getText('ROUNDING');
             const roundingAmount = printData.variables.TOTAL_ROUNDING + ''
 
-            roundingDiv.innerHTML = "<div class='roundingDiv'>" +
-                "<div class='total-name'>" + roundingText + "</div>" +
-                "<div class='total-amount'>" + roundingAmount + "</div>" +
-                "</div>"
+            roundingDiv.innerHTML = "<div class='total-name'>" + roundingText + "</div>" +
+                "<div class='total-amount'>" + roundingAmount + "</div>"
 
             cashDiv.appendChild(roundingDiv);
         }
