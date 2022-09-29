@@ -61,7 +61,6 @@ export default class SignatureService {
                 'style': "width: 100%;"
             });
 
-            console.log('signatureData.data: ', signatureData.data)
             let path = this.makeSVG('path', {
                 d: signatureData.data,
                 'stroke': "#06067f",
