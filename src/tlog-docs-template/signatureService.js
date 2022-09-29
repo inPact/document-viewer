@@ -31,16 +31,12 @@ export default class SignatureService {
             return;
 
         let signatureData = documentInfo.md.signature;
-        let dimension = helper.getDimensionSafe(_.get(signatureData, 'dimension') || '300 50 150 380');
+        let dimension = helper.getDimensionSafe(_.get(signatureData, 'dimension') || '300 -10 150 500');
 
         let contenier = this.$htmlCreator.create({
             type: 'div',
             id: 'signature-contenier',
-            classList: ['signature-container'],
-            attributes: [
-                { key: "width", value: "100%" },
-                { key: "height", value: "30px" },
-            ]
+            classList: ['signature-container']
         })
         if (documentInfo.md.signature.format === 'image/png') {
             const image = new Image();
@@ -59,12 +55,13 @@ export default class SignatureService {
             let elementSvg = this.makeSVG('svg', {
                 'id': "svg",
                 'width': "100%",
-                'height': "70",
+                'height': "140",
                 'transform': "translate(0,0)",
                 'viewBox': dimension,
                 'style': "width: 100%;"
             });
-    
+
+            console.log('signatureData.data: ', signatureData.data)
             let path = this.makeSVG('path', {
                 d: signatureData.data,
                 'stroke': "#06067f",

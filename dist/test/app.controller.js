@@ -230,7 +230,6 @@ angular.module('app')
         }
 
         $scope.onSelectDocument = function (documentItem) {
-
             $scope.component.selectedDocument = documentItem;
 
             if (!$scope.component.documents) {
@@ -265,8 +264,8 @@ angular.module('app')
 
                     // set the bill print data in case of 'Gift Card' or 'Credit Card' or 'ClubMember'.
                     documentData.printData = {
-                        collections: printData.printData.collections,
-                        variables: printData.printData.variables
+                        collections: appComponent.printData.printData.collections,
+                        variables: appComponent.printData.printData.variables
                     }
 
                 }

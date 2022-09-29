@@ -279,7 +279,7 @@
   border-radius: 4px;
   background-color: #f7f7f7;
   width: 100%;
-  max-height: 100px; }
+  height: 140px; }
 
 .basicTemplate .tpl-body-div {
   border-bottom: solid #E8E8E8 1px;
