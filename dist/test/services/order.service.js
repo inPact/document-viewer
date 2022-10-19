@@ -6,15 +6,15 @@ angular.module('app')
         ep: 'https://il-int-ros.tabit-stage.com',
         // ep: 'https://us-int-ros.tabit-stage.com',
         org: '60b8cb02265f524b0fa92244',
-        tlog: '634fc365e8fa8713ff3aa0d1',
+        tlog: '6319cd931420ed07a0aec70f',
         locale: 'he-IL',
         // locale: 'en-US',
         realRegion: 'IL',
         // realRegion: 'US',
         // realRegion: 'GR',
-        username: 'zohar.rosenbush@tabit.cloud',
-        pass: 'ZoharTabit1234',
-        version: '1.40.0',
+        username: 'admin@tabit.cloud',
+        pass: 'tabitros',
+        version: '1.40.1',
     })
     .factory('OrderService', function ($http, ENV) {
 
