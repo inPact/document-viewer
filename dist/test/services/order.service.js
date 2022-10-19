@@ -14,7 +14,7 @@ angular.module('app')
         // realRegion: 'GR',
         username: 'admin@tabit.cloud',
         pass: 'tabitros',
-        version: '1.40.1',
+        version: '1.40.2',
     })
     .factory('OrderService', function ($http, ENV) {
 
