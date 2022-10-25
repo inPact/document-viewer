@@ -57,8 +57,8 @@ export default class PaymentSection {
                 case 'change':
                     classListContainer.push('changeDiv')
                     break;
-                case 'rounding':
-                    classListContainer.push('roundingDiv')
+                case 'paymentRounding':
+                    classListContainer.push('paymentRoundingDiv')
                     break;
                 default:
                     classListContainer.push('itemDiv')
