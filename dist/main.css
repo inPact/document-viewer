@@ -343,13 +343,13 @@
   font-size: 20px;
   color: black; }
 
-.basicTemplate .changeDiv, .basicTemplate .roundingDiv {
+.basicTemplate .changeDiv, .basicTemplate .paymentRoundingDiv {
   display: flex;
   flex-direction: row;
   width: 100%;
   padding-top: 7px; }
 
-.basicTemplate .roundingDiv div.total-amount {
+.basicTemplate .paymentRoundingDiv div.total-amount {
   direction: ltr;
   justify-content: flex-end; }
 

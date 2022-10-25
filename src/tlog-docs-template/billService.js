@@ -520,7 +520,7 @@ export default class BillService {
 
         if(variables.TOTAL_ROUNDING){
             payments.push({
-                type: 'rounding',
+                type: 'paymentRounding',
                 name: this.$translate.getText('ROUNDING'),
                 amount: variables.TOTAL_ROUNDING
             });
