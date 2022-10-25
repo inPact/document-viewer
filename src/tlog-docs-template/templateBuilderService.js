@@ -1127,7 +1127,7 @@ export default class TemplateBuilderService {
 
         cashDiv.appendChild(cashPaidDiv);
 
-        // Payment Rounding Div
+        // Payment Rounding Div //
         if(printData.variables.TOTAL_ROUNDING){
             const paymentRoundingDiv = this._doc.createElement('div');
             paymentRoundingDiv.className = 'paymentRoundingDiv'
