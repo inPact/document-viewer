@@ -31,7 +31,7 @@ export default class SignatureService {
             return;
 
         let signatureData = documentInfo.md.signature;
-        let dimension = helper.getDimensionSafe(_.get(signatureData, 'dimension') || '300 -10 150 500');
+        let dimension = helper.getDimensionSafe(_.get(signatureData, 'dimension') || '300 -10 150 520');
 
         let contenier = this.$htmlCreator.create({
             type: 'div',
@@ -55,7 +55,7 @@ export default class SignatureService {
             let elementSvg = this.makeSVG('svg', {
                 'id': "svg",
                 'width': "100%",
-                'height': "140",
+                'height': "160",
                 'transform': "translate(0,0)",
                 'viewBox': dimension,
                 'style': "width: 100%;"
