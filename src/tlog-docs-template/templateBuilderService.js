@@ -1127,6 +1127,20 @@ export default class TemplateBuilderService {
 
         cashDiv.appendChild(cashPaidDiv);
 
+        // Payment Rounding Div //
+        if(printData.variables.TOTAL_ROUNDING){
+            const paymentRoundingDiv = this._doc.createElement('div');
+            paymentRoundingDiv.className = 'paymentRoundingDiv'
+
+            const paymentRoundingText = this.$translate.getText('ROUNDING');
+            const paymentRoundingAmount = printData.variables.TOTAL_ROUNDING + ''
+
+            paymentRoundingDiv.innerHTML = "<div class='total-name'>" + paymentRoundingText + "</div>" +
+                "<div class='total-amount'>" + paymentRoundingAmount + "</div>"
+
+            cashDiv.appendChild(paymentRoundingDiv);
+        }
+
         //Change div
         if (printData.collections.PAYMENT_LIST[0].P_CHANGE && printData.collections.PAYMENT_LIST[0].P_CHANGE !== 0) {
             var changeText = this.$translate.getText('TOTAL_CASHBACK');

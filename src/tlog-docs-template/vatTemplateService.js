@@ -308,10 +308,10 @@ export default class VatTemplateService {
 
     createVatDataTemplate(options) {
 
-        let vat = _.get(options, 'vat');
-        let isMulti = _.get(options, 'isMulti');
-        let collections = _.get(options, 'collections');
-        let variables = _.get(options, 'variables');
+        const vat = _.get(options, 'vat');
+        const isMulti = _.get(options, 'isMulti');
+        const collections = _.get(options, 'collections');
+        const variables = _.get(options, 'variables');
 
         // Old
 
@@ -325,18 +325,21 @@ export default class VatTemplateService {
         vatDataDiv.classList += " padding-top";
         vatDataDiv.classList += " tpl-body-div";
 
-        let beforeVatTranslate = this.$translate.getText('BEFORE_VAT');
-        let vatTranslate = this.$translate.getText('VAT');
-        let tipTranslate = this.$translate.getText('TIP');
-        let includeVatTranslate = this.$translate.getText('INCLUDE_VAT');
+        const vatFreeAmountTranslate = this.$translate.getText('VAT_FREE_AMOUNT');
+        const beforeVatTranslate = this.$translate.getText('BEFORE_VAT');
+        const vatTranslate = this.$translate.getText('VAT');
+        const tipTranslate = this.$translate.getText('TIP');
+        const includeVatTranslate = this.$translate.getText('INCLUDE_VAT');
 
-        let beforeVatDiv = this._doc.createElement('div');
-        let vatTextDiv = this._doc.createElement('div');
-        let TipDiv = this._doc.createElement('div');
-        let includeVatDiv = this._doc.createElement('div');
+        const vatFreeAmountDiv = this._doc.createElement('div');
+        const beforeVatDiv = this._doc.createElement('div');
+        const vatTextDiv = this._doc.createElement('div');
+        const TipDiv = this._doc.createElement('div');
+        const includeVatDiv = this._doc.createElement('div');
 
         let tipAmount = 0;
         if (isMulti) {
+
             beforeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat[0].ITEM_AMOUNT_EX_VAT) ? beforeVatTranslate : "") + "</div>" + " " +
                 "<div class='total-amount " + this.isNegative(vat[0].ITEM_AMOUNT_EX_VAT) + "'>" + (this.notEmpty(vat[0].ITEM_AMOUNT_EX_VAT) ? Number(vat[0].ITEM_AMOUNT_EX_VAT).toFixed(2) : "") + "</div>" +
@@ -360,7 +363,6 @@ export default class VatTemplateService {
 
         }
         else {
-
             beforeVatDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (this.notEmpty(vat.TOTAL_EX_VAT) ? beforeVatTranslate : "") + "</div>" + " " +
                 "<div class='total-amount " + this.isNegative(vat.TOTAL_EX_VAT) + "'>" + (this.notEmpty(vat.TOTAL_EX_VAT) ? Number(vat.TOTAL_EX_VAT).toFixed(2) : "") + "</div>" +
@@ -383,6 +385,13 @@ export default class VatTemplateService {
                 "</div>";
         }
 
+        if(variables.VAT_FREE_AMOUNT){
+            vatFreeAmountDiv.innerHTML = "<div class='itemDiv'>" +
+                "<div class='total-name'>" + (this.notEmpty(variables.VAT_FREE_AMOUNT) ? vatFreeAmountTranslate : "") + "</div>" + " " +
+                "<div class='total-amount " + this.isNegative(variables.VAT_FREE_AMOUNT) + "'>" + (this.notEmpty(variables.VAT_FREE_AMOUNT) ? Number(variables.VAT_FREE_AMOUNT).toFixed(2) : "") + "</div>" +
+                "</div>";
+            vatDataDiv.appendChild(vatFreeAmountDiv);
+        }
         vatDataDiv.appendChild(beforeVatDiv);
         vatDataDiv.appendChild(vatTextDiv);
         if (tipAmount > 0) {

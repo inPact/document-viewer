@@ -265,6 +265,7 @@ export default class TlogDocsTranslateService {
                 "Diners": "GUESTS",
                 "RETURN_TRANSACTION": "RETURN TRANSACTION",
                 "BUSINESS_MEAL": "BUSINES MEAL",
+                "VAT_FREE_AMOUNT": "Vat free amount",
                 "BEFORE_VAT": "BEFORE VAT",
                 "INCLUDE_VAT": "INCLUED VAT",
                 "VAT": "VAT",
@@ -303,8 +304,8 @@ export default class TlogDocsTranslateService {
                 "CASH_BAL_DUE": "Cash Bal. Due",
                 "order_counter": "Order Counter",
                 "fiscal_counter": "Fiscal Counter",
-                "PROVIDER_TRANS_ID": "Reference"
-
+                "PROVIDER_TRANS_ID": "Reference",
+                "ROUNDING": "Rounding"
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -533,6 +534,7 @@ export default class TlogDocsTranslateService {
                 "Diners": "סועדים",
                 "RETURN_TRANSACTION": "החזרת עסקה",
                 "BUSINESS_MEAL": "ארוחה עסקית",
+                "VAT_FREE_AMOUNT": "לא חייב במע\"מ",
                 "BEFORE_VAT": "חייב במע\"מ",
                 "INCLUDE_VAT": "כולל מע\"מ",
                 "VAT": "מע\"מ",
@@ -565,8 +567,8 @@ export default class TlogDocsTranslateService {
                 "rrn": "מזהה עסקה ייחודי",
                 "order_counter": "מס' מסמך להזמנה",
                 "fiscal_counter": "מס' הזמנה רציף",
-                "PROVIDER_TRANS_ID": "מס' הפניה"
-
+                "PROVIDER_TRANS_ID": "מס' הפניה",
+                "ROUNDING": "עיגול אג'"
             }
         }
     }
