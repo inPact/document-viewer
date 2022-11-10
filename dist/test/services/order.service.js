@@ -5,16 +5,16 @@ angular.module('app')
         // ep: 'https://ros-rp.tabit.cloud',
         ep: 'https://il-int-ros.tabit-stage.com',
         // ep: 'https://us-int-ros.tabit-stage.com',
-        org: '60b8cb02265f524b0fa92244',
-        tlog: '6319cd931420ed07a0aec70f',
+        org: '63049edb5ba8a35a0a90f034',
+        tlog: '635faf293a10217a6d005fba',
         locale: 'he-IL',
         // locale: 'en-US',
         realRegion: 'IL',
         // realRegion: 'US',
         // realRegion: 'GR',
-        username: 'admin@tabit.cloud',
-        pass: 'tabitros',
-        version: '1.40.2',
+        username: 'integrations-test@tabit.cloud',
+        pass: 'Tc123!@#',
+        version: '1.34.0',
     })
     .factory('OrderService', function ($http, ENV) {
 
