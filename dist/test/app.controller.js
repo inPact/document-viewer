@@ -191,7 +191,6 @@ angular.module('app')
                         printData: OrderService.getBillPrintData(TLOG_ID, { status: STATUS }),
                         data: OrderService.findOne(TLOG_ID, { status: STATUS })
                     }).then(result => {
-
                         appComponent.printData = result.printData;
 
                         let data = resolveDataByStatus({ status: STATUS, data: result.data });

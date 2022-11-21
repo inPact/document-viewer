@@ -9,6 +9,7 @@ export default class emvService {
     }
 
     createEmvTemplate(documentType, printData, doc) {
+        console.log('zohar createEmvTemplate - unnecessary');
         this._doc = doc;
         let data = this.getEMVData(documentType, printData);
 

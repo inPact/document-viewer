@@ -1,7 +1,6 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import HtmlCreator from '../helpers/htmlCreator.service';
-
 import ReturnTransactionSection from '../services/sections/ReturnTransaction.section';
 
 export default class HeaderService {
@@ -14,7 +13,6 @@ export default class HeaderService {
         this.$htmlCreator = new HtmlCreator();
         this.$returnTransactionSection = new ReturnTransactionSection(options);
     }
-
 
     createHeader(printData, doc, docObj, docData) {
         this._doc = doc;

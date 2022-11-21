@@ -23,6 +23,7 @@ export default class GiftCardSlipService {
 
     }
     createGiftCardSlip(printData, docObjChosen, doc) {
+        console.log('zohar -- creating giftcard slip');
         this._doc = doc;
         let giftCardSlipDiv = this._doc.createElement('div');
         giftCardSlipDiv.id = 'giftCardSlipDiv';
@@ -184,7 +185,7 @@ export default class GiftCardSlipService {
                 "<div class='total-amount'>" + (giftCardSlipDoc.P_AMOUNT ? Number(giftCardSlipDoc.P_AMOUNT).toFixed(2) : "") + "</div></div>";
             giftCardSlipDiv.appendChild(totalDiv)
 
-            //Add signature 
+            //Add signature
             if (_.get(docObjChosen, 'md.signature')) {
 
                 var signatureArea = this._doc.createElement('div');

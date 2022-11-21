@@ -68,11 +68,13 @@ export default class TemplateBuilderService {
     }
 
     createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
+        console.log('zohar -- documentInfo', documentInfo, 'printdata', printData, 'opt', options);
         this._doc = DocumentFactory.get({
             createNew: true,
             documentInfo: documentInfo,
             printData: printData
         });
+
 
         if (documentInfo.hasOwnProperty('billText')) {
             this._doc.body.appendChild(this.createTextTemplate(documentInfo))
@@ -80,6 +82,7 @@ export default class TemplateBuilderService {
             this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature))
         }
         else {
+            console.log('zohar -- in else');
             this._docObj = documentInfo;
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
@@ -304,6 +307,7 @@ export default class TemplateBuilderService {
 
                     //create a general template content
                     if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
+                        console.log('zohar -- not refund');
                         var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
                         tplOrderPaymentData.id = 'tplOrderPaymentData';
                         let child = tplOrderPaymentData.children[0];
@@ -447,6 +451,7 @@ export default class TemplateBuilderService {
                 }
 
                 if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
+                    console.log('zohar -- setting payment');
 
                     let payments = _.get(this._printData, 'collections.PAYMENT_LIST');
                     let giftCardPayment = payments.find(c => c.P_TENDER_TYPE === "creditCard");
@@ -458,7 +463,7 @@ export default class TemplateBuilderService {
                             data: giftCardPayment
                         });
 
-                        docTemplate.appendChild(elementCreditTransaction);
+                        docTemplate.appendChild(elementCreditTransaction); // zohar -- this is the footer (last4 ...)
 
                     }
 
@@ -929,6 +934,7 @@ export default class TemplateBuilderService {
     }
 
     createPaymentsData(printData) {
+        //zohar -- all the payments section
 
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
@@ -939,25 +945,25 @@ export default class TemplateBuilderService {
 
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
-                tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
+                // tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
 
                 if (_.get(this, '_docObj.md.signature') && !this._isUS && ["CreditCardPayment", "CreditCardRefund"].indexOf(this._docObj.docPaymentType) > -1) {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
                     signatureArea.className += ' item-div';
 
-                    tplOrderPaymentsDiv.appendChild(signatureArea);
-                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
+                    // tplOrderPaymentsDiv.appendChild(signatureArea);
+                    // tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
                 }
             } else if (this._docObj.docPaymentType === ("GiftCard")) {
                 var giftCardPayment = this.createGiftCardDetails(printData);
-                tplOrderPaymentsDiv.appendChild(giftCardPayment);
+                // tplOrderPaymentsDiv.appendChild(giftCardPayment);
             } else if (this._docObj.docPaymentType === "CashPayment" || this._docObj.docPaymentType === "CashRefund") {
                 var cashPayment = this.createCashPaymentFooter(printData);
-                tplOrderPaymentsDiv.appendChild(cashPayment);
+                // tplOrderPaymentsDiv.appendChild(cashPayment);
             } else if (this._docObj.docPaymentType === "ChequePayment" || this._docObj.docPaymentType === "ChequeRefund") {
                 var chequePayment = this.createChequePaymentFooter(printData);
-                tplOrderPaymentsDiv.appendChild(chequePayment);
+                // tplOrderPaymentsDiv.appendChild(chequePayment);
             }
 
         } else {
@@ -971,7 +977,7 @@ export default class TemplateBuilderService {
 
             // var OrderPaymentsDiv = this.fillPaymentsData(printData);
             // OrderPaymentsDiv.id = "OrderPaymentsDiv";
-            tplOrderPaymentsDiv.appendChild(paymentSection);
+            // tplOrderPaymentsDiv.appendChild(paymentSection);
         }
 
         return tplOrderPaymentsDiv;

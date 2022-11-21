@@ -23,6 +23,7 @@ export default class CreditSlipService {
     }
 
     createCreditSlip(printData, docObjChosen, doc) {
+        console.log('zohar -- creating credit slip');
         docObjChosen.md = docObjChosen.md || {};
         this._doc = doc;
         let creditSlipDiv = this._doc.createElement('div');

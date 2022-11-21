@@ -28,6 +28,7 @@ window.DocumentViewer = class DocumentViewer {
      * @returns {*}
      */
     getHTMLDocument(documentInfo, printData) {
+        console.log('zohar -- getHTMLDocument');
         return this._tlogDocsService.getHTMLDocument(documentInfo, printData);
     }
 
