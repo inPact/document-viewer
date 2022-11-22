@@ -24,6 +24,7 @@ import ReturnTransactionSection from '../services/sections/ReturnTransaction.sec
 
 import _ from 'lodash';
 import QRCode from "qrcode";
+import { value } from "lodash/seq";
 
 
 export default class TemplateBuilderService {
@@ -61,6 +62,7 @@ export default class TemplateBuilderService {
     }
 
     _configure(options) {
+        console.log('zohar -- options', options);
         if (options.locale) this._locale = options.locale;
         if (options.isUS !== undefined) this._isUS = options.isUS;
         if (options.realRegion) this._realRegion = options.realRegion;
@@ -200,7 +202,11 @@ export default class TemplateBuilderService {
         let excludeHeader = _.get(options, 'excludeHeader') || false;
         let excludeFooter = _.get(options, 'excludeFooter') || false;
 
-        this._doc = DocumentFactory.get();
+
+
+        // zohar TO DO -  take out to function `getInitialDocTemplate`. Start : 206
+
+        // this._doc = DocumentFactory.get(); //zohar -- probably unnecessary, check that it's not problematic.
 
         var docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
@@ -226,7 +232,7 @@ export default class TemplateBuilderService {
 
         docTemplate.appendChild(elementVersion);
 
-
+        // zohar TO Do - take out to function `create logo element` start : 232. end : 262; + Insert to function - appendChildren()
         if (!excludeHeader) {
 
             if (!_.isEmpty(logoUrl)) {
@@ -254,15 +260,16 @@ export default class TemplateBuilderService {
 
             var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
             templateHeader.classList += ' text-center';
-
+            console.log('zohar -- templateHeader', templateHeader);
             docTemplate.appendChild(templateHeader);
         }
 
-
+        // zohar TO DO : Move to relevant position. start :265, end : 268;
         var checkInIL;
         if (this._locale == 'he-IL' && docObjChosen.documentType === 'check') {
             checkInIL = true;
         }
+        // zohar TO DO : Move all appendChilds to special function - appendTemplateChildren()
         if (docObjChosen.type === 'clubMembers') {
 
 
@@ -284,8 +291,11 @@ export default class TemplateBuilderService {
 
                 docTemplate.appendChild(elementRefundDeliveryNote);
             } else {
+                // zohar TO DO: move to `initDocTemplate` : this._isGiftCardBill, this._isTaxExempt, isMediaExchange, isCreditSlip, isGiftCardSlip
                 this._isGiftCardBill = (docObjChosen.isGiftCardBill && docObjChosen.docPaymentType === 'GiftCardPayment') ? true : false;
                 this._isTaxExempt = this._printData.data.isTaxExempt;
+
+                //zohar TO DO: check if media exchange can be also credit slip
 
                 var isMediaExchange = (this._printData.variables.ORDER_TYPE === "MEDIAEXCHANGE");
                 var isCreditSlip = ((docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL) || docObjChosen.documentType === 'creditSlip')
@@ -293,7 +303,8 @@ export default class TemplateBuilderService {
                 var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this._isUS);
 
                 if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
-                    var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen);
+                    //zohar -- part relevant for IL only
+                    var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen); //zohar -- edit here
                     docTemplate.appendChild(mediaExchangeDiv);
 
                 }
@@ -301,6 +312,7 @@ export default class TemplateBuilderService {
                     var tplCreditSlipTemplate = this.$creditSlipService.createCreditSlip(this._printData, docObjChosen, this._doc);
                     docTemplate.appendChild(tplCreditSlipTemplate);
                 } else if (isGiftCardSlip) {
+                    console.log('zohar -- isGiftCardSlip');
                     var tplGiftCardSlipTemplate = this.$giftCardSlipService.createGiftCardSlip(this._printData, docObjChosen, this._doc);
                     docTemplate.appendChild(tplGiftCardSlipTemplate);
                 } else {
@@ -309,7 +321,9 @@ export default class TemplateBuilderService {
                     if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
                         console.log('zohar -- not refund');
                         var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
+                        console.log('zohar tplOrderPaymentData', tplOrderPaymentData);
                         tplOrderPaymentData.id = 'tplOrderPaymentData';
+                        //zohar TO DO: move 327-335 to the create function,
                         let child = tplOrderPaymentData.children[0];
 
                         if (!child.hasChildNodes()) {
@@ -349,7 +363,8 @@ export default class TemplateBuilderService {
                     if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
                         docTemplate.appendChild(tplOrderPaymentData);
                     }
-
+                    console.log('zohar -- this is the charges part (mastercard....)');
+                    console.log('zohar --- orderTotals', tplOrderTotals);
                     tplOrderPointsRedeemData && tplOrderPointsRedeemData.hasChildNodes() ?docTemplate.appendChild(tplOrderPointsRedeemData) : null;
                     tplOrderReturnItems.hasChildNodes() ? docTemplate.appendChild(tplOrderReturnItems) : null;
                     tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
@@ -427,6 +442,7 @@ export default class TemplateBuilderService {
                     this._printData.collections.PAYMENT_LIST &&
                     this._printData.collections.PAYMENT_LIST.length > 0 &&
                     this._printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined)) {
+                    //zohar -- part relevant for IL only
                     let documentType = 'orderBill'
                     docTemplate.appendChild(this.$emvService.createEmvTemplate(documentType, this._printData, this._doc));
                 } else if (
@@ -451,6 +467,8 @@ export default class TemplateBuilderService {
                 }
 
                 if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
+                    //zohar -- move to footer
+
                     console.log('zohar -- setting payment');
 
                     let payments = _.get(this._printData, 'collections.PAYMENT_LIST');
@@ -945,29 +963,28 @@ export default class TemplateBuilderService {
 
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
-                // tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
+                tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
 
                 if (_.get(this, '_docObj.md.signature') && !this._isUS && ["CreditCardPayment", "CreditCardRefund"].indexOf(this._docObj.docPaymentType) > -1) {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
                     signatureArea.className += ' item-div';
 
-                    // tplOrderPaymentsDiv.appendChild(signatureArea);
-                    // tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
+                    tplOrderPaymentsDiv.appendChild(signatureArea);
+                    tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
                 }
             } else if (this._docObj.docPaymentType === ("GiftCard")) {
                 var giftCardPayment = this.createGiftCardDetails(printData);
-                // tplOrderPaymentsDiv.appendChild(giftCardPayment);
+                tplOrderPaymentsDiv.appendChild(giftCardPayment);
             } else if (this._docObj.docPaymentType === "CashPayment" || this._docObj.docPaymentType === "CashRefund") {
                 var cashPayment = this.createCashPaymentFooter(printData);
-                // tplOrderPaymentsDiv.appendChild(cashPayment);
+                tplOrderPaymentsDiv.appendChild(cashPayment);
             } else if (this._docObj.docPaymentType === "ChequePayment" || this._docObj.docPaymentType === "ChequeRefund") {
                 var chequePayment = this.createChequePaymentFooter(printData);
-                // tplOrderPaymentsDiv.appendChild(chequePayment);
+                tplOrderPaymentsDiv.appendChild(chequePayment);
             }
 
         } else {
-            /// TODO !
 
             let paymentSection = this.$paymentSection.get({
                 variables: this._printData.variables,
@@ -975,9 +992,19 @@ export default class TemplateBuilderService {
                 payments: this._printData.data.payments
             });
 
+            // if (this._printData.variables.REAL_ORDER_TYPE === 'MEDIAEXCHANGE'){
+            //     console.log('zohar -- MEDIAEXCHANGE');
+            //     paymentSection = this.$paymentSection.getMediaExchangePaymentSection({
+            //         variables: this._printData.variables,
+            //         collections: this._printData.collections,
+            //         payments: this._printData.data.payments
+            //     })
+            // }
+            console.log('zohar -- just payment section', paymentSection);
+
             // var OrderPaymentsDiv = this.fillPaymentsData(printData);
             // OrderPaymentsDiv.id = "OrderPaymentsDiv";
-            // tplOrderPaymentsDiv.appendChild(paymentSection);
+            tplOrderPaymentsDiv.appendChild(paymentSection);
         }
 
         return tplOrderPaymentsDiv;
@@ -1058,6 +1085,7 @@ export default class TemplateBuilderService {
     }
 
     createMediaExchange(printData) {
+        console.log('zohar -- first part of the document (the description part, in bold)');
         var printMessage;
         var pName;
         var cardNumber;

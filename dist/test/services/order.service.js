@@ -3,14 +3,15 @@
 angular.module('app')
     .constant("ENV", {
         // ep: 'https://ros-rp.tabit.cloud',
-        ep: 'https://il-int-ros.tabit-stage.com',
-        // ep: 'https://us-int-ros.tabit-stage.com',
-        org: '63049edb5ba8a35a0a90f034',
-        tlog: '635faf293a10217a6d005fba',
-        locale: 'he-IL',
-        // locale: 'en-US',
-        realRegion: 'IL',
-        // realRegion: 'US',
+        // ep: 'https://il-int-ros.tabit-stage.com',
+        ep: 'https://us-int-ros.tabit-stage.com',
+        org: '5ff33bcd0f28b4395871c3d0',
+        // tlog: '635faf293a10217a6d005fba', //zohar -- with refund
+        tlog: '637b3cbd8882ac8e11609f71',
+        // locale: 'he-IL',
+        locale: 'en-US',
+        // realRegion: 'IL',
+        realRegion: 'US',
         // realRegion: 'GR',
         username: 'integrations-test@tabit.cloud',
         pass: 'Tc123!@#',

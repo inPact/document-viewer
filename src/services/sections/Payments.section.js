@@ -10,16 +10,119 @@ export default class PaymentSection {
         this.$utils = new Utils();
     }
 
-    get(options) {
-        let variables = options.variables;
-        let collections = options.collections;
-        let payments = options.payments;
+    getGiftCardLoadRow(payment){
+        const loadText = this.$htmlCreator.create({
+            id: 'payment-text',
+            classList: ['value-name'],
+            value: this.$translate.getText('LOAD')
+        });
 
-        let paymentSection = this.$htmlCreator.createSection({
+        const loadValue = this.$htmlCreator.create({
+            id: 'payment-value',
+            classList: ['itemDiv'],
+            value: this.$utils.toFixedSafe(payment.amount || 0, 2) || ''
+        });
+
+        const elementContainer = this.$htmlCreator.create({
+            id: 'payment-container',
+            classList: ['element-container'],
+            children: [
+                loadText,
+                loadValue
+            ]
+        });
+
+        return elementContainer;
+    }
+
+    getGiftCardNumberRow(payment){
+        const cardNumberText = this.$htmlCreator.create({
+            id: 'payment-text',
+            classList: ['value-name'],
+            value: this.$translate.getText('GIFT_CARD_NUMBER')
+        });
+
+        const cardNumberValue = this.$htmlCreator.create({
+            id: 'payment-value',
+            classList: ['value-name'],
+            value: payment?.giftCardNumber || ''
+        });
+
+        const elementContainer = this.$htmlCreator.create({
+            id: 'payment-container',
+            classList: ['element-container'],
+            children: [
+                cardNumberText,
+                cardNumberValue
+            ]
+        });
+        return elementContainer;
+    }
+
+    getGiftCardBalanceRow(payment){
+        const remainingBalanceText = this.$htmlCreator.create({
+            id: 'payment-text',
+            classList: ['value-name'],
+            value: this.$translate.getText('REMAINING_BALANCE')
+        });
+
+        const remainingBalanceValue = this.$htmlCreator.create({
+            id: 'payment-value',
+            classList: ['value-name'],
+            value: payment.giftCardBalance || ''
+        });
+
+        const elementContainer = this.$htmlCreator.create({
+            id: 'payment-container',
+            classList: ['element-container'],
+            children: [
+                remainingBalanceText,
+                remainingBalanceValue
+            ]
+        });
+        return elementContainer;
+    }
+
+    getMediaExchangePaymentSection(options){
+        // Shows the cards loaded, amount for each, remaining balance.
+        const variables = options.variables;
+        const payments = options.payments;
+
+        const paymentSection = this.$htmlCreator.createSection({
             id: 'payment-section',
             classList: ['payment-section']
         });
 
+        payments.forEach((payment)=>{
+            if(payment.giftCardNumber){
+                const giftCardLoadContainer = this.$htmlCreator.create({
+                    id: 'gift-card-load-container',
+                    classList: ['load-container'],
+                    children: [
+                        this.getGiftCardLoadRow(payment),
+                        this.getGiftCardNumberRow(payment),
+                        this.getGiftCardBalanceRow(payment)
+                    ]
+                });
+                paymentSection.append(giftCardLoadContainer);
+            }
+        })
+
+        return paymentSection;
+    }
+
+
+
+    get(options) {
+        const variables = options.variables;
+        const payments = options.payments;
+        console.log('zohar -- payments', payments);
+        console.log('zohar -- variables', variables);
+
+        const paymentSection = this.$htmlCreator.createSection({
+            id: 'payment-section',
+            classList: ['payment-section']
+        });
 
         payments.forEach(payment => {
             let elementText = this.$htmlCreator.create({

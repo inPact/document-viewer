@@ -496,14 +496,16 @@ export default class BillService {
     resolvePayments(variables, collections) {
         // filter payments by ommitted property removes cancelled and refund payments once the order goes shva offline
 
-        let filteredPyaments = this.filterOmittedPayments(collections.PAYMENT_LIST);
-        let payments = [];
+        const filteredPayments = this.filterOmittedPayments(collections.PAYMENT_LIST);
+        const payments = [];
 
-        filteredPyaments.forEach(payment => {
-            let paymentData = {
+        filteredPayments.forEach(payment => {
+            const paymentData = {
                 name: this.resolvePaymentName(payment),
                 amount: payment.PAYMENT_TYPE ? this.$utils.toFixedSafe(payment.P_AMOUNT * -1, 2) : this.$utils.toFixedSafe(payment.P_AMOUNT, 2),
-                holderName: payment.CUSTOMER_NAME !== undefined ? payment.CUSTOMER_NAME : ''
+                holderName: payment.CUSTOMER_NAME !== undefined ? payment.CUSTOMER_NAME : '',
+                ...(payment.P_TENDER_TYPE === 'giftCard') && {giftCardNumber: payment.CARD_NUMBER || ''},
+                ...(payment.P_TENDER_TYPE === 'giftCard' && payment.BALANCE_AMOUNT) && {giftCardBalance: payment.BALANCE_AMOUNT}
             }
             if (payment.GUEST_NAME) paymentData.GUEST_NAME = payment.GUEST_NAME;
             if (payment.HOTEL_NAME) paymentData.HOTEL_NAME = payment.HOTEL_NAME;

@@ -305,7 +305,10 @@ export default class TlogDocsTranslateService {
                 "order_counter": "Order Counter",
                 "fiscal_counter": "Fiscal Counter",
                 "PROVIDER_TRANS_ID": "Reference",
-                "ROUNDING": "Rounding"
+                "ROUNDING": "Rounding",
+                "LOAD": "Load",
+                "GIFT_CARD_NUMBER": "Card No",
+                "REMAINING_BALANCE": "Remaining balance"
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -390,7 +393,6 @@ export default class TlogDocsTranslateService {
                 "BN_OR_SN": "ח.פ / ת.ז",
                 "ALL_ORDER_OTH": "הזמנה על חשבון הבית",
                 "CHARGE_TRANSACTION": "עסקת חיוב הקפה",
-
                 "CHECK": "חשבון",
                 "billText": "חשבון",
                 "TOTAL_TIPS": "תשר",
@@ -568,7 +570,10 @@ export default class TlogDocsTranslateService {
                 "order_counter": "מס' מסמך להזמנה",
                 "fiscal_counter": "מס' הזמנה רציף",
                 "PROVIDER_TRANS_ID": "מס' הפניה",
-                "ROUNDING": "עיגול אג'"
+                "ROUNDING": "עיגול אג'",
+                "LOAD": "טעינת כרטיס",
+                "GIFT_CARD_NUMBER": "מס' כרטיס",
+                "REMAINING_BALANCE": "יתרת כרטיס"
             }
         }
     }
