@@ -41,7 +41,6 @@ angular.module('app')
          * @param { status : String, data : Object } options (status : 'opened' / 'closed', data : tlog / order object).
          */
         function resolveDataByStatus(options) {
-
             let status = options.status;
             let data = options.data;
 
@@ -183,10 +182,8 @@ angular.module('app')
         })();
 
         function init() {
-
             AuthService.authenticate()
-                .then(res => {
-
+                .then(() => {
                     $q.all({
                         printData: OrderService.getBillPrintData(TLOG_ID, { status: STATUS }),
                         data: OrderService.findOne(TLOG_ID, { status: STATUS })
@@ -267,11 +264,9 @@ angular.module('app')
                         variables: appComponent.printData.printData.variables
                     }
 
-                }
-                else if (selectedDocument.docType === 'invoice') {
+                } else if (selectedDocument.docType === 'invoice') {
                     documentData = selectedDocument.data; // set print data of 'Invoice'.
-                }
-                else {
+                } else {
                     documentData = selectedDocument.data;
                 }
 

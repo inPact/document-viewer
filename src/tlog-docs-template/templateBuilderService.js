@@ -21,11 +21,11 @@ import PaymentSection from '../services/sections/Payments.section';
 import CreaditSection from '../services/sections/Credit.section';
 import ReturnTransactionSection from '../services/sections/ReturnTransaction.section';
 
-
 import _ from 'lodash';
-import QRCode from "qrcode";
+import QRCode from 'qrcode';
 import { value } from "lodash/seq";
 
+import visitors from './visitors';
 
 export default class TemplateBuilderService {
     constructor(options) {
@@ -37,7 +37,7 @@ export default class TemplateBuilderService {
         this._isTaxExempt;
 
         this.$utils = new Utils();
-        this.$translate = new TlogDocsTranslateService({locale: this._locale});
+        this.$translate = new TlogDocsTranslateService({ locale: this._locale });
         this.$billService = new BillService(options);
         this.$headerService = new HeaderService(options);
         this.$emvService = new EmvService(options);
@@ -47,7 +47,7 @@ export default class TemplateBuilderService {
         this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
         this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
-        this.$localization = new Localization({isUS: this._isUS});
+        this.$localization = new Localization({ isUS: this._isUS });
         this.$htmlCreator = new HtmlCreator();
         this.$creditTransaction = new CreditTransaction(options);
         this.$clubMembersService = new ClubMembersService(options);
@@ -62,28 +62,30 @@ export default class TemplateBuilderService {
     }
 
     _configure(options) {
-        console.log('zohar -- options', options);
-        if (options.locale) this._locale = options.locale;
-        if (options.isUS !== undefined) this._isUS = options.isUS;
-        if (options.realRegion) this._realRegion = options.realRegion;
+        if (options.locale)
+            this._locale = options.locale;
 
+        if (options.isUS)
+            this._isUS = options.isUS;
+
+        if (options.realRegion)
+            this._realRegion = options.realRegion;
     }
 
     createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
         console.log('zohar -- documentInfo', documentInfo, 'printdata', printData, 'opt', options);
         this._doc = DocumentFactory.get({
             createNew: true,
-            documentInfo: documentInfo,
-            printData: printData
+            documentInfo,
+            printData
         });
 
 
         if (documentInfo.hasOwnProperty('billText')) {
             this._doc.body.appendChild(this.createTextTemplate(documentInfo))
-        } else  if (documentInfo.hasOwnProperty('fiscalSignature')) {
+        } else if (documentInfo.hasOwnProperty('fiscalSignature')) {
             this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature))
-        }
-        else {
+        } else {
             this._docObj = documentInfo;
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
@@ -166,7 +168,7 @@ export default class TemplateBuilderService {
         return docTemplate;
     }
 
-    createTextTemplate(documentInfo){
+    createTextTemplate(documentInfo) {
         var docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');
@@ -189,13 +191,10 @@ export default class TemplateBuilderService {
         });
 
         docTemplate.appendChild(elementBillText);
-
-
         return docTemplate;
     }
 
     createDocTemplate(docObjChosen, options = {}) {
-
         let logoUrl = _.get(options, 'logoUrl') || undefined;
         let tabitLogo = _.get(options, 'tabitLogo') || undefined;
         let excludeHeader = _.get(options, 'excludeHeader') || false;
@@ -207,7 +206,7 @@ export default class TemplateBuilderService {
 
         // this._doc = DocumentFactory.get(); //zohar -- probably unnecessary, check that it's not problematic.
 
-        var docTemplate = this._doc.createElement('div');
+        let docTemplate = this._doc.createElement('div');
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');
         docTemplate.classList.add('text-uppercase');
@@ -228,20 +227,15 @@ export default class TemplateBuilderService {
             value: VERSION
         });
 
-
         docTemplate.appendChild(elementVersion);
-
-        // zohar TO Do - take out to function `create logo element` start : 232. end : 262; + Insert to function - appendChildren()
         if (!excludeHeader) {
-
             if (!_.isEmpty(logoUrl)) {
-
                 let elementImage = this.$htmlCreator.create({
                     type: 'img',
                     id: 'logo',
                     classList: ['logo-image'],
                     attributes: [
-                        {key: 'src', value: logoUrl}
+                        { key: 'src', value: logoUrl }
                     ]
                 });
 
@@ -263,15 +257,15 @@ export default class TemplateBuilderService {
             docTemplate.appendChild(templateHeader);
         }
 
-        // zohar TO DO : Move to relevant position. start :265, end : 268;
+         visitors.forEach(x => x.visit(this, docTemplate));
+
+
         var checkInIL;
         if (this._locale == 'he-IL' && docObjChosen.documentType === 'check') {
             checkInIL = true;
         }
         // zohar TO DO : Move all appendChilds to special function - appendTemplateChildren()
         if (docObjChosen.type === 'clubMembers') {
-
-
             let elementClubMember = this.$clubMembersService.get({
                 totalAmount: this._printData.variables.TOTAL_AMOUNT,
                 members: this._printData.collections.MEMBERS
@@ -279,9 +273,7 @@ export default class TemplateBuilderService {
 
             docTemplate.appendChild(elementClubMember);
         } else {
-
             if (docObjChosen.type === "refundDeliveryNote" || docObjChosen.documentType === "refundDeliveryNote") {
-
                 let elementRefundDeliveryNote = this.$refundDeliveryNote.get({
                     isRefund: docObjChosen.isRefund,
                     variables: this._printData.variables,
@@ -300,7 +292,6 @@ export default class TemplateBuilderService {
                 var isCreditSlip = ((docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL) || docObjChosen.documentType === 'creditSlip')
 
                 var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this._isUS);
-
                 if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
                     //zohar -- part relevant for IL only
                     var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen); //zohar -- edit here
@@ -337,7 +328,7 @@ export default class TemplateBuilderService {
 
                     }
 
-                    if(_.get(this._printData.collections, 'POINTS_REDEMPTION', []).length > 1){
+                    if (_.get(this._printData.collections, 'POINTS_REDEMPTION', []).length > 1) {
                         var tplOrderPointsRedeemData = this.createOrderPointsRedeemData(this._printData)
                         tplOrderPointsRedeemData.id = 'tplOrderPointsRedeemData';
                     }
@@ -364,7 +355,7 @@ export default class TemplateBuilderService {
                     }
                     console.log('zohar -- this is the charges part (mastercard....)');
                     console.log('zohar --- orderTotals', tplOrderTotals);
-                    tplOrderPointsRedeemData && tplOrderPointsRedeemData.hasChildNodes() ?docTemplate.appendChild(tplOrderPointsRedeemData) : null;
+                    tplOrderPointsRedeemData && tplOrderPointsRedeemData.hasChildNodes() ? docTemplate.appendChild(tplOrderPointsRedeemData) : null;
                     tplOrderReturnItems.hasChildNodes() ? docTemplate.appendChild(tplOrderReturnItems) : null;
                     tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
                     tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
@@ -487,8 +478,8 @@ export default class TemplateBuilderService {
                 }
 
             }
-
         }
+
 
         // document order number
         if (this._printData.variables.ORDER_COUNTER && this._realRegion.toUpperCase() === 'GR') {
@@ -496,7 +487,7 @@ export default class TemplateBuilderService {
                 type: 'div',
                 id: 'counter-site-footer-text',
                 classList: ['text', 'flex-center'],
-                value: this.$translate.getText('order_counter') + " "  + this._printData.variables.ORDER_COUNTER
+                value: this.$translate.getText('order_counter') + " " + this._printData.variables.ORDER_COUNTER
             });
 
             docTemplate.appendChild(docOrderNumberFooterText);
@@ -506,7 +497,7 @@ export default class TemplateBuilderService {
                 type: 'div',
                 id: 'counter-site-footer-text',
                 classList: ['text', 'flex-center'],
-                value: this.$translate.getText('fiscal_counter') + " "  + this._printData.variables.FISCAL_COUNTER
+                value: this.$translate.getText('fiscal_counter') + " " + this._printData.variables.FISCAL_COUNTER
             });
 
             docTemplate.appendChild(docOrderNumberFooterText);
@@ -529,7 +520,7 @@ export default class TemplateBuilderService {
                 id: 'element-footer-image',
                 classList: ['tabit-logo'],
                 attributes: [
-                    {key: 'src', value: tabitLogo}
+                    { key: 'src', value: tabitLogo }
                 ]
             });
 
@@ -558,6 +549,7 @@ export default class TemplateBuilderService {
 
         return docTemplate;
     }
+
 
     createOrderPaymentData(printData) {
 
@@ -598,7 +590,7 @@ export default class TemplateBuilderService {
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
 
         tplPointsRedeemData.classList += ' tpl-body-div';
-    
+
         var PointsRedeemDataDiv = this._doc.createElement('div');
         PointsRedeemDataDiv.id = "PointsRedeemDataDiv";
         PointsRedeemDataDiv.classList += ' padding-top';
@@ -734,10 +726,10 @@ export default class TemplateBuilderService {
             }
 
             othItemDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='item-qty'>" + (othItem.qty ? othItem.qty : " ") + "</div>" + " " +
-                "<div class='item-name'>" + othItem.space + (othItem.name ? othItem.name : "") + "</div>" + " " +
-                "<div class='total-amount " + this.$utils.isNegative(othItem.amount) + "'>" + (othItem.amount ? othItem.amount : "") + "</div>" +
-                "</div>"
+                                   "<div class='item-qty'>" + (othItem.qty ? othItem.qty : " ") + "</div>" + " " +
+                                   "<div class='item-name'>" + othItem.space + (othItem.name ? othItem.name : "") + "</div>" + " " +
+                                   "<div class='total-amount " + this.$utils.isNegative(othItem.amount) + "'>" + (othItem.amount ? othItem.amount : "") + "</div>" +
+                                   "</div>"
 
             htmlElement.appendChild(othItemDiv);
 
@@ -748,10 +740,10 @@ export default class TemplateBuilderService {
         data.pointsRedeem.forEach(prItem => {
             var prItemDiv = this._doc.createElement('div');
             prItemDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='item-qty' style='flex: 3;'>" + (prItem.CUSTOMER_NAME ? prItem.CUSTOMER_NAME : " ") + "</div>" + " " +
-                "<div class='item-name'>" + (prItem.CARD_NUMBER ? prItem.CARD_NUMBER : "") + "</div>" + " " +
-                "<div class='total-amount'>" + (prItem.REDEEMED_POINTS ? prItem.REDEEMED_POINTS : "") + "</div>" +
-                "</div>"
+                                  "<div class='item-qty' style='flex: 3;'>" + (prItem.CUSTOMER_NAME ? prItem.CUSTOMER_NAME : " ") + "</div>" + " " +
+                                  "<div class='item-name'>" + (prItem.CARD_NUMBER ? prItem.CARD_NUMBER : "") + "</div>" + " " +
+                                  "<div class='total-amount'>" + (prItem.REDEEMED_POINTS ? prItem.REDEEMED_POINTS : "") + "</div>" +
+                                  "</div>"
 
             htmlElement.appendChild(prItemDiv);
         });
@@ -936,13 +928,13 @@ export default class TemplateBuilderService {
                 var totalDiv = this._doc.createElement('div');
                 if (total.type === 'exclusive_tax') {
                     totalDiv.innerHTML = "<div class='itemDiv small-chars'>" +
-                        "<div class='total-name'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? this.$utils.getDecimals(total.rate, 3) + "%" : " ") + "</div>" + " " +
-                        "<div class='total-amount " + this.$utils.isNegative(total.amount) + "'>" + (total.amount ? this.$utils.twoDecimals(total.amount) : " ") + "</div>" + "</div>"
+                                         "<div class='total-name'>" + "&nbsp;&nbsp;" + (total.name ? total.name : " ") + " " + (total.rate ? this.$utils.getDecimals(total.rate, 3) + "%" : " ") + "</div>" + " " +
+                                         "<div class='total-amount " + this.$utils.isNegative(total.amount) + "'>" + (total.amount ? this.$utils.twoDecimals(total.amount) : " ") + "</div>" + "</div>"
                 } else if (total.type !== 'exclusive_tax') {
                     totalDiv.innerHTML = "<div class='itemDiv " + (isCheckTotal ? " bold" : '') + "'>" +
-                        "<div class='total-name'>" + (total.name ? total.name : " ") + "</div>" + " " +
-                        "<div class='total-amount " + this.$utils.isNegative(total.amount) + "'>" + (total.amount ? this.$utils.twoDecimals(total.amount) : " ") + "</div>" +
-                        "</div>"
+                                         "<div class='total-name'>" + (total.name ? total.name : " ") + "</div>" + " " +
+                                         "<div class='total-amount " + this.$utils.isNegative(total.amount) + "'>" + (total.amount ? this.$utils.twoDecimals(total.amount) : " ") + "</div>" +
+                                         "</div>"
                 }
 
                 htmlElement.appendChild(totalDiv);
@@ -1052,8 +1044,8 @@ export default class TemplateBuilderService {
         var pAmount = printData.collections.GIFT_CARD_PAYMENTS[0].P_AMOUNT ? Number(printData.collections.GIFT_CARD_PAYMENTS[0].P_AMOUNT).toFixed(2) : '';
         var giftCardPaidDiv = this._doc.createElement('div')
         giftCardPaidDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (paidGiftCardText ? paidGiftCardText : " ") + "</div>" +
-            "<div class='total-amount'>" + pAmount + "</div></div>"
+                                    "<div class='total-name'>" + (paidGiftCardText ? paidGiftCardText : " ") + "</div>" +
+                                    "<div class='total-amount'>" + pAmount + "</div></div>"
 
         giftCardDiv.appendChild(giftCardPaidDiv);
 
@@ -1063,8 +1055,8 @@ export default class TemplateBuilderService {
         var giftCardNumDiv = this._doc.createElement('div')
         giftCardNumDiv.id = 'giftCardNumDiv';
         giftCardNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (giftCardNum ? (giftCardNum) : " ") + "</div>" +
-            "<div class='number-data'>" + cardNum + "</div>" + "</div>"
+                                   "<div class='total-name'>" + (giftCardNum ? (giftCardNum) : " ") + "</div>" +
+                                   "<div class='number-data'>" + cardNum + "</div>" + "</div>"
 
         giftCardDiv.appendChild(giftCardNumDiv);
 
@@ -1074,8 +1066,8 @@ export default class TemplateBuilderService {
         var transactNumDiv = this._doc.createElement('div');
         transactNumDiv.id = 'transactNumDiv';
         transactNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (transactionNumText ? (transactionNumText) : " ") + "</div>" +
-            "<div class='number-data'>" + transactNum + "</div>" + "</div>"
+                                   "<div class='total-name'>" + (transactionNumText ? (transactionNumText) : " ") + "</div>" +
+                                   "<div class='number-data'>" + transactNum + "</div>" + "</div>"
 
         giftCardDiv.appendChild(transactNumDiv);
 
@@ -1154,14 +1146,14 @@ export default class TemplateBuilderService {
         var pAmount = printData.collections.PAYMENT_LIST[0].P_AMOUNT ? printData.collections.PAYMENT_LIST[0].P_AMOUNT : '';
         var cashPaidDiv = this._doc.createElement('div')
         cashPaidDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (!printData.isRefund ? cashPaidText : cashReturnedText) + "</div>" +
-            "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + this.$utils.twoDecimals(pAmount) + "</div>" +
-            "</div>"
+                                "<div class='total-name'>" + (!printData.isRefund ? cashPaidText : cashReturnedText) + "</div>" +
+                                "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + this.$utils.twoDecimals(pAmount) + "</div>" +
+                                "</div>"
 
         cashDiv.appendChild(cashPaidDiv);
 
         // Payment Rounding Div //
-        if(printData.variables.TOTAL_ROUNDING){
+        if (printData.variables.TOTAL_ROUNDING) {
             const paymentRoundingDiv = this._doc.createElement('div');
             paymentRoundingDiv.className = 'paymentRoundingDiv'
 
@@ -1169,7 +1161,7 @@ export default class TemplateBuilderService {
             const paymentRoundingAmount = printData.variables.TOTAL_ROUNDING + ''
 
             paymentRoundingDiv.innerHTML = "<div class='total-name'>" + paymentRoundingText + "</div>" +
-                "<div class='total-amount'>" + paymentRoundingAmount + "</div>"
+                                           "<div class='total-amount'>" + paymentRoundingAmount + "</div>"
 
             cashDiv.appendChild(paymentRoundingDiv);
         }
@@ -1182,9 +1174,9 @@ export default class TemplateBuilderService {
             var transactNumDiv = this._doc.createElement('div')
             transactNumDiv.id = transactNumDiv
             transactNumDiv.innerHTML = "<div class='changeDiv'>" +
-                "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.$utils.isNegative(pChange) + "'>" + (!pChangeZero ? this.$utils.twoDecimals(pChange) : "") + "</div>" +
-                "</div>"
+                                       "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
+                                       "<div class='total-amount " + this.$utils.isNegative(pChange) + "'>" + (!pChangeZero ? this.$utils.twoDecimals(pChange) : "") + "</div>" +
+                                       "</div>"
 
             cashDiv.appendChild(transactNumDiv);
         }
@@ -1203,9 +1195,9 @@ export default class TemplateBuilderService {
         var pAmount = printData.collections.PAYMENT_LIST[0].P_AMOUNT ? printData.collections.PAYMENT_LIST[0].P_AMOUNT : '';
         var chequePaidDiv = this._doc.createElement('div')
         chequePaidDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (!printData.isRefund ? chequePaidText : chequeReturnedText) + "</div>" +
-            "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + this.$utils.twoDecimals(pAmount) + "</div>" +
-            "</div>"
+                                  "<div class='total-name'>" + (!printData.isRefund ? chequePaidText : chequeReturnedText) + "</div>" +
+                                  "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + this.$utils.twoDecimals(pAmount) + "</div>" +
+                                  "</div>"
 
         chequeDiv.appendChild(chequePaidDiv);
 
@@ -1217,9 +1209,9 @@ export default class TemplateBuilderService {
             var tpChangeNumDiv = this._doc.createElement('div')
             tpChangeNumDiv.className += 'tpChangeNumDiv'
             tpChangeNumDiv.innerHTML = "<div class='changeDiv'>" +
-                "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
-                "<div class='total-amount " + this.$utils.isNegative(pChange) + "'>" + (!pChangeZero ? this.$utils.twoDecimals(pChange) : "") + "</div>" +
-                "</div>"
+                                       "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
+                                       "<div class='total-amount " + this.$utils.isNegative(pChange) + "'>" + (!pChangeZero ? this.$utils.twoDecimals(pChange) : "") + "</div>" +
+                                       "</div>"
 
             chequeDiv.appendChild(tpChangeNumDiv);
         }

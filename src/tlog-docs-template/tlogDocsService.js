@@ -51,7 +51,6 @@ export default class TlogDocsService {
 
     //Create the Buttons
     orderTypesListCreator(tlog, options) {
-
         //the array of orders for use of the buttons or other needs
         var orderSelection = [];
         //the type tlog is made for the template builder service which returns regular bill

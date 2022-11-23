@@ -840,8 +840,6 @@ export default class BillService {
     }
 
     resolvePrintData(printData, isUS) {
-
-
         let DataBill = function (collections, variables, data, printByOrder, waiterDiners) {
             this.collections = printData.collections;
             this.variables = printData.variables;
@@ -862,13 +860,9 @@ export default class BillService {
         data.isReturnOrder = _details.isReturnOrder;
         data.isTaxExempt = _details.isTaxExempt;
 
-        let _totals = this.resolveTotals(variables, collections, true)
-        data.totals = _totals;
-        let _payments = this.resolvePayments(variables, collections, true);
-        data.payments = _payments;
-
-        let _taxes = this.resolveTaxes(variables, collections, true);
-        data.taxes = _taxes;
+        data.totals = this.resolveTotals(variables, collections, true)
+        data.payments = this.resolvePayments(variables, collections, true);
+        data.taxes = this.resolveTaxes(variables, collections, true);
 
         data.isUS = isUS;
 
