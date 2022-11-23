@@ -13,19 +13,19 @@ export default class PaymentSection {
     getGiftCardLoadRow(payment){
         const loadText = this.$htmlCreator.create({
             id: 'payment-text',
-            classList: ['value-name'],
+            classList: ['total-name'],
             value: this.$translate.getText('LOAD')
         });
 
         const loadValue = this.$htmlCreator.create({
             id: 'payment-value',
-            classList: ['itemDiv'],
+            classList: ['total-amount'],
             value: this.$utils.toFixedSafe(payment.amount || 0, 2) || ''
         });
 
         const elementContainer = this.$htmlCreator.create({
             id: 'payment-container',
-            classList: ['element-container'],
+            classList: ['itemDiv'],
             children: [
                 loadText,
                 loadValue
@@ -50,7 +50,7 @@ export default class PaymentSection {
 
         const elementContainer = this.$htmlCreator.create({
             id: 'payment-container',
-            classList: ['element-container'],
+            classList: ['element-container', 'gift-card-details'],
             children: [
                 cardNumberText,
                 cardNumberValue
@@ -74,7 +74,7 @@ export default class PaymentSection {
 
         const elementContainer = this.$htmlCreator.create({
             id: 'payment-container',
-            classList: ['element-container'],
+            classList: ['element-container','gift-card-details'],
             children: [
                 remainingBalanceText,
                 remainingBalanceValue

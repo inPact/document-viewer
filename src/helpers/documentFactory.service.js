@@ -1,14 +1,12 @@
 
 class DocumentFactory {
-
-    constructor(options) {
+    constructor() {
         this.rootElement = undefined;
         this.documentInfo = undefined;
         this.printData = undefined;
     }
 
     get(options) {
-
         if (this.rootElement === undefined) {
             this.rootElement = document.implementation.createHTMLDocument();
         }
@@ -19,7 +17,6 @@ class DocumentFactory {
             this.documentInfo = _.get(options, 'documentInfo') || undefined;
             this.printData = _.get(options, 'printData') || undefined;
         }
-
         return this.rootElement;
     }
 

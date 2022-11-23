@@ -84,7 +84,6 @@ export default class TemplateBuilderService {
             this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature))
         }
         else {
-            console.log('zohar -- in else');
             this._docObj = documentInfo;
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
@@ -992,14 +991,14 @@ export default class TemplateBuilderService {
                 payments: this._printData.data.payments
             });
 
-            // if (this._printData.variables.REAL_ORDER_TYPE === 'MEDIAEXCHANGE'){
-            //     console.log('zohar -- MEDIAEXCHANGE');
-            //     paymentSection = this.$paymentSection.getMediaExchangePaymentSection({
-            //         variables: this._printData.variables,
-            //         collections: this._printData.collections,
-            //         payments: this._printData.data.payments
-            //     })
-            // }
+            if (this._printData.variables.REAL_ORDER_TYPE === 'MEDIAEXCHANGE'){
+                console.log('zohar -- MEDIAEXCHANGE');
+                paymentSection = this.$paymentSection.getMediaExchangePaymentSection({
+                    variables: this._printData.variables,
+                    collections: this._printData.collections,
+                    payments: this._printData.data.payments
+                })
+            }
             console.log('zohar -- just payment section', paymentSection);
 
             // var OrderPaymentsDiv = this.fillPaymentsData(printData);

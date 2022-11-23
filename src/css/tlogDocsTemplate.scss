@@ -278,3 +278,17 @@
   display:flex;
   flex:1;
 }
+
+div.gift-card-load-container{
+  margin-bottom: 8px;
+}
+
+div.element-container{
+  margin-inline-start: 5px;
+  font-size: 12px;
+  display: flex;
+  gap: 8px;
+  &.gift-card-details{
+    margin-inline-start: 10px;
+  }
+}
