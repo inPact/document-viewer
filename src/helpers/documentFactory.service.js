@@ -1,26 +1,22 @@
-
 class DocumentFactory {
-
-    constructor(options) {
-        this.rootElement = undefined;
+    constructor() {
+        this.htmlDocument = undefined;
         this.documentInfo = undefined;
         this.printData = undefined;
     }
 
     get(options) {
-
-        if (this.rootElement === undefined) {
-            this.rootElement = document.implementation.createHTMLDocument();
-        }
-
-        if (options && options.createNew === true) {
-            this.rootElement = undefined;
-            this.rootElement = document.implementation.createHTMLDocument();
+        if (!this.htmlDocument)
+            this.htmlDocument = document.implementation.createHTMLDocument();
+        
+        if (options?.createNew) {
+            this.htmlDocument = undefined;
+            this.htmlDocument = document.implementation.createHTMLDocument();
             this.documentInfo = _.get(options, 'documentInfo') || undefined;
             this.printData = _.get(options, 'printData') || undefined;
         }
 
-        return this.rootElement;
+        return this.htmlDocument;
     }
 
     getDocumentInfo() {
@@ -30,7 +26,6 @@ class DocumentFactory {
     getPrintData() {
         return this.printData.printData;
     }
-
 }
 
 export default new DocumentFactory();

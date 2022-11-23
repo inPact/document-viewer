@@ -88,7 +88,6 @@ export default class TemplateBuilderService {
             this._doc.body.appendChild(template);
         }
 
-
         return (new XMLSerializer()).serializeToString(this._doc);
     }
 
@@ -191,7 +190,6 @@ export default class TemplateBuilderService {
     }
 
     createDocTemplate(docObjChosen, options = {}) {
-
         let logoUrl = _.get(options, 'logoUrl') || undefined;
         let tabitLogo = _.get(options, 'tabitLogo') || undefined;
         let excludeHeader = _.get(options, 'excludeHeader') || false;
