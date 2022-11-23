@@ -25,7 +25,7 @@ import _ from 'lodash';
 import QRCode from 'qrcode';
 import { value } from "lodash/seq";
 
-import visitors from './visitors';
+import visitors from './html-element-visitors';
 
 export default class TemplateBuilderService {
     constructor(options) {
@@ -194,6 +194,12 @@ export default class TemplateBuilderService {
         return docTemplate;
     }
 
+    appendElement = (element, docTemplate) => {
+        if(element) {
+            docTemplate.appendChild(element);
+        }
+    }
+
     createDocTemplate(docObjChosen, options = {}) {
         let logoUrl = _.get(options, 'logoUrl') || undefined;
         let tabitLogo = _.get(options, 'tabitLogo') || undefined;
@@ -206,7 +212,13 @@ export default class TemplateBuilderService {
 
         // this._doc = DocumentFactory.get(); //zohar -- probably unnecessary, check that it's not problematic.
 
-        let docTemplate = this._doc.createElement('div');
+        const docTemplate = this._doc.createElement('div');
+
+        visitors.forEach(visitor => {
+            const element = visitor.visit(this, docTemplate);
+            this.appendElement(element, docTemplate);
+        });
+
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');
         docTemplate.classList.add('text-uppercase');
@@ -256,8 +268,6 @@ export default class TemplateBuilderService {
             console.log('zohar -- templateHeader', templateHeader);
             docTemplate.appendChild(templateHeader);
         }
-
-         visitors.forEach(x => x.visit(this, docTemplate));
 
 
         var checkInIL;
