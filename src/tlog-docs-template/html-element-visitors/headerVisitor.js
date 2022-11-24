@@ -1,19 +1,21 @@
 import HtmlCreator from '../../helpers/htmlCreator.service';
 import HeaderService from '../headerService';
+
 const htmlCreator = new HtmlCreator();
 import _ from "lodash";
 
 export const HeaderVisitor = {
     visit(context) {
-        if(!_.get(context, 'options.excludeHeader')){
+        if (!_.get(context, 'options.excludeHeader')) {
+            this.headerService = new HeaderService(context.options);
             return this.createSection(context);
         }
     },
-    createSection(context){
+    createSection(context) {
         const elements = [];
         const logoUrl = _.get(context, 'options.logoUrl');
-        if (logoUrl){
-           elements.push(this.createLogo(logoUrl));
+        if (logoUrl) {
+            elements.push(this.createLogo(logoUrl));
         }
         elements.push(this.createHeader(context));
         return elements;
@@ -38,10 +40,9 @@ export const HeaderVisitor = {
         });
         return logo;
     },
-    createHeader(context){
-        const headerService = new HeaderService(context.options);
-        const header = headerService.createHeader(context._printData, context._doc, context.docInfo, context._docData);
+    createHeader(context) {
+        const header = this.headerService.createHeader(context._printData, context._doc, context.docInfo);
         header.classList += ' text-center';
         return header;
     }
-}
+};

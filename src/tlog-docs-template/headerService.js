@@ -4,7 +4,6 @@ import HtmlCreator from '../helpers/htmlCreator.service';
 import ReturnTransactionSection from '../services/sections/ReturnTransaction.section';
 
 export default class HeaderService {
-
     constructor(options) {
         this.timezone = options.timezone;
         this._isUS = options.isUS;
@@ -14,15 +13,12 @@ export default class HeaderService {
         this.$returnTransactionSection = new ReturnTransactionSection(options);
     }
 
-    createHeader(printData, doc, docInfo, docData) {
+    createHeader(printData, doc, docInfo) {
         this._doc = doc;
         this.docInfo = docInfo;
-        this._docData = docData;
         //creating a div to populate and return
         var headerDiv = this._doc.createElement('div');
         headerDiv.id = "headerDiv";
-
-
 
         //setting header constants div for display
         var tplHeaderConstants = this._doc.createElement('div');
@@ -43,8 +39,6 @@ export default class HeaderService {
         })
 
         //inner function for placing the constants on the template with data
-
-
         var tplHeader = this._doc.createElement('div');
         tplHeader.id = 'tplHeader';
         tplHeader.setAttribute('style', "text-align:center;")
@@ -59,7 +53,6 @@ export default class HeaderService {
         tplHeader.appendChild(tplHeaderConstants);
         tplHeader.appendChild(orderHeader);
         tplHeader.appendChild(tplOrderInfoText);
-
 
         headerDiv.appendChild(tplHeader);
         //styling the header
@@ -114,8 +107,7 @@ export default class HeaderService {
                     var phoneString = phoneTranslate + " " + printData.variables.ORGANIZATION_TEL;
                     tplHeaderLine.innerHTML = phoneString;
                 }
-                    break;
-
+                break;
             }
         }
         return tplHeaderLine;
@@ -138,7 +130,6 @@ export default class HeaderService {
         var tplOriginDateTime = this._doc.createElement('div');
         tplOriginDateTime.id = "tplOriginDateTime";
         tplOriginDateTime.classList.add('mystyle');
-
 
         var tplOrderTitle = this._doc.createElement('div');
         tplOrderTitle.id = "tplOrderTitle";
@@ -164,7 +155,6 @@ export default class HeaderService {
     }
 
     placeOrderHeaderData(printData, array, filledInfoArray) {
-
         array.forEach(element => {
             var singleElement = this.fillOrderHeaderData(printData, element)
             filledInfoArray.push(singleElement);
@@ -173,7 +163,6 @@ export default class HeaderService {
     }
 
     isOrderTypeTAB(options) {
-
         let type = _.get(options, 'type');
         let table = _.get(options, 'table');
 
@@ -185,11 +174,8 @@ export default class HeaderService {
     }
 
     fillOrderHeaderData(printData, htmlElement) {
-
         switch (htmlElement.id) {
-
             case 'tplOrderCustomer': {
-
                 if (!this.docInfo.isFullOrderBill && printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
 
                     var customerName = printData.collections.PAYMENT_LIST[0].CUSTOMER_NAME;
@@ -201,8 +187,6 @@ export default class HeaderService {
                 }
                 break;
             }
-
-
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
                     let issuedAtDate = this.$utils.toDate({
@@ -210,14 +194,12 @@ export default class HeaderService {
                         isUS: this._isUS,
                         date: printData.variables.CREATED_AT
                     });
-
                     let elementCreatedDate = this.$htmlCreator.create({
                         id: 'created-date',
                         type: 'div',
                         classList: ['med-chars', 'centralize'],
                         value: `${issuedAtDate}`
                     });
-
                     htmlElement.appendChild(elementCreatedDate);
 
                 }
@@ -291,7 +273,6 @@ export default class HeaderService {
             }
 
             case 'tplOrderServerClients': {
-                // if (!(this._docData.documentType === "invoice") && !(this._docData.documentType === "deliveryNote")) {
                 var waiterTranslate = this.$translate.getText("Server")
                 var dinersTranslate = this.$translate.getText("Diners")
                 var firstName = printData.variables.F_NAME && printData.variables.F_NAME !== null ? printData.variables.F_NAME : '';
@@ -307,16 +288,6 @@ export default class HeaderService {
                 // }
                 break;
             }
-
-            // case 'tplcCheckNumber': {
-            //     var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
-            //     if (this._docData.documentType === "invoice" && invoiceNum) {
-            //         var checkTranslate = this.$translate.getText("INVOICE")
-            //         printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
-            //         htmlElement.innerHTML = `<span> ` + checkTranslate + " " + invoiceNum + `</span>`;
-            //     }
-            //     break;
-            // }
 
         }
         return htmlElement;

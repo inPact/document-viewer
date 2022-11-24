@@ -1,12 +1,13 @@
 import HtmlCreator from '../../helpers/htmlCreator.service';
+
 const htmlCreator = new HtmlCreator();
 
 // pkg version (hidden element).
 export const VersionVisitor = {
-    visit(context){
+    visit(context) {
         return this.createSection();
     },
-    createSection(){
+    createSection() {
         const elements = [];
         const versionNumber = htmlCreator.create({
             type: 'div',
@@ -17,4 +18,4 @@ export const VersionVisitor = {
         elements.push(versionNumber);
         return elements;
     }
-}
+};
