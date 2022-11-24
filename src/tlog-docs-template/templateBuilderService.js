@@ -75,11 +75,24 @@ export default class TemplateBuilderService {
         }
     }
 
+    checkIfCreditSlip(documentInfo){
+        const isCheckInIL = this._locale === 'he-IL' && documentInfo.documentType === 'check';
+        if(documentInfo.documentType === 'creditSlip' || documentInfo.md && documentInfo.type === 'creditCard' && !documentInfo.isFullOrderBill && !documentInfo.md.checkNumber && !isCheckInIL){
+            console.log('zohar -- isCreditSlip!!!!');
+        }
+        console.log('zohar -- isCheckInIL!', isCheckInIL);
+        return ((documentInfo.documentType === 'creditSlip' || documentInfo.md && documentInfo.type === 'creditCard' && !documentInfo.isFullOrderBill && !documentInfo.md.checkNumber && !isCheckInIL));
+
+    }
+
     resolveDocumentInfo(documentInfo, printData) {
         documentInfo.documentTypeFromPrintData = printData.documentType;
         documentInfo.isRefundDeliveryNote = [documentInfo.documentType, documentInfo.type].includes('refundDeliveryNote');
-        documentInfo.isGiftCardBill = (documentInfo.isGiftCardBill && documentInfo.docPaymentType === 'GiftCardPayment');
+        documentInfo.isGiftCardBill = (_.get(documentInfo,'isGiftCardBill', false) && documentInfo.docPaymentType === 'GiftCardPayment');
         documentInfo.isTaxExempt = this._printData.data.isTaxExempt;
+        documentInfo.isMediaExchange = this._printData.variables.ORDER_TYPE === 'MEDIAEXCHANGE';
+        documentInfo.isCreditSlip = this.checkIfCreditSlip(documentInfo);
+        documentInfo.isGiftCardSlip = (documentInfo.type === 'giftCard' && this._isUS);
         return documentInfo;
     }
 
@@ -236,7 +249,7 @@ export default class TemplateBuilderService {
         const docTemplate = this._doc.createElement('div');
 
         this.setInitialDocumentSettings(docTemplate);
-        console.log('zohar -- docTemplate after config', docTemplate);
+
         visitors.forEach(visitor => {
             const htmlSection = visitor.visit(this);
             this.appendSection(htmlSection, docTemplate);
@@ -258,7 +271,8 @@ export default class TemplateBuilderService {
                 });
 
                 docTemplate.appendChild(elementRefundDeliveryNote);
-            } else { // docInfo.type !== 'clubMembers' && !docInfo.isRefundDeliveryNote)
+            }
+            else { // docInfo.type !== 'clubMembers' && !docInfo.isRefundDeliveryNote)
                 // zohar TO DO: move to `initDocTemplate` : this._isGiftCardBill, this._isTaxExempt, isMediaExchange, isCreditSlip, isGiftCardSlip
                 this._isGiftCardBill = (docObjChosen.isGiftCardBill && docObjChosen.docPaymentType === 'GiftCardPayment') ? true : false;
                 this._isTaxExempt = this._printData.data.isTaxExempt;
