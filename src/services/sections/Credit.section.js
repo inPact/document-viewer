@@ -135,9 +135,9 @@ export default class CreaditSection {
 
         let len = _.get(collections, 'CREDIT_PAYMENTS[0].EMV.length') || 0;
 
-        if (documentInfo.documentType === 'invoice' && len > 0) {
+        if (documentInfo.documentTypeFromPrintData === 'invoice' && len > 0) {
 
-            let elementEmv = this.$emvService.createEmvTemplate(documentInfo.documentType, {
+            let elementEmv = this.$emvService.createEmvTemplate(documentInfo.documentTypeFromPrintData, {
                 variables: variables,
                 collections: collections
             }, this._doc);
