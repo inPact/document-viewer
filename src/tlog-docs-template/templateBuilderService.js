@@ -28,18 +28,20 @@ import { value } from "lodash/seq";
 import visitors from './html-element-visitors';
 
 export default class TemplateBuilderService {
-    constructor(options) {
-        this._isUS;
-        this._locale;
-        this._realRegion;
-        this._configure(options);
-        this._isGiftCardBill;
-        this._isTaxExempt;
+    options;
+    docOptions;
+    _isUS;
+    _locale;
+    _realRegion;
+    _isGiftCardBill;
+    _isTaxExempt;
 
+    constructor(options) {
+        this.options = options;
+        this._configure(options);
         this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService({ locale: this._locale });
         this.$billService = new BillService(options);
-        this.$headerService = new HeaderService(options);
         this.$emvService = new EmvService(options);
         this.$vatTemplateService = new VatTemplateService(options);
         this.$creditSlipService = new CreditSlipService(options);
@@ -58,10 +60,10 @@ export default class TemplateBuilderService {
         this.$paymentSection = new PaymentSection(options);
         this.$creaditSection = new CreaditSection(options);
         this.$returnTransactionSection = new ReturnTransactionSection(options);
-
     }
 
     _configure(options) {
+        console.log('zohar -- opppp', options);
         if (options.locale)
             this._locale = options.locale;
 
@@ -73,6 +75,7 @@ export default class TemplateBuilderService {
     }
 
     createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
+        console.log('zohar -- this', this);
         console.log('zohar -- documentInfo', documentInfo, 'printdata', printData, 'opt', options);
         this._doc = DocumentFactory.get({
             createNew: true,
@@ -80,17 +83,16 @@ export default class TemplateBuilderService {
             printData
         });
 
-
         if (documentInfo.hasOwnProperty('billText')) {
             this._doc.body.appendChild(this.createTextTemplate(documentInfo))
         } else if (documentInfo.hasOwnProperty('fiscalSignature')) {
             this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature))
         } else {
-            this._docObj = documentInfo;
+            this.docInfo = documentInfo;
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
             this._printData.isRefund = documentInfo.isRefund;
-            let template = this.createDocTemplate(documentInfo, options);
+            const template = this.createDocTemplate(documentInfo, options);
             this._doc.body.appendChild(template);
         }
 
@@ -194,31 +196,14 @@ export default class TemplateBuilderService {
         return docTemplate;
     }
 
-    appendElement = (element, docTemplate) => {
-        if(element) {
-            docTemplate.appendChild(element);
+    appendSection = (section, docTemplate) => {
+        console.log('zohar -- section',section, 'length', section?.length);
+        if(section?.length) {
+            section.forEach((element) => docTemplate.appendChild(element))
         }
     }
 
-    createDocTemplate(docObjChosen, options = {}) {
-        let logoUrl = _.get(options, 'logoUrl') || undefined;
-        let tabitLogo = _.get(options, 'tabitLogo') || undefined;
-        let excludeHeader = _.get(options, 'excludeHeader') || false;
-        let excludeFooter = _.get(options, 'excludeFooter') || false;
-
-
-
-        // zohar TO DO -  take out to function `getInitialDocTemplate`. Start : 206
-
-        // this._doc = DocumentFactory.get(); //zohar -- probably unnecessary, check that it's not problematic.
-
-        const docTemplate = this._doc.createElement('div');
-
-        visitors.forEach(visitor => {
-            const element = visitor.visit(this, docTemplate);
-            this.appendElement(element, docTemplate);
-        });
-
+    setInitialDocumentSettings(docTemplate){
         docTemplate.id = 'docTemplate';
         docTemplate.classList.add('basicTemplate');
         docTemplate.classList.add('text-uppercase');
@@ -230,51 +215,27 @@ export default class TemplateBuilderService {
             docTemplate.classList += ' ltr'
             docTemplate.classList.remove('rtl')
         }
+    }
 
-        // Set pkg version (hidden element).
-        let elementVersion = this.$htmlCreator.create({
-            type: 'div',
-            id: 'version',
-            classList: ['hidden-element'],
-            value: VERSION
-        });
+    createDocTemplate(docObjChosen,docOptions = {}) {
 
-        docTemplate.appendChild(elementVersion);
-        if (!excludeHeader) {
-            if (!_.isEmpty(logoUrl)) {
-                let elementImage = this.$htmlCreator.create({
-                    type: 'img',
-                    id: 'logo',
-                    classList: ['logo-image'],
-                    attributes: [
-                        { key: 'src', value: logoUrl }
-                    ]
-                });
+        console.log('zohar -- docOptions', docOptions);
+        let tabitLogo = _.get(docOptions, 'tabitLogo') || undefined;
+        let excludeFooter = _.get(docOptions, 'excludeFooter') || false;
+        // zohar TO DO -  take out to function `getInitialDocTemplate`. Start : 206
 
-                let elementImageContainer = this.$htmlCreator.create({
-                    type: 'div',
-                    id: 'container-logo',
-                    classList: ['flex', 'a-center', 'j-center'],
-                    children: [
-                        elementImage
-                    ]
-                });
+        // this._doc = DocumentFactory.get(); //zohar -- probably unnecessary, check that it's not problematic.
+        const docTemplate = this._doc.createElement('div');
 
-                docTemplate.appendChild(elementImageContainer);
-            }
+        this.setInitialDocumentSettings(docTemplate);
+        console.log('zohar -- docTemplate after config', docTemplate);
+        this.docOptions = docOptions;
+        visitors.forEach(visitor => {
+            const htmlSection = visitor.visit(this);
+            this.appendSection(htmlSection, docTemplate);
+        })
+        this.docOptions = {};
 
-            var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
-            templateHeader.classList += ' text-center';
-            console.log('zohar -- templateHeader', templateHeader);
-            docTemplate.appendChild(templateHeader);
-        }
-
-
-        var checkInIL;
-        if (this._locale == 'he-IL' && docObjChosen.documentType === 'check') {
-            checkInIL = true;
-        }
-        // zohar TO DO : Move all appendChilds to special function - appendTemplateChildren()
         if (docObjChosen.type === 'clubMembers') {
             let elementClubMember = this.$clubMembersService.get({
                 totalAmount: this._printData.variables.TOTAL_AMOUNT,
@@ -297,6 +258,10 @@ export default class TemplateBuilderService {
                 this._isTaxExempt = this._printData.data.isTaxExempt;
 
                 //zohar TO DO: check if media exchange can be also credit slip
+                var checkInIL;
+                if (this._locale == 'he-IL' && docObjChosen.documentType === 'check') {
+                    checkInIL = true;
+                }
 
                 var isMediaExchange = (this._printData.variables.ORDER_TYPE === "MEDIAEXCHANGE");
                 var isCreditSlip = ((docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL) || docObjChosen.documentType === 'creditSlip')
@@ -371,7 +336,7 @@ export default class TemplateBuilderService {
                     tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
 
                     /// ADD Balance Section to tempalte.
-                    if ((docObjChosen.isFullOrderBill || this._docObj.type === 'check') &&
+                    if ((docObjChosen.isFullOrderBill || this.docInfo.type === 'check') &&
                         this._printData.variables.BAL_DUE &&
                         this._printData.collections.PAYMENT_LIST.length > 0
                     ) {
@@ -455,7 +420,7 @@ export default class TemplateBuilderService {
                     emvCreditDataDiv.id = 'emvCreditDataDiv';
                     emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this._docData.documentType, this._printData, this._doc));
                 }
-                if (this._printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
+                if (this._printData.data.isReturnOrder && this.docInfo.isFullOrderBill) {
 
 
                     let elementReturnTransaction = this.$returnTransactionSection.get({
@@ -575,10 +540,10 @@ export default class TemplateBuilderService {
 
         tplOrderPaymentData.appendChild(paymentDataDiv);
 
-        if (this._docObj && !(this._docData.documentType === "deliveryNote")) {
+        if (this.docInfo && !(this._docData.documentType === "deliveryNote")) {
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
-        } else if (this._docObj && (this._docData.documentType === "deliveryNote" || this._docData.documentType === "refundDeliveryNote")) {
+        } else if (this.docInfo && (this._docData.documentType === "deliveryNote" || this._docData.documentType === "refundDeliveryNote")) {
 
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
@@ -621,7 +586,7 @@ export default class TemplateBuilderService {
             data.items.forEach((item, index) => {
 
                 //in case it is return order, we don't want to show return of item the did not cost anything
-                if (!(data.isReturnOrder && this._docObj.isFullOrderBill && (!item.amount || item.amount === '0.00'))) {
+                if (!(data.isReturnOrder && this.docInfo.isFullOrderBill && (!item.amount || item.amount === '0.00'))) {
 
                     let elementItemQty = this.$htmlCreator.create({
                         type: 'div',
@@ -804,7 +769,7 @@ export default class TemplateBuilderService {
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
 
-        if (this._docObj && [
+        if (this.docInfo && [
             'invoice',
             'CreditCardPayment',
             'CreditCardRefund',
@@ -822,7 +787,7 @@ export default class TemplateBuilderService {
             });
 
             tplOrderTotals.appendChild(vatTemplateDiv);
-        } else if (this._docObj && (this._docData.documentType === 'deliveryNote')) {
+        } else if (this.docInfo && (this._docData.documentType === 'deliveryNote')) {
             return tplOrderTotals;
         } else {
             var OrderTotalsDiv = this._doc.createElement('div');
@@ -958,15 +923,15 @@ export default class TemplateBuilderService {
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
 
-        if (this._docObj && this._docData.documentType === "deliveryNote") {
+        if (this.docInfo && this._docData.documentType === "deliveryNote") {
             return tplOrderPaymentsDiv;
-        } else if (this._docObj && ["invoice", "refundInvoice", 'refundDeliveryNote'].indexOf(this._docData.documentType) > -1) {
+        } else if (this.docInfo && ["invoice", "refundInvoice", 'refundDeliveryNote'].indexOf(this._docData.documentType) > -1) {
 
-            if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
+            if (this.docInfo.docPaymentType === "CreditCardPayment" || this.docInfo.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
 
-                if (_.get(this, '_docObj.md.signature') && !this._isUS && ["CreditCardPayment", "CreditCardRefund"].indexOf(this._docObj.docPaymentType) > -1) {
+                if (_.get(this, 'docInfo.md.signature') && !this._isUS && ["CreditCardPayment", "CreditCardRefund"].indexOf(this.docInfo.docPaymentType) > -1) {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
                     signatureArea.className += ' item-div';
@@ -974,13 +939,13 @@ export default class TemplateBuilderService {
                     tplOrderPaymentsDiv.appendChild(signatureArea);
                     tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
                 }
-            } else if (this._docObj.docPaymentType === ("GiftCard")) {
+            } else if (this.docInfo.docPaymentType === ("GiftCard")) {
                 var giftCardPayment = this.createGiftCardDetails(printData);
                 tplOrderPaymentsDiv.appendChild(giftCardPayment);
-            } else if (this._docObj.docPaymentType === "CashPayment" || this._docObj.docPaymentType === "CashRefund") {
+            } else if (this.docInfo.docPaymentType === "CashPayment" || this.docInfo.docPaymentType === "CashRefund") {
                 var cashPayment = this.createCashPaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(cashPayment);
-            } else if (this._docObj.docPaymentType === "ChequePayment" || this._docObj.docPaymentType === "ChequeRefund") {
+            } else if (this.docInfo.docPaymentType === "ChequePayment" || this.docInfo.docPaymentType === "ChequeRefund") {
                 var chequePayment = this.createChequePaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(chequePayment);
             }

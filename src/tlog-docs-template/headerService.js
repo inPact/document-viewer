@@ -14,9 +14,9 @@ export default class HeaderService {
         this.$returnTransactionSection = new ReturnTransactionSection(options);
     }
 
-    createHeader(printData, doc, docObj, docData) {
+    createHeader(printData, doc, docInfo, docData) {
         this._doc = doc;
-        this._docObj = docObj;
+        this.docInfo = docInfo;
         this._docData = docData;
         //creating a div to populate and return
         var headerDiv = this._doc.createElement('div');
@@ -190,7 +190,7 @@ export default class HeaderService {
 
             case 'tplOrderCustomer': {
 
-                if (!this._docObj.isFullOrderBill && printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
+                if (!this.docInfo.isFullOrderBill && printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].CUSTOMER_ID) {
 
                     var customerName = printData.collections.PAYMENT_LIST[0].CUSTOMER_NAME;
                     var customerId = printData.collections.PAYMENT_LIST[0].CUSTOMER_ID;
@@ -249,8 +249,8 @@ export default class HeaderService {
 
             //Asked to take this down temporary
             case 'tplOrderTitle': {
-                if (this._docObj.title) {
-                    htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + this._docObj.title; + "</div >"
+                if (this.docInfo.title) {
+                    htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + this.docInfo.title; + "</div >"
                 }
                 break;
             }
@@ -337,7 +337,7 @@ export default class HeaderService {
         }
         //check if this is a retrun order and prints if it is
 
-        if (printData.data.isReturnOrder && this._docObj.isFullOrderBill) {
+        if (printData.data.isReturnOrder && this.docInfo.isFullOrderBill) {
 
             let elementReturnTransaction = this.$returnTransactionSection.get({
                 variables: printData.variables,

@@ -1,4 +1,3 @@
-
 import DocumentFactory from './documentFactory.service';
 
 export default class HtmlCreator {

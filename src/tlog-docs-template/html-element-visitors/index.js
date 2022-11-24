@@ -1,7 +1,8 @@
-import test from './test'
-import test2 from './test2'
+import {VersionVisitor} from './versionVisitor'
+import {HeaderVisitor} from './headerVisitor'
+import { ClubMembersVisitor } from './clubMembersVisitor'
 
 export default [
-    test, test2
+    VersionVisitor,HeaderVisitor, ClubMembersVisitor
 ];
 
