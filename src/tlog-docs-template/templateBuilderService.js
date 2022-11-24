@@ -76,7 +76,7 @@ export default class TemplateBuilderService {
     }
 
     resolveDocumentInfo(documentInfo, printData) {
-        documentInfo.documentType = printData.documentType;
+        documentInfo.documentTypeFromPrintData = printData.documentType;
         documentInfo.isRefundDeliveryNote = [documentInfo.documentType, documentInfo.type].includes('refundDeliveryNote');
         documentInfo.isGiftCardBill = (documentInfo.isGiftCardBill && documentInfo.docPaymentType === 'GiftCardPayment');
         documentInfo.isTaxExempt = this._printData.data.isTaxExempt;
@@ -391,7 +391,7 @@ export default class TemplateBuilderService {
                     }
 
 
-                    if (this.docInfo.documentType === 'refundDeliveryNote') {
+                    if (this.docInfo.documentTypeFromPrintData === 'refundDeliveryNote') {
 
                         /**
                          * Add House Account Payment Section.
@@ -419,14 +419,14 @@ export default class TemplateBuilderService {
                     let documentType = 'orderBill';
                     docTemplate.appendChild(this.$emvService.createEmvTemplate(documentType, this._printData, this._doc));
                 } else if (
-                    this.docInfo.documentType === 'invoice' &&
+                    this.docInfo.documentTypeFromPrintData === 'invoice' &&
                     this._printData.collections.CREDIT_PAYMENTS &&
                     this._printData.collections.CREDIT_PAYMENTS.length > 0 &&
                     this._printData.collections.CREDIT_PAYMENTS[0].EMV &&
                     this._printData.collections.CREDIT_PAYMENTS[0].EMV.length > 0) {
                     let emvCreditDataDiv = this._doc.createElement('div');
                     emvCreditDataDiv.id = 'emvCreditDataDiv';
-                    emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this.docInfo.documentType, this._printData, this._doc));
+                    emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this.docInfo.documentTypeFromPrintData, this._printData, this._doc));
                 }
                 if (this._printData.data.isReturnOrder && this.docInfo.isFullOrderBill) {
 
@@ -548,10 +548,10 @@ export default class TemplateBuilderService {
 
         tplOrderPaymentData.appendChild(paymentDataDiv);
 
-        if (this.docInfo && !(this.docInfo.documentType === "deliveryNote")) {
+        if (this.docInfo && !(this.docInfo.documentTypeFromPrintData === "deliveryNote")) {
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
-        } else if (this.docInfo && (this.docInfo.documentType === "deliveryNote" || this.docInfo.documentType === "refundDeliveryNote")) {
+        } else if (this.docInfo && (this.docInfo.documentTypeFromPrintData === "deliveryNote" || this.docInfo.documentTypeFromPrintData === "refundDeliveryNote")) {
 
             this.fillItemsData(paymentDataDiv, data, printData);
             this.fillOthData(paymentDataDiv, data);
@@ -748,14 +748,14 @@ export default class TemplateBuilderService {
 
 
         if (
-            this.docInfo.documentType === 'invoice' &&
+            this.docInfo.documentTypeFromPrintData === 'invoice' &&
             this._printData.collections.CREDIT_PAYMENTS &&
             this._printData.collections.CREDIT_PAYMENTS.length > 0 &&
             this._printData.collections.CREDIT_PAYMENTS[0].EMV &&
             this._printData.collections.CREDIT_PAYMENTS[0].EMV.length > 0) {
             let emvCreditDataDiv = this._doc.createElement('div');
             emvCreditDataDiv.id = 'emvCreditDataDiv';
-            emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this.docInfo.documentType, this._printData, this._doc));
+            emvCreditDataDiv.appendChild(this.$emvService.createEmvTemplate(this.docInfo.documentTypeFromPrintData, this._printData, this._doc));
             creditDataDiv.appendChild(emvCreditDataDiv);
         } else if (creditData) {
 
@@ -787,7 +787,7 @@ export default class TemplateBuilderService {
             'ChequePayment',
             'ChequeRefund',
             'refundInvoice'
-        ].indexOf(this.docInfo.documentType) > -1) {
+        ].indexOf(this.docInfo.documentTypeFromPrintData) > -1) {
 
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate({
                 isRefund: printData.isRefund,
@@ -795,7 +795,7 @@ export default class TemplateBuilderService {
             });
 
             tplOrderTotals.appendChild(vatTemplateDiv);
-        } else if (this.docInfo && (this.docInfo.documentType === 'deliveryNote')) {
+        } else if (this.docInfo && (this.docInfo.documentTypeFromPrintData === 'deliveryNote')) {
             return tplOrderTotals;
         } else {
             var OrderTotalsDiv = this._doc.createElement('div');
@@ -931,9 +931,9 @@ export default class TemplateBuilderService {
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
 
-        if (this.docInfo && this.docInfo.documentType === "deliveryNote") {
+        if (this.docInfo && this.docInfo.documentTypeFromPrintData === "deliveryNote") {
             return tplOrderPaymentsDiv;
-        } else if (this.docInfo && ["invoice", "refundInvoice", 'refundDeliveryNote'].indexOf(this.docInfo.documentType) > -1) {
+        } else if (this.docInfo && ["invoice", "refundInvoice", 'refundDeliveryNote'].indexOf(this.docInfo.documentTypeFromPrintData) > -1) {
 
             if (this.docInfo.docPaymentType === "CreditCardPayment" || this.docInfo.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
