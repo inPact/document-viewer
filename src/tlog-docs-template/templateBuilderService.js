@@ -75,18 +75,17 @@ export default class TemplateBuilderService {
         }
     }
 
-    setDocumentInfo(documentInfo, printData) {
-        this.docInfo = documentInfo;
-        this.docInfo.documentType = printData.documentType;
-        this.docInfo.isRefundDeliveryNote = [documentInfo.documentType, documentInfo.type].includes('refundDeliveryNote');
-        this.docInfo.isGiftCardBill = (documentInfo.isGiftCardBill && documentInfo.docPaymentType === 'GiftCardPayment');
-        this.docInfo.isTaxExempt = this._printData.data.isTaxExempt;
+    resolveDocumentInfo(documentInfo, printData) {
+        documentInfo.documentType = printData.documentType;
+        documentInfo.isRefundDeliveryNote = [documentInfo.documentType, documentInfo.type].includes('refundDeliveryNote');
+        documentInfo.isGiftCardBill = (documentInfo.isGiftCardBill && documentInfo.docPaymentType === 'GiftCardPayment');
+        documentInfo.isTaxExempt = this._printData.data.isTaxExempt;
+        return documentInfo;
     }
 
 
     createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
-        console.log('zohar -- this', this);
-        console.log('zohar -- documentInfo', documentInfo, 'printdata', printData, 'opt', options);
+        console.log('zohar -- documentInfo', JSON.parse(JSON.stringify(documentInfo)), 'printdata',  JSON.parse(JSON.stringify(printData)), 'opt',JSON.parse(JSON.stringify(options)));
         this._doc = DocumentFactory.get({
             createNew: true,
             documentInfo,
@@ -98,11 +97,9 @@ export default class TemplateBuilderService {
         } else if (documentInfo.hasOwnProperty('fiscalSignature')) {
             this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature));
         } else {
-            this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
-            console.log('zohar -- this._printData', this._printData);
-            this._printData.isRefund = documentInfo.isRefund;
+            this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS, documentInfo);
+            this.docInfo = this.resolveDocumentInfo(documentInfo, printData);
             this.docOptions = options;
-            this.setDocumentInfo(documentInfo, printData);
             const template = this.createDocTemplate(this.docInfo, options); // zohar -- dont forget to change to a only use in this.docInfo
             this._doc.body.appendChild(template);
         }

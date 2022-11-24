@@ -839,13 +839,14 @@ export default class BillService {
         return returnItems
     }
 
-    resolvePrintData(printData, isUS) {
+    resolvePrintData(printData, isUS, documentInfo) {
         let DataBill = function (collections, variables, data, printByOrder, waiterDiners) {
             this.collections = printData.collections;
             this.variables = printData.variables;
             this.data = data;
             this.print_by_order = printByOrder;
             this.waiter_diners = waiterDiners;
+            this.isRefund = documentInfo.isRefund;
         }
 
         let collections = printData.collections;
