@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+##1.44.0
+* [TAB-23962] OFC | Foreign Currency
+
 ##1.43.0
 * [TAB-24900] OFC | DCV - Customer signature is not fully displayed
 
