@@ -961,16 +961,12 @@ export default class TemplateBuilderService {
             }
 
         } else {
-            /// TODO !
-
             let paymentSection = this.$paymentSection.get({
                 variables: this._printData.variables,
                 collections: this._printData.collections,
                 payments: this._printData.data.payments
             });
 
-            // var OrderPaymentsDiv = this.fillPaymentsData(printData);
-            // OrderPaymentsDiv.id = "OrderPaymentsDiv";
             tplOrderPaymentsDiv.appendChild(paymentSection);
         }
 

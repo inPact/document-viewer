@@ -2,12 +2,6 @@
 // let TlogDocsTranslateService = (function () {
 
 export default class TlogDocsTranslateService {
-
-
-    // TlogDocsTranslateService(options) {
-    //     configure(options)
-    // }
-
     constructor(options = {}) {
         this._options = options;
 
@@ -305,7 +299,11 @@ export default class TlogDocsTranslateService {
                 "order_counter": "Order Counter",
                 "fiscal_counter": "Fiscal Counter",
                 "PROVIDER_TRANS_ID": "Reference",
-                "ROUNDING": "Rounding"
+                "ROUNDING": "Rounding",
+                "CURRENCY_PAYMENT_LABEL_€": "Euro in NIS",
+                "CURRENCY_PAYMENT_LABEL_$": "Dollar in NIS",
+                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} Euro rate {{currencyRate}} NIS to Euro",
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} Dollar rate {{currencyRate}} NIS to Dollar"
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -568,7 +566,11 @@ export default class TlogDocsTranslateService {
                 "order_counter": "מס' מסמך להזמנה",
                 "fiscal_counter": "מס' הזמנה רציף",
                 "PROVIDER_TRANS_ID": "מס' הפניה",
-                "ROUNDING": "עיגול אג'"
+                "ROUNDING": "עיגול אג'",
+                "CURRENCY_PAYMENT_LABEL_€": "יורו בש\"ח",
+                "CURRENCY_PAYMENT_LABEL_$": "דולר בש\"ח",
+                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} יורו בשער {{currencyRate}} ש\"ח ליורו",
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} דולר בשער {{currencyRate}} ש\"ח לדולר"
             }
         }
     }

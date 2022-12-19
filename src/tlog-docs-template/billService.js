@@ -496,24 +496,15 @@ export default class BillService {
     resolvePayments(variables, collections) {
         // filter payments by ommitted property removes cancelled and refund payments once the order goes shva offline
 
-        let filteredPyaments = this.filterOmittedPayments(collections.PAYMENT_LIST);
+        let filteredPayments = this.filterOmittedPayments(collections.PAYMENT_LIST);
         let payments = [];
 
-        filteredPyaments.forEach(payment => {
-            let paymentData = {
+        filteredPayments.forEach(payment => {
+            let paymentData = Object.assign(payment, {
                 name: this.resolvePaymentName(payment),
                 amount: payment.PAYMENT_TYPE ? this.$utils.toFixedSafe(payment.P_AMOUNT * -1, 2) : this.$utils.toFixedSafe(payment.P_AMOUNT, 2),
                 holderName: payment.CUSTOMER_NAME !== undefined ? payment.CUSTOMER_NAME : ''
-            }
-            if (payment.GUEST_NAME) paymentData.GUEST_NAME = payment.GUEST_NAME;
-            if (payment.HOTEL_NAME) paymentData.HOTEL_NAME = payment.HOTEL_NAME;
-            if (payment.ROOM_NUMBER) paymentData.ROOM_NUMBER = payment.ROOM_NUMBER;
-            if (payment.HOTEL_CHECK_NUMBER) paymentData.HOTEL_CHECK_NUMBER = payment.HOTEL_CHECK_NUMBER;
-            if (payment.P_BONUS_AMOUNT) paymentData.P_BONUS_AMOUNT = payment.P_BONUS_AMOUNT;
-            if (payment.CASH_BAL_DUE) paymentData.CASH_BAL_DUE = payment.CASH_BAL_DUE ;
-            if (payment.CURRENCY_AMOUNT) paymentData.CURRENCY_AMOUNT = payment.CURRENCY_AMOUNT;
-            if (payment.CURRENCY_SYMBOL) paymentData.CURRENCY_SYMBOL = payment.CURRENCY_SYMBOL;
-            if (payment.PROVIDER_TRANS_ID) paymentData.PROVIDER_TRANS_ID = payment.PROVIDER_TRANS_ID;
+            });
 
             payments.push(paymentData);
         });
@@ -860,14 +851,10 @@ export default class BillService {
         data.isReturnOrder = _details.isReturnOrder;
         data.isTaxExempt = _details.isTaxExempt;
 
-        let _totals = this.resolveTotals(variables, collections, true)
-        data.totals = _totals;
-        let _payments = this.resolvePayments(variables, collections, true);
-        data.payments = _payments;
+        data.totals = this.resolveTotals(variables, collections, true);
+        data.payments = this.resolvePayments(variables, collections, true);
 
-        let _taxes = this.resolveTaxes(variables, collections, true);
-        data.taxes = _taxes;
-
+        data.taxes = this.resolveTaxes(variables, collections, true);
         data.isUS = isUS;
 
         let printByOrder = this.resolvePrintByOrder(variables);
