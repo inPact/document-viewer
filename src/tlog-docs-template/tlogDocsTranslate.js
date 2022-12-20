@@ -302,8 +302,8 @@ export default class TlogDocsTranslateService {
                 "ROUNDING": "Rounding",
                 "CURRENCY_PAYMENT_LABEL_€": "Euro in NIS",
                 "CURRENCY_PAYMENT_LABEL_$": "Dollar in NIS",
-                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} Euro rate {{currencyRate}} NIS to Euro",
-                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} Dollar rate {{currencyRate}} NIS to Dollar"
+                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}",
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}"
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -588,7 +588,8 @@ export default class TlogDocsTranslateService {
 
                 if ((keys !== undefined && values !== undefined) && keys.length > 0 && values.length > 0) {
                     keys.forEach((itemKey, index) => {
-                        text = text.replace("{{" + itemKey + "}}", values[index]);
+                        const reg = new RegExp("{{" + itemKey + "}}","g");
+                        text = text.replace(reg, values[index]);
                     });
                 }
 
