@@ -3,7 +3,6 @@ import Utils from '../../helpers/utils.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 
 export default class PaymentSection {
-
     constructor(options) {
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
@@ -44,7 +43,6 @@ export default class PaymentSection {
                     value: paymentLabel
                 });
 
-
                 elementText.appendChild(temp);
             }
 
@@ -70,8 +68,6 @@ export default class PaymentSection {
                     elementValue
                 ]
             });
-
-
             paymentSection.append(elementPaymentContainer);
 
             if (payment.CURRENCY_AMOUNT) {
@@ -122,6 +118,7 @@ export default class PaymentSection {
                         elementValue
                     ]
                 });
+
                 paymentSection.append(elementPaymentContainer);
             }
 
@@ -146,9 +143,9 @@ export default class PaymentSection {
                         elementValue
                     ]
                 });
+
                 paymentSection.append(elementPaymentContainer);
             }
-
 
             if (payment.holderName) {
 
@@ -161,37 +158,35 @@ export default class PaymentSection {
                 paymentSection.append(elementHolderName);
             }
 
-            if (payment.HOTEL_NAME || payment.GUEST_NAME || payment.ROOM_NUMBER || payment.HOTEL_CHECK_NUMBER) {
+            if (payment.HOTEL_NAME || payment.ROOM_NUMBER) {
+                let elementHotelDetails = this.$htmlCreator.create({
+                    id: 'hotel-details',
+                    classList: ['hotel-item', 'hotel-details'],
+                    value: `&nbsp;${payment.HOTEL_NAME}&nbsp;/&nbsp;${payment.ROOM_NUMBER}`
+                });
 
-                if (payment.HOTEL_NAME || payment.ROOM_NUMBER) {
-                    let elementHotelDetails = this.$htmlCreator.create({
-                        id: 'hotel-details',
-                        classList: ['hotel-item', 'hotel-details'],
-                        value: `&nbsp;${payment.HOTEL_NAME}&nbsp;/&nbsp;${payment.ROOM_NUMBER}`
-                    });
-                    paymentSection.append(elementHotelDetails);
-                }
-
-
-                if (payment.GUEST_NAME.replace(/\s/g, '').length > 0) {
-                    let elementGuestName = this.$htmlCreator.create({
-                        id: 'guest-name',
-                        classList: ['hotel-item', 'guest-name'],
-                        value: `&nbsp;${payment.GUEST_NAME}`
-                    });
-
-                    paymentSection.append(elementGuestName);
-                }
+                paymentSection.append(elementHotelDetails);
+            }
 
 
-                if(payment.HOTEL_CHECK_NUMBER) {
-                    let elementHotelCheckNumber = this.$htmlCreator.create({
-                        id: 'hotel-check-number',
-                        classList: ['hotel-item', 'guest-name'],
-                        value: `&nbsp;${this.$translate.getText('HOTEL_CHECK_NUMBER')}&nbsp;${payment.HOTEL_CHECK_NUMBER}`
-                    });
-                    paymentSection.append(elementHotelCheckNumber);
-                }
+            if (payment.GUEST_NAME && payment.GUEST_NAME.replace(/\s/g, '').length > 0) {
+                let elementGuestName = this.$htmlCreator.create({
+                    id: 'guest-name',
+                    classList: ['hotel-item', 'guest-name'],
+                    value: `&nbsp;${payment.GUEST_NAME}`
+                });
+
+                paymentSection.append(elementGuestName);
+            }
+
+            if (payment.HOTEL_CHECK_NUMBER) {
+                let elementHotelCheckNumber = this.$htmlCreator.create({
+                    id: 'hotel-check-number',
+                    classList: ['hotel-item', 'guest-name'],
+                    value: `&nbsp;${this.$translate.getText('HOTEL_CHECK_NUMBER')}&nbsp;${payment.HOTEL_CHECK_NUMBER}`
+                });
+
+                paymentSection.append(elementHotelCheckNumber);
             }
 
             if (payment.PROVIDER_TRANS_ID) {
@@ -200,6 +195,7 @@ export default class PaymentSection {
                     classList: ['hotel-item', 'hotel-details'],
                     value: `&nbsp;${this.$translate.getText('PROVIDER_TRANS_ID')} ${payment.PROVIDER_TRANS_ID}&nbsp;`
                 });
+
                 paymentSection.append(elementProviderTransId);
             }
         });

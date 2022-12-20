@@ -1,12 +1,8 @@
-// 'use strict'
-// let TlogDocsTranslateService = (function () {
-
 export default class TlogDocsTranslateService {
     constructor(options = {}) {
         this._options = options;
 
         this.configure(options)
-
     }
 
     _translate() {
@@ -576,30 +572,28 @@ export default class TlogDocsTranslateService {
     }
 
     configure(options) {
-        if (options.locale) this._options.locale = options.locale;
+        if (options.locale) {
+            this._options.locale = options.locale;
+        }
     }
 
     getText(key, keys, values) {
         if (key !== undefined) {
-
-
             let text = this._translate()[this._options.locale][key];
             if (text !== undefined) {
 
                 if ((keys !== undefined && values !== undefined) && keys.length > 0 && values.length > 0) {
                     keys.forEach((itemKey, index) => {
-                        const reg = new RegExp("{{" + itemKey + "}}","g");
-                        text = text.replace(reg, values[index]);
+                        const regexKeySearch = new RegExp("{{" + itemKey + "}}","g");
+                        text = text.replace(regexKeySearch, values[index]);
                     });
                 }
 
                 return text;
-            }
-            else {
+            } else {
                 return `[${key}]`;
             }
-        }
-        else {
+        } else {
             return "Missing Key";
         }
     }
