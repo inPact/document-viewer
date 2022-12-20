@@ -296,8 +296,8 @@ export default class TlogDocsTranslateService {
                 "fiscal_counter": "Fiscal Counter",
                 "PROVIDER_TRANS_ID": "Reference",
                 "ROUNDING": "Rounding",
-                "CURRENCY_PAYMENT_LABEL_€": "Euro in NIS",
-                "CURRENCY_PAYMENT_LABEL_$": "Dollar in NIS",
+                "CURRENCY_PAYMENT_LABEL_€": "Euro in ILS",
+                "CURRENCY_PAYMENT_LABEL_$": "Dollar in ILS",
                 "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}",
                 "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}"
             },
