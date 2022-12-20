@@ -1,18 +1,8 @@
-// 'use strict'
-// let TlogDocsTranslateService = (function () {
-
 export default class TlogDocsTranslateService {
-
-
-    // TlogDocsTranslateService(options) {
-    //     configure(options)
-    // }
-
     constructor(options = {}) {
         this._options = options;
 
         this.configure(options)
-
     }
 
     _translate() {
@@ -305,7 +295,11 @@ export default class TlogDocsTranslateService {
                 "order_counter": "Order Counter",
                 "fiscal_counter": "Fiscal Counter",
                 "PROVIDER_TRANS_ID": "Reference",
-                "ROUNDING": "Rounding"
+                "ROUNDING": "Rounding",
+                "CURRENCY_PAYMENT_LABEL_€": "Euro in ILS",
+                "CURRENCY_PAYMENT_LABEL_$": "Dollar in ILS",
+                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}",
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}"
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -568,35 +562,38 @@ export default class TlogDocsTranslateService {
                 "order_counter": "מס' מסמך להזמנה",
                 "fiscal_counter": "מס' הזמנה רציף",
                 "PROVIDER_TRANS_ID": "מס' הפניה",
-                "ROUNDING": "עיגול אג'"
+                "ROUNDING": "עיגול אג'",
+                "CURRENCY_PAYMENT_LABEL_€": "יורו בש\"ח",
+                "CURRENCY_PAYMENT_LABEL_$": "דולר בש\"ח",
+                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} יורו בשער {{currencyRate}} ש\"ח ליורו",
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} דולר בשער {{currencyRate}} ש\"ח לדולר"
             }
         }
     }
 
     configure(options) {
-        if (options.locale) this._options.locale = options.locale;
+        if (options.locale) {
+            this._options.locale = options.locale;
+        }
     }
 
     getText(key, keys, values) {
         if (key !== undefined) {
-
-
             let text = this._translate()[this._options.locale][key];
             if (text !== undefined) {
 
                 if ((keys !== undefined && values !== undefined) && keys.length > 0 && values.length > 0) {
                     keys.forEach((itemKey, index) => {
-                        text = text.replace("{{" + itemKey + "}}", values[index]);
+                        const regexKeySearch = new RegExp("{{" + itemKey + "}}","g");
+                        text = text.replace(regexKeySearch, values[index]);
                     });
                 }
 
                 return text;
-            }
-            else {
+            } else {
                 return `[${key}]`;
             }
-        }
-        else {
+        } else {
             return "Missing Key";
         }
     }

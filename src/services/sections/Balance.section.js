@@ -11,9 +11,7 @@ export default class BalanceSection {
     }
 
     get(options) {
-
         let variables = options.variables;
-        let collections = options.collections;
 
         let balanceContainer = this.$htmlCreator.createSection({
             id: 'balance-section',
@@ -50,6 +48,5 @@ export default class BalanceSection {
         balanceContainer.append(elementBalanceContainer);
 
         return balanceContainer;
-
     }
 }

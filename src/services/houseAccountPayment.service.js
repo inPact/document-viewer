@@ -1,5 +1,3 @@
-
-
 import HtmlCreator from '../helpers/htmlCreator.service';
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from '../tlog-docs-template/tlogDocsTranslate';
@@ -7,9 +5,7 @@ import TlogDocsTranslateService from '../tlog-docs-template/tlogDocsTranslate';
 export default class HouseAccountPayment {
 
     constructor(options) {
-
         this._isUS = options.isUS;
-
         this.$htmlCreator = new HtmlCreator();
         this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService({
@@ -20,19 +16,15 @@ export default class HouseAccountPayment {
     }
 
     get(options) {
-
         let variables = options.variables;
         let collections = options.collections;
-
         let houseAccountPayment = _.get(collections, 'HOUSE_ACCOUNT_PAYMENTS[0]');
-
         let houseAccountPaymentContainer = this.$htmlCreator.createSection({
             id: 'house-account-payment',
             classList: ['house-account-payment', 'hide-bottom-border']
         });
 
         if (houseAccountPayment.PROVIDER_TRANS_ID) {
-
             let elementChargeTransactionText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'charge-transaction-text',
@@ -59,11 +51,9 @@ export default class HouseAccountPayment {
             });
 
             houseAccountPaymentContainer.appendChild(elementChargeTransaction);
-
         }
 
         if (houseAccountPayment.CHARGE_ACCOUNT_NAME) {
-
             let elementChargeAccountNameText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'charge-account-name-text',
@@ -90,11 +80,9 @@ export default class HouseAccountPayment {
             });
 
             houseAccountPaymentContainer.appendChild(elementChargeAccountName);
-
         }
 
         if (houseAccountPayment.COMPANY_NAME) {
-
             let elementCompanyNameText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'company-name-text',
@@ -121,11 +109,9 @@ export default class HouseAccountPayment {
             });
 
             houseAccountPaymentContainer.appendChild(elementCompanyName);
-
         }
 
         if (houseAccountPayment.LAST_4) {
-
             let elementLast4Text = this.$htmlCreator.create({
                 type: 'div',
                 id: 'last-4-text',
@@ -152,11 +138,9 @@ export default class HouseAccountPayment {
             });
 
             houseAccountPaymentContainer.appendChild(elementLast4);
-
         }
 
         if (variables.CARD_BALANCE) {
-
             let elementCardBalanceText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'card-balance-text',
@@ -181,6 +165,7 @@ export default class HouseAccountPayment {
                     elementCardBalanceValue
                 ]
             });
+
             houseAccountPaymentContainer.appendChild(elementCardBalance);
         }
 
@@ -217,7 +202,6 @@ export default class HouseAccountPayment {
             });
 
             houseAccountPaymentContainer.appendChild(elementProviderPaymentDate);
-
         }
 
         return houseAccountPaymentContainer;

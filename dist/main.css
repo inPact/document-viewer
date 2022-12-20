@@ -260,7 +260,7 @@
 
 .basicTemplate .total-amount {
   display: flex;
-  padding: 0 0px 0 3px;
+  padding: 0 0 0 3px;
   justify-content: flex-start;
   flex: 3; }
 
