@@ -20,7 +20,7 @@ export default class PaymentSection {
             let elementText = this.$htmlCreator.create({
                 id: 'payment-text',
                 classList: ['total-name'],
-                value: payment.CURRENCY_AMOUNT ? '' : payment.name || ''
+                value: payment.CURRENCY_FACE_VALUE ? '' : payment.name || ''
             });
 
             let classList = ['total-amount'];
@@ -35,7 +35,7 @@ export default class PaymentSection {
                 value: this.$utils.toFixedSafe(payment.amount || 0, 2) || ''
             });
 
-            if (payment.CURRENCY_AMOUNT) {
+            if (payment.CURRENCY_FACE_VALUE) {
                 const currencySymbol = payment.CURRENCY_SYMBOL;
                 const paymentLabel = this.$translate.getText(`CURRENCY_PAYMENT_LABEL_${currencySymbol}`);
                 const temp = this.$htmlCreator.create({
@@ -70,13 +70,13 @@ export default class PaymentSection {
             });
             paymentSection.append(elementPaymentContainer);
 
-            if (payment.CURRENCY_AMOUNT) {
+            if (payment.CURRENCY_FACE_VALUE) {
                 let currencyPaymentDetailsText = this.$htmlCreator.create({
                     id: 'payment-text',
                     classList: ['total-name'],
-                    value: payment.CURRENCY_AMOUNT ? '' : payment.name || ''
+                    value: payment.CURRENCY_FACE_VALUE ? '' : payment.name || ''
                 });
-                const currencyValue = this.$utils.toFixedSafe(payment.CURRENCY_AMOUNT, 2);
+                const currencyValue = this.$utils.toFixedSafe(payment.CURRENCY_FACE_VALUE, 2);
                 const currencyRate = this.$utils.toFixedSafe(payment.CURRENCY_RATE, 3);
                 const currencyPaymentDetails = this.$htmlCreator.create({
                     classList: ['bold'],
