@@ -6,7 +6,7 @@ import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate
 import EmvService from '../../tlog-docs-template/emvService';
 import CreditTransaction from '../../services/creditTransaction.service';
 
-export default class CreaditSection {
+export default class CreditSection {
     constructor(options) {
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
@@ -23,18 +23,18 @@ export default class CreaditSection {
         function getCreditCardText(options) {
             const result = options.isRefund ? that.$translate.getText('RETURNED_IN_CREDIT_FROM') : that.$translate.getText('PAID_IN_CREDIT_FROM');
 
-            return result + ` ${options.issuer}`;
+            return result + ` ${ options.issuer }`;
         }
 
         const payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
 
         const creditContainer = this.$htmlCreator.createSection({
-            id: 'creadit-section',
-            classList: ['creadit-section']
+            id: 'credit-section',
+            classList: ['credit-section']
         });
 
-        const elementCreaditCardText = this.$htmlCreator.create({
-            id: 'creadit-card-text',
+        const elementCreditCardText = this.$htmlCreator.create({
+            id: 'credit-card-text',
             classList: ['total-name'],
             value: getCreditCardText({
                 isRefund: options.isRefund,
@@ -49,28 +49,28 @@ export default class CreaditSection {
             classList.push(negativeClass);
         }
 
-        const elementCreaditCardValue = this.$htmlCreator.create({
-            id: 'creadit-card-value',
+        const elementCreditCardValue = this.$htmlCreator.create({
+            id: 'credit-card-value',
             classList: classList,
             value: this.$utils.toFixedSafe(payment.P_AMOUNT || 0, 2) || ''
         });
 
-        const elementCreaditCardContainer = this.$htmlCreator.create({
-            id: 'creadit-card-container',
+        const elementCreditCardContainer = this.$htmlCreator.create({
+            id: 'credit-card-container',
             classList: ['itemDiv', 'bold'],
             children: [
-                elementCreaditCardText,
-                elementCreaditCardValue
+                elementCreditCardText,
+                elementCreditCardValue
             ]
         });
 
-        creditContainer.append(elementCreaditCardContainer);
+        creditContainer.append(elementCreditCardContainer);
 
         const P_CHANGE = _.get(payment, 'P_CHANGE');
 
         if (P_CHANGE && P_CHANGE !== 0) {
             const elementChangeText = this.$htmlCreator.create({
-                id: 'creadit-change-text',
+                id: 'credit-change-text',
                 classList: ['total-name'],
                 value: this.$translate.getText('CHANGE_TIP')
             });
@@ -82,7 +82,7 @@ export default class CreaditSection {
             }
 
             const elementChangeValue = this.$htmlCreator.create({
-                id: 'creadit-change-value',
+                id: 'credit-change-value',
                 classList: classList,
                 value: this.$utils.toFixedSafe(payment.P_CHANGE || 0, 2) || ''
             });
@@ -98,6 +98,12 @@ export default class CreaditSection {
 
             creditContainer.append(elementChangeContainer);
         }
+
+        const installmentsSection = this.getInstallmentsSection(payment);
+        if (installmentsSection) {
+            creditContainer.append(installmentsSection);
+        }
+
 
         const len = _.get(payment, 'EMV.length', 0);
         const documentType = _.get(options, 'documentInfo.documentType');
@@ -120,5 +126,73 @@ export default class CreaditSection {
         }
 
         return creditContainer;
+    }
+
+    getInstallmentsSection(payment) {
+        const isInstallmentsPayment = !!payment.INSTALLMENTS_COUNT;
+        if (!isInstallmentsPayment) {
+            return;
+        }
+
+        let installmentsSection;
+        const hasUnequalInstallments = payment.FIRST_INSTALLMENTS_AMOUNT && payment.REST_INSTALLMENTS_AMOUNT;
+
+        if (hasUnequalInstallments) {
+            installmentsSection = this.$htmlCreator.create({
+                id: 'installments-container',
+                classList: ['credit-installments', 'unequal-installments'],
+                children: this.getUnequalInstallmentsElements(payment)
+            });
+
+        } else {
+            const installments = this.$translate.getText('EQUAL_INSTALLMENTS',
+                ["installmentsCount", "installmentsAmount"],
+                [(payment.INSTALLMENTS_COUNT), payment.REST_INSTALLMENTS_AMOUNT]
+            );
+
+            installmentsSection = this.$htmlCreator.create({
+                id: 'installments',
+                classList: ['credit-installments'],
+                value: installments
+            });
+        }
+        return installmentsSection;
+    }
+
+    getUnequalInstallmentsElements(payment) {
+        const installmentsCount = this.$translate.getText('INSTALLMENTS_CREDIT_TRANSACTION',
+            ["installmentsCount"],
+            [payment.INSTALLMENTS_COUNT]
+        );
+
+        const firstInstallment = this.$translate.getText('FIRST_INSTALLMENT',
+            ["installmentAmount"],
+            [payment.FIRST_INSTALLMENTS_AMOUNT]
+        );
+
+        const restInstallments = this.$translate.getText('REST_INSTALLMENTS',
+            ["restInstallmentsCount", "installmentsAmount"],
+            [(payment.INSTALLMENTS_COUNT - 1), payment.REST_INSTALLMENTS_AMOUNT]
+        );
+
+        const installmentsCountElement = this.$htmlCreator.create({
+            id: 'installments-count',
+            classList: ['total-name'],
+            value: installmentsCount
+        });
+
+        const firstInstallmentElement = this.$htmlCreator.create({
+            id: 'first-installment',
+            classList: ['total-name'],
+            value: firstInstallment
+        });
+
+        const restInstallmentsElement = this.$htmlCreator.create({
+            id: 'rest-installments',
+            classList: ['total-name'],
+            value: restInstallments
+        });
+
+        return [installmentsCountElement, firstInstallmentElement, restInstallmentsElement];
     }
 }

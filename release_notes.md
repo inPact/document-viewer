@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## 1.45.0
+* [TAB-24488] DOC | Update Invoice-Receipt with Installments
+
 ## 1.44.0
 * [TAB-23962] OFC | Foreign Currency
 

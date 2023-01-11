@@ -299,7 +299,11 @@ export default class TlogDocsTranslateService {
                 "CURRENCY_PAYMENT_LABEL_€": "Euro in ILS",
                 "CURRENCY_PAYMENT_LABEL_$": "Dollar in ILS",
                 "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}",
-                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}"
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}",
+                "INSTALLMENTS_CREDIT_TRANSACTION": "Installments credit transaction of {{installmentsCount}} payments",
+                "FIRST_INSTALLMENT":"First payment {{installmentAmount}}",
+                "REST_INSTALLMENTS":"And other {{restInstallmentsCount}} payments of {{installmentAmount}} each",
+                "EQUAL_INSTALLMENTS": "{{installmentsCount}} payments of {{installmentAmount}} each"
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -534,7 +538,7 @@ export default class TlogDocsTranslateService {
                 "VAT": "מע\"מ",
                 "RETURND_IN_CHARCHACCOUNT_FROM": "הוחזר בהקפה מ ",
                 "RETURNED_IN_CREDIT_FROM": "הוחזר באשראי מ",
-                "PAID_IN_CREDIT_FROM": "שולם באשראי מ",
+                "PAID_IN_CREDIT_FROM": "שולם באשראי",
                 "TRANSACTION_TIME": "זמן העסקה",
                 "TRANSACTION_NO": "מספר עסקה",
                 "APPROVAL_NO": "מספר אישור",
@@ -566,7 +570,11 @@ export default class TlogDocsTranslateService {
                 "CURRENCY_PAYMENT_LABEL_€": "יורו בש\"ח",
                 "CURRENCY_PAYMENT_LABEL_$": "דולר בש\"ח",
                 "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} יורו בשער {{currencyRate}} ש\"ח ליורו",
-                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} דולר בשער {{currencyRate}} ש\"ח לדולר"
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} דולר בשער {{currencyRate}} ש\"ח לדולר",
+                "INSTALLMENTS_CREDIT_TRANSACTION": "עסקת אשראי של {{installmentsCount}} תשלומים",
+                "FIRST_INSTALLMENT":"תשלום ראשון על סך {{installmentAmount}}",
+                "REST_INSTALLMENTS":"ועוד {{restInstallmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד ",
+                "EQUAL_INSTALLMENTS": "{{installmentsCount}} תשלומים של {{installmentsAmount}} כל אחד"
             }
         }
     }
