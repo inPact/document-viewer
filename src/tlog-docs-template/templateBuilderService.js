@@ -933,6 +933,8 @@ export default class TemplateBuilderService {
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
 
+        console.log('this._docData: ', this._docData);
+
         if (this._docObj && this._docData.documentType === "deliveryNote") {
             return tplOrderPaymentsDiv;
         } else if (this._docObj && ["invoice", "refundInvoice", 'refundDeliveryNote'].indexOf(this._docData.documentType) > -1) {
@@ -952,9 +954,15 @@ export default class TemplateBuilderService {
             } else if (this._docObj.docPaymentType === ("GiftCard")) {
                 var giftCardPayment = this.createGiftCardDetails(printData);
                 tplOrderPaymentsDiv.appendChild(giftCardPayment);
-            } else if (this._docObj.docPaymentType === "CashPayment" || this._docObj.docPaymentType === "CashRefund") {
+            } else if (['CashPayment', 'CashRefund'].includes(this._docObj.docPaymentType)) {
                 var cashPayment = this.createCashPaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(cashPayment);
+            } else if (this._docObj.docPaymentType === 'CurrencyPayment') {
+                const currencyPayments = printData.data.payments.filter(payment => payment.P_TENDER_TYPE === 'currency');
+                currencyPayments.forEach(payment => {
+                    const currencyPaymentDetailsSection = this.createCurrencyPaymentSection(payment);
+                    tplOrderPaymentsDiv.appendChild(currencyPaymentDetailsSection);
+                })
             } else if (this._docObj.docPaymentType === "ChequePayment" || this._docObj.docPaymentType === "ChequeRefund") {
                 var chequePayment = this.createChequePaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(chequePayment);
@@ -973,39 +981,32 @@ export default class TemplateBuilderService {
         return tplOrderPaymentsDiv;
     }
 
-    fillPaymentsData(printData) {
-        var OrderPaymentsDiv = this._doc.createElement('div');
-        OrderPaymentsDiv.id = 'OrderPaymentsDiv';
+    createCurrencyPaymentSection(payment) {
+        var currencyDiv = this._doc.createElement('div');
+        currencyDiv.id = 'currencyDiv'
 
-        if (printData.data.payments.length > 0) {
-            printData.data.payments.forEach(payment => {
+        var currencySymbol = payment.CURRENCY_SYMBOL;
 
-                var paymentDiv = this._doc.createElement('div');
-                var pAmount;
-                var changeAmountZero;
-                if (payment) {
-                    pAmount = payment.amount;
-                    changeAmountZero = (pAmount === 0 && payment.type === 'change');
-                    if (!changeAmountZero) {
-                        paymentDiv.innerHTML =
-                            "<div class=" + (payment.type === 'change' ? 'changeDiv' : 'itemDiv') + ">" +
-                            "<div class='total-name'>" + (payment.name ? payment.name : " ") + "</div>" + " " +
-                            "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + (!changeAmountZero ? this.$utils.twoDecimals(pAmount) : "") + "</div>" +
-                            "</div>"
-                        OrderPaymentsDiv.appendChild(paymentDiv);
-                    }
-                }
-                if (payment.holderName) {
-                    var holderNameDiv = this._doc.createElement('div');
-                    holderNameDiv.classList += ' holder-name';
-                    holderNameDiv.innerHTML = "&nbsp;" + payment.holderName;
-                    OrderPaymentsDiv.appendChild(holderNameDiv);
-                }
+        var pAmount = payment.amount;
+        var currencyPaidDiv = this._doc.createElement('div')
+        currencyPaidDiv.innerHTML = "<div class='itemDiv'>" +
+            "<div class='total-name bold'>" + this.$translate.getText(`CURRENCY_PAYMENT_LABEL_${currencySymbol}`) + "</div>" +
+            "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + this.$utils.twoDecimals(pAmount) + "</div>" +
+            "</div>"
 
-            })
-        }
+        currencyDiv.appendChild(currencyPaidDiv);
 
-        return OrderPaymentsDiv;
+        const currencyValue = this.$utils.toFixedSafe(payment.CURRENCY_FACE_VALUE, 2);
+        const currencyRate = this.$utils.toFixedSafe(payment.CURRENCY_RATE, 3);
+
+        var currencyPaymentDetailsDiv = this._doc.createElement('div');
+        currencyPaymentDetailsDiv.innerHTML = '<div class="bold">' + this.$translate.getText(`CURRENCY_PAYMENT_DETAILS_${payment.CURRENCY_SYMBOL}`,
+            ['currencyAmount', 'currencySymbol', 'currencyRate'],
+            [currencyValue, payment.CURRENCY_SYMBOL, currencyRate]) + '</div>';
+
+        currencyDiv.appendChild(currencyPaymentDetailsDiv);
+
+        return currencyDiv;
     }
 
     createGiftCardDetails(printData) {
@@ -1206,5 +1207,4 @@ export default class TemplateBuilderService {
 
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br\/>$2');
     }
-
 }
