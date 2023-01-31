@@ -1,6 +1,9 @@
 # Document Viewer release notes
 
-## 1.44.0
+## 1.46.1
+* [TAB-27391] OFC | Document viewer -  Invoice shouldn't contain symbol and text
+
+## 1.46.0
 * [TAB-23962] OFC | Foreign Currency
 
 ## 1.43.0
