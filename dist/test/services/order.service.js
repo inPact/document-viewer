@@ -6,7 +6,7 @@ angular.module('app')
         ep: 'https://il-int-ros.tabit-stage.com',
         // ep: 'https://us-int-ros.tabit-stage.com',
         org: '62cadc5fff09da8399c2a8e9',
-        tlog: '63c5233d27b35f083f82e902',
+        tlog: '63d8d9f52f8717fd136dcb79',
         locale: 'he-IL',
         // locale: 'en-US',
         realRegion: 'IL',
