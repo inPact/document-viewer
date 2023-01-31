@@ -565,8 +565,8 @@ export default class TlogDocsTranslateService {
                 "ROUNDING": "עיגול אג'",
                 "CURRENCY_PAYMENT_LABEL_€": "יורו בש\"ח",
                 "CURRENCY_PAYMENT_LABEL_$": "דולר בש\"ח",
-                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} יורו בשער {{currencyRate}} ש\"ח ליורו",
-                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} דולר בשער {{currencyRate}} ש\"ח לדולר"
+                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} בשער {{currencyRate}} ש\"ח ליורו",
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} בשער {{currencyRate}} ש\"ח לדולר"
             }
         }
     }
