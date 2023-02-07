@@ -222,7 +222,8 @@ export default class TlogDocsService {
                                     if (doc.payments[0]._type === 'ChequeRefund' ||
                                         doc.payments[0]._type === 'CashRefund' ||
                                         doc.payments[0]._type === 'CreditCardRefund' ||
-                                        doc.payments[0]._type === 'GiftCardLoad' ) {
+                                        doc.payments[0]._type === 'GiftCardLoad' ||
+                                        doc.payments[0]._type === 'CurrencyRefund' ) {
                                         orderSelection.push({
                                             tlogId: tlog._id,
                                             id: doc._id,

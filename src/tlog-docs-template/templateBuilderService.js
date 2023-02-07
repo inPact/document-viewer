@@ -933,8 +933,6 @@ export default class TemplateBuilderService {
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
 
-        console.log('this._docData: ', this._docData);
-
         if (this._docObj && this._docData.documentType === "deliveryNote") {
             return tplOrderPaymentsDiv;
         } else if (this._docObj && ["invoice", "refundInvoice", 'refundDeliveryNote'].indexOf(this._docData.documentType) > -1) {
