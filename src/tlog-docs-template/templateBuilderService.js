@@ -954,7 +954,8 @@ export default class TemplateBuilderService {
             } else if (['CurrencyPayment', 'CurrencyRefund'].includes(this._docObj.docPaymentType)) {
                 const currencyPayments = printData.data.payments.filter(payment => payment.P_TENDER_TYPE === 'currency');
                 currencyPayments.forEach(payment => {
-                    const currencyPaymentDetailsSection = this.createCurrencyPaymentSection(payment);
+                    const isRefund = this._docObj.docPaymentType === 'CurrencyRefund';
+                    const currencyPaymentDetailsSection = this.createCurrencyPaymentSection(payment, isRefund);
                     tplOrderPaymentsDiv.appendChild(currencyPaymentDetailsSection);
                 });
 
@@ -977,13 +978,13 @@ export default class TemplateBuilderService {
         return tplOrderPaymentsDiv;
     }
 
-    createCurrencyPaymentSection(payment) {
+    createCurrencyPaymentSection(payment, isRefund) {
         var currencyDiv = this._doc.createElement('div');
         currencyDiv.id = 'currencyDiv'
 
         var currencySymbol = payment.CURRENCY_SYMBOL;
 
-        var pAmount = payment.amount;
+        var pAmount = !isRefund ? payment.amount : payment.P_AMOUNT;
         var currencyPaidDiv = this._doc.createElement('div')
         currencyPaidDiv.innerHTML = "<div class='itemDiv'>" +
             "<div class='total-name bold'>" + this.$translate.getText(`CURRENCY_PAYMENT_LABEL_${currencySymbol}`) + "</div>" +
