@@ -774,8 +774,6 @@ export default class TemplateBuilderService {
     }
 
     createTotalsData(printData, isGiftCardBill, isTaxExempt) {
-
-
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
@@ -791,7 +789,6 @@ export default class TemplateBuilderService {
             'ChequeRefund',
             'refundInvoice'
         ].indexOf(this._docData.documentType) > -1) {
-
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate({
                 isRefund: printData.isRefund,
                 printData: printData
@@ -929,7 +926,6 @@ export default class TemplateBuilderService {
     }
 
     createPaymentsData(printData) {
-
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
 
@@ -955,12 +951,14 @@ export default class TemplateBuilderService {
             } else if (['CashPayment', 'CashRefund'].includes(this._docObj.docPaymentType)) {
                 var cashPayment = this.createCashPaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(cashPayment);
-            } else if (this._docObj.docPaymentType === 'CurrencyPayment') {
+            } else if (['CurrencyPayment', 'CurrencyRefund'].includes(this._docObj.docPaymentType)) {
                 const currencyPayments = printData.data.payments.filter(payment => payment.P_TENDER_TYPE === 'currency');
                 currencyPayments.forEach(payment => {
                     const currencyPaymentDetailsSection = this.createCurrencyPaymentSection(payment);
                     tplOrderPaymentsDiv.appendChild(currencyPaymentDetailsSection);
-                })
+                });
+
+
             } else if (this._docObj.docPaymentType === "ChequePayment" || this._docObj.docPaymentType === "ChequeRefund") {
                 var chequePayment = this.createChequePaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(chequePayment);
@@ -1003,6 +1001,10 @@ export default class TemplateBuilderService {
             [currencyValue, payment.CURRENCY_SYMBOL, currencyRate]) + '</div>';
 
         currencyDiv.appendChild(currencyPaymentDetailsDiv);
+        const cashbackDiv = this.totalCashbackTemplate(payment);
+        if (cashbackDiv) {
+            currencyDiv.appendChild(cashbackDiv);
+        }
 
         return currencyDiv;
     }
@@ -1152,6 +1154,22 @@ export default class TemplateBuilderService {
         }
 
         return cashDiv;
+    }
+
+    totalCashbackTemplate(payment) {
+        const paymentChange = _.get(payment, 'P_CHANGE', 0);
+        if (paymentChange !== 0) {
+            var changeText = this.$translate.getText('TOTAL_CASHBACK');
+            var pChange = paymentChange ? this.$utils.twoDecimals(paymentChange) : '';
+            var cashbackDiv = this._doc.createElement('div')
+            cashbackDiv.id = 'cashback-div'
+            cashbackDiv.innerHTML = "<div class='changeDiv'>" +
+                "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
+                "<div class='total-amount " + this.$utils.isNegative(pChange) + "'>" + this.$utils.twoDecimals(pChange) + "</div>" +
+                "</div>"
+
+            return cashbackDiv;
+        }
     }
 
     createChequePaymentFooter(printData) {
