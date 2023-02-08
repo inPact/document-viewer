@@ -1,9 +1,12 @@
 # Document Viewer release notes
 
-## 1.46.2
-* [TAB-23962] DOC | when canceling a currency payment the document viewer does not show the refund invoice
+### 1.46.3
+* [TAB-27968] DOC | when canceling a currency payment the document viewer does not show the refund invoice
 
-## 1.46.1
+### 1.46.2
+* SKIP VERSION
+
+### 1.46.1
 * [TAB-27391] OFC | Document viewer -  Invoice shouldn't contain symbol and text
 
 ## 1.46.0
