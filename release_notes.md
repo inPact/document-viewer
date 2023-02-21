@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+### 1.46.5
+* [TAB-28361] DOC | Doc view of room charge order with Hotel in $$
+
 ### 1.46.4
 * [TAB-27968] DOC | when canceling a currency payment the document viewer does not show the refund invoice
 
