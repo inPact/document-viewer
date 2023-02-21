@@ -299,7 +299,8 @@ export default class TlogDocsTranslateService {
                 "CURRENCY_PAYMENT_LABEL_€": "Euro in ILS",
                 "CURRENCY_PAYMENT_LABEL_$": "Dollar in ILS",
                 "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}",
-                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}"
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}",
+                "HOTELS_ROOM_CHARGE_CURRENCY": "Room Charge {{value}}"
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -566,7 +567,8 @@ export default class TlogDocsTranslateService {
                 "CURRENCY_PAYMENT_LABEL_€": "יורו בש\"ח",
                 "CURRENCY_PAYMENT_LABEL_$": "דולר בש\"ח",
                 "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} בשער {{currencyRate}} ש\"ח ליורו",
-                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} בשער {{currencyRate}} ש\"ח לדולר"
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} בשער {{currencyRate}} ש\"ח לדולר",
+                "HOTELS_ROOM_CHARGE_CURRENCY": "חיוב חדר {{value}}"
             }
         }
     }

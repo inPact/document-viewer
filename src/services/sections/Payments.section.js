@@ -189,6 +189,17 @@ export default class PaymentSection {
                 paymentSection.append(elementHotelCheckNumber);
             }
 
+            if (payment.HOTEL_NAME || payment.CURRENCY_SYMBOL) {
+                const currencyValueText = payment.CURRENCY_SYMBOL + payment.CURRENCY_AMOUNT;
+                const elementHotelRoomChargePayment = this.$htmlCreator.create({
+                    id: 'room-charge-payment',
+                    classList: ['bold'],
+                    value: `&nbsp;${this.$translate.getText('HOTELS_ROOM_CHARGE_CURRENCY', ['value'], [currencyValueText])}`
+                });
+
+                paymentSection.append(elementHotelRoomChargePayment);
+            }
+
             if (payment.PROVIDER_TRANS_ID) {
                 let elementProviderTransId = this.$htmlCreator.create({
                     id: 'reference-id',

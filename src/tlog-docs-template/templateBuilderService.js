@@ -78,8 +78,7 @@ export default class TemplateBuilderService {
             this._doc.body.appendChild(this.createTextTemplate(documentInfo))
         } else  if (documentInfo.hasOwnProperty('fiscalSignature')) {
             this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature))
-        }
-        else {
+        } else {
             this._docObj = documentInfo;
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
@@ -538,7 +537,6 @@ export default class TemplateBuilderService {
     }
 
     createOrderPaymentData(printData) {
-
         var tplOrderPaymentData = this._doc.createElement('div');
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
 
