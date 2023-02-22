@@ -189,7 +189,7 @@ export default class PaymentSection {
                 paymentSection.append(elementHotelCheckNumber);
             }
 
-            if (payment.HOTEL_NAME || payment.CURRENCY_SYMBOL) {
+            if (payment.HOTEL_NAME && payment.CURRENCY_SYMBOL) {
                 const currencyValueText = payment.CURRENCY_SYMBOL + payment.CURRENCY_AMOUNT;
                 const elementHotelRoomChargePayment = this.$htmlCreator.create({
                     id: 'room-charge-payment',
