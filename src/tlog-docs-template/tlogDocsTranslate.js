@@ -576,7 +576,7 @@ export default class TlogDocsTranslateService {
                 "INSTALLMENTS_CREDIT_TRANSACTION": "עסקת אשראי של {{installmentsCount}} תשלומים",
                 "FIRST_INSTALLMENT":"תשלום ראשון על סך {{installmentAmount}}",
                 "REST_INSTALLMENTS":"ועוד {{restInstallmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד ",
-                "EQUAL_INSTALLMENTS": "{{installmentsCount}} תשלומים של {{installmentsAmount}} כל אחד"
+                "EQUAL_INSTALLMENTS": "{{installmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד"
             }
         }
     }
