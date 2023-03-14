@@ -387,4 +387,12 @@
   display: flex;
   flex: 1; }
 
+.credit-installments {
+  margin-inline-start: 10px;
+  margin: 3px 0 10px 0; }
+  .credit-installments.unequal-installments {
+    display: flex;
+    flex-direction: column;
+    gap: 2px; }
+
 /*# sourceMappingURL=main.css.map*/
