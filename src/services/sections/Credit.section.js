@@ -133,8 +133,8 @@ export default class CreaditSection {
         const hasInstallmentsPayment = !!payment.INSTALLMENTS_COUNT;
 
         if (hasInstallmentsPayment) {
-            this.installmentsSections = new InstallmentsSection(this.options, payment);
-            creaditContainer.append(this.installmentsSections.get());
+            this.installmentsSection = new InstallmentsSection(this.options, payment, documentInfo);
+            creaditContainer.append(this.installmentsSection.get());
         }
 
         if (documentType === 'invoice' && len > 0) {

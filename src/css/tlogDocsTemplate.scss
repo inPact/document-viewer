@@ -280,8 +280,16 @@
 }
 
 .credit-installments {
-  margin-inline-start: 10px;
-  margin: 3px 0 10px 0;
+  margin: 3px 0 4px 0;
+
+  &.orderBill {
+    margin-inline-start: 15px;
+    font-size: 13px;
+  }
+
+  &.invoice {
+    margin-inline-start: 5px;
+  }
 
   &.unequal-installments {
     display: flex;

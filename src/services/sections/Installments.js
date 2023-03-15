@@ -2,10 +2,11 @@ import HtmlCreator from "../../helpers/htmlCreator.service";
 import TlogDocsTranslateService from "../../tlog-docs-template/tlogDocsTranslate";
 
 export class InstallmentsSection {
-    constructor(options, payment) {
+    constructor(options, payment, documentInfo) {
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
         this.payment = payment;
+        this.documentType = _.get(documentInfo, 'documentType', '')
     }
 
     get() {
@@ -18,7 +19,7 @@ export class InstallmentsSection {
     get equalInstallmentsSection() {
         return this.$htmlCreator.create({
             id: 'installments',
-            classList: ['credit-installments'],
+            classList: ['credit-installments', this.documentType],
             value: this.$translate.getText('EQUAL_INSTALLMENTS',
                 ["installmentsCount", "installmentsAmount"],
                 [(this.payment.INSTALLMENTS_COUNT), this.payment.REST_INSTALLMENTS_AMOUNT]
@@ -58,7 +59,7 @@ export class InstallmentsSection {
 
         return this.$htmlCreator.create({
             id: 'installments-container',
-            classList: ['credit-installments', 'unequal-installments'],
+            classList: ['credit-installments', 'unequal-installments', this.documentType],
             children: [installmentsCountElement, firstInstallmentElement, restInstallmentsElement],
         });
 

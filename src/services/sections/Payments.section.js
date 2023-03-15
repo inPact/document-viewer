@@ -1,6 +1,7 @@
 import HtmlCreator from '../../helpers/htmlCreator.service';
 import Utils from '../../helpers/utils.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
+import { InstallmentsSection } from "./Installments";
 
 export default class PaymentSection {
 
@@ -8,6 +9,7 @@ export default class PaymentSection {
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
+        this.options = options;
     }
 
     get(options) {
@@ -177,6 +179,13 @@ export default class PaymentSection {
                     value: `&nbsp;${this.$translate.getText('PROVIDER_TRANS_ID')} ${payment.PROVIDER_TRANS_ID}&nbsp;`
                 });
                 paymentSection.append(elementProviderTransId);
+            }
+
+            const hasInstallmentsPayment = !!payment.INSTALLMENTS_COUNT;
+
+            if (hasInstallmentsPayment) {
+                this.installmentsSection = new InstallmentsSection(this.options, payment, options.documentInfo);
+                paymentSection.append(this.installmentsSection.get());
             }
         });
 
