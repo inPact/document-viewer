@@ -388,8 +388,12 @@
   flex: 1; }
 
 .credit-installments {
-  margin-inline-start: 10px;
-  margin: 3px 0 10px 0; }
+  margin: 3px 0 4px 0; }
+  .credit-installments.orderBill {
+    margin-inline-start: 15px;
+    font-size: 13px; }
+  .credit-installments.invoice {
+    margin-inline-start: 5px; }
   .credit-installments.unequal-installments {
     display: flex;
     flex-direction: column;
