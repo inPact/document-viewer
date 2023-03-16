@@ -503,7 +503,8 @@ export default class BillService {
             let paymentData = {
                 name: this.resolvePaymentName(payment),
                 amount: payment.PAYMENT_TYPE ? this.$utils.toFixedSafe(payment.P_AMOUNT * -1, 2) : this.$utils.toFixedSafe(payment.P_AMOUNT, 2),
-                holderName: payment.CUSTOMER_NAME !== undefined ? payment.CUSTOMER_NAME : ''
+                holderName: payment.CUSTOMER_NAME !== undefined ? payment.CUSTOMER_NAME : '',
+                P_ID: payment.P_ID
             }
             if (payment.GUEST_NAME) paymentData.GUEST_NAME = payment.GUEST_NAME;
             if (payment.HOTEL_NAME) paymentData.HOTEL_NAME = payment.HOTEL_NAME;
@@ -514,6 +515,9 @@ export default class BillService {
             if (payment.CURRENCY_AMOUNT) paymentData.CURRENCY_AMOUNT = payment.CURRENCY_AMOUNT;
             if (payment.CURRENCY_SYMBOL) paymentData.CURRENCY_SYMBOL = payment.CURRENCY_SYMBOL;
             if (payment.PROVIDER_TRANS_ID) paymentData.PROVIDER_TRANS_ID = payment.PROVIDER_TRANS_ID;
+            if (payment.INSTALLMENTS_COUNT) paymentData.INSTALLMENTS_COUNT = payment.INSTALLMENTS_COUNT;
+            if (payment.FIRST_INSTALLMENTS_AMOUNT) paymentData.FIRST_INSTALLMENTS_AMOUNT = payment.FIRST_INSTALLMENTS_AMOUNT;
+            if (payment.REST_INSTALLMENTS_AMOUNT) paymentData.REST_INSTALLMENTS_AMOUNT = payment.REST_INSTALLMENTS_AMOUNT;
 
             payments.push(paymentData);
         });

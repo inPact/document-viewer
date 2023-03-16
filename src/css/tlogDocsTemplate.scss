@@ -1,4 +1,3 @@
-
 @import 'style.scss';
 @import 'elements.scss';
 
@@ -99,11 +98,11 @@
   color: #0774c2;
 }
 
- 
-.basicTemplate .number-data{
-  display:flex;
+
+.basicTemplate .number-data {
+  display: flex;
   justify-content: flex-start;
-  flex:8;
+  flex: 8;
 }
 
 .basicTemplate .total-amount {
@@ -113,12 +112,12 @@
   flex: 3;
 }
 
-.basicTemplate .holder-name{
+.basicTemplate .holder-name {
   font-size: 10px;
-  display:flex;
+  display: flex;
   justify-content: flex-start;
-  flex:6;
-} 
+  flex: 6;
+}
 
 .basicTemplate .negative {
   direction: ltr !important;
@@ -188,22 +187,22 @@
   font-size: 11px;
 }
 
-.basicTemplate .bold{
+.basicTemplate .bold {
   font-weight: bold;
 }
 
-.basicTemplate .bigBold{
+.basicTemplate .bigBold {
   font-weight: bold;
   font-size: 21px;
 }
 
-.basicTemplate.rtl .customerMessage{
-  padding-top:5px;
+.basicTemplate.rtl .customerMessage {
+  padding-top: 5px;
   text-align: right;
 }
 
-.basicTemplate.ltr .customerMessage{
-  padding-top:5px;
+.basicTemplate.ltr .customerMessage {
+  padding-top: 5px;
   text-align: left;
 }
 
@@ -219,7 +218,7 @@
   color: black;
 }
 
-.basicTemplate .changeDiv , .basicTemplate .paymentRoundingDiv {
+.basicTemplate .changeDiv, .basicTemplate .paymentRoundingDiv {
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -237,9 +236,9 @@
 }
 
 .basicTemplate.ltr {
-    .align-text {
-      text-align: left;
-    }
+  .align-text {
+    text-align: left;
+  }
 }
 
 .basicTemplate.rtl {
@@ -252,29 +251,49 @@
   margin-bottom: 10px;
 }
 
-.basicTemplate.ltr .total-amount{
+.basicTemplate.ltr .total-amount {
   padding: 0 20px 0 18px;
   justify-content: flex-end;
-  direction:ltr !important;
+  direction: ltr !important;
   text-align: right !important;
 }
 
-.border-bottom{
-  padding-bottom:10px;
-  border-bottom: solid #E8E8E8 1px;
-
-}
-.border-top{
-  padding-top:5px;
+.border-bottom {
+  padding-bottom: 10px;
   border-bottom: solid #E8E8E8 1px;
 
 }
 
-.emv-div{
-  display:flex;
+.border-top {
+  padding-top: 5px;
+  border-bottom: solid #E8E8E8 1px;
+
 }
 
-.emv-text{
-  display:flex;
-  flex:1;
+.emv-div {
+  display: flex;
+}
+
+.emv-text {
+  display: flex;
+  flex: 1;
+}
+
+.credit-installments {
+  margin: 3px 0 4px 0;
+
+  &.orderBill {
+    margin-inline-start: 15px;
+    font-size: 13px;
+  }
+
+  &.invoice {
+    margin-inline-start: 5px;
+  }
+
+  &.unequal-installments {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
 }

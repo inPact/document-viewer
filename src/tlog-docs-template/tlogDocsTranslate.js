@@ -305,7 +305,11 @@ export default class TlogDocsTranslateService {
                 "order_counter": "Order Counter",
                 "fiscal_counter": "Fiscal Counter",
                 "PROVIDER_TRANS_ID": "Reference",
-                "ROUNDING": "Rounding"
+                "ROUNDING": "Rounding",
+                "INSTALLMENTS_CREDIT_TRANSACTION": "Installments credit transaction of {{installmentsCount}} payments",
+                "FIRST_INSTALLMENT":"First payment {{installmentAmount}}",
+                "REST_INSTALLMENTS":"And other {{restInstallmentsCount}} payments of {{installmentAmount}} each",
+                "EQUAL_INSTALLMENTS": "{{installmentsCount}} payments of {{installmentAmount}} each"
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -540,7 +544,7 @@ export default class TlogDocsTranslateService {
                 "VAT": "מע\"מ",
                 "RETURND_IN_CHARCHACCOUNT_FROM": "הוחזר בהקפה מ ",
                 "RETURNED_IN_CREDIT_FROM": "הוחזר באשראי מ",
-                "PAID_IN_CREDIT_FROM": "שולם באשראי מ",
+                "PAID_IN_CREDIT_FROM": "שולם באשראי",
                 "TRANSACTION_TIME": "זמן העסקה",
                 "TRANSACTION_NO": "מספר עסקה",
                 "APPROVAL_NO": "מספר אישור",
@@ -568,7 +572,11 @@ export default class TlogDocsTranslateService {
                 "order_counter": "מס' מסמך להזמנה",
                 "fiscal_counter": "מס' הזמנה רציף",
                 "PROVIDER_TRANS_ID": "מס' הפניה",
-                "ROUNDING": "עיגול אג'"
+                "ROUNDING": "עיגול אג'",
+                "INSTALLMENTS_CREDIT_TRANSACTION": "עסקת אשראי של {{installmentsCount}} תשלומים",
+                "FIRST_INSTALLMENT":"תשלום ראשון על סך {{installmentAmount}}",
+                "REST_INSTALLMENTS":"ועוד {{restInstallmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד ",
+                "EQUAL_INSTALLMENTS": "{{installmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד"
             }
         }
     }

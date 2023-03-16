@@ -1,9 +1,12 @@
 # Document Viewer release notes
 
+## 1.44.0
+* [TAB-24488] DOC | Update Invoice-Receipt with Installments
+
 ##1.43.0
 * [TAB-24900] OFC | DCV - Customer signature is not fully displayed
 
-##1.42.0
+## 1.42.0
 * [TAB-23772] NOFC | Show rounded amount (if exists) in the document viewer
 * [TAB-23548] NOFC | Print vat-excluded amount on the invoice/deliveryNote (if exists)
 
