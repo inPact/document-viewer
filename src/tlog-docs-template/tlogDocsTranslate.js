@@ -1,18 +1,8 @@
-// 'use strict'
-// let TlogDocsTranslateService = (function () {
-
 export default class TlogDocsTranslateService {
-
-
-    // TlogDocsTranslateService(options) {
-    //     configure(options)
-    // }
-
     constructor(options = {}) {
         this._options = options;
 
         this.configure(options)
-
     }
 
     _translate() {
@@ -306,6 +296,11 @@ export default class TlogDocsTranslateService {
                 "fiscal_counter": "Fiscal Counter",
                 "PROVIDER_TRANS_ID": "Reference",
                 "ROUNDING": "Rounding",
+                "CURRENCY_PAYMENT_LABEL_€": "Euro in ILS",
+                "CURRENCY_PAYMENT_LABEL_$": "Dollar in ILS",
+                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}",
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} paid at a rate of {{currencySymbol}}1.00 = ILS {{currencyRate}}",
+                "HOTELS_ROOM_CHARGE_CURRENCY": "Room Charge {{value}}",
                 "INSTALLMENTS_CREDIT_TRANSACTION": "Installments credit transaction of {{installmentsCount}} payments",
                 "FIRST_INSTALLMENT":"First payment {{installmentAmount}}",
                 "REST_INSTALLMENTS":"And other {{restInstallmentsCount}} payments of {{installmentAmount}} each",
@@ -573,6 +568,11 @@ export default class TlogDocsTranslateService {
                 "fiscal_counter": "מס' הזמנה רציף",
                 "PROVIDER_TRANS_ID": "מס' הפניה",
                 "ROUNDING": "עיגול אג'",
+                "CURRENCY_PAYMENT_LABEL_€": "יורו בש\"ח",
+                "CURRENCY_PAYMENT_LABEL_$": "דולר בש\"ח",
+                "CURRENCY_PAYMENT_DETAILS_€": "{{currencySymbol}}{{currencyAmount}} בשער {{currencyRate}} ש\"ח ליורו",
+                "CURRENCY_PAYMENT_DETAILS_$": "{{currencySymbol}}{{currencyAmount}} בשער {{currencyRate}} ש\"ח לדולר",
+                "HOTELS_ROOM_CHARGE_CURRENCY": "חיוב חדר {{value}}",
                 "INSTALLMENTS_CREDIT_TRANSACTION": "עסקת אשראי של {{installmentsCount}} תשלומים",
                 "FIRST_INSTALLMENT":"תשלום ראשון על סך {{installmentAmount}}",
                 "REST_INSTALLMENTS":"ועוד {{restInstallmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד ",
@@ -582,29 +582,28 @@ export default class TlogDocsTranslateService {
     }
 
     configure(options) {
-        if (options.locale) this._options.locale = options.locale;
+        if (options.locale) {
+            this._options.locale = options.locale;
+        }
     }
 
     getText(key, keys, values) {
         if (key !== undefined) {
-
-
             let text = this._translate()[this._options.locale][key];
             if (text !== undefined) {
 
                 if ((keys !== undefined && values !== undefined) && keys.length > 0 && values.length > 0) {
                     keys.forEach((itemKey, index) => {
-                        text = text.replace("{{" + itemKey + "}}", values[index]);
+                        const regexKeySearch = new RegExp("{{" + itemKey + "}}","g");
+                        text = text.replace(regexKeySearch, values[index]);
                     });
                 }
 
                 return text;
-            }
-            else {
+            } else {
                 return `[${key}]`;
             }
-        }
-        else {
+        } else {
             return "Missing Key";
         }
     }

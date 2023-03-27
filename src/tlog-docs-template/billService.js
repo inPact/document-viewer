@@ -496,16 +496,16 @@ export default class BillService {
     resolvePayments(variables, collections) {
         // filter payments by ommitted property removes cancelled and refund payments once the order goes shva offline
 
-        let filteredPyaments = this.filterOmittedPayments(collections.PAYMENT_LIST);
+        let filteredPayments = this.filterOmittedPayments(collections.PAYMENT_LIST);
         let payments = [];
 
-        filteredPyaments.forEach(payment => {
-            let paymentData = {
+        filteredPayments.forEach(payment => {
+            let paymentData = Object.assign(payment, {
                 name: this.resolvePaymentName(payment),
                 amount: payment.PAYMENT_TYPE ? this.$utils.toFixedSafe(payment.P_AMOUNT * -1, 2) : this.$utils.toFixedSafe(payment.P_AMOUNT, 2),
                 holderName: payment.CUSTOMER_NAME !== undefined ? payment.CUSTOMER_NAME : '',
                 P_ID: payment.P_ID
-            }
+            });
             if (payment.GUEST_NAME) paymentData.GUEST_NAME = payment.GUEST_NAME;
             if (payment.HOTEL_NAME) paymentData.HOTEL_NAME = payment.HOTEL_NAME;
             if (payment.ROOM_NUMBER) paymentData.ROOM_NUMBER = payment.ROOM_NUMBER;
@@ -864,14 +864,10 @@ export default class BillService {
         data.isReturnOrder = _details.isReturnOrder;
         data.isTaxExempt = _details.isTaxExempt;
 
-        let _totals = this.resolveTotals(variables, collections, true)
-        data.totals = _totals;
-        let _payments = this.resolvePayments(variables, collections, true);
-        data.payments = _payments;
+        data.totals = this.resolveTotals(variables, collections, true);
+        data.payments = this.resolvePayments(variables, collections, true);
 
-        let _taxes = this.resolveTaxes(variables, collections, true);
-        data.taxes = _taxes;
-
+        data.taxes = this.resolveTaxes(variables, collections, true);
         data.isUS = isUS;
 
         let printByOrder = this.resolvePrintByOrder(variables);

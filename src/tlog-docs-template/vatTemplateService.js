@@ -303,7 +303,6 @@ export default class VatTemplateService {
         }
 
         return vatContainer;
-
     }
 
     createVatDataTemplate(options) {

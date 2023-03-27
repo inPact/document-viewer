@@ -78,8 +78,7 @@ export default class TemplateBuilderService {
             this._doc.body.appendChild(this.createTextTemplate(documentInfo))
         } else  if (documentInfo.hasOwnProperty('fiscalSignature')) {
             this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature))
-        }
-        else {
+        } else {
             this._docObj = documentInfo;
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
@@ -538,7 +537,6 @@ export default class TemplateBuilderService {
     }
 
     createOrderPaymentData(printData) {
-
         var tplOrderPaymentData = this._doc.createElement('div');
         let data = this.$billService.resolveItems(printData.variables, printData.collections);
 
@@ -774,8 +772,6 @@ export default class TemplateBuilderService {
     }
 
     createTotalsData(printData, isGiftCardBill, isTaxExempt) {
-
-
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
@@ -791,7 +787,6 @@ export default class TemplateBuilderService {
             'ChequeRefund',
             'refundInvoice'
         ].indexOf(this._docData.documentType) > -1) {
-
             var vatTemplateDiv = this.$vatTemplateService.createVatTemplate({
                 isRefund: printData.isRefund,
                 printData: printData
@@ -929,7 +924,6 @@ export default class TemplateBuilderService {
     }
 
     createPaymentsData(printData) {
-
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
 
@@ -952,16 +946,24 @@ export default class TemplateBuilderService {
             } else if (this._docObj.docPaymentType === ("GiftCard")) {
                 var giftCardPayment = this.createGiftCardDetails(printData);
                 tplOrderPaymentsDiv.appendChild(giftCardPayment);
-            } else if (this._docObj.docPaymentType === "CashPayment" || this._docObj.docPaymentType === "CashRefund") {
+            } else if (['CashPayment', 'CashRefund'].includes(this._docObj.docPaymentType)) {
                 var cashPayment = this.createCashPaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(cashPayment);
+            } else if (['CurrencyPayment', 'CurrencyRefund'].includes(this._docObj.docPaymentType)) {
+                const currencyPayments = printData.data.payments.filter(payment => payment.P_TENDER_TYPE === 'currency');
+                currencyPayments.forEach(payment => {
+                    const isRefund = this._docObj.docPaymentType === 'CurrencyRefund';
+                    const currencyPaymentDetailsSection = this.createCurrencyPaymentSection(payment, isRefund);
+                    tplOrderPaymentsDiv.appendChild(currencyPaymentDetailsSection);
+                });
+
+
             } else if (this._docObj.docPaymentType === "ChequePayment" || this._docObj.docPaymentType === "ChequeRefund") {
                 var chequePayment = this.createChequePaymentFooter(printData);
                 tplOrderPaymentsDiv.appendChild(chequePayment);
             }
 
         } else {
-
             let paymentSection = this.$paymentSection.get({
                 variables: this._printData.variables,
                 collections: this._printData.collections,
@@ -969,47 +971,42 @@ export default class TemplateBuilderService {
                 documentInfo: this._docData
             });
 
-            // var OrderPaymentsDiv = this.fillPaymentsData(printData);
-            // OrderPaymentsDiv.id = "OrderPaymentsDiv";
             tplOrderPaymentsDiv.appendChild(paymentSection);
         }
 
         return tplOrderPaymentsDiv;
     }
 
-    fillPaymentsData(printData) {
-        var OrderPaymentsDiv = this._doc.createElement('div');
-        OrderPaymentsDiv.id = 'OrderPaymentsDiv';
+    createCurrencyPaymentSection(payment, isRefund) {
+        var currencyDiv = this._doc.createElement('div');
+        currencyDiv.id = 'currencyDiv'
 
-        if (printData.data.payments.length > 0) {
-            printData.data.payments.forEach(payment => {
+        var currencySymbol = payment.CURRENCY_SYMBOL;
 
-                var paymentDiv = this._doc.createElement('div');
-                var pAmount;
-                var changeAmountZero;
-                if (payment) {
-                    pAmount = payment.amount;
-                    changeAmountZero = (pAmount === 0 && payment.type === 'change');
-                    if (!changeAmountZero) {
-                        paymentDiv.innerHTML =
-                            "<div class=" + (payment.type === 'change' ? 'changeDiv' : 'itemDiv') + ">" +
-                            "<div class='total-name'>" + (payment.name ? payment.name : " ") + "</div>" + " " +
-                            "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + (!changeAmountZero ? this.$utils.twoDecimals(pAmount) : "") + "</div>" +
-                            "</div>"
-                        OrderPaymentsDiv.appendChild(paymentDiv);
-                    }
-                }
-                if (payment.holderName) {
-                    var holderNameDiv = this._doc.createElement('div');
-                    holderNameDiv.classList += ' holder-name';
-                    holderNameDiv.innerHTML = "&nbsp;" + payment.holderName;
-                    OrderPaymentsDiv.appendChild(holderNameDiv);
-                }
+        var pAmount = !isRefund ? payment.amount : payment.P_AMOUNT;
+        var currencyPaidDiv = this._doc.createElement('div')
+        currencyPaidDiv.innerHTML = "<div class='itemDiv'>" +
+            "<div class='total-name bold'>" + this.$translate.getText(`CURRENCY_PAYMENT_LABEL_${currencySymbol}`) + "</div>" +
+            "<div class='total-amount " + this.$utils.isNegative(pAmount) + "'>" + this.$utils.twoDecimals(pAmount) + "</div>" +
+            "</div>"
 
-            })
+        currencyDiv.appendChild(currencyPaidDiv);
+
+        const currencyValue = this.$utils.toFixedSafe(payment.CURRENCY_FACE_VALUE, 2);
+        const currencyRate = this.$utils.toFixedSafe(payment.CURRENCY_RATE, 3);
+
+        var currencyPaymentDetailsDiv = this._doc.createElement('div');
+        currencyPaymentDetailsDiv.innerHTML = '<div class="bold">' + this.$translate.getText(`CURRENCY_PAYMENT_DETAILS_${payment.CURRENCY_SYMBOL}`,
+            ['currencyAmount', 'currencySymbol', 'currencyRate'],
+            [currencyValue, payment.CURRENCY_SYMBOL, currencyRate]) + '</div>';
+
+        currencyDiv.appendChild(currencyPaymentDetailsDiv);
+        const cashbackDiv = this.totalCashbackTemplate(payment);
+        if (cashbackDiv) {
+            currencyDiv.appendChild(cashbackDiv);
         }
 
-        return OrderPaymentsDiv;
+        return currencyDiv;
     }
 
     createGiftCardDetails(printData) {
@@ -1159,6 +1156,22 @@ export default class TemplateBuilderService {
         return cashDiv;
     }
 
+    totalCashbackTemplate(payment) {
+        const paymentChange = _.get(payment, 'P_CHANGE', 0);
+        if (paymentChange !== 0) {
+            var changeText = this.$translate.getText('TOTAL_CASHBACK');
+            var pChange = paymentChange ? this.$utils.twoDecimals(paymentChange) : '';
+            var cashbackDiv = this._doc.createElement('div')
+            cashbackDiv.id = 'cashback-div'
+            cashbackDiv.innerHTML = "<div class='changeDiv'>" +
+                "<div class='total-name'>" + (changeText ? changeText : '') + "</div>" +
+                "<div class='total-amount " + this.$utils.isNegative(pChange) + "'>" + this.$utils.twoDecimals(pChange) + "</div>" +
+                "</div>"
+
+            return cashbackDiv;
+        }
+    }
+
     createChequePaymentFooter(printData) {
         var chequeDiv = this._doc.createElement('div');
         chequeDiv.id = 'chequeDiv';
@@ -1210,5 +1223,4 @@ export default class TemplateBuilderService {
 
         return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1<br\/>$2');
     }
-
 }
