@@ -1,12 +1,14 @@
 import HtmlCreator from '../../helpers/htmlCreator.service';
 import Utils from '../../helpers/utils.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
+import { InstallmentsSection } from "./Installments";
 
 export default class PaymentSection {
     constructor(options) {
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
+        this.options = options;
     }
 
     get(options) {
@@ -208,6 +210,13 @@ export default class PaymentSection {
                 });
 
                 paymentSection.append(elementProviderTransId);
+            }
+
+            const hasInstallmentsPayment = !!payment.INSTALLMENTS_COUNT;
+
+            if (hasInstallmentsPayment) {
+                this.installmentsSection = new InstallmentsSection(this.options, payment, options.documentInfo);
+                paymentSection.append(this.installmentsSection.get());
             }
         });
 

@@ -967,7 +967,8 @@ export default class TemplateBuilderService {
             let paymentSection = this.$paymentSection.get({
                 variables: this._printData.variables,
                 collections: this._printData.collections,
-                payments: this._printData.data.payments
+                payments: this._printData.data.payments,
+                documentInfo: this._docData
             });
 
             tplOrderPaymentsDiv.appendChild(paymentSection);

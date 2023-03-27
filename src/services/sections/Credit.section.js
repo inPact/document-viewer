@@ -5,6 +5,7 @@ import DocumentFactory from '../../helpers/documentFactory.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 import EmvService from '../../tlog-docs-template/emvService';
 import CreditTransaction from '../../services/creditTransaction.service';
+import { InstallmentsSection } from './Installments';
 
 export default class CreaditSection {
     constructor(options) {
@@ -15,6 +16,7 @@ export default class CreaditSection {
         this.$creditTransaction = new CreditTransaction(options);
         this.$localization = new Localization(options);
         this._doc = DocumentFactory.get();
+        this.options = options;
     }
 
     get(options) {
@@ -101,6 +103,12 @@ export default class CreaditSection {
 
         const len = _.get(payment, 'EMV.length', 0);
         const documentType = _.get(options, 'documentInfo.documentType');
+        const hasInstallmentsPayment = !!payment.INSTALLMENTS_COUNT;
+
+        if (hasInstallmentsPayment) {
+            this.installmentsSection = new InstallmentsSection(this.options, payment, documentInfo);
+            creditContainer.append(this.installmentsSection.get());
+        }
 
         if (documentType === 'invoice' && len > 0) {
             const elementEmv = this.$emvService.createEmvTemplate(documentType, {
