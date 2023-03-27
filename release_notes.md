@@ -1,22 +1,13 @@
 # Document Viewer release notes
 
-### 1.46.5
+### 1.47.0
+* [TAB-23962] OFC | Foreign Currency
+* [TAB-27391] OFC | Document viewer -  Invoice shouldn't contain symbol and text
+* [TAB-27968] DOC | when canceling a currency payment the document viewer does not show the refund invoice
 * [TAB-28361] DOC | Doc view of room charge order with Hotel in $$
 
-### 1.46.4
-* [TAB-27968] DOC | when canceling a currency payment the document viewer does not show the refund invoice
-
-### 1.46.3
-* SKIP VERSION
-
-### 1.46.2
-* SKIP VERSION
-
-### 1.46.1
-* [TAB-27391] OFC | Document viewer -  Invoice shouldn't contain symbol and text
-
-## 1.46.0
-* [TAB-23962] OFC | Foreign Currency
+## 1.44.0
+* [TAB-24488] DOC | Update Invoice-Receipt with Installments
 
 ## 1.43.0
 * [TAB-24900] OFC | DCV - Customer signature is not fully displayed
