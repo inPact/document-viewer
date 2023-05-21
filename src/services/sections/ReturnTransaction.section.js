@@ -31,7 +31,7 @@ export default class ReturnTransactionSection {
             format: this._isUS ? 'MM/DD/YYYY' : 'DD/MM/YYYY',
         });
 
-        let originalOrderReference = this.$translate.getText(
+        let originalOrderReferenceElementValue = this.$translate.getText(
             "RETURN_TRANSACTION_REFERENCE",
             ['orderID', 'orderDate'],
             [variables.SOURCE_ORDER_NUMBER, originalOrderDate]);
@@ -39,7 +39,7 @@ export default class ReturnTransactionSection {
         let elementReturnTransactionOriginalOrderReference = this.$htmlCreator.create({
             id: 'return-transaction-original-order',
             classList: ['flex'],
-            value: originalOrderReference
+            value: originalOrderReferenceElementValue
         });
 
         if (!!variables.SOURCE_ORDER_NUMBER && !!variables.SOURCE_ORDER_BUSINESS_DATE) {
