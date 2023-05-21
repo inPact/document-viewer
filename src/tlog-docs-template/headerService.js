@@ -343,7 +343,8 @@ export default class HeaderService {
 
             let elementReturnTransaction = this.$returnTransactionSection.get({
                 variables: printData.variables,
-                collections: printData.collections
+                collections: printData.collections,
+                showOriginalOrderReference: true
             });
 
             tplOrderInfoText.appendChild(elementReturnTransaction);
