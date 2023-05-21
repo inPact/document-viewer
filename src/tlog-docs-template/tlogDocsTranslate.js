@@ -254,6 +254,7 @@ export default class TlogDocsTranslateService {
                 "waiter": " WAITER",
                 "Diners": "GUESTS",
                 "RETURN_TRANSACTION": "RETURN TRANSACTION",
+                "RETURN_TRANSACTION_REFERENCE": "REFERS TO ORDER #{{orderID}} FROM {{orderDate}}",
                 "BUSINESS_MEAL": "BUSINES MEAL",
                 "VAT_FREE_AMOUNT": "Vat free amount",
                 "BEFORE_VAT": "BEFORE VAT",

@@ -69,18 +69,25 @@ export default class Utils {
 
         let isUS = options.isUS;
         let date = options.date;
+        let format = options.format;
         
         if (isUS) {
+
+            format = format || 'MM/DD/YYYY h:mm A';
+
             if (options.timezone) {
-                result = moment(date).tz(`${options.timezone}`).format('MM/DD/YYYY h:mm A');
+                result = moment(date).tz(`${options.timezone}`).format(format);
             } else {
-                result = moment(date).format('MM/DD/YYYY h:mm A');
+                result = moment(date).format(format);
             }
         } else {
+
+            format = format || 'DD/MM/YYYY H:mm';
+
             if (options.timezone) {
-                result = moment(date).tz(`${options.timezone}`).format('DD/MM/YYYY H:mm');
+                result = moment(date).tz(`${options.timezone}`).format(format);
             } else {
-                result = moment(date).format('DD/MM/YYYY H:mm');
+                result = moment(date).format(format);
             }
         }
 

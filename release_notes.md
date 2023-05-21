@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+### 1.48.0
+* [TAB-30097] DCV |  document viewer - add the order reference to the return transaction document header
+
 ### 1.47.0
 * [TAB-23962] OFC | Foreign Currency
 * [TAB-27391] OFC | Document viewer -  Invoice shouldn't contain symbol and text
