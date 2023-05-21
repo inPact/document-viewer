@@ -42,7 +42,7 @@ export default class ReturnTransactionSection {
             value: originalOrderReferenceElementValue
         });
 
-        if (!!variables.SOURCE_ORDER_NUMBER && !!variables.SOURCE_ORDER_BUSINESS_DATE) {
+        if (!!variables.SOURCE_ORDER_NUMBER && !!variables.SOURCE_ORDER_BUSINESS_DATE && options.showOriginalOrderReference) {
             elementChildren.push(elementReturnTransactionOriginalOrderReference);
         }
 
