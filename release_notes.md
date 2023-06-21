@@ -1,6 +1,9 @@
 # Document Viewer release notes
 
 ### 1.48.0
+* [TAB-31062] DCV | Allow full order bill for US Kiosk orders
+
+### 1.48.0
 * [TAB-30097] DCV |  document viewer - add the order reference to the return transaction document header
 
 ### 1.47.0

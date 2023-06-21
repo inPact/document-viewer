@@ -18,7 +18,7 @@ export default class emvService {
     getEMVData(documentType, printData) {
         let emvData;
 
-        if (documentType === 'orderBill') {
+        if (documentType === 'orderBill' || documentType === 'creditSlip') {
             let payment = printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined);
             emvData = this.resolveEmvData(payment.EMV)
 
