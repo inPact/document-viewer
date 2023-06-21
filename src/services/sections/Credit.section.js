@@ -28,7 +28,13 @@ export default class CreaditSection {
             return result + ` ${options.issuer}`;
         }
 
-        const payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
+        var payment;
+        if(this.$localization.isUS) {
+            payment = _.get(options, 'collections.PAYMENT_LIST[0]');
+        } else {
+            payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
+        }
+
 
         const creditContainer = this.$htmlCreator.createSection({
             id: 'creadit-section',
@@ -110,7 +116,7 @@ export default class CreaditSection {
             creditContainer.append(this.installmentsSection.get());
         }
 
-        if (documentType === 'invoice' && len > 0) {
+        if ((documentType === 'invoice' || documentType === 'creditSlip') && len > 0) {
             const elementEmv = this.$emvService.createEmvTemplate(documentType, {
                 variables: options.variables,
                 collections: options.collections

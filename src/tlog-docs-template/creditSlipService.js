@@ -1,6 +1,7 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import SignatureService from './signatureService';
+import CreaditSection from "../services/sections/Credit.section";
 
 export default class CreditSlipService {
 
@@ -13,6 +14,7 @@ export default class CreditSlipService {
         this._isUS;
         this._doc;
         this.timezone;
+        this.$creditSection = new CreaditSection(options);
         this.configure(options)
 
     }
@@ -195,6 +197,16 @@ export default class CreditSlipService {
                 creditSlipDiv.appendChild(this.$signatureService.getSignature(signatureArea));
 
             }
+
+            // EMV Device Info
+            var creditSection = this.$creditSection.get({
+                collections: printData.collections,
+                variables: printData.variables,
+                isRefund: printData.printData,
+                documentInfo: {documentType: 'creditSlip'},
+            });
+
+            creditSlipDiv.appendChild(creditSection)
 
         }
 
