@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-### 1.48.0
+### 1.49.0
 * [TAB-31062] DCV | Allow full order bill for US Kiosk orders
 
 ### 1.48.0
