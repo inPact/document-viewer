@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 
@@ -20,13 +21,18 @@ export default class emvService {
 
         if (documentType === 'orderBill' || documentType === 'creditSlip') {
             let payment = printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined);
-            emvData = this.resolveEmvData(payment.EMV)
+            // Checking if EMV has TYPE property
+            // to remove duplicates if needed
+            // only for FreedomPay
+            const hasTypeProperty = payment.EMV.every(obj => obj.hasOwnProperty('TYPE'));
+            if (hasTypeProperty) {
+                payment.EMV = _.uniqBy(payment.EMV, 'TYPE');
+            }
 
-        }
-        else if (documentType === 'invoice') {
+            emvData = this.resolveEmvData(payment.EMV)
+        } else if (documentType === 'invoice') {
             let emv = printData.collections.CREDIT_PAYMENTS[0].EMV;
             emvData = this.resolveEmvData(emv);
-
         }
 
         return emvData

@@ -115,9 +115,9 @@ export default class CreditSlipService {
             let sequenceText = this.$translate.getText('Sequence');
             sequenceDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(sequenceText === null) ? sequenceText : "") + ": " +
-                + (creditSlipDoc.PROVIDER_TRANS_ID ? creditSlipDoc.PROVIDER_TRANS_ID : "") + "</div>" +
-                "</div>"
-            creditSlipDiv.appendChild(sequenceDiv)
+                (creditSlipDoc.PROVIDER_TRANS_ID !== undefined ? creditSlipDoc.PROVIDER_TRANS_ID : "") + "</div>" +
+                "</div>";
+            creditSlipDiv.appendChild(sequenceDiv);
 
             let responseDiv = this._doc.createElement('div');
             responseDiv.id = 'responseDiv';
@@ -132,9 +132,14 @@ export default class CreditSlipService {
             let approvalDiv = this._doc.createElement('div');
             approvalDiv.id = 'approvalDiv';
             let approvalText = this.$translate.getText('Approval');
+            let CONFIRMATION_NUMBER = creditSlipDoc.CONFIRMATION_NUMBER;
+            if (!CONFIRMATION_NUMBER) {
+                let possibleConfirmationNumber = creditSlipDoc.EMV.filter(obj => obj.TYPE === 'Approval Code')[0];
+                CONFIRMATION_NUMBER = possibleConfirmationNumber ? possibleConfirmationNumber.DATA : '';
+            }
             approvalDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(approvalText === null) ? approvalText : "") + ": " +
-                (creditSlipDoc.CONFIRMATION_NUMBER ? creditSlipDoc.CONFIRMATION_NUMBER : "") + "</div></div>"
+                (CONFIRMATION_NUMBER) + "</div></div>"
 
             creditSlipDiv.appendChild(approvalDiv)
 
@@ -142,9 +147,14 @@ export default class CreditSlipService {
             entryDiv.classList += ' tpl-body-div';
             entryDiv.id = 'entryDiv';
             let entryText = this.$translate.getText('Entry');
+            let ENTRY_METHOD = creditSlipDoc.ENTRY_METHOD;
+            if (!ENTRY_METHOD) {
+                let possibleEntryMethod = creditSlipDoc.EMV.filter(obj => obj.TYPE === 'Card Entry')[0];
+                ENTRY_METHOD = possibleEntryMethod ? possibleEntryMethod.DATA : '';
+            }
             entryDiv.innerHTML = "<div class='itemDiv'>" +
                 "<div class='total-name'>" + (!(entryText === null) ? entryText : "") + ": " +
-                (creditSlipDoc.ENTRY_METHOD ? creditSlipDoc.ENTRY_METHOD : "") +
+                (ENTRY_METHOD) +
                 "</div></div>"
 
             entryDiv.classList += ' padding-bottom';
