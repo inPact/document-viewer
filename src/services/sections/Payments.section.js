@@ -99,7 +99,7 @@ export default class PaymentSection {
                 paymentSection.append(currencyDetailsContainer);
             }
 
-            if (payment.name.includes('Cash') && payment.P_BONUS_AMOUNT !== undefined) {
+            if (payment.P_TENDER_TYPE && payment.P_TENDER_TYPE.includes('cash') && payment.P_BONUS_AMOUNT && payment.P_BONUS_AMOUNT > 0) {
                 let elementText = this.$htmlCreator.create({
                     id: 'payment-text',
                     classList: ['total-name'],
