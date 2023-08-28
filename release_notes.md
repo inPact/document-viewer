@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## 1.50.0
+* [TAB-32056] NOFC + OFC | Doc Viewer - Remove [P_BONUS_AMOUNT] field from IL
+
 ### 1.49.0
 * [TAB-31062] DCV | Allow full order bill for US Kiosk orders
 
