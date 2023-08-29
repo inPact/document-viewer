@@ -9,7 +9,7 @@ window.DocumentViewer = class DocumentViewer {
         console.log('DocumentViewer options : ' , options);
 
         options.locale = options.locale || 'he-IL';
-        options.realRegion = options.realRegion || 'il';
+        options.realRegion = options.realRegion ? options.realRegion.toLowerCase() : 'il';
 
         this._tlogDocsService = new TlogDocsService(options);
     }
