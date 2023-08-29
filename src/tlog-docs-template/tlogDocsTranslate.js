@@ -883,14 +883,14 @@ export default class TlogDocsTranslateService {
     }
 
     configure(options) {
-        console.log("configure", options);
         if (options.locale) {
             this._options.locale = options.locale;
         }
+
+        this._options.realRegion = options.realRegion || 'il';
     }
 
     getText(key, keys, values) {
-        console.log("getText key: ", key);
         if (key !== undefined) {
             let text = this._translate()[this._options.locale][key];
             if (text !== undefined) {

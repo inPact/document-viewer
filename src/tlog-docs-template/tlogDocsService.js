@@ -9,7 +9,6 @@ export default class TlogDocsService {
 
     constructor(options = {}) {
         this._locale;
-        this._isUS;
         this._realRegion;
         this._options = options;
         this._configure(options);
@@ -43,8 +42,7 @@ export default class TlogDocsService {
 
     _configure(options) {
         if (options.locale) this._locale = options.locale;
-        if (options.isUS) this._isUS = options.isUS;
-        if (options.realRegion) this._realRegion = options._realRegion;
+        this._realRegion = options._realRegion || 'il';
 
     }
 
@@ -151,7 +149,7 @@ export default class TlogDocsService {
 
 
 
-            if (this._isUS) {
+            if (['us', 'au'].includes(this._realRegion)) {
                 if (tlog.order) {
                     if (tlog.order[0].allDocuments && tlog.order[0].allDocuments.length > 0) {
                         var _tlog = tlog;
@@ -195,7 +193,7 @@ export default class TlogDocsService {
                 }
             }
 
-            if (!this._isUS) {
+            if (['il'].includes(this._realRegion)) {
                 if (tlog.order) {
                     if (tlog.order[0].allDocuments && tlog.order[0].allDocuments.length > 0) {
 

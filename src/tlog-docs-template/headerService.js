@@ -8,7 +8,7 @@ export default class HeaderService {
 
     constructor(options) {
         this.timezone = options.timezone;
-        this._isUS = options.isUS;
+        this.realRegion = options.realRegion || 'il';
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
         this.$htmlCreator = new HtmlCreator();
@@ -83,7 +83,7 @@ export default class HeaderService {
                 }
                     break;
                 case 'ORGANIZATION_LEGAL_NAME': {
-                    if (!this._isUS) {
+                    if (['il'].includes(this.realRegion)) {
                         var orgString = printData.variables.ORGANIZATION_LEGAL_NAME;
                         var bnNumber = this.$translate.getText('BN_NUMBER');
                         var authorizedDealerNumber = this.$translate.getText('AUTHORIZED_DEALER_NUMBER');
@@ -209,7 +209,7 @@ export default class HeaderService {
                 if (printData.variables.CREATED_AT) {
                     let issuedAtDate = this.$utils.toDate({
                         timezone: this.timezone,
-                        isUS: this._isUS,
+                        realRegion: this.realRegion,
                         date: printData.variables.CREATED_AT
                     });
 
@@ -231,7 +231,7 @@ export default class HeaderService {
                 if (printData.variables.ISSUED_AT) {
                     let issuedAtDate = this.$utils.toDate({
                         timezone: this.timezone,
-                        isUS: this._isUS,
+                        realRegion: this.realRegion,
                         date: printData.variables.ISSUED_AT
                     });
 
@@ -412,7 +412,7 @@ export default class HeaderService {
 
     orderWordsByLocale(input1, input2, input3) {
         let htmlString;
-        if (this._isUS) {
+        if (['us', 'au'].includes(this.realRegion)) {
             htmlString = "<span>" + input2 + "</span>" + "&nbsp;" + "<span>" + input1 + "</span>" + "&nbsp;" + " <span> #" + input3 + "</span >"
         } else {
             htmlString = "<span>" + input1 + "</span>" + "&nbsp;" + "<span>" + input2 + "</span> " + "&nbsp;" + " <span> #" + input3 + "</span >"

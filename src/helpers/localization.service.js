@@ -1,8 +1,13 @@
 export default class Localization {
+    currencyByRegion = {
+        us: 'USD',
+        il: 'ILS',
+        au: 'AUD'
+    };
 
     constructor(options) {
-        this.currency = options.isUS ? 'USD' : 'ILS';
-        this.isUS = options.isUS;
+        this.realRegion = options.realRegion || 'il';
+        this.currency = this.currencyByRegion[this.realRegion];
     }
 
     getSymbol() {
@@ -14,7 +19,4 @@ export default class Localization {
         }
 
     }
-
-
-
 }
