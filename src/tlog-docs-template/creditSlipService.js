@@ -133,7 +133,7 @@ export default class CreditSlipService {
             let approvalText = this.$translate.getText('Approval');
             let CONFIRMATION_NUMBER = creditSlipDoc.CONFIRMATION_NUMBER;
             if (!CONFIRMATION_NUMBER) {
-                let possibleConfirmationNumber = creditSlipDoc.EMV.filter(obj => obj.TYPE === 'Approval Code')[0];
+                let possibleConfirmationNumber = creditSlipDoc.EMV ? creditSlipDoc.EMV.filter(obj => obj.TYPE === 'Approval Code')[0] : undefined;
                 CONFIRMATION_NUMBER = possibleConfirmationNumber ? possibleConfirmationNumber.DATA : '';
             }
             approvalDiv.innerHTML = "<div class='itemDiv'>" +
