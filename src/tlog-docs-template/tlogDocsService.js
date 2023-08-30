@@ -4,6 +4,7 @@ import BillService from './billService';
 import _ from 'lodash';
 import Utils from '../helpers/utils.service';
 import SlipService from '../helpers/slip.service';
+import Localization from "../helpers/localization.service";
 
 export default class TlogDocsService {
 
@@ -17,6 +18,7 @@ export default class TlogDocsService {
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
         this.$slipService = new SlipService(options);
+        this.$localization = new Localization(options);
     }
 
     Enums() {
@@ -149,7 +151,7 @@ export default class TlogDocsService {
 
 
 
-            if (['us', 'au'].includes(this._realRegion)) {
+            if (this.$localization.allowByRegions(['us', 'au'])) {
                 if (tlog.order) {
                     if (tlog.order[0].allDocuments && tlog.order[0].allDocuments.length > 0) {
                         var _tlog = tlog;
@@ -193,7 +195,7 @@ export default class TlogDocsService {
                 }
             }
 
-            if (['il'].includes(this._realRegion)) {
+            if (this.$localization.allowByRegions(['il'])) {
                 if (tlog.order) {
                     if (tlog.order[0].allDocuments && tlog.order[0].allDocuments.length > 0) {
 

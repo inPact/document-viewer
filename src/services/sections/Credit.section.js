@@ -30,7 +30,7 @@ export default class CreaditSection {
         }
 
         var payment;
-        if(['us', 'au'].includes(this.realRegion)) {
+        if(this.$localization.allowByRegions(['us', 'au'])) {
             payment = _.get(options, 'collections.PAYMENT_LIST[0]');
         } else {
             payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');

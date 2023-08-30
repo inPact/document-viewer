@@ -3,6 +3,7 @@ import TlogDocsTranslateService from './tlogDocsTranslate';
 import HtmlCreator from '../helpers/htmlCreator.service';
 
 import ReturnTransactionSection from '../services/sections/ReturnTransaction.section';
+import Localization from "../helpers/localization.service";
 
 export default class HeaderService {
 
@@ -13,6 +14,7 @@ export default class HeaderService {
         this.$utils = new Utils();
         this.$htmlCreator = new HtmlCreator();
         this.$returnTransactionSection = new ReturnTransactionSection(options);
+        this.$localization = new Localization(options);
     }
 
 
@@ -83,7 +85,7 @@ export default class HeaderService {
                 }
                     break;
                 case 'ORGANIZATION_LEGAL_NAME': {
-                    if (['il'].includes(this.realRegion)) {
+                    if (this.$localization.allowByRegions(['il'])) {
                         var orgString = printData.variables.ORGANIZATION_LEGAL_NAME;
                         var bnNumber = this.$translate.getText('BN_NUMBER');
                         var authorizedDealerNumber = this.$translate.getText('AUTHORIZED_DEALER_NUMBER');
@@ -412,7 +414,7 @@ export default class HeaderService {
 
     orderWordsByLocale(input1, input2, input3) {
         let htmlString;
-        if (['us', 'au'].includes(this.realRegion)) {
+        if (this.$localization.allowByRegions(['us', 'au'])) {
             htmlString = "<span>" + input2 + "</span>" + "&nbsp;" + "<span>" + input1 + "</span>" + "&nbsp;" + " <span> #" + input3 + "</span >"
         } else {
             htmlString = "<span>" + input1 + "</span>" + "&nbsp;" + "<span>" + input2 + "</span> " + "&nbsp;" + " <span> #" + input3 + "</span >"

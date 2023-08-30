@@ -1,5 +1,6 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
+import Localization from "../helpers/localization.service";
 import moment from 'moment';
 import _ from "lodash";
 
@@ -8,6 +9,7 @@ export default class BillService {
         this.realRegion = options.realRegion || 'il';
         this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService(options);
+        this.$localization = new Localization(options);
     }
 
     Enums() {
@@ -66,7 +68,7 @@ export default class BillService {
         }
 
         let isTaxExempt = false;
-        if ((collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 && ['us', 'au'].includes(this.realRegion))) {
+        if ((collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au']))) {
             isTaxExempt = true;
         }
 
@@ -312,7 +314,7 @@ export default class BillService {
         let totals = [];
         let cashTotal = null;
      
-        if(['us', 'au'].includes(this.realRegion)) {
+        if(this.$localization.allowByRegions(['us', 'au'])) {
             let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             let totalSales = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             if(INCLUSIVE_GROSS_AMOUNT !== totalSales) {
@@ -339,8 +341,8 @@ export default class BillService {
 
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
             variables.TOTAL_TIPS !== undefined ||
-            (['us', 'au'].includes(this.realRegion) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0)) ||
-            (['us', 'au'].includes(this.realRegion) && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
+            (this.$localization.allowByRegions(['us', 'au']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0)) ||
+            (this.$localization.allowByRegions(['us', 'au']) && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
 
             /**
              * SUBTOTAL (TOTAL_ORDER) :
@@ -349,7 +351,7 @@ export default class BillService {
              *  Backward compatibility - default is 'TOTAL_SALES_AMOUNT'
              */
             let TOTAL_SALES = 0;
-            if (['us', 'au'].includes(this.realRegion)) {
+            if (this.$localization.allowByRegions(['us', 'au'])) {
                 TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
 
             } else {
@@ -361,7 +363,7 @@ export default class BillService {
                 amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
             });
         }
-        if (['il'].includes(this.realRegion)) {
+        if (this.$localization.allowByRegions(['il'])) {
             if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
                 collections.ORDER_DISCOUNTS_LIST.forEach(discount => {
                     totals.push({
@@ -372,14 +374,14 @@ export default class BillService {
             }
         }
 
-        if (['us', 'au'].includes(this.realRegion) && _.get(variables,'TOTAL_FEES', null)) {
+        if (this.$localization.allowByRegions(['us', 'au']) && _.get(variables,'TOTAL_FEES', null)) {
             totals.push({
                 name: this.$translate.getText('FEE'),
                 amount: this.$utils.toFixedSafe(variables.TOTAL_FEES , 2)
             })
         }
 
-        if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && ['us', 'au'].includes(this.realRegion)) {
+        if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
             collections.EXCLUSIVE_TAXES.forEach(tax => {
                 totals.push({
                     type: 'exclusive_tax',
@@ -398,7 +400,7 @@ export default class BillService {
             if (autoGratuityTips && autoGratuityTips.length > 0) {
 
                 //Service charge
-                if (autoGratuityTips && autoGratuityTips.length > 0 && ['us', 'au'].includes(this.realRegion)) {
+                if (autoGratuityTips && autoGratuityTips.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
                     autoGratuityTips.forEach(tip => {
 
                         let _name = tip.NAME ? tip.NAME : this.$translate.getText('SERVICE_CHARGE')
@@ -436,7 +438,7 @@ export default class BillService {
             if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined && variables.TOTAL_TIPS_ON_PAYMENTS !== 0) { tipAmount = variables.TOTAL_TIPS_ON_PAYMENTS; }
             else if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS !== 0) { tipAmount = variables.TOTAL_TIPS; }
 
-            if (tipAmount > 0 || ['il'].includes(this.realRegion)) {
+            if (tipAmount > 0 || this.$localization.allowByRegions(['il'])) {
 
                 if (isServiceCharge === false) {
                     totals.push({
@@ -459,21 +461,21 @@ export default class BillService {
             }
         }
 
-        if (['il'].includes(this.realRegion)) {
+        if (this.$localization.allowByRegions(['il'])) {
             totals.push({
                 name: this.$translate.getText('TOTAL_INC_VAT'),
                 amount: this.$utils.toFixedSafe(_.get(variables,'TOTAL_BEFORE_TAX',variables.TOTAL_IN_VAT) || 0, 2)
             })
         }
 
-        if (['us', 'au'].includes(this.realRegion)) {
+        if (this.$localization.allowByRegions(['us', 'au'])) {
             totals.push({
                 name: this.$translate.getText('TOTAL_INC_VAT'),
                 amount: this.$utils.toFixedSafe(variables.TOTAL_AMOUNT || 0, 2)
             })
         }
 
-        if(['us', 'au'].includes(this.realRegion)) {
+        if(this.$localization.allowByRegions(['us', 'au'])) {
             if(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS !== undefined) {
                 totals.push({
                     name: this.$translate.getText('TOTAL_AMOUNT_AFTER_CASH_BONUS'),
@@ -543,7 +545,7 @@ export default class BillService {
             ExemptedTaxData: []
         };
 
-        if (collections.INCLUSIVE_TAXES && collections.INCLUSIVE_TAXES.length > 0 && ['us', 'au'].includes(this.realRegion)) {
+        if (collections.INCLUSIVE_TAXES && collections.INCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
 
             taxes.InclusiveTaxes.push({
                 type: 'title',
@@ -561,7 +563,7 @@ export default class BillService {
             })
         }
 
-        if (collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 && ['us', 'au'].includes(this.realRegion)) {
+        if (collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
 
             taxes.ExemptedTaxes.push({
                 type: 'title',
@@ -610,7 +612,7 @@ export default class BillService {
 
         } else {
 
-            if (['us', 'au'].includes(this.realRegion)) {
+            if (this.$localization.allowByRegions(['us', 'au'])) {
                 paymentName = `${payment.P_NAME} ${refund}`;
             } else {
                 paymentName = `${refund} ${payment.P_NAME}`;
