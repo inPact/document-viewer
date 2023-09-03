@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.51.0
 * [TAB-32581] DCV | Error in Gift card reciept
 
 ## 1.50.0
