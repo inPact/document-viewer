@@ -133,7 +133,7 @@ export default class CreditSlipService {
             let approvalText = this.$translate.getText('Approval');
             let CONFIRMATION_NUMBER = creditSlipDoc.CONFIRMATION_NUMBER;
             if (!CONFIRMATION_NUMBER) {
-                let possibleConfirmationNumber = creditSlipDoc.EMV ? creditSlipDoc.EMV.filter(obj => obj.TYPE === 'Approval Code')[0] : undefined;
+                let possibleConfirmationNumber = creditSlipDoc.EMV ? creditSlipDoc.EMV?.filter(obj => obj.TYPE === 'Approval Code')[0] : undefined;
                 CONFIRMATION_NUMBER = possibleConfirmationNumber ? possibleConfirmationNumber.DATA : '';
             }
             approvalDiv.innerHTML = "<div class='itemDiv'>" +
@@ -148,7 +148,7 @@ export default class CreditSlipService {
             let entryText = this.$translate.getText('Entry');
             let ENTRY_METHOD = creditSlipDoc.ENTRY_METHOD;
             if (!ENTRY_METHOD) {
-                let possibleEntryMethod = creditSlipDoc.EMV.filter(obj => obj.TYPE === 'Card Entry')[0];
+                let possibleEntryMethod = creditSlipDoc.EMV?.filter(obj => obj.TYPE === 'Card Entry')[0];
                 ENTRY_METHOD = possibleEntryMethod ? possibleEntryMethod.DATA : '';
             }
             entryDiv.innerHTML = "<div class='itemDiv'>" +
