@@ -28,13 +28,11 @@ import QRCode from "qrcode";
 
 export default class TemplateBuilderService {
     constructor(options) {
-        this._isUS;
+        this.realRegion = options.realRegion || 'il';
         this._locale;
-        this._realRegion;
         this._configure(options);
         this._isGiftCardBill;
         this._isTaxExempt;
-
         this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService({locale: this._locale});
         this.$billService = new BillService(options);
@@ -46,7 +44,7 @@ export default class TemplateBuilderService {
         this.$deliveryNoteTransactionService = new DeliveryNoteTransactionDataService(options);
         this.$signatureService = new SignatureService();
         this.$addTaxData = new AddTaxDataService(options);
-        this.$localization = new Localization({isUS: this._isUS});
+        this.$localization = new Localization({ realRegion: this.realRegion });
         this.$htmlCreator = new HtmlCreator();
         this.$creditTransaction = new CreditTransaction(options);
         this.$clubMembersService = new ClubMembersService(options);
@@ -62,9 +60,6 @@ export default class TemplateBuilderService {
 
     _configure(options) {
         if (options.locale) this._locale = options.locale;
-        if (options.isUS !== undefined) this._isUS = options.isUS;
-        if (options.realRegion) this._realRegion = options.realRegion;
-
     }
 
     createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
@@ -81,7 +76,7 @@ export default class TemplateBuilderService {
         } else {
             this._docObj = documentInfo;
             this._docData = printData;
-            this._printData = this.$billService.resolvePrintData(printData.printData, this._isUS);
+            this._printData = this.$billService.resolvePrintData(printData.printData, this.realRegion);
             this._printData.isRefund = documentInfo.isRefund;
             let template = this.createDocTemplate(documentInfo, options);
             this._doc.body.appendChild(template);
@@ -286,7 +281,7 @@ export default class TemplateBuilderService {
                 var isMediaExchange = (this._printData.variables.ORDER_TYPE === "MEDIAEXCHANGE");
                 var isCreditSlip = ((docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL) || docObjChosen.documentType === 'creditSlip')
 
-                var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this._isUS);
+                var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this.$localization.allowByRegions(['us', 'au']));
 
                 if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
                     var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen);
@@ -367,7 +362,7 @@ export default class TemplateBuilderService {
 
                     //if gift card
                     if (this._isGiftCardBill) {
-                        if (this._isUS) {
+                        if (this.$localization.allowByRegions(['us', 'au'])) {
                             var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
                             var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
 
@@ -378,14 +373,14 @@ export default class TemplateBuilderService {
 
                     //if tax exempt
                     if (this._isTaxExempt) {
-                        if (this._isUS) {
+                        if (this.$localization.allowByRegions(['us', 'au'])) {
                             var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
                             if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
                         }
                     }
 
                     if (this._printData.data.taxes.InclusiveTaxes && this._printData.data.taxes.InclusiveTaxes.length > 0) {
-                        if (this._isUS) {
+                        if (this.$localization.allowByRegions(['us', 'au'])) {
                             var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
                             if (inclusiveTaxesDiv !== null) docTemplate.appendChild(inclusiveTaxesDiv)
                         }
@@ -453,7 +448,7 @@ export default class TemplateBuilderService {
                     if (giftCardPayment) {
 
                         let elementCreditTransaction = this.$creditTransaction.get({
-                            isUS: this._isUS,
+                            realRegion: this.realRegion,
                             data: giftCardPayment
                         });
 
@@ -468,7 +463,7 @@ export default class TemplateBuilderService {
         }
 
         // document order number
-        if (this._printData.variables.ORDER_COUNTER && this._realRegion.toUpperCase() === 'GR') {
+        if (this._printData.variables.ORDER_COUNTER && this.realRegion === 'gr') {
             let docOrderNumberFooterText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'counter-site-footer-text',
@@ -478,7 +473,7 @@ export default class TemplateBuilderService {
 
             docTemplate.appendChild(docOrderNumberFooterText);
         }
-        if (this._printData.variables.FISCAL_COUNTER && (this._realRegion.toUpperCase() === 'GR' || this._realRegion.toUpperCase() === 'IL')) {
+        if (this._printData.variables.FISCAL_COUNTER && (this.realRegion === 'gr' || this.realRegion === 'il')) {
             let docOrderNumberFooterText = this.$htmlCreator.create({
                 type: 'div',
                 id: 'counter-site-footer-text',
@@ -646,11 +641,11 @@ export default class TemplateBuilderService {
 
                         var calcWeight = isGram ? item.units * 1000 : item.units;
                         var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
-                        var weightPerUnitTranslate = this._isUS ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
-                        var weightTranslate = this._isUS ? this.$translate.getText('lb') : weightCalculatedUnit;
+                        var weightPerUnitTranslate = this.$localization.allowByRegions(['us', 'au']) ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
+                        var weightTranslate = this.$localization.allowByRegions(['us', 'au']) ? this.$translate.getText('lb') : weightCalculatedUnit;
 
                         var weightText = '';
-                        if (this._isUS) {
+                        if (this.$localization.allowByRegions(['us', 'au'])) {
                             weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
                         } else {
                             weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;
@@ -761,7 +756,7 @@ export default class TemplateBuilderService {
         } else if (creditData) {
 
             let elementCreditTransaction = this.$creditTransaction.get({
-                isUS: this._isUS,
+                realRegion: this.realRegion,
                 data: creditData
             });
 
@@ -902,7 +897,6 @@ export default class TemplateBuilderService {
     fillOrderTotals(htmlElement, printData) {
         if (printData.data.totals.length > 0) {
 
-            // if (!_isUS) {
             printData.data.totals.forEach(total => {
                 var isCheckTotal = total.name === 'Check Total';
 
@@ -935,7 +929,7 @@ export default class TemplateBuilderService {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
 
-                if (_.get(this, '_docObj.md.signature') && !this._isUS && ["CreditCardPayment", "CreditCardRefund"].indexOf(this._docObj.docPaymentType) > -1) {
+                if (_.get(this, '_docObj.md.signature') && this.$localization.allowByRegions(['il']) && ["CreditCardPayment", "CreditCardRefund"].indexOf(this._docObj.docPaymentType) > -1) {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
                     signatureArea.className += ' item-div';

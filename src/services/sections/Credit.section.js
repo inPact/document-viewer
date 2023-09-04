@@ -9,6 +9,7 @@ import { InstallmentsSection } from './Installments';
 
 export default class CreaditSection {
     constructor(options) {
+        this.realRegion = options.realRegion || 'il';
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
@@ -29,7 +30,7 @@ export default class CreaditSection {
         }
 
         var payment;
-        if(this.$localization.isUS) {
+        if(this.$localization.allowByRegions(['us', 'au'])) {
             payment = _.get(options, 'collections.PAYMENT_LIST[0]');
         } else {
             payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
@@ -126,7 +127,7 @@ export default class CreaditSection {
 
         } else if (payment) {
             const elementCreditTransaction = this.$creditTransaction.get({
-                isUS: this.$localization.isUS,
+                realRegion: this.realRegion,
                 data: payment
             });
 

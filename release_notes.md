@@ -1,7 +1,13 @@
 # Document Viewer release notes
 
+### 1.51.1
+* [TAB-32304] OFC+NOFC | AU document viewer should open in English
+
 ## 1.51.0
 * [TAB-32581] DCV | Error in Gift card reciept
+
+### 1.50.1
+* [SKIP VERSION]
 
 ## 1.50.0
 * [TAB-32056] NOFC + OFC | Doc Viewer - Remove [P_BONUS_AMOUNT] field from IL
