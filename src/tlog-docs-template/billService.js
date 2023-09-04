@@ -106,36 +106,35 @@ export default class BillService {
                     };
 
                     if (offer.ON_THE_HOUSE) {
-                        item.amount = this.$translate.getText('OTH');
-                        oth.push(item)
-                    } else {
+                        item.isOTH = true;
+                    }
 
-                        if (isReturnOrder) {
+                    if (isReturnOrder) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
                             items.push(item);
-                        } else if (isWeight) {
+                    } else if (isWeight) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
                             item.isWeight = isWeight;
                             item.weightAmount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
                             item.units = offer.OFFER_UNITS;
                             items.push(item);
-                        }
-                        else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false && !offer.OPEN_PRICE) { // if the offer amount is 0 not need to show
+                    }
+                    else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false && !offer.OPEN_PRICE) { // if the offer amount is 0 not need to show
 
                             if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
                                 item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
                                 items.push(item);
                             }
 
-                        } else if (isSplitCheck === true) {
+                    } else if (isSplitCheck === true) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
                             items.push(item);
-                        }
-                        else if (offer.OPEN_PRICE) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
-                            items.push(item);
-                        }
                     }
+                    else if (offer.OPEN_PRICE) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
+                            items.push(item);
+                    }
+
 
                     if (offer.ORDERED_OFFER_DISCOUNTS && offer.ORDERED_OFFER_DISCOUNTS.length > 0) {
                         offer.ORDERED_OFFER_DISCOUNTS.forEach(discount => {
@@ -201,30 +200,28 @@ export default class BillService {
                     }
 
                     if (offer.ON_THE_HOUSE) {
-                        item.amount = this.$translate.getText('OTH');
-                        oth.push(item)
-                    } else {
+                        item.isOTH = true;
+                    }
 
-                        if (isReturnOrder) {
+                    if (isReturnOrder) {
                             item.amount = this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_AMOUNT, 2);
                             items.push(item);
-                        } else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show
-
-                            if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
+                    } else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show
+                        if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
                                 item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
                                 items.push(item);
-                            }
-
-                        } else if (isSplitCheck === true) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
-                            items.push(item);
                         }
 
-                        if (offer.OPEN_PRICE) {
+                    } else if (isSplitCheck === true) {
                             item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
                             items.push(item);
-                        }
                     }
+
+                    if (offer.OPEN_PRICE) {
+                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
+                            items.push(item);
+                    }
+
 
                     if (!isReturnOrder) {
                         if (offer.ORDERED_ITEMS_LIST && offer.ORDERED_ITEMS_LIST.length > 0)
