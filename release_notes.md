@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-32274] DCV | Display of OTH on combo items
+
 ## 1.51.0
 * [TAB-32581] DCV | Error in Gift card reciept
 
