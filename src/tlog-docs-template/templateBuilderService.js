@@ -551,11 +551,9 @@ export default class TemplateBuilderService {
 
         if (this._docObj && !(this._docData.documentType === "deliveryNote")) {
             this.fillItemsData(paymentDataDiv, data, printData);
-            this.fillOthData(paymentDataDiv, data);
         } else if (this._docObj && (this._docData.documentType === "deliveryNote" || this._docData.documentType === "refundDeliveryNote")) {
 
             this.fillItemsData(paymentDataDiv, data, printData);
-            this.fillOthData(paymentDataDiv, data);
 
             var delNoteTransDiv = this.$deliveryNoteTransactionService.createDeliveryNoteTransactionData({
                 IS_REFUND: printData.isRefund
@@ -624,7 +622,7 @@ export default class TemplateBuilderService {
                         type: 'div',
                         id: `item-amount-${index}`,
                         classList: classList,
-                        value: this.$utils.twoDecimals(item.amount)
+                        value: item.isOTH ? this.$translate.getText('OTH') : this.$utils.twoDecimals(item.amount)
                     });
 
                     let elementItemContainer = this.$htmlCreator.create({
@@ -695,29 +693,6 @@ export default class TemplateBuilderService {
                 }
             })
         }
-    }
-
-    fillOthData(htmlElement, data) {
-        data.oth.forEach(othItem => {
-            var othItemDiv = this._doc.createElement('div');
-            if (othItem.isOffer) {
-                othItemDiv.classList.add("bold");
-                othItem.space = "";
-            } else if (!othItem.isOffer) {
-                othItem.id = "singleOthDiv"
-                othItem.qty = '&nbsp;&nbsp;';
-                othItem.space = "&emsp;";
-            }
-
-            othItemDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='item-qty'>" + (othItem.qty ? othItem.qty : " ") + "</div>" + " " +
-                "<div class='item-name'>" + othItem.space + (othItem.name ? othItem.name : "") + "</div>" + " " +
-                "<div class='total-amount " + this.$utils.isNegative(othItem.amount) + "'>" + (othItem.amount ? othItem.amount : "") + "</div>" +
-                "</div>"
-
-            htmlElement.appendChild(othItemDiv);
-
-        })
     }
 
     fillPointsRedeemData(htmlElement, data) {
