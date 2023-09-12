@@ -63,6 +63,18 @@ angular.module('app')
          * find 'P_ID' in tlog.payments (for now only the tlog Object hold the Customer Signature metadata)
          */
         function resolveSignature(printData, tlog) {
+            // Since we are in the scope of invoice or delivery-note, we always have only one payment.
+            // And therefore we fetch the signature from the first payment.
+            // If the signature exists on the print-data - we use it. Otherwise, we fetch it from the tlog.
+            
+            let signatureFormat = _.get(printData, 'printData.collections.PAYMENT_LIST[0].SIGNATURE_FORMAT');
+            let signatureData = _.get(printData, 'printData.collections.PAYMENT_LIST[0].SIGNATURE_DATA');
+            if (signatureData) {
+                return {
+                    format: signatureFormat,
+                    data: signatureData,
+                };
+            }
 
             let data = resolveDataByStatus({
                 status: status,
@@ -72,7 +84,6 @@ angular.module('app')
             let id = _.get(printData, 'printData.collections.PAYMENT_LIST[0].P_ID');
             let payment = data.order[0].payments.find(c => c._id === id);
             return payment.customerSignature;
-
         }
 
         const documentRequestsService = (function () {
