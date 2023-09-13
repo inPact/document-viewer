@@ -885,7 +885,6 @@ export default class TemplateBuilderService {
     }
 
     createPaymentsData(printData) {
-        console.log('printData: ', printData)
         var tplOrderPaymentsDiv = this._doc.createElement('div');
         tplOrderPaymentsDiv.id = 'tplOrderPayments';
 
@@ -897,7 +896,8 @@ export default class TemplateBuilderService {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
                 tplOrderPaymentsDiv.appendChild(creditPaymentDiv);
 
-                if (_.get(this, '_docObj.md.signature') && this.$localization.allowByRegions(['il']) && ["CreditCardPayment", "CreditCardRefund"].indexOf(this._docObj.docPaymentType) > -1) {
+                const hasSignature = _.get(this, '_docObj.md.signature') || _.get(printData, 'collections.PAYMENT_LIST[0].SIGNATURE_DATA');
+                if (hasSignature && this.$localization.allowByRegions(['il']) && ["CreditCardPayment", "CreditCardRefund"].indexOf(this._docObj.docPaymentType) > -1) {
                     var signatureArea = this._doc.createElement('div');
                     signatureArea.id = 'signatureArea';
                     signatureArea.className += ' item-div';
@@ -934,15 +934,6 @@ export default class TemplateBuilderService {
             });
 
             tplOrderPaymentsDiv.appendChild(paymentSection);
-
-            if (_.get(printData, 'collections.PAYMENT_LIST[0].SIGNATURE_DATA')) {
-                const signatureArea = this._doc.createElement('div');
-                signatureArea.id = 'signatureArea';
-                signatureArea.className += ' item-div';
-
-                tplOrderPaymentsDiv.appendChild(signatureArea);
-                tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
-            }
         }
 
         return tplOrderPaymentsDiv;

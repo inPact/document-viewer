@@ -74,8 +74,8 @@ export default class RefundDeliveryNote {
         elementRefundDeliveryNote.appendChild(elementHouseAccountPaymentSection);
 
         // START SIGNATURE
-        console.log('collections: ', collections)
-        if (_.get(documentInfo, 'md.signature')) {
+        const hasSignature = _.get(documentInfo, 'md.signature') || _.get(collections, 'PAYMENT_LIST[0].SIGNATURE_DATA');
+        if (hasSignature) {
 
             let elementSignatureArea = this.$htmlCreator.create({
                 type: 'div',
