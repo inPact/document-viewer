@@ -74,6 +74,7 @@ export default class RefundDeliveryNote {
         elementRefundDeliveryNote.appendChild(elementHouseAccountPaymentSection);
 
         // START SIGNATURE
+        console.log('collections: ', collections)
         if (_.get(documentInfo, 'md.signature')) {
 
             let elementSignatureArea = this.$htmlCreator.create({
