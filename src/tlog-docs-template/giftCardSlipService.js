@@ -1,6 +1,7 @@
 import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import SignatureService from './signatureService';
+import _ from "lodash";
 
 export default class GiftCardSlipService {
 
@@ -183,8 +184,9 @@ export default class GiftCardSlipService {
                 "<div class='total-amount'>" + (giftCardSlipDoc.P_AMOUNT ? Number(giftCardSlipDoc.P_AMOUNT).toFixed(2) : "") + "</div></div>";
             giftCardSlipDiv.appendChild(totalDiv)
 
-            //Add signature 
-            if (_.get(docObjChosen, 'md.signature')) {
+            //Add signature
+            const hasSignature = _.get(docObjChosen, 'md.signature') || _.get(printData, 'collections.PAYMENT_LIST[0].SIGNATURE_DATA');
+            if (hasSignature) {
 
                 var signatureArea = this._doc.createElement('div');
                 signatureArea.id = 'signatureArea';
