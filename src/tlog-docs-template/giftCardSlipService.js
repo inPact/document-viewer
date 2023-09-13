@@ -184,7 +184,8 @@ export default class GiftCardSlipService {
                 "<div class='total-amount'>" + (giftCardSlipDoc.P_AMOUNT ? Number(giftCardSlipDoc.P_AMOUNT).toFixed(2) : "") + "</div></div>";
             giftCardSlipDiv.appendChild(totalDiv)
 
-            //Add signature 
+            //Add signature
+            console.log('printData: ', printData)
             if (_.get(docObjChosen, 'md.signature')) {
 
                 var signatureArea = this._doc.createElement('div');

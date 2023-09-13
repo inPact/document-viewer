@@ -196,7 +196,8 @@ export default class CreditSlipService {
                 "<div class='total-amount'>" + (creditSlipDoc.P_AMOUNT ? Number(creditSlipDoc.P_AMOUNT).toFixed(2) : "") + "</div></div>";
             creditSlipDiv.appendChild(totalDiv)
 
-            //Add signature 
+            //Add signature
+            console.log('printData: ', printData)
             if (_.get(docObjChosen, 'md.signature')) {
 
                 var signatureArea = this._doc.createElement('div');

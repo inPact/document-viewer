@@ -241,7 +241,7 @@ export default class DeliveryNoteTransactionDataService {
             dNoteChargeAccntDiv.appendChild(elementHouseAccountPayment);
         }
 
-
+        console.log('printData: ', printData)
         if (_.get(documentInfo, 'md.signature')) {
 
             let elementSignatureArea = this.$htmlCreator.create({

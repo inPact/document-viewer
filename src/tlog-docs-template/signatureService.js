@@ -40,6 +40,7 @@ export default class SignatureService {
                 data: signatureData,
             };
         }
+        console.log('printDataSignature: ', printDataSignature)
         let signature = printDataSignature || _.get(documentInfo, 'md.signature');
         
         if (!signature) return;
