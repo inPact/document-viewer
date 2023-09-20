@@ -10,7 +10,6 @@ export default class GiftCardSlipService {
         this.$utils = new Utils();
         this.$signatureService = new SignatureService();
         this._locale;
-        this._isUS;
         this._doc;
         this.timezone;
         this.configure(options)
@@ -18,7 +17,7 @@ export default class GiftCardSlipService {
     }
     configure(options) {
         if (options.locale) this._locale = options.locale;
-        if (options.isUS) this._isUS = options.isUS;
+        this.realRegion = options.realRegion || 'il';
         this.timezone = options.timezone;
 
     }
@@ -84,7 +83,7 @@ export default class GiftCardSlipService {
             let giftCardSlipTimeDiv = this._doc.createElement('div')
             let providerPaymentDate = this.$utils.toDate({
                 timezone: this.timezone,
-                isUS: this._isUS,
+                realRegion: this.realRegion,
                 date: giftCardSlipDoc.PROVIDER_PAYMENT_DATE
             });
 

@@ -150,6 +150,10 @@ angular.module('app')
 
                 });
 
+                if (ENV.realRegion.toLowerCase() === 'au') {
+                    docs = docs.filter((doc) => !['creditCard', 'invoice'].includes(doc.type));
+                }
+
                 return docs;
             }
 
