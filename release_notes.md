@@ -2,12 +2,10 @@
 
 ## NEXT
 * [TAB-29182] Optima Digital Signature
+* [TAB-32304] OFC+NOFC | AU document viewer should open in English
 
 ## 1.52.0
 * [TAB-32274] DCV | Display of OTH on combo items
-
-### 1.51.1
-* [TAB-32304] OFC+NOFC | AU document viewer should open in English
 
 ## 1.51.0
 * [TAB-32581] DCV | Error in Gift card reciept
