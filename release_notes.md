@@ -1,5 +1,7 @@
 # Document Viewer release notes
 
+## 1.53.0
+
 ## 1.52.0
 * [TAB-32274] DCV | Display of OTH on combo items
 
