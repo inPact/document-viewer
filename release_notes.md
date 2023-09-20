@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-32304] OFC+NOFC | AU document viewer should open in English
+
 ## 1.52.0
 * [TAB-32274] DCV | Display of OTH on combo items
 

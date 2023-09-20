@@ -9,7 +9,7 @@ import HtmlCreator from '../helpers/htmlCreator.service';
 
 export default class DeliveryNoteTransactionDataService {
     constructor(options) {
-        this._isUS = options.isUS;
+        this.realRegion = options.realRegion || 'il';
         this.$translate = new TlogDocsTranslateService(options);
         this.$vatTemplateService = new VatTemplateService(options);
         this.$utils = new Utils();
