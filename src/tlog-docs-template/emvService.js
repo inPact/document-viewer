@@ -4,7 +4,6 @@ import TlogDocsTranslateService from './tlogDocsTranslate';
 
 export default class emvService {
     constructor(options) {
-        this._isUS = options.isUS;
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
     }

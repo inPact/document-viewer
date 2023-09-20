@@ -6,15 +6,12 @@ window.DocumentViewer = class DocumentViewer {
 
 
         console.log('DocumentViewer version : ' + VERSION);
+        console.log('DocumentViewer options : ' , options);
 
         options.locale = options.locale || 'he-IL';
-        options.realRegion = options.realRegion || 'il';
-        if (options.isUS === undefined)
-            options.isUS = options.locale === 'en-US';
+        options.realRegion = options.realRegion ? options.realRegion.toLowerCase() : 'il';
 
-            
         this._tlogDocsService = new TlogDocsService(options);
-
     }
 
     getDocumentsInfoFromTlog(tlog, options) {

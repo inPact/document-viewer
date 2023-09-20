@@ -8,7 +8,7 @@ export default class ReturnTransactionSection {
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
-        this._isUS = options.isUS;
+        this.realRegion = options.realRegion || 'il';
     }
 
     get(options) {
@@ -27,8 +27,8 @@ export default class ReturnTransactionSection {
 
         let originalOrderDate = this.$utils.toDate({
             date: variables.SOURCE_ORDER_BUSINESS_DATE,
-            isUS: this._isUS,
-            format: this._isUS ? 'MM/DD/YYYY' : 'DD/MM/YYYY',
+            realRegion: this.realRegion,
+            format: this.realRegion === 'us' ? 'MM/DD/YYYY' : 'DD/MM/YYYY',
         });
 
         let originalOrderReferenceElementValue = this.$translate.getText(
