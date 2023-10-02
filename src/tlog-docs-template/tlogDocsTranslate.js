@@ -581,7 +581,10 @@ export default class TlogDocsTranslateService {
             }
         };
 
-        translations['en-AU'] = Object.assign(translations['en-US'], {});
+        translations['en-AU'] = Object.assign(translations['en-US'], {
+            "ABN": 'ABN',
+
+        });
 
         return translations;
     }
