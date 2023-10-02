@@ -165,18 +165,12 @@ export default class HeaderService {
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
 
-        var tplOrderHeaderReturn = this.appendChildren(tplOrderHeader, filledInfoArray)
-
-        return tplOrderHeaderReturn;
-
+        return this.appendChildren(tplOrderHeader, filledInfoArray)
     }
 
-    placeOrderHeaderData(printData, array, filledInfoArray) {
-
-        array.forEach(element => {
-            var singleElement = this.fillOrderHeaderData(printData, element)
-            filledInfoArray.push(singleElement);
-
+    placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray) {
+        orderBasicInfoArray.forEach(basicInfoElement => {
+            filledInfoArray.push(this.fillOrderHeaderData(printData, basicInfoElement));
         });
     }
 
@@ -209,8 +203,6 @@ export default class HeaderService {
                 }
                 break;
             }
-
-
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
                     let issuedAtDate = this.$utils.toDate({
@@ -231,7 +223,6 @@ export default class HeaderService {
                 }
                 break;
             }
-
             case "tplOriginDateTime": {
 
                 if (printData.variables.ISSUED_AT) {
@@ -254,11 +245,10 @@ export default class HeaderService {
 
                 break;
             }
-
-            //Asked to take this down temporary
             case 'tplOrderTitle': {
+                const orderTitle = this.$localization.allowByRegions(['au']) ? this.$translate.getText('TAX_INVOICE') : this._docObj.title;
                 if (this._docObj.title) {
-                    htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + this._docObj.title; + "</div >"
+                    htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + orderTitle + "</div>"
                 }
                 break;
             }
