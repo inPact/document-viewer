@@ -309,7 +309,6 @@ export default class BillService {
 
     resolveTotals(variables, collections) {
         let totals = [];
-        let cashTotal = null;
      
         if(this.$localization.allowByRegions(['us', 'au'])) {
             let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
@@ -320,13 +319,7 @@ export default class BillService {
                     amount: this.$utils.toFixedSafe(INCLUSIVE_GROSS_AMOUNT, 2)
                 });
             }
-            // let DISCOUNT = _.get(variables, 'TOTAL_DISCOUNTS', 0);
-            // if (DISCOUNT > 0) {
-            //     totals.push({
-            //         name: this.$translate.getText('ORDER_DISCOUNT_US'),
-            //         amount: this.$utils.toFixedSafe(DISCOUNT * -1, 2)
-            //     })
-            // }
+
             const discounts = _.get(collections, 'ORDER_DISCOUNTS_LIST', []);
             discounts.forEach(item => {
                 totals.push({
@@ -371,11 +364,21 @@ export default class BillService {
             }
         }
 
-        if (this.$localization.allowByRegions(['us', 'au']) && _.get(variables,'TOTAL_FEES', null)) {
+        if (this.$localization.allowByRegions(['us']) && _.get(variables,'TOTAL_FEES', null)) {
             totals.push({
                 name: this.$translate.getText('FEE'),
                 amount: this.$utils.toFixedSafe(variables.TOTAL_FEES , 2)
             })
+        }
+
+        if (this.$localization.allowByRegions(['au'])) {
+            const fees = _.get(collections, 'FEES', []);
+            fees.forEach(fee => {
+                totals.push({
+                    name: fee.NAME,
+                    amount: this.$utils.toFixedSafe(fee.AMOUNT, 2)
+                });
+            });
         }
 
         if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
@@ -472,7 +475,7 @@ export default class BillService {
             })
         }
 
-        if(this.$localization.allowByRegions(['us', 'au'])) {
+        if(this.$localization.allowByRegions(['us'])) {
             if(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS !== undefined) {
                 totals.push({
                     name: this.$translate.getText('TOTAL_AMOUNT_AFTER_CASH_BONUS'),
@@ -838,8 +841,6 @@ export default class BillService {
     }
 
     resolvePrintData(printData, realRegion) {
-
-
         let DataBill = function (collections, variables, data, printByOrder, waiterDiners) {
             this.collections = printData.collections;
             this.variables = printData.variables;

@@ -2,6 +2,9 @@
 
 ## NEXT
 * [TAB-29182] Optima Digital Signature
+* [TAB-32272] OFC | AU document viewer
+
+## 1.53.0
 * [TAB-32304] OFC+NOFC | AU document viewer should open in English
 
 ## 1.52.0

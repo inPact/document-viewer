@@ -41,9 +41,13 @@ export default class HeaderService {
             'ORGANIZATION_TEL'
         ];
 
-        headerKeys.forEach(element => {
-            var constantLine = this.placeHeaderData(printData, element)
-            tplHeaderConstants.appendChild(constantLine)
+        if (this.$localization.allowByRegions(['au'])) {
+            headerKeys.splice(1, 0, 'ORGANIZATION_BN_NUMBER');
+        }
+
+        headerKeys.forEach(key => {
+            var constantLine = this.placeHeaderData(printData, key);
+            tplHeaderConstants.appendChild(constantLine);
         })
 
         //inner function for placing the constants on the template with data
@@ -73,18 +77,17 @@ export default class HeaderService {
         return headerDiv;
     }
 
-    placeHeaderData(printData, element) {
+    placeHeaderData(printData, key) {
         var tplHeaderLine = this._doc.createElement('div');
         tplHeaderLine.id = 'tplHeaderLine';
-        if (printData.variables.hasOwnProperty(element)) {
+        if (printData.variables.hasOwnProperty(key)) {
 
-            switch (element) {
-                case 'ORGANIZATION_NAME': {
+            switch (key) {
+                case 'ORGANIZATION_NAME':
                     tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_NAME;
                     tplHeaderLine.classList += ' big-chars';
-                }
                     break;
-                case 'ORGANIZATION_LEGAL_NAME': {
+                case 'ORGANIZATION_LEGAL_NAME':
                     if (this.$localization.allowByRegions(['il'])) {
                         var orgString = printData.variables.ORGANIZATION_LEGAL_NAME;
                         var bnNumber = this.$translate.getText('BN_NUMBER');
@@ -103,21 +106,22 @@ export default class HeaderService {
                     else {
                         tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_LEGAL_NAME;
                     }
-                }
                     break;
-                case 'ORGANIZATION_ADDR_STREET': {
+                case 'ORGANIZATION_ADDR_STREET':
                     tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_ADDR_STREET;
-                }
                     break;
-                case 'ORGANIZATION_ADDR_CITY': {
+                case 'ORGANIZATION_ADDR_CITY':
                     tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_ADDR_CITY;
-                }
                     break;
-                case 'ORGANIZATION_TEL': {
+                case 'ORGANIZATION_TEL':
                     var phoneTranslate = this.$translate.getText('PHONE');
                     var phoneString = phoneTranslate + " " + printData.variables.ORGANIZATION_TEL;
                     tplHeaderLine.innerHTML = phoneString;
-                }
+                    break;
+                case 'ORGANIZATION_BN_NUMBER':
+                    var abnTranslate = this.$translate.getText('ABN');
+                    var abnString = abnTranslate + ' ' + printData.variables.ORGANIZATION_BN_NUMBER;
+                    tplHeaderLine.innerHTML = abnString;
                     break;
 
             }
@@ -161,18 +165,12 @@ export default class HeaderService {
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
 
-        var tplOrderHeaderReturn = this.appendChildren(tplOrderHeader, filledInfoArray)
-
-        return tplOrderHeaderReturn;
-
+        return this.appendChildren(tplOrderHeader, filledInfoArray)
     }
 
-    placeOrderHeaderData(printData, array, filledInfoArray) {
-
-        array.forEach(element => {
-            var singleElement = this.fillOrderHeaderData(printData, element)
-            filledInfoArray.push(singleElement);
-
+    placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray) {
+        orderBasicInfoArray.forEach(basicInfoElement => {
+            filledInfoArray.push(this.fillOrderHeaderData(printData, basicInfoElement));
         });
     }
 
@@ -205,8 +203,6 @@ export default class HeaderService {
                 }
                 break;
             }
-
-
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
                     let issuedAtDate = this.$utils.toDate({
@@ -227,7 +223,6 @@ export default class HeaderService {
                 }
                 break;
             }
-
             case "tplOriginDateTime": {
 
                 if (printData.variables.ISSUED_AT) {
@@ -250,11 +245,10 @@ export default class HeaderService {
 
                 break;
             }
-
-            //Asked to take this down temporary
             case 'tplOrderTitle': {
+                const orderTitle = this.$localization.allowByRegions(['au']) ? this.$translate.getText('TAX_INVOICE') : this._docObj.title;
                 if (this._docObj.title) {
-                    htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + this._docObj.title; + "</div >"
+                    htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + orderTitle + "</div>"
                 }
                 break;
             }

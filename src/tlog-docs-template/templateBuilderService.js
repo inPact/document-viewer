@@ -871,7 +871,6 @@ export default class TemplateBuilderService {
 
     fillOrderTotals(htmlElement, printData) {
         if (printData.data.totals.length > 0) {
-
             printData.data.totals.forEach(total => {
                 var isCheckTotal = total.name === 'Check Total';
 
