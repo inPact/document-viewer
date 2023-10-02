@@ -583,7 +583,9 @@ export default class TlogDocsTranslateService {
 
         translations['en-AU'] = Object.assign(translations['en-US'], {
             ABN: 'ABN',
-            TAX_INVOICE: 'TAX INVOICE'
+            TAX_INVOICE: 'TAX INVOICE',
+            Server: 'SERVED BY',
+            TOTAL_INC_VAT: 'TOTAL'
         });
 
         return translations;
