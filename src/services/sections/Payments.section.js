@@ -2,6 +2,7 @@ import HtmlCreator from '../../helpers/htmlCreator.service';
 import Utils from '../../helpers/utils.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 import { InstallmentsSection } from "./Installments";
+import Localization from "../../helpers/localization.service";
 
 export default class PaymentSection {
     constructor(options) {
@@ -9,6 +10,7 @@ export default class PaymentSection {
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
         this.options = options;
+        this.$localization = new Localization(options);
     }
 
     get(options) {
@@ -19,10 +21,16 @@ export default class PaymentSection {
         });
 
         payments.forEach(payment => {
+            let elementTextValue = payment.CURRENCY_FACE_VALUE ? '' : payment.name || '';
+
+            if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'creditCard') {
+                elementTextValue = `${payment.ISSUER}  ${payment.LAST_4}`;
+            }
+
             let elementText = this.$htmlCreator.create({
                 id: 'payment-text',
                 classList: ['total-name'],
-                value: payment.CURRENCY_FACE_VALUE ? '' : payment.name || ''
+                value: elementTextValue
             });
 
             let classList = ['total-amount'];
@@ -169,7 +177,6 @@ export default class PaymentSection {
 
                 paymentSection.append(elementHotelDetails);
             }
-
 
             if (payment.GUEST_NAME && payment.GUEST_NAME.replace(/\s/g, '').length > 0) {
                 let elementGuestName = this.$htmlCreator.create({
