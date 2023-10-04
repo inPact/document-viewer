@@ -585,7 +585,9 @@ export default class TlogDocsTranslateService {
             ABN: 'ABN',
             TAX_INVOICE: 'TAX INVOICE',
             Server: 'SERVED BY',
-            TOTAL_INC_VAT: 'TOTAL'
+            TOTAL_INC_VAT: 'TOTAL',
+            CONFIRMATION_NO: "CONFIRMATION NO.",
+            SURCHARGE: "SURCHARGE",
         });
 
         return translations;
