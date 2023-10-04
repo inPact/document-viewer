@@ -209,6 +209,7 @@ export default class PaymentSection {
                 paymentSection.append(elementHotelRoomChargePayment);
             }
 
+            console.log('au surcharge')
             if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'creditCard') {
                 const elementConfirmationNo = this.$htmlCreator.create({
                     id: 'confirmation-no',
