@@ -209,7 +209,26 @@ export default class PaymentSection {
                 paymentSection.append(elementHotelRoomChargePayment);
             }
 
-            if (payment.PROVIDER_TRANS_ID) {
+            if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'creditCard') {
+                const elementConfirmationNo = this.$htmlCreator.create({
+                    id: 'confirmation-no',
+                    classList: ['hotel-item', 'hotel-details'],
+                    value: `&nbsp;${this.$translate.getText('CONFIRMATION_NO')} ${payment.CONFIRMATION_NUMBER}&nbsp;`
+                });
+
+                paymentSection.append(elementConfirmationNo);
+
+                if (payment.P_FEE_AMOUNT) {
+                    const surchargeValue = this.$utils.toFixedSafe(payment.P_FEE_AMOUNT, 2);
+                    const elementSurcharge = this.$htmlCreator.create({
+                        id: 'surcharge',
+                        classList: ['hotel-item', 'hotel-details'],
+                        value: `&nbsp;(${this.$translate.getText('SURCHARGE')} ${surchargeValue})&nbsp;`
+                    });
+
+                    paymentSection.append(elementSurcharge);
+                }
+            } else if (payment.PROVIDER_TRANS_ID) {
                 let elementProviderTransId = this.$htmlCreator.create({
                     id: 'reference-id',
                     classList: ['hotel-item', 'hotel-details'],
