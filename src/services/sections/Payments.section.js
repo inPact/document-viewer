@@ -24,7 +24,9 @@ export default class PaymentSection {
             let elementTextValue = payment.CURRENCY_FACE_VALUE ? '' : payment.name || '';
 
             if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'creditCard') {
-                elementTextValue = `${payment.ISSUER}  ${payment.LAST_4}`;
+                if (payment?.ISSUER) {
+                    elementTextValue = `${payment.ISSUER}  ${payment.LAST_4}`;
+                }
             }
 
             let elementText = this.$htmlCreator.create({
