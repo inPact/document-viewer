@@ -36,9 +36,12 @@ export default class CreaditSection {
             payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
         }
 
-        console.log('zohar -- payment', payment);
+        if(!payment) {
+            return;
+        }
 
-        if (payment) {
+
+
             const creditContainer = this.$htmlCreator.createSection({
                 id: 'creadit-section',
                 classList: ['creadit-section']
@@ -76,7 +79,6 @@ export default class CreaditSection {
             });
 
             creditContainer.append(elementCreaditCardContainer);
-        }
 
         const P_CHANGE = _.get(payment, 'P_CHANGE');
 
