@@ -22,7 +22,6 @@ export default class CreaditSection {
 
     get(options) {
         const that = this;
-        let payment;
 
         function getCreditCardText(options) {
             const result = options.isRefund ? that.$translate.getText('RETURNED_IN_CREDIT_FROM') : that.$translate.getText('PAID_IN_CREDIT_FROM');
@@ -30,51 +29,52 @@ export default class CreaditSection {
             return result + ` ${options.issuer}`;
         }
 
+        var payment;
+
         if(this.$localization.allowByRegions(['us', 'au'])) {
             payment = _.get(options, 'collections.PAYMENT_LIST[0]');
         } else {
             payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
         }
 
-        if (payment) {
-            const creditContainer = this.$htmlCreator.createSection({
+        const creditContainer = this.$htmlCreator.createSection({
                 id: 'creadit-section',
                 classList: ['creadit-section']
-            });
+        });
 
-            const elementCreaditCardText = this.$htmlCreator.create({
+        const elementCreaditCardText = this.$htmlCreator.create({
                 id: 'creadit-card-text',
                 classList: ['total-name'],
                 value: getCreditCardText({
                     isRefund: options.isRefund,
                 issuer: _.get(payment, 'ISSUER', '')
                 })
-            });
+        });
 
-            const classList = ['total-amount'];
-            const negativeClass = this.$utils.isNegative(payment.P_AMOUNT);
+        const classList = ['total-amount'];
+        const negativeClass = this.$utils.isNegative(payment.P_AMOUNT);
 
-            if (negativeClass !== "") {
-                classList.push(negativeClass);
-            }
-
-            const elementCreaditCardValue = this.$htmlCreator.create({
-                id: 'creadit-card-value',
-                classList: classList,
-                value: this.$utils.toFixedSafe(payment.P_AMOUNT || 0, 2) || ''
-            });
-
-            const elementCreaditCardContainer = this.$htmlCreator.create({
-                id: 'creadit-card-container',
-                classList: ['itemDiv', 'bold'],
-                children: [
-                    elementCreaditCardText,
-                    elementCreaditCardValue
-                ]
-            });
-
-            creditContainer.append(elementCreaditCardContainer);
+        if (negativeClass !== "") {
+            classList.push(negativeClass);
         }
+
+        const elementCreaditCardValue = this.$htmlCreator.create({
+            id: 'creadit-card-value',
+            classList: classList,
+            value: this.$utils.toFixedSafe(payment.P_AMOUNT || 0, 2) || ''
+        });
+
+        const elementCreaditCardContainer = this.$htmlCreator.create({
+            id: 'creadit-card-container',
+            classList: ['itemDiv', 'bold'],
+            children: [
+                elementCreaditCardText,
+                elementCreaditCardValue
+            ]
+        });
+
+        creditContainer.append(elementCreaditCardContainer);
+
 
         const P_CHANGE = _.get(payment, 'P_CHANGE');
 
