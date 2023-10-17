@@ -29,6 +29,8 @@ export default class CreaditSection {
             return result + ` ${options.issuer}`;
         }
 
+        console.log('zohar');
+
         var payment;
 
         if(this.$localization.allowByRegions(['us', 'au'])) {
