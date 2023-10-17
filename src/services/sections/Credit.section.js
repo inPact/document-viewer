@@ -22,7 +22,7 @@ export default class CreaditSection {
 
     get(options) {
         const that = this;
-        let payment;
+        var payment;
 
         function getCreditCardText(options) {
             const result = options.isRefund ? that.$translate.getText('RETURNED_IN_CREDIT_FROM') : that.$translate.getText('PAID_IN_CREDIT_FROM');
