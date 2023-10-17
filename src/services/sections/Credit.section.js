@@ -31,6 +31,9 @@ export default class CreaditSection {
 
         var payment;
         console.log('zohar -- options', options);
+        console.log('zohar -- options parsed', JSON.parse(JSON.stringify(options)));
+        console.log('zohar -- this.$localization.allowByRegions', this.$localization.allowByRegions(['us', 'au']));
+        console.log('zohar -- options GET', _.get(options, 'collections.PAYMENT_LIST[0]'));
         debugger //zohar
 
         if(this.$localization.allowByRegions(['us', 'au'])) {
