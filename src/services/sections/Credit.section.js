@@ -42,12 +42,14 @@ export default class CreaditSection {
             classList: ['creadit-section']
         });
 
+        console.log('zohar -- payment', payment);
+
         const elementCreaditCardText = this.$htmlCreator.create({
             id: 'creadit-card-text',
             classList: ['total-name'],
             value: getCreditCardText({
                 isRefund: options.isRefund,
-                issuer: payment.ISSUER
+                issuer: _.get(payment, 'ISSUER', '')
             })
         });
 
