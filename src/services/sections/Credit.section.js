@@ -22,7 +22,7 @@ export default class CreaditSection {
 
     get(options) {
         const that = this;
-        var payment;
+        let payment;
 
         function getCreditCardText(options) {
             const result = options.isRefund ? that.$translate.getText('RETURNED_IN_CREDIT_FROM') : that.$translate.getText('PAID_IN_CREDIT_FROM');
@@ -30,15 +30,16 @@ export default class CreaditSection {
             return result + ` ${options.issuer}`;
         }
 
-        if(this.$localization.allowByRegions(['us', 'au'])) {
+        if (this.$localization.allowByRegions(['us', 'au'])) {
             payment = _.get(options, 'collections.PAYMENT_LIST[0]');
         } else {
             payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
         }
 
-        if (payment) {
+        if(!payment) {
+            return;
+        }
 
-            console.log('zohar -- in payemt', payment);
             const creditContainer = this.$htmlCreator.createSection({
                 id: 'creadit-section',
                 classList: ['creadit-section']
@@ -76,7 +77,6 @@ export default class CreaditSection {
             });
 
             creditContainer.append(elementCreaditCardContainer);
-        }
 
 
         const P_CHANGE = _.get(payment, 'P_CHANGE');

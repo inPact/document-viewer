@@ -19,7 +19,6 @@ export default class Localization {
     }
 
     allowByRegions(regions) {
-        console.log('zohar -- this.realRegion', this.realRegion);
         return regions.includes(this.realRegion);
     }
 }
