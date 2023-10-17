@@ -30,6 +30,9 @@ export default class CreaditSection {
         }
 
         var payment;
+        console.log('zohar -- options', options);
+        debugger //zohar
+
         if(this.$localization.allowByRegions(['us', 'au'])) {
             payment = _.get(options, 'collections.PAYMENT_LIST[0]');
         } else {
