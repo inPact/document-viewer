@@ -4,7 +4,12 @@ import 'moment-timezone';
 export default class Utils {
 
     constructor(options) {
-
+        this.options = options;
+        this.formatByRegion = {
+            il: 'DD/MM/YYYY H:mm',
+            us: 'MM/DD/YYYY h:mm A',
+            au: 'DD/MM/YYYY h:mm A'
+        }
     }
 
     toFixedSafe(value, num) {
@@ -62,23 +67,24 @@ export default class Utils {
         let date = options.date;
         let format = options.format;
 
-        const formatByRegion = {
-            il: 'DD/MM/YYYY H:mm',
-            us: 'MM/DD/YYYY h:mm A',
-            au: 'DD/MM/YYYY h:mm A'
-        }
-
         if (!format) {
-            format = formatByRegion[options.realRegion];
+            format = this.formatByRegion[options.realRegion];
         }
 
         if (options.timezone) {
+
             result = moment(date).tz(`${options.timezone}`).format(format);
         } else {
             result = moment(date).format(format);
         }
 
         return result;
+    }
+
+    formatBusinessDate(date) {
+        //Business Dates has no meaning for universal time, only the date matters.
+        const formatWithoutTime = this.formatByRegion[ this.options.realRegion].split(' ')[0];
+        return moment.utc(date).format(formatWithoutTime);
     }
 
     replaceAll(text, search, replacement) {

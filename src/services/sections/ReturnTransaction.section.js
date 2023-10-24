@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import HtmlCreator from '../../helpers/htmlCreator.service';
 import Utils from '../../helpers/utils.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
@@ -7,8 +8,9 @@ export default class ReturnTransactionSection {
     constructor(options) {
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
-        this.$utils = new Utils();
+        this.$utils = new Utils(options);
         this.realRegion = options.realRegion || 'il';
+        this.timezone = options.timezone;
     }
 
     get(options) {
@@ -25,11 +27,7 @@ export default class ReturnTransactionSection {
 
         elementChildren.push(elementReturnTransactionText);
 
-        let originalOrderDate = this.$utils.toDate({
-            date: variables.SOURCE_ORDER_BUSINESS_DATE,
-            realRegion: this.realRegion,
-            format: this.realRegion === 'us' ? 'MM/DD/YYYY' : 'DD/MM/YYYY',
-        });
+        const originalOrderDate = this.$utils.formatBusinessDate(variables.SOURCE_ORDER_BUSINESS_DATE);
 
         let originalOrderReferenceElementValue = this.$translate.getText(
             "RETURN_TRANSACTION_REFERENCE",
