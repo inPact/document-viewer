@@ -30,7 +30,7 @@ export default class ReturnTransactionSection {
             date: variables.CREATED_AT,
             realRegion: this.realRegion,
             timezone: this.timezone,
-            withoutTime: false
+            withoutTime: true
         });
 
         let originalOrderReferenceElementValue = this.$translate.getText(
