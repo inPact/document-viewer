@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+### 1.53.1
+* [TAB-33501] DCV | Return transaction wrong source order business date
+
 ## 1.53.0
 * [TAB-32304] OFC+NOFC | AU document viewer should open in English
 
