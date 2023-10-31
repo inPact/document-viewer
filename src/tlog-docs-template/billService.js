@@ -309,6 +309,7 @@ export default class BillService {
 
     resolveTotals(variables, collections) {
         let totals = [];
+        const subtotalDiffersFromTotal = variables.TOTAL_AMOUNT !== variables.INCLUSIVE_NET_AMOUNT;
      
         if(this.$localization.allowByRegions(['us', 'au'])) {
             let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
@@ -330,9 +331,9 @@ export default class BillService {
         }
 
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
-            variables.TOTAL_TIPS !== undefined ||
-            (this.$localization.allowByRegions(['us', 'au']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0)) ||
-            (this.$localization.allowByRegions(['us', 'au']) && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
+            variables.TOTAL_TIPS !== undefined || (this.$localization.allowByRegions(['au']) && subtotalDiffersFromTotal)
+            || (this.$localization.allowByRegions(['us']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0)) ||
+            (this.$localization.allowByRegions(['us']) && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
 
             /**
              * SUBTOTAL (TOTAL_ORDER) :
