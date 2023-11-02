@@ -7,8 +7,9 @@ export default class ReturnTransactionSection {
     constructor(options) {
         this.$htmlCreator = new HtmlCreator();
         this.$translate = new TlogDocsTranslateService(options);
-        this.$utils = new Utils();
+        this.$utils = new Utils(options);
         this.realRegion = options.realRegion || 'il';
+        this.timezone = options.timezone;
     }
 
     get(options) {
@@ -26,9 +27,10 @@ export default class ReturnTransactionSection {
         elementChildren.push(elementReturnTransactionText);
 
         let originalOrderDate = this.$utils.toDate({
-            date: variables.SOURCE_ORDER_BUSINESS_DATE,
+            date: variables.CREATED_AT,
             realRegion: this.realRegion,
-            format: this.realRegion === 'us' ? 'MM/DD/YYYY' : 'DD/MM/YYYY',
+            timezone: this.timezone,
+            withoutTime: true
         });
 
         let originalOrderReferenceElementValue = this.$translate.getText(
