@@ -58,22 +58,24 @@ export default class Utils {
     }
 
     toDate(options) {
-        let result = '[DATE]';
-        let date = options.date;
-        let format = options.format;
-
         const formatByRegion = {
             il: 'DD/MM/YYYY H:mm',
             us: 'MM/DD/YYYY h:mm A',
             au: 'DD/MM/YYYY h:mm A'
         }
 
-        if (!format) {
-            format = formatByRegion[options.realRegion];
+        let result = '[DATE]';
+        let date = options.date;
+        let format = formatByRegion[options.realRegion];
+
+
+        if (options.withoutTime) {
+            const timeStartIndex = format.indexOf(' ');
+            format = formatByRegion[options.realRegion].slice(0, timeStartIndex);
         }
 
         if (options.timezone) {
-            result = moment(date).tz(`${options.timezone}`).format(format);
+            result = moment.utc(date).tz(`${options.timezone}`).format(format);
         } else {
             result = moment(date).format(format);
         }
