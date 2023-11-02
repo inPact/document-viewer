@@ -2,6 +2,8 @@
 
 ## NEXT
 * [TAB-29182] Optima Digital Signature
+
+## 1.54.0
 * [TAB-32272] DCV | AU document viewer
 
 ### 1.53.1
