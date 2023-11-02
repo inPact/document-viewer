@@ -1,5 +1,7 @@
 # Document Viewer release notes
 
+## 1.54.0
+
 ## 1.53.0
 * [TAB-32304] OFC+NOFC | AU document viewer should open in English
 
