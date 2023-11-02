@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.54.0
 * [TAB-32272] DCV | AU document viewer
 
 ### 1.53.1
