@@ -5,7 +5,7 @@ angular.module('app')
 
         // USER INPUT.
         let TLOG_ID = ENV.tlog;
-        let STATUS = "closed";
+        let STATUS = ENV.status || "closed";
 
         let tlog;
 

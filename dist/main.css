@@ -399,4 +399,7 @@
     flex-direction: column;
     gap: 2px; }
 
+#payment-section #payment-container:not(:first-child) {
+  margin-top: 15px; }
+
 /*# sourceMappingURL=main.css.map*/
