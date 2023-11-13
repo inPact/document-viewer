@@ -23,6 +23,10 @@ export default class PaymentSection {
         payments.forEach(payment => {
             let elementTextValue = payment.CURRENCY_FACE_VALUE ? '' : payment.name || '';
 
+            if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload') {
+                return;
+            }
+
             if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'creditCard') {
                 if (payment?.ISSUER) {
                     elementTextValue = `${payment.ISSUER}  ${payment.LAST_4}`;
