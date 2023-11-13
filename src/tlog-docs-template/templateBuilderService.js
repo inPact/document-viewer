@@ -295,10 +295,11 @@ export default class TemplateBuilderService {
                     var tplGiftCardSlipTemplate = this.$giftCardSlipService.createGiftCardSlip(this._printData, docObjChosen, this._doc);
                     docTemplate.appendChild(tplGiftCardSlipTemplate);
                 } else {
+                    let tplOrderPaymentData;
 
                     //create a general template content
-                    if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
-                        var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
+                    if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {
+                        tplOrderPaymentData  = this.createOrderPaymentData(this._printData);
                         tplOrderPaymentData.id = 'tplOrderPaymentData';
                         let child = tplOrderPaymentData.children[0];
 
@@ -319,27 +320,22 @@ export default class TemplateBuilderService {
                         tplOrderPointsRedeemData.id = 'tplOrderPointsRedeemData';
                     }
 
-                    // var tplOrderPaymentData = createOrderPaymentData(_printData);
                     var tplOrderReturnItems = this.createReturnItemsData(this._printData);
                     var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
                     var tplOrderPayments = this.createPaymentsData(this._printData);
 
-                    // tplOrderPaymentData.id = 'tplOrderPaymentData';
                     tplOrderReturnItems.id = 'tplOrderReturnItems';
                     tplOrderTotals.id = 'tplOrderTotals';
                     tplOrderPayments.id = 'tplOrderPayments';
 
                     //adding styling to the template divs
-                    // tplOrderPaymentData.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
                     tplOrderReturnItems.hasChildNodes() ? tplOrderReturnItems.classList += ' body-div tpl-body-div' : '';
                     tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' body-div tpl-body-div' : '';
                     tplOrderPayments.hasChildNodes() ? tplOrderPayments.classList += ' body-div tpl-body-div' : '';
 
                     //set body main divs
-                    if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
-                        docTemplate.appendChild(tplOrderPaymentData);
-                    }
 
+                    tplOrderPaymentData && tplOrderPaymentData.hasChildNodes() ? docTemplate.appendChild(tplOrderPaymentData) : null;
                     tplOrderPointsRedeemData && tplOrderPointsRedeemData.hasChildNodes() ?docTemplate.appendChild(tplOrderPointsRedeemData) : null;
                     tplOrderReturnItems.hasChildNodes() ? docTemplate.appendChild(tplOrderReturnItems) : null;
                     tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
@@ -745,6 +741,10 @@ export default class TemplateBuilderService {
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
+
+        if(this.$localization.allowByRegions( ['au']) && this._docData.documentType === 'orderBill' && printData.variables.ORDER_TYPE === 'MEDIAEXCHANGE'){
+            return tplOrderTotals;
+        }
 
         if (this._docObj && [
             'invoice',
