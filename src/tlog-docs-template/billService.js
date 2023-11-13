@@ -601,18 +601,18 @@ export default class BillService {
             else {
                 refund = this.$translate.getText('REFUND');
             }
-
         }
 
-        if (payment.P_TENDER_TYPE === 'creditCard' || payment.P_TENDER_TYPE === 'gidtCard') {
-            if (payment.CARD_TYPE && payment.LAST_4) {
-                paymentName = refund !== '' ? `${refund} (${payment.CARD_TYPE} ${payment.LAST_4})` : `${payment.CARD_TYPE} ${payment.LAST_4}`;
+        if (payment.P_TENDER_TYPE === 'creditCard') {
+            const card = this.$localization.allowByRegions(['au']) ?  payment.ISSUER : payment.CARD_TYPE;
+
+            if (card && payment.LAST_4) {
+                paymentName = refund !== '' ? `${refund} (${card} ${payment.LAST_4})` : `${card} ${payment.LAST_4}`;
             } else {
                 paymentName = payment.P_NAME;
             }
 
         } else {
-
             if (this.$localization.allowByRegions(['us', 'au'])) {
                 paymentName = `${payment.P_NAME} ${refund}`;
             } else {

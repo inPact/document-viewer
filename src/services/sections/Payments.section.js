@@ -27,12 +27,6 @@ export default class PaymentSection {
                 return;
             }
 
-            if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'creditCard') {
-                if (payment?.ISSUER) {
-                    elementTextValue = `${payment.ISSUER}  ${payment.LAST_4}`;
-                }
-            }
-
             let elementText = this.$htmlCreator.create({
                 id: 'payment-text',
                 classList: ['total-name'],

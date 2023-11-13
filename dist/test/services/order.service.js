@@ -9,7 +9,7 @@ angular.module('app')
         // org: '64a66b305f56a25a0a4b298f',
         // tlog: '64d1047e38a00042d453ba9b',
         org: '6508239f95d58fc8c51a781b',
-        tlog: '653f65007018f8252c78587b',
+        tlog: '65434b210f79ee2ea6c29d32',
         //locale: 'he-IL',
         // locale: 'en-US',
         locale: 'en-AU',
