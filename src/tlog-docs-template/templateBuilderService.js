@@ -295,10 +295,11 @@ export default class TemplateBuilderService {
                     var tplGiftCardSlipTemplate = this.$giftCardSlipService.createGiftCardSlip(this._printData, docObjChosen, this._doc);
                     docTemplate.appendChild(tplGiftCardSlipTemplate);
                 } else {
+                    let tplOrderPaymentData;
 
                     //create a general template content
-                    if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
-                        var tplOrderPaymentData = this.createOrderPaymentData(this._printData);
+                    if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {
+                        tplOrderPaymentData  = this.createOrderPaymentData(this._printData);
                         tplOrderPaymentData.id = 'tplOrderPaymentData';
                         let child = tplOrderPaymentData.children[0];
 
@@ -319,27 +320,22 @@ export default class TemplateBuilderService {
                         tplOrderPointsRedeemData.id = 'tplOrderPointsRedeemData';
                     }
 
-                    // var tplOrderPaymentData = createOrderPaymentData(_printData);
                     var tplOrderReturnItems = this.createReturnItemsData(this._printData);
                     var tplOrderTotals = this.createTotalsData(this._printData, this._isGiftCardBill, this._isTaxExempt);
                     var tplOrderPayments = this.createPaymentsData(this._printData);
 
-                    // tplOrderPaymentData.id = 'tplOrderPaymentData';
                     tplOrderReturnItems.id = 'tplOrderReturnItems';
                     tplOrderTotals.id = 'tplOrderTotals';
                     tplOrderPayments.id = 'tplOrderPayments';
 
                     //adding styling to the template divs
-                    // tplOrderPaymentData.hasChildNodes() ? tplOrderPaymentData.classList += ' body-div' : '';
                     tplOrderReturnItems.hasChildNodes() ? tplOrderReturnItems.classList += ' body-div tpl-body-div' : '';
                     tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' body-div tpl-body-div' : '';
                     tplOrderPayments.hasChildNodes() ? tplOrderPayments.classList += ' body-div tpl-body-div' : '';
 
                     //set body main divs
-                    if (this._printData.variables.ORDER_TYPE.toUpperCase() !== "REFUND") {//in case the invoice is refund=> do not show the the tplOrderPaymentData div
-                        docTemplate.appendChild(tplOrderPaymentData);
-                    }
 
+                    tplOrderPaymentData && tplOrderPaymentData.hasChildNodes() ? docTemplate.appendChild(tplOrderPaymentData) : null;
                     tplOrderPointsRedeemData && tplOrderPointsRedeemData.hasChildNodes() ?docTemplate.appendChild(tplOrderPointsRedeemData) : null;
                     tplOrderReturnItems.hasChildNodes() ? docTemplate.appendChild(tplOrderReturnItems) : null;
                     tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
@@ -746,6 +742,10 @@ export default class TemplateBuilderService {
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
 
+        if(this.$localization.allowByRegions( ['au']) && this._docData.documentType === 'orderBill' && printData.variables.ORDER_TYPE === 'MEDIAEXCHANGE'){
+            return tplOrderTotals;
+        }
+
         if (this._docObj && [
             'invoice',
             'CreditCardPayment',
@@ -1016,13 +1016,15 @@ export default class TemplateBuilderService {
         return giftCardDiv;
 
     }
-
     createMediaExchange(printData) {
-        var printMessage;
-        var pName;
-        var cardNumber;
-        var pAmount;
-        var balanceAmount;
+
+        let printMessage;
+        let pName;
+        let cardNumber;
+        let censoredCardNumber;
+        let pAmount;
+        let balanceAmount;
+        let providerTransId;
 
         if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length > 0) {
             printData.collections.PAYMENT_LIST.forEach(payment => {
@@ -1030,27 +1032,59 @@ export default class TemplateBuilderService {
                     printMessage = payment.PRINT_MESSAGE.replace(/\n/ig, '<br/>');
                     pName = payment.P_NAME;
                     cardNumber = payment.CARD_NUMBER;
+                    censoredCardNumber = payment.CARD_NUMBER.slice(-4).padStart(10, 'XXXXX-');
                     pAmount = payment.P_AMOUNT;
                     balanceAmount = payment.BALANCE_AMOUNT;
+                    providerTransId = payment.PROVIDER_TRANS_ID
                 }
             });
         }
 
-        var mediaExchangeDiv = this._doc.createElement('div');
+        let mediaExchangeDiv = this._doc.createElement('div');
         mediaExchangeDiv.id = 'mediaExchangeDiv';
 
         //set texts for the divs
-        var giftCardText = pName;
-        var cardNumberText = this.$translate.getText('card_number');
-        var amountText = this.$translate.getText('amount');
-        var balanceText = this.$translate.getText('Balance');
+        let giftCardText = pName;
+        let cardNumberText = this.$translate.getText('card_number');
+        let amountText = this.$translate.getText('amount');
+        let balanceText = this.$translate.getText('Balance');
 
         //create div to append
-        var pNameDiv = this._doc.createElement('div');
-        var amountDiv = this._doc.createElement('div');
-        var cardNumberDiv = this._doc.createElement('div');
-        var balanceDiv = this._doc.createElement('div');
-        var printMsgDiv = this._doc.createElement('div');
+        let pNameDiv = this._doc.createElement('div');
+        let amountDiv = this._doc.createElement('div');
+        let cardNumberDiv = this._doc.createElement('div');
+        let balanceDiv = this._doc.createElement('div');
+        let printMsgDiv = this._doc.createElement('div');
+        let referenceDiv = this._doc.createElement('div');
+
+        if(this.$localization.allowByRegions(['au'])) {
+
+            if (pAmount) {
+                pNameDiv.innerHTML = "<div class='padding-top bold flex j-sb'>" +
+                    " <div>"+ this.$translate.getText('card_load') + "</div>" +
+                    "<div>"+  this.$utils.twoDecimals(pAmount) +"</div>" +
+                    "</div>"
+            }
+
+            if (censoredCardNumber) {
+                cardNumberDiv.innerHTML = "<div class='m-inline-start-5'>" + this.$translate.getText('card_no') + " " + censoredCardNumber + "</div>"
+            }
+
+            if (balanceAmount) {
+                balanceDiv.innerHTML = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(balanceAmount) + "</div>"
+            }
+
+            if (providerTransId) {
+                referenceDiv.innerHTML =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + providerTransId + "</div>"
+            }
+
+            mediaExchangeDiv.appendChild(pNameDiv);
+            mediaExchangeDiv.appendChild(cardNumberDiv);
+            mediaExchangeDiv.appendChild(balanceDiv);
+            mediaExchangeDiv.appendChild(referenceDiv);
+
+            return mediaExchangeDiv;
+        }
 
         if (pName) {
             pNameDiv.innerHTML = "<div class='padding-top bold'>" + giftCardText + "</div>"

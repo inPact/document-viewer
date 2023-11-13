@@ -39,6 +39,7 @@ export default class TlogDocsTranslateService {
                 "CUSTOMER_NAME": "NAME",
                 "LAST_4": "LAST 4 DIGITS",
                 "CARD_BALANCE": "CARD BALANCE",
+                "REMAINING_BALANCE": "Remaining Balance",
                 "AMOUNT": "AMOUNT",
                 "CHARGE_ACCOUNT": "CHARGE ACCOUNT",
                 "CASH": "CASH",
@@ -233,6 +234,8 @@ export default class TlogDocsTranslateService {
                 "customer_id": "CUSTOMER ID",
                 "customer_name": "NAME",
                 "card_number": "CARD NUMBER",
+                "card_no": "Card No",
+                "card_load": "Card Load",
                 "order_search_comment": "Search is by order closing time",
                 "from": "FROM",
                 "to": "TO",
@@ -305,7 +308,8 @@ export default class TlogDocsTranslateService {
                 "INSTALLMENTS_CREDIT_TRANSACTION": "Installments credit transaction of {{installmentsCount}} payments",
                 "FIRST_INSTALLMENT":"First payment {{installmentAmount}}",
                 "REST_INSTALLMENTS":"And other {{restInstallmentsCount}} payments of {{installmentAmount}} each",
-                "EQUAL_INSTALLMENTS": "{{installmentsCount}} payments of {{installmentAmount}} each"
+                "EQUAL_INSTALLMENTS": "{{installmentsCount}} payments of {{installmentAmount}} each",
+                "REFERENCE": "Reference",
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
