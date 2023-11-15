@@ -1016,6 +1016,29 @@ export default class TemplateBuilderService {
 
     }
     createMediaExchange(printData) {
+        const mediaExchangePayments =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard');
+        const mediaExchangeDiv = this._doc.createElement('div');
+        mediaExchangeDiv.id = 'mediaExchangeDiv';
+
+        if (this.$localization.allowByRegions(['au'])) {
+            mediaExchangePayments.forEach((payment)=> {
+                const contentDiv = this._doc.createElement('div');
+                const censoredCardNumber = payment.CARD_NUMBER.slice(-4).padStart(10, 'XXXXX-');
+
+                const pAmountDiv = "<div class='padding-top bold flex j-sb'>" +
+                    " <div>"+ this.$translate.getText('card_load') + "</div>" +
+                    "<div>"+  this.$utils.twoDecimals(_.get(payment, 'P_AMOUNT', '')) +"</div>" +
+                    "</div>";
+
+                const cardNumberDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('card_no') + " " + censoredCardNumber + "</div>"
+                const balanceDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(_.get(payment, 'BALANCE_AMOUNT', '')) + "</div>"
+                const referenceDiv =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + _.get(payment, 'PROVIDER_TRANS_ID', '') + "</div>"
+                contentDiv.innerHTML = pAmountDiv + cardNumberDiv + balanceDiv + referenceDiv;
+
+                mediaExchangeDiv.appendChild(contentDiv);
+            })
+            return mediaExchangeDiv;
+        }
 
         let printMessage;
         let pName;
@@ -1039,9 +1062,6 @@ export default class TemplateBuilderService {
             });
         }
 
-        let mediaExchangeDiv = this._doc.createElement('div');
-        mediaExchangeDiv.id = 'mediaExchangeDiv';
-
         //set texts for the divs
         let giftCardText = pName;
         let cardNumberText = this.$translate.getText('card_number');
@@ -1054,36 +1074,6 @@ export default class TemplateBuilderService {
         let cardNumberDiv = this._doc.createElement('div');
         let balanceDiv = this._doc.createElement('div');
         let printMsgDiv = this._doc.createElement('div');
-        let referenceDiv = this._doc.createElement('div');
-
-        if(this.$localization.allowByRegions(['au'])) {
-
-            if (pAmount) {
-                pNameDiv.innerHTML = "<div class='padding-top bold flex j-sb'>" +
-                    " <div>"+ this.$translate.getText('card_load') + "</div>" +
-                    "<div>"+  this.$utils.twoDecimals(pAmount) +"</div>" +
-                    "</div>"
-            }
-
-            if (censoredCardNumber) {
-                cardNumberDiv.innerHTML = "<div class='m-inline-start-5'>" + this.$translate.getText('card_no') + " " + censoredCardNumber + "</div>"
-            }
-
-            if (balanceAmount) {
-                balanceDiv.innerHTML = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(balanceAmount) + "</div>"
-            }
-
-            if (providerTransId) {
-                referenceDiv.innerHTML =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + providerTransId + "</div>"
-            }
-
-            mediaExchangeDiv.appendChild(pNameDiv);
-            mediaExchangeDiv.appendChild(cardNumberDiv);
-            mediaExchangeDiv.appendChild(balanceDiv);
-            mediaExchangeDiv.appendChild(referenceDiv);
-
-            return mediaExchangeDiv;
-        }
 
         if (pName) {
             pNameDiv.innerHTML = "<div class='padding-top bold'>" + giftCardText + "</div>"
