@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-33679] DCV | AU | Add the word refund before the payment if the payment type is refund
+
 ## 1.54.0
 * [TAB-32272] DCV | AU document viewer
 
