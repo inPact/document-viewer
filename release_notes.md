@@ -1,5 +1,9 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-33620] DCV | AU Modifications for Gift Card Load
+* [TAB-33679] DCV | AU | Add the word refund before the payment if the payment type is refund
+
 ## 1.54.1
 * [TAB-33702] DCV | Regression 7.21.1 - Damaged document viewer
 
