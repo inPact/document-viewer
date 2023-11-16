@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.55.0
 * [TAB-33620] DCV | AU Modifications for Gift Card Load
 * [TAB-33679] DCV | AU | Add the word refund before the payment if the payment type is refund
 
