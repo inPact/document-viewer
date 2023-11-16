@@ -3,6 +3,9 @@
 ## NEXT
 * [TAB-29182] Optima Digital Signature
 
+## 1.54.1
+* [TAB-33702] DCV | Regression 7.21.1 - Damaged document viewer
+
 ## 1.54.0
 * [TAB-32272] DCV | AU document viewer
 
