@@ -159,6 +159,7 @@ export default class HeaderService {
         tplOrderServerClients.id = "tplOrderServerClients";
         var tplcCheckNumber = this._doc.createElement('div');
         tplcCheckNumber.id = "tplcCheckNumber";
+
         //create array for the appendChildren function
         var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber, tplOriginDateTime];
 
@@ -306,15 +307,17 @@ export default class HeaderService {
                 break;
             }
 
-            // case 'tplcCheckNumber': {
-            //     var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
-            //     if (this._docData.documentType === "invoice" && invoiceNum) {
-            //         var checkTranslate = this.$translate.getText("INVOICE")
-            //         printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
-            //         htmlElement.innerHTML = `<span> ` + checkTranslate + " " + invoiceNum + `</span>`;
-            //     }
-            //     break;
-            // }
+            case 'tplcCheckNumber': {
+                const isSplitCheck = _.get(printData, 'variables.CHECKS_COUNT', 0) > 1;
+                const checkNumber = _.get(printData, 'variables.CHECK_NO', '');
+
+                if (this.$localization.allowByRegions(['au']) && isSplitCheck && checkNumber) {
+
+                    htmlElement.innerHTML = `<span> ${this.$translate.getText('CHECK')} ${checkNumber} </span>` ;
+                }
+
+                break;
+            }
 
         }
         return htmlElement;
