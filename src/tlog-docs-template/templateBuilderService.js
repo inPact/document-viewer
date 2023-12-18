@@ -1020,14 +1020,14 @@ export default class TemplateBuilderService {
 
         mediaExchangePayments.forEach((payment)=> {
                 const contentDiv = this._doc.createElement('div');
-                const censoredCardNumber = payment.CARD_NUMBER.slice(-4).padStart(10, 'XXXXX-');
+                const cardNumber = payment.DISPLAY_CARD_NUMBER || '';
 
                 const pAmountDiv = "<div class='padding-top bold flex j-sb'>" +
                     " <div>"+ this.$translate.getText('card_load') + "</div>" +
                     "<div>"+  this.$utils.twoDecimals(_.get(payment, 'P_AMOUNT', '')) +"</div>" +
                     "</div>";
 
-                const cardNumberDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('card_no') + " " + censoredCardNumber + "</div>"
+                const cardNumberDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('card_no') + " " + cardNumber + "</div>"
                 const balanceDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(_.get(payment, 'BALANCE_AMOUNT', '')) + "</div>"
                 const referenceDiv =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + _.get(payment, 'PROVIDER_TRANS_ID', '') + "</div>"
                 contentDiv.innerHTML = pAmountDiv + cardNumberDiv + balanceDiv + referenceDiv;
