@@ -1037,65 +1037,6 @@ export default class TemplateBuilderService {
         });
 
         return mediaExchangeDiv;
-
-
-        let printMessage;
-        let pName;
-        let cardNumber;
-        let censoredCardNumber;
-        let pAmount;
-        let balanceAmount;
-        let providerTransId;
-
-        if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length > 0) {
-            printData.collections.PAYMENT_LIST.forEach(payment => {
-                if (payment.P_TENDER_TYPE === 'giftCard') {
-                    printMessage = payment.PRINT_MESSAGE.replace(/\n/ig, '<br/>');
-                    pName = payment.P_NAME;
-                    cardNumber = payment.CARD_NUMBER;
-                    censoredCardNumber = payment.CARD_NUMBER.slice(-4).padStart(10, 'XXXXX-');
-                    pAmount = payment.P_AMOUNT;
-                    balanceAmount = payment.BALANCE_AMOUNT;
-                    providerTransId = payment.PROVIDER_TRANS_ID
-                }
-            });
-        }
-
-        //set texts for the divs
-        let giftCardText = pName;
-        let cardNumberText = this.$translate.getText('card_number');
-        let amountText = this.$translate.getText('amount');
-        let balanceText = this.$translate.getText('Balance');
-
-        //create div to append
-        let pNameDiv = this._doc.createElement('div');
-        let amountDiv = this._doc.createElement('div');
-        let cardNumberDiv = this._doc.createElement('div');
-        let balanceDiv = this._doc.createElement('div');
-        let printMsgDiv = this._doc.createElement('div');
-
-        if (pName) {
-            pNameDiv.innerHTML = "<div class='padding-top bold'>" + giftCardText + "</div>"
-            mediaExchangeDiv.appendChild(pNameDiv);
-        }
-        if (cardNumber) {
-            cardNumberDiv.innerHTML = "<div class='bold'>" + cardNumberText + ": " + cardNumber + "</div>"
-            mediaExchangeDiv.appendChild(cardNumberDiv);
-        }
-        if (pAmount) {
-            amountDiv.innerHTML = "<div class='bold'>" + amountText + ": " + this.$utils.twoDecimals(pAmount) + "</div>"
-            mediaExchangeDiv.appendChild(amountDiv);
-        }
-        if (balanceAmount) {
-            balanceDiv.innerHTML = "<div class='bold'>" + balanceText + ": " + this.$utils.twoDecimals(balanceAmount) + "</div>"
-            mediaExchangeDiv.appendChild(balanceDiv);
-        }
-        if (printMessage) {
-            printMsgDiv.innerHTML = "<div class='bold'>" + printMessage + "</div>"
-            mediaExchangeDiv.appendChild(printMsgDiv);
-        }
-
-        return mediaExchangeDiv;
     }
 
     createCashPaymentFooter(printData) {
