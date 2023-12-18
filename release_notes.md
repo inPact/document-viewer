@@ -2,6 +2,7 @@
 
 ## NEXT
 * [TAB-29182] Optima Digital Signature
+* [TAB-34003] DCV | GC load documents
 
 ## 1.55.0
 * [TAB-33620] DCV | AU Modifications for Gift Card Load

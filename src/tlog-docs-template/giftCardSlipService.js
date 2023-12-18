@@ -63,7 +63,7 @@ export default class GiftCardSlipService {
             cardNumDiv.id = 'cardNumDiv';
             let cardNumText = this.$translate.getText('CardNumber');
             cardNumDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (!(cardNumText === null) ? cardNumText : "") + ": " + (giftCardSlipDoc.CARD_NUMBER_MASKED ? giftCardSlipDoc.CARD_NUMBER_MASKED : "XXXX-" + giftCardSlipDoc.LAST_4) +
+                "<div class='total-name'>" + (cardNumText ? cardNumText : '') + ": " + (giftCardSlipDoc.DISPLAY_CARD_NUMBER || '') +
                 "</div></div>"
 
             giftCardSlipDiv.appendChild(cardNumDiv)
