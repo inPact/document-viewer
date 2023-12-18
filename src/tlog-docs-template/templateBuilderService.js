@@ -311,10 +311,6 @@ export default class TemplateBuilderService {
 
                     }
 
-                    if (_.get(this._printData.collections, 'RETURNED_OFFERS_LIST', []).length > 0) {
-
-                    }
-
                     if(_.get(this._printData.collections, 'POINTS_REDEMPTION', []).length > 1){
                         var tplOrderPointsRedeemData = this.createOrderPointsRedeemData(this._printData)
                         tplOrderPointsRedeemData.id = 'tplOrderPointsRedeemData';
@@ -738,12 +734,13 @@ export default class TemplateBuilderService {
     }
 
     createTotalsData(printData, isGiftCardBill, isTaxExempt) {
+
         var tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
 
-        if(this.$localization.allowByRegions( ['au']) && this._docData.documentType === 'orderBill' && printData.variables.ORDER_TYPE === 'MEDIAEXCHANGE'){
-            return tplOrderTotals;
+        if( this._docData.documentType === 'orderBill' && printData.variables.ORDER_TYPE === 'MEDIAEXCHANGE' ){
+            return;
         }
 
         if (this._docObj && [
@@ -1019,9 +1016,9 @@ export default class TemplateBuilderService {
         const mediaExchangePayments =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard');
         const mediaExchangeDiv = this._doc.createElement('div');
         mediaExchangeDiv.id = 'mediaExchangeDiv';
+        mediaExchangeDiv.style.borderBottom = 'solid #E8E8E8 1px';
 
-        if (this.$localization.allowByRegions(['au'])) {
-            mediaExchangePayments.forEach((payment)=> {
+        mediaExchangePayments.forEach((payment)=> {
                 const contentDiv = this._doc.createElement('div');
                 const censoredCardNumber = payment.CARD_NUMBER.slice(-4).padStart(10, 'XXXXX-');
 
@@ -1034,11 +1031,13 @@ export default class TemplateBuilderService {
                 const balanceDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(_.get(payment, 'BALANCE_AMOUNT', '')) + "</div>"
                 const referenceDiv =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + _.get(payment, 'PROVIDER_TRANS_ID', '') + "</div>"
                 contentDiv.innerHTML = pAmountDiv + cardNumberDiv + balanceDiv + referenceDiv;
+                contentDiv.style.padding = '10px';
 
                 mediaExchangeDiv.appendChild(contentDiv);
-            })
-            return mediaExchangeDiv;
-        }
+        });
+
+        return mediaExchangeDiv;
+
 
         let printMessage;
         let pName;
