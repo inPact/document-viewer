@@ -735,12 +735,12 @@ export default class TemplateBuilderService {
 
     createTotalsData(printData, isGiftCardBill, isTaxExempt) {
 
-        var tplOrderTotals = this._doc.createElement('div');
+        const tplOrderTotals = this._doc.createElement('div');
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
 
-        if( this._docData.documentType === 'orderBill' && printData.variables.ORDER_TYPE === 'MEDIAEXCHANGE' ){
-            return;
+        if (this._docData.documentType === 'orderBill' && printData.variables.ORDER_TYPE === 'MEDIAEXCHANGE') {
+            return tplOrderTotals;
         }
 
         if (this._docObj && [
