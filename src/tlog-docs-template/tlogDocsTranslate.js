@@ -581,7 +581,11 @@ export default class TlogDocsTranslateService {
                 "INSTALLMENTS_CREDIT_TRANSACTION": "עסקת אשראי של {{installmentsCount}} תשלומים",
                 "FIRST_INSTALLMENT":"תשלום ראשון על סך {{installmentAmount}}",
                 "REST_INSTALLMENTS":"ועוד {{restInstallmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד ",
-                "EQUAL_INSTALLMENTS": "{{installmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד"
+                "EQUAL_INSTALLMENTS": "{{installmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד",
+                "card_load": "טעינת כרטיס",
+                "card_no": "מספר כרטיס",
+                "REMAINING_BALANCE": "יתרת הכרטיס",
+                "REFERENCE": "מספר הפניה",
             }
         };
 
