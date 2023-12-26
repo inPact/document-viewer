@@ -592,6 +592,7 @@ export default class TlogDocsTranslateService {
             TOTAL_INC_VAT: 'TOTAL',
             CONFIRMATION_NO: "CONFIRMATION NO.",
             SURCHARGE: "SURCHARGE",
+            CHECK: "BILL",
         });
 
         return translations;
