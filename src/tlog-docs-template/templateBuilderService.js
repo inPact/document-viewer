@@ -739,10 +739,6 @@ export default class TemplateBuilderService {
         tplOrderTotals.id = 'tplOrderTotals';
         tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' tpl-body-div' : '';
 
-        if (this._docData.documentType === 'orderBill' && printData.variables.ORDER_TYPE === 'MEDIAEXCHANGE') {
-            return tplOrderTotals;
-        }
-
         if (this._docObj && [
             'invoice',
             'CreditCardPayment',
