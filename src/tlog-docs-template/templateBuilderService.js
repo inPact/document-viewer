@@ -1012,7 +1012,6 @@ export default class TemplateBuilderService {
         const giftCardLoads =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload');
         const mediaExchangeDiv = this._doc.createElement('div');
         mediaExchangeDiv.id = 'mediaExchangeDiv';
-        mediaExchangeDiv.style.borderBottom = 'solid #E8E8E8 1px';
 
         giftCardLoads.forEach((payment)=> {
                 const contentDiv = this._doc.createElement('div');
