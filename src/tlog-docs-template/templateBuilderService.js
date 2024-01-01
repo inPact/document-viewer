@@ -1014,12 +1014,12 @@ export default class TemplateBuilderService {
 
     }
     createMediaExchange(printData) {
-        const mediaExchangePayments =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard');
+        const giftCardLoads =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload');
         const mediaExchangeDiv = this._doc.createElement('div');
         mediaExchangeDiv.id = 'mediaExchangeDiv';
         mediaExchangeDiv.style.borderBottom = 'solid #E8E8E8 1px';
 
-        mediaExchangePayments.forEach((payment)=> {
+        giftCardLoads.forEach((payment)=> {
                 const contentDiv = this._doc.createElement('div');
                 const cardNumber = payment.DISPLAY_CARD_NUMBER || '';
 
