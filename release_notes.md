@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## NEXT
+* [TAB-34003] DCV | GC load documents
 
 ## 1.56.0
 * [TAB-34110] DCV | AU | Split Check Adjustments
