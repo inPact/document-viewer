@@ -2,7 +2,12 @@
 
 ## NEXT
 * [TAB-29182] Optima Digital Signature
+
+## 1.57.0
 * [TAB-34003] DCV | GC load documents
+
+## 1.56.0
+* [TAB-34110] DCV | AU | Split Check Adjustments
 
 ## 1.55.0
 * [TAB-33620] DCV | AU Modifications for Gift Card Load
