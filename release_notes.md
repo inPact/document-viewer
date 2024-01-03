@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.57.0
 * [TAB-34003] DCV | GC load documents
 
 ## 1.56.0
