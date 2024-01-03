@@ -23,10 +23,6 @@ export default class PaymentSection {
         payments.forEach(payment => {
             let elementTextValue = payment.CURRENCY_FACE_VALUE ? '' : payment.name || '';
 
-            if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload') {
-                return;
-            }
-
             let elementText = this.$htmlCreator.create({
                 id: 'payment-text',
                 classList: ['total-name'],
