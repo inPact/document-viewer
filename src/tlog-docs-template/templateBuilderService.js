@@ -1004,7 +1004,15 @@ export default class TemplateBuilderService {
             "<div class='total-name'>" + (transactionNumText ? (transactionNumText) : " ") + "</div>" +
             "<div class='number-data'>" + transactNum + "</div>" + "</div>"
 
-        giftCardDiv.appendChild(transactNumDiv);
+        // Print Message
+        var printMessageDiv = this._doc.createElement('div');
+        var printMessage = printData.collections.GIFT_CARD_PAYMENTS[0].PRINT_MESSAGE;
+        console.log(printMessage);
+        transactNumDiv.innerHTML = "<div class='itemDiv'>" +
+            "<div class='print-message'>" + printMessage + "</div>" + "</div>";
+
+        giftCardDiv.appendChild(printMessageDiv);
+
 
         return giftCardDiv;
 
