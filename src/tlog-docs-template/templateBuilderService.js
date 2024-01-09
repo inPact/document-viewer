@@ -905,7 +905,6 @@ export default class TemplateBuilderService {
                     tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
                 }
             } else if (this._docObj.docPaymentType === ("GiftCard") || (this._docObj.docPaymentType === ("GiftCardPayment"))) {
-                console.log('=== TEST ===');
                 var giftCardPayment = this.createGiftCardDetails(printData);
                 tplOrderPaymentsDiv.appendChild(giftCardPayment);
             } else if (['CashPayment', 'CashRefund'].includes(this._docObj.docPaymentType)) {
