@@ -352,7 +352,6 @@ export default class TlogDocsService {
         documentInfo.documentType = document.documentType;
 
         const paymentType = _.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE');
-        console.log('=== getHTMLDocumentWithoutTlog ===', paymentType);
         switch (paymentType) {
             case 'cash':
                 documentInfo.docPaymentType = 'CashPayment';
