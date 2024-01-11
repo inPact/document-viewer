@@ -535,6 +535,15 @@ export default class BillService {
             name: this.$translate.getText('CHANGE'),
             amount: variables.CHANGE
         });
+
+        // In case of orderBill (without variables.DOC_TYPE) and variables.BAL_DUE - Show it
+        if (!variables.DOC_TYPE && variables.BAL_DUE) {
+            payments.push({
+                name: this.$translate.getText('Balance'),
+                amount: variables.BAL_DUE
+            });
+        }
+
         return payments;
     }
 
