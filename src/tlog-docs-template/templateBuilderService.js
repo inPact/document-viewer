@@ -905,7 +905,7 @@ export default class TemplateBuilderService {
                     tplOrderPaymentsDiv.appendChild(signatureArea);
                     tplOrderPaymentsDiv.appendChild(this.$signatureService.getSignature(signatureArea));
                 }
-            } else if (this._docObj.docPaymentType === ("GiftCard")) {
+            } else if (this._docObj.docPaymentType === ("GiftCard") || (this._docObj.docPaymentType === ("GiftCardPayment"))) {
                 var giftCardPayment = this.createGiftCardDetails(printData);
                 tplOrderPaymentsDiv.appendChild(giftCardPayment);
             } else if (['CashPayment', 'CashRefund'].includes(this._docObj.docPaymentType)) {
@@ -975,36 +975,46 @@ export default class TemplateBuilderService {
 
         var giftCardDiv = this._doc.createElement('div');
         //giftCard Amount div
-        var paidGiftCardText = this.$translate.getText('PAID_GIFTCARD');
-        var pAmount = printData.collections.GIFT_CARD_PAYMENTS[0].P_AMOUNT ? Number(printData.collections.GIFT_CARD_PAYMENTS[0].P_AMOUNT).toFixed(2) : '';
-        var giftCardPaidDiv = this._doc.createElement('div')
-        giftCardPaidDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (paidGiftCardText ? paidGiftCardText : " ") + "</div>" +
-            "<div class='total-amount'>" + pAmount + "</div></div>"
+        // var paidGiftCardText = this.$translate.getText('PAID_GIFTCARD');
+        // var pAmount = printData.collections.GIFT_CARD_PAYMENTS[0].P_AMOUNT ? Number(printData.collections.GIFT_CARD_PAYMENTS[0].P_AMOUNT).toFixed(2) : '';
+        // var giftCardPaidDiv = this._doc.createElement('div')
+        // giftCardPaidDiv.innerHTML = "<div class='itemDiv'>" +
+        //     "<div class='total-name'>" + (paidGiftCardText ? paidGiftCardText : " ") + "</div>" +
+        //     "<div class='total-amount'>" + pAmount + "</div></div>"
 
-        giftCardDiv.appendChild(giftCardPaidDiv);
+        // giftCardDiv.appendChild(giftCardPaidDiv);
 
-        //giftcard Num div
-        var giftCardNum = this.$translate.getText('CARD_NO');
-        var cardNum = printData.collections.GIFT_CARD_PAYMENTS[0].CARD_NUMBER ? printData.collections.GIFT_CARD_PAYMENTS[0].CARD_NUMBER : '';
-        var giftCardNumDiv = this._doc.createElement('div')
-        giftCardNumDiv.id = 'giftCardNumDiv';
-        giftCardNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (giftCardNum ? (giftCardNum) : " ") + "</div>" +
-            "<div class='number-data'>" + cardNum + "</div>" + "</div>"
+        // //giftcard Num div
+        // var giftCardNum = this.$translate.getText('CARD_NO');
+        // var cardNum = printData.collections.GIFT_CARD_PAYMENTS[0].CARD_NUMBER ? printData.collections.GIFT_CARD_PAYMENTS[0].CARD_NUMBER : '';
+        // var giftCardNumDiv = this._doc.createElement('div')
+        // giftCardNumDiv.id = 'giftCardNumDiv';
+        // giftCardNumDiv.innerHTML = "<div class='itemDiv'>" +
+        //     "<div class='total-name'>" + (giftCardNum ? (giftCardNum) : " ") + "</div>" +
+        //     "<div class='number-data'>" + cardNum + "</div>" + "</div>"
 
-        giftCardDiv.appendChild(giftCardNumDiv);
+        // giftCardDiv.appendChild(giftCardNumDiv);
 
-        //transaction Num div
-        var transactionNumText = this.$translate.getText('TRANSACTION_NO');
-        var transactNum = printData.collections.GIFT_CARD_PAYMENTS[0].PROVIDER_TRANS_ID ? printData.collections.GIFT_CARD_PAYMENTS[0].PROVIDER_TRANS_ID : '';
-        var transactNumDiv = this._doc.createElement('div');
-        transactNumDiv.id = 'transactNumDiv';
-        transactNumDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='total-name'>" + (transactionNumText ? (transactionNumText) : " ") + "</div>" +
-            "<div class='number-data'>" + transactNum + "</div>" + "</div>"
+        // //transaction Num div
+        // var transactionNumText = this.$translate.getText('TRANSACTION_NO');
+        // var transactNum = printData.collections.GIFT_CARD_PAYMENTS[0].PROVIDER_TRANS_ID ? printData.collections.GIFT_CARD_PAYMENTS[0].PROVIDER_TRANS_ID : '';
+        // var transactNumDiv = this._doc.createElement('div');
+        // transactNumDiv.id = 'transactNumDiv';
+        // transactNumDiv.innerHTML = "<div class='itemDiv'>" +
+        //     "<div class='total-name'>" + (transactionNumText ? (transactionNumText) : " ") + "</div>" +
+        //     "<div class='number-data'>" + transactNum + "</div>" + "</div>"
 
-        giftCardDiv.appendChild(transactNumDiv);
+        // giftCardDiv.appendChild(transactNumDiv);
+
+        // Print Message
+        var printMessageDiv = this._doc.createElement('div');
+        var printMessage = printData.collections.GIFT_CARD_PAYMENTS[0].PRINT_MESSAGE;
+        printMessageDiv.innerHTML = "<div class='itemDiv'>" +
+            "<div class='print-message'>" + printMessage + "</div>" + "</div>";
+        printMessageDiv.style['white-space'] = 'pre-line';
+
+        giftCardDiv.appendChild(printMessageDiv);
+
 
         return giftCardDiv;
 
