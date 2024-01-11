@@ -348,11 +348,11 @@ export default class TlogDocsService {
     }
 
     getHTMLDocumentWithoutTlog(document, options = {}) {
-        let documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
+        const documentInfo = { isRefund: document.documentType.toUpperCase().indexOf('REFUND') > -1 };
         documentInfo.documentType = document.documentType;
 
-
-        switch (_.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE')) {
+        const paymentType = _.get(document, 'printData.collections.PAYMENT_LIST[0].P_TENDER_TYPE');
+        switch (paymentType) {
             case 'cash':
                 documentInfo.docPaymentType = 'CashPayment';
                 break;
