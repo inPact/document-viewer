@@ -215,6 +215,7 @@ export default class CreditSlipService {
                 variables: printData.variables,
                 isRefund: printData.printData,
                 documentInfo: {documentType: 'creditSlip'},
+                creditSlipDoc: creditSlipDoc
             });
 
             creditSlipDiv.appendChild(creditSection)
