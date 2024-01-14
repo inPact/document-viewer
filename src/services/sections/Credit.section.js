@@ -31,7 +31,7 @@ export default class CreaditSection {
 
         var payment;
         if(this.$localization.allowByRegions(['us', 'au'])) {
-            payment = _.get(options, 'collections.PAYMENT_LIST[0]');
+            payment = options.creditSlipDoc ? options.creditSlipDoc : _.get(options, 'collections.PAYMENT_LIST[0]');
         } else {
             payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
         }
@@ -120,7 +120,8 @@ export default class CreaditSection {
         if ((documentType === 'invoice' || documentType === 'creditSlip') && len > 0) {
             const elementEmv = this.$emvService.createEmvTemplate(documentType, {
                 variables: options.variables,
-                collections: options.collections
+                collections: options.collections,
+                creditSlipPayment: payment
             }, this._doc);
 
             creditContainer.append(elementEmv);

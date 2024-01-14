@@ -19,7 +19,7 @@ export default class emvService {
         let emvData;
 
         if (documentType === 'orderBill' || documentType === 'creditSlip') {
-            let payment = printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined);
+            let payment = printData.creditSlipPayment || printData.collections.PAYMENT_LIST.find(p => p.EMV !== undefined);
             // Checking if EMV has TYPE property
             // to remove duplicates if needed
             // only for FreedomPay
