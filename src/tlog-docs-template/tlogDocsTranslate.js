@@ -6,7 +6,7 @@ export default class TlogDocsTranslateService {
     }
 
     _translate() {
-        return {
+        const translations = {
             "en-US": {
                 "POINTS_REDEMPTION": "Points Redemption",
                 "HOTEL_CHECK_NUMBER":"Hotel Check Number",
@@ -39,6 +39,7 @@ export default class TlogDocsTranslateService {
                 "CUSTOMER_NAME": "NAME",
                 "LAST_4": "LAST 4 DIGITS",
                 "CARD_BALANCE": "CARD BALANCE",
+                "REMAINING_BALANCE": "Remaining Balance",
                 "AMOUNT": "AMOUNT",
                 "CHARGE_ACCOUNT": "CHARGE ACCOUNT",
                 "CASH": "CASH",
@@ -233,6 +234,8 @@ export default class TlogDocsTranslateService {
                 "customer_id": "CUSTOMER ID",
                 "customer_name": "NAME",
                 "card_number": "CARD NUMBER",
+                "card_no": "Card No",
+                "card_load": "Card Load",
                 "order_search_comment": "Search is by order closing time",
                 "from": "FROM",
                 "to": "TO",
@@ -305,7 +308,8 @@ export default class TlogDocsTranslateService {
                 "INSTALLMENTS_CREDIT_TRANSACTION": "Installments credit transaction of {{installmentsCount}} payments",
                 "FIRST_INSTALLMENT":"First payment {{installmentAmount}}",
                 "REST_INSTALLMENTS":"And other {{restInstallmentsCount}} payments of {{installmentAmount}} each",
-                "EQUAL_INSTALLMENTS": "{{installmentsCount}} payments of {{installmentAmount}} each"
+                "EQUAL_INSTALLMENTS": "{{installmentsCount}} payments of {{installmentAmount}} each",
+                "REFERENCE": "Reference",
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -577,15 +581,33 @@ export default class TlogDocsTranslateService {
                 "INSTALLMENTS_CREDIT_TRANSACTION": "עסקת אשראי של {{installmentsCount}} תשלומים",
                 "FIRST_INSTALLMENT":"תשלום ראשון על סך {{installmentAmount}}",
                 "REST_INSTALLMENTS":"ועוד {{restInstallmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד ",
-                "EQUAL_INSTALLMENTS": "{{installmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד"
+                "EQUAL_INSTALLMENTS": "{{installmentsCount}} תשלומים על סך {{installmentsAmount}} כל אחד",
+                "card_load": "טעינת כרטיס",
+                "card_no": "מספר כרטיס",
+                "REMAINING_BALANCE": "יתרת הכרטיס",
+                "REFERENCE": "מספר הפניה",
             }
-        }
+        };
+
+        translations['en-AU'] = Object.assign({}, translations['en-US'], {
+            ABN: 'ABN',
+            TAX_INVOICE: 'TAX INVOICE',
+            Server: 'SERVED BY',
+            TOTAL_INC_VAT: 'TOTAL',
+            CONFIRMATION_NO: "CONFIRMATION NO.",
+            SURCHARGE: "SURCHARGE",
+            CHECK: "BILL",
+        });
+
+        return translations;
     }
 
     configure(options) {
         if (options.locale) {
             this._options.locale = options.locale;
         }
+
+        this._options.realRegion = options.realRegion || 'il';
     }
 
     getText(key, keys, values) {

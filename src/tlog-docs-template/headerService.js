@@ -3,16 +3,18 @@ import TlogDocsTranslateService from './tlogDocsTranslate';
 import HtmlCreator from '../helpers/htmlCreator.service';
 
 import ReturnTransactionSection from '../services/sections/ReturnTransaction.section';
+import Localization from "../helpers/localization.service";
 
 export default class HeaderService {
 
     constructor(options) {
         this.timezone = options.timezone;
-        this._isUS = options.isUS;
+        this.realRegion = options.realRegion || 'il';
         this.$translate = new TlogDocsTranslateService(options);
         this.$utils = new Utils();
         this.$htmlCreator = new HtmlCreator();
         this.$returnTransactionSection = new ReturnTransactionSection(options);
+        this.$localization = new Localization(options);
     }
 
 
@@ -39,9 +41,13 @@ export default class HeaderService {
             'ORGANIZATION_TEL'
         ];
 
-        headerKeys.forEach(element => {
-            var constantLine = this.placeHeaderData(printData, element)
-            tplHeaderConstants.appendChild(constantLine)
+        if (this.$localization.allowByRegions(['au'])) {
+            headerKeys.splice(1, 0, 'ORGANIZATION_BN_NUMBER');
+        }
+
+        headerKeys.forEach(key => {
+            var constantLine = this.placeHeaderData(printData, key);
+            tplHeaderConstants.appendChild(constantLine);
         })
 
         //inner function for placing the constants on the template with data
@@ -71,19 +77,18 @@ export default class HeaderService {
         return headerDiv;
     }
 
-    placeHeaderData(printData, element) {
+    placeHeaderData(printData, key) {
         var tplHeaderLine = this._doc.createElement('div');
         tplHeaderLine.id = 'tplHeaderLine';
-        if (printData.variables.hasOwnProperty(element)) {
+        if (printData.variables.hasOwnProperty(key)) {
 
-            switch (element) {
-                case 'ORGANIZATION_NAME': {
+            switch (key) {
+                case 'ORGANIZATION_NAME':
                     tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_NAME;
                     tplHeaderLine.classList += ' big-chars';
-                }
                     break;
-                case 'ORGANIZATION_LEGAL_NAME': {
-                    if (!this._isUS) {
+                case 'ORGANIZATION_LEGAL_NAME':
+                    if (this.$localization.allowByRegions(['il'])) {
                         var orgString = printData.variables.ORGANIZATION_LEGAL_NAME;
                         var bnNumber = this.$translate.getText('BN_NUMBER');
                         var authorizedDealerNumber = this.$translate.getText('AUTHORIZED_DEALER_NUMBER');
@@ -101,21 +106,22 @@ export default class HeaderService {
                     else {
                         tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_LEGAL_NAME;
                     }
-                }
                     break;
-                case 'ORGANIZATION_ADDR_STREET': {
+                case 'ORGANIZATION_ADDR_STREET':
                     tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_ADDR_STREET;
-                }
                     break;
-                case 'ORGANIZATION_ADDR_CITY': {
+                case 'ORGANIZATION_ADDR_CITY':
                     tplHeaderLine.innerHTML = printData.variables.ORGANIZATION_ADDR_CITY;
-                }
                     break;
-                case 'ORGANIZATION_TEL': {
+                case 'ORGANIZATION_TEL':
                     var phoneTranslate = this.$translate.getText('PHONE');
                     var phoneString = phoneTranslate + " " + printData.variables.ORGANIZATION_TEL;
                     tplHeaderLine.innerHTML = phoneString;
-                }
+                    break;
+                case 'ORGANIZATION_BN_NUMBER':
+                    var abnTranslate = this.$translate.getText('ABN');
+                    var abnString = abnTranslate + ' ' + printData.variables.ORGANIZATION_BN_NUMBER;
+                    tplHeaderLine.innerHTML = abnString;
                     break;
 
             }
@@ -153,24 +159,19 @@ export default class HeaderService {
         tplOrderServerClients.id = "tplOrderServerClients";
         var tplcCheckNumber = this._doc.createElement('div');
         tplcCheckNumber.id = "tplcCheckNumber";
+
         //create array for the appendChildren function
         var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber, tplOriginDateTime];
 
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
 
-        var tplOrderHeaderReturn = this.appendChildren(tplOrderHeader, filledInfoArray)
-
-        return tplOrderHeaderReturn;
-
+        return this.appendChildren(tplOrderHeader, filledInfoArray)
     }
 
-    placeOrderHeaderData(printData, array, filledInfoArray) {
-
-        array.forEach(element => {
-            var singleElement = this.fillOrderHeaderData(printData, element)
-            filledInfoArray.push(singleElement);
-
+    placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray) {
+        orderBasicInfoArray.forEach(basicInfoElement => {
+            filledInfoArray.push(this.fillOrderHeaderData(printData, basicInfoElement));
         });
     }
 
@@ -203,13 +204,11 @@ export default class HeaderService {
                 }
                 break;
             }
-
-
             case 'tplOrderDateTime': {
                 if (printData.variables.CREATED_AT) {
                     let issuedAtDate = this.$utils.toDate({
                         timezone: this.timezone,
-                        isUS: this._isUS,
+                        realRegion: this.realRegion,
                         date: printData.variables.CREATED_AT
                     });
 
@@ -225,13 +224,12 @@ export default class HeaderService {
                 }
                 break;
             }
-
             case "tplOriginDateTime": {
 
                 if (printData.variables.ISSUED_AT) {
                     let issuedAtDate = this.$utils.toDate({
                         timezone: this.timezone,
-                        isUS: this._isUS,
+                        realRegion: this.realRegion,
                         date: printData.variables.ISSUED_AT
                     });
 
@@ -248,11 +246,10 @@ export default class HeaderService {
 
                 break;
             }
-
-            //Asked to take this down temporary
             case 'tplOrderTitle': {
+                const orderTitle = this.$localization.allowByRegions(['au']) ? this.$translate.getText('TAX_INVOICE') : this._docObj.title;
                 if (this._docObj.title) {
-                    htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + this._docObj.title; + "</div >"
+                    htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + orderTitle + "</div>"
                 }
                 break;
             }
@@ -310,15 +307,17 @@ export default class HeaderService {
                 break;
             }
 
-            // case 'tplcCheckNumber': {
-            //     var invoiceNum = printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER ? printData.collections.PAYMENT_LIST[0].NUMBER : null;
-            //     if (this._docData.documentType === "invoice" && invoiceNum) {
-            //         var checkTranslate = this.$translate.getText("INVOICE")
-            //         printData.collections.PAYMENT_LIST.length > 0 && printData.collections.PAYMENT_LIST[0].NUMBER
-            //         htmlElement.innerHTML = `<span> ` + checkTranslate + " " + invoiceNum + `</span>`;
-            //     }
-            //     break;
-            // }
+            case 'tplcCheckNumber': {
+                const isSplitCheck = _.get(printData, 'variables.CHECKS_COUNT', 0) > 1;
+                const checkNumber = _.get(printData, 'variables.CHECK_NO', '');
+
+                if (this.$localization.allowByRegions(['au']) && isSplitCheck && checkNumber) {
+
+                    htmlElement.innerHTML = `<span> ${this.$translate.getText('CHECK')} ${checkNumber} </span>` ;
+                }
+
+                break;
+            }
 
         }
         return htmlElement;
@@ -412,7 +411,7 @@ export default class HeaderService {
 
     orderWordsByLocale(input1, input2, input3) {
         let htmlString;
-        if (this._isUS) {
+        if (this.$localization.allowByRegions(['us', 'au'])) {
             htmlString = "<span>" + input2 + "</span>" + "&nbsp;" + "<span>" + input1 + "</span>" + "&nbsp;" + " <span> #" + input3 + "</span >"
         } else {
             htmlString = "<span>" + input1 + "</span>" + "&nbsp;" + "<span>" + input2 + "</span> " + "&nbsp;" + " <span> #" + input3 + "</span >"

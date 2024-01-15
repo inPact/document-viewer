@@ -30,13 +30,6 @@ export default class Utils {
 
     }
 
-    isUsAmount(isUS) {
-        if (isUS) {
-            return 'ltrAmount';
-        }
-        return 'rtlAmount';
-    }
-
     twoDecimals(number) {
 
         let result = '';
@@ -65,34 +58,29 @@ export default class Utils {
     }
 
     toDate(options) {
+        const formatByRegion = {
+            il: 'DD/MM/YYYY H:mm',
+            us: 'MM/DD/YYYY h:mm A',
+            au: 'DD/MM/YYYY h:mm A'
+        }
+
         let result = '[DATE]';
-
-        let isUS = options.isUS;
         let date = options.date;
-        let format = options.format;
-        
-        if (isUS) {
+        let format = formatByRegion[options.realRegion];
 
-            format = format || 'MM/DD/YYYY h:mm A';
 
-            if (options.timezone) {
-                result = moment(date).tz(`${options.timezone}`).format(format);
-            } else {
-                result = moment(date).format(format);
-            }
+        if (options.withoutTime) {
+            const timeStartIndex = format.indexOf(' ');
+            format = formatByRegion[options.realRegion].slice(0, timeStartIndex);
+        }
+
+        if (options.timezone) {
+            result = moment.utc(date).tz(`${options.timezone}`).format(format);
         } else {
-
-            format = format || 'DD/MM/YYYY H:mm';
-
-            if (options.timezone) {
-                result = moment(date).tz(`${options.timezone}`).format(format);
-            } else {
-                result = moment(date).format(format);
-            }
+            result = moment(date).format(format);
         }
 
         return result;
-
     }
 
     replaceAll(text, search, replacement) {

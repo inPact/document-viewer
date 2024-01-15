@@ -11,7 +11,6 @@ export default class GiftCardSlipService {
         this.$utils = new Utils();
         this.$signatureService = new SignatureService();
         this._locale;
-        this._isUS;
         this._doc;
         this.timezone;
         this.configure(options)
@@ -19,7 +18,7 @@ export default class GiftCardSlipService {
     }
     configure(options) {
         if (options.locale) this._locale = options.locale;
-        if (options.isUS) this._isUS = options.isUS;
+        this.realRegion = options.realRegion || 'il';
         this.timezone = options.timezone;
 
     }
@@ -64,7 +63,7 @@ export default class GiftCardSlipService {
             cardNumDiv.id = 'cardNumDiv';
             let cardNumText = this.$translate.getText('CardNumber');
             cardNumDiv.innerHTML = "<div class='itemDiv'>" +
-                "<div class='total-name'>" + (!(cardNumText === null) ? cardNumText : "") + ": " + (giftCardSlipDoc.CARD_NUMBER_MASKED ? giftCardSlipDoc.CARD_NUMBER_MASKED : "XXXX-" + giftCardSlipDoc.LAST_4) +
+                "<div class='total-name'>" + (cardNumText ? cardNumText : '') + ": " + (giftCardSlipDoc.DISPLAY_CARD_NUMBER || '') +
                 "</div></div>"
 
             giftCardSlipDiv.appendChild(cardNumDiv)
@@ -85,7 +84,7 @@ export default class GiftCardSlipService {
             let giftCardSlipTimeDiv = this._doc.createElement('div')
             let providerPaymentDate = this.$utils.toDate({
                 timezone: this.timezone,
-                isUS: this._isUS,
+                realRegion: this.realRegion,
                 date: giftCardSlipDoc.PROVIDER_PAYMENT_DATE
             });
 

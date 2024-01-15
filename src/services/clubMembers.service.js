@@ -10,7 +10,7 @@ export default class ClubMembers {
         this.$htmlCreator = new HtmlCreator();
         this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService({
-            isUS: options.isUS,
+            realRegion: options.realRegion || 'il',
             locale: options.locale
         });
     }

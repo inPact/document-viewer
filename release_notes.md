@@ -1,10 +1,35 @@
 # Document Viewer release notes
 
+## 1.57.0
+* [TAB-34003] DCV | GC load documents
+
+## 1.56.0
+* [TAB-34110] DCV | AU | Split Check Adjustments
+
+## 1.55.0
+* [TAB-33620] DCV | AU Modifications for Gift Card Load
+* [TAB-33679] DCV | AU | Add the word refund before the payment if the payment type is refund
+
+## 1.54.1
+* [TAB-33702] DCV | Regression 7.21.1 - Damaged document viewer
+
+## 1.54.0
+* [TAB-32272] DCV | AU document viewer
+
+### 1.53.1
+* [TAB-33501] DCV | Return transaction wrong source order business date
+
+## 1.53.0
+* [TAB-32304] OFC+NOFC | AU document viewer should open in English
+
 ## 1.52.0
 * [TAB-32274] DCV | Display of OTH on combo items
 
 ## 1.51.0
 * [TAB-32581] DCV | Error in Gift card reciept
+
+### 1.50.1
+* [SKIP VERSION]
 
 ## 1.50.0
 * [TAB-32056] NOFC + OFC | Doc Viewer - Remove [P_BONUS_AMOUNT] field from IL

@@ -5,11 +5,11 @@ import TlogDocsTranslateService from '../tlog-docs-template/tlogDocsTranslate';
 export default class HouseAccountPayment {
 
     constructor(options) {
-        this._isUS = options.isUS;
+        this.realRegion = options.realRegion || 'il';
         this.$htmlCreator = new HtmlCreator();
         this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService({
-            isUS: options.isUS,
+            realRegion: this.realRegion,
             locale: options.locale
         });
         this.timezone = options.timezone;
@@ -172,7 +172,7 @@ export default class HouseAccountPayment {
         if (houseAccountPayment.PROVIDER_PAYMENT_DATE) {
             let providerPaymentDate = this.$utils.toDate({
                 timezone: this.timezone,
-                isUS: this._isUS,
+                realRegion: this.realRegion,
                 date: houseAccountPayment.PROVIDER_PAYMENT_DATE
             });
 

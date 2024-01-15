@@ -7,18 +7,18 @@ import TlogDocsTranslateService from '../tlog-docs-template/tlogDocsTranslate';
 export default class CreditTransaction {
 
     constructor(options) {
+        this.realRegion = options.realRegion || 'il';
         this.$htmlCreator = new HtmlCreator();
         this.$utils = new Utils();
         this.$translate = new TlogDocsTranslateService({
-            isUS: options.isUS,
+            realRegion: this.realRegion,
             locale: options.locale
         });
         this.timezone = options.timezone;
+
     }
 
     get(options) {
-
-        let isUS = this.isUS;
         let creditTransaction = options.data;
 
         let creditTransactionContainer = this.$htmlCreator.createSection({
@@ -60,7 +60,7 @@ export default class CreditTransaction {
         if (creditTransaction.PROVIDER_PAYMENT_DATE) {
             let providerPaymentDate = this.$utils.toDate({
                 timezone: this.timezone,
-                isUS: isUS,
+                realRegion: this.realRegion,
                 date: creditTransaction.PROVIDER_PAYMENT_DATE
             });
 

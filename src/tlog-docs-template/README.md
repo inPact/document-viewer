@@ -26,7 +26,7 @@ NOTE: it is recommanded to add the dependencies and the css file in the head tag
 There is a need for some input parameters in order the module to work:
 1. TLOG data;
 2. print data
-3. isUS boolean property to decide in what country
+3. realRegion boolean property to decide in what country
 4. a locale to decalre the language
 
 **** USING THE MODULE *****
@@ -34,7 +34,7 @@ There is a need for some input parameters in order the module to work:
 When using the Module, first init it:
 
 var service   = new TlogDocsService({
-    isUS: _isUS,
+    realRegion: realRegion,
     local: 'he-IL'
 });
 
