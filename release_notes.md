@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-33619] DCV | IL receipt should show remaining amount and prepaid slip should show relevant customer information
+
 ## 1.57.0
 * [TAB-34003] DCV | GC load documents
 
