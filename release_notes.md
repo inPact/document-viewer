@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.58.0
 * [TAB-33619] DCV | IL receipt should show remaining amount and prepaid slip should show relevant customer information
 * [TAB-29182] DCV | Optima Digital Signature
 
