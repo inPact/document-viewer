@@ -6,6 +6,7 @@ import SignatureService from './signatureService';
 import HouseAccountPayment from '../services/houseAccountPayment.service';
 import DocumentFactory from '../helpers/documentFactory.service';
 import HtmlCreator from '../helpers/htmlCreator.service';
+import _ from "lodash";
 
 export default class DeliveryNoteTransactionDataService {
     constructor(options) {
@@ -241,8 +242,8 @@ export default class DeliveryNoteTransactionDataService {
             dNoteChargeAccntDiv.appendChild(elementHouseAccountPayment);
         }
 
-
-        if (_.get(documentInfo, 'md.signature')) {
+        const hasSignature = _.get(documentInfo, 'md.signature') || _.get(printData, 'collections.PAYMENT_LIST[0].SIGNATURE_DATA');
+        if (hasSignature) {
 
             let elementSignatureArea = this.$htmlCreator.create({
                 type: 'div',
