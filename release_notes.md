@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## 1.57.1
+* [TAB-29182] DCV | Optima Digital Signature
+
 ## 1.57.0
 * [TAB-34003] DCV | GC load documents
 
