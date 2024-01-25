@@ -26,21 +26,35 @@ export default class SignatureService {
 
         this._doc = DocumentFactory.get();
         let documentInfo = DocumentFactory.getDocumentInfo();
+        let printData = DocumentFactory.getPrintData();
 
-        if (_.get(documentInfo, 'md.signature') === undefined)
-            return;
+        // The Signature exists on both the tlog (documentInfo) and the printData.
+        // We first attempt to fetch it from the printData, and if it doesn't exist, we fetch it from the tlog.
+        let signatureFormat = _.get(printData, 'collections.PAYMENT_LIST[0].SIGNATURE_FORMAT');
+        let signatureData = _.get(printData, 'collections.PAYMENT_LIST[0].SIGNATURE_DATA');
 
-        let signatureData = documentInfo.md.signature;
-        let dimension = helper.getDimensionSafe(_.get(signatureData, 'dimension') || '300 -10 150 520');
+        let printDataSignature;
+        if (signatureData) {
+            printDataSignature = {
+                format: signatureFormat,
+                data: signatureData,
+            };
+        }
+        console.log('printDataSignature: ', printDataSignature)
+        let signature = printDataSignature || _.get(documentInfo, 'md.signature');
+        
+        if (!signature) return;
+
+        let dimension = helper.getDimensionSafe(_.get(signature, 'dimension') || '300 -10 150 520');
 
         let contenier = this.$htmlCreator.create({
             type: 'div',
             id: 'signature-contenier',
             classList: ['signature-container']
         })
-        if (documentInfo.md.signature.format === 'image/png') {
+        if (signature.format === 'image/png') {
             const image = new Image();
-            image.src = documentInfo.md.signature.data;
+            image.src = signature.data;
             image.height = '70';
             image.width = '70';
             const imageDiv = document.createElement('div');
@@ -62,7 +76,7 @@ export default class SignatureService {
             });
 
             let path = this.makeSVG('path', {
-                d: signatureData.data,
+                d: signature.data,
                 'stroke': "#06067f",
                 'stroke-width': "2",
                 'stroke-linecap': "butt",
