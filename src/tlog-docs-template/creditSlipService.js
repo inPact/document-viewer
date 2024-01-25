@@ -2,6 +2,7 @@ import Utils from '../helpers/utils.service';
 import TlogDocsTranslateService from './tlogDocsTranslate';
 import SignatureService from './signatureService';
 import CreaditSection from "../services/sections/Credit.section";
+import _ from "lodash";
 
 export default class CreditSlipService {
 
@@ -195,8 +196,9 @@ export default class CreditSlipService {
                 "<div class='total-amount'>" + (creditSlipDoc.P_AMOUNT ? Number(creditSlipDoc.P_AMOUNT).toFixed(2) : "") + "</div></div>";
             creditSlipDiv.appendChild(totalDiv)
 
-            //Add signature 
-            if (_.get(docObjChosen, 'md.signature')) {
+            //Add signature
+            const hasSignature = _.get(docObjChosen, 'md.signature') || _.get(printData, 'collections.PAYMENT_LIST[0].SIGNATURE_DATA');
+            if (hasSignature) {
 
                 var signatureArea = this._doc.createElement('div');
                 signatureArea.id = 'signatureArea';
