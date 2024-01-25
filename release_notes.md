@@ -2,6 +2,7 @@
 
 ## NEXT
 * [TAB-33619] DCV | IL receipt should show remaining amount and prepaid slip should show relevant customer information
+* [TAB-34090] DCV | All credit slips display EMV data of the first credit payment
 
 ## 1.57.1
 * [TAB-29182] DCV | Optima Digital Signature
