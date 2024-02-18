@@ -1,6 +1,9 @@
 # Document Viewer release notes
 
-## NEXT
+### 1.58.1
+* [TAB-35420] All credit slips display the signature of the first credit payment
+
+## 1.58.0
 * [TAB-33619] DCV | IL receipt should show remaining amount and prepaid slip should show relevant customer information
 * [TAB-34090] DCV | All credit slips display EMV data of the first credit payment
 
