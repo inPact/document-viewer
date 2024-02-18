@@ -30,8 +30,8 @@ export default class SignatureService {
 
         // The Signature exists on both the tlog (documentInfo) and the printData.
         // We first attempt to fetch it from the printData, and if it doesn't exist, we fetch it from the tlog.
-        let signatureFormat = _.get(printData, 'collections.PAYMENT_LIST[0].SIGNATURE_FORMAT');
-        let signatureData = _.get(printData, 'collections.PAYMENT_LIST[0].SIGNATURE_DATA');
+        let signatureFormat = printData.collections?.PAYMENT_LIST?.find(pl => pl.P_ID === documentInfo?.md?.paymentId)?.SIGNATURE_FORMAT
+        let signatureData = printData.collections?.PAYMENT_LIST?.find(pl => pl.P_ID === documentInfo?.md?.paymentId)?.SIGNATURE_DATA
 
         let printDataSignature;
         if (signatureData) {
