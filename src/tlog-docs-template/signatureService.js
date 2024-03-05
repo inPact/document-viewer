@@ -30,20 +30,26 @@ export default class SignatureService {
 
         // The Signature exists on both the tlog (documentInfo) and the printData.
         // We first attempt to fetch it from the printData, and if it doesn't exist, we fetch it from the tlog.
-        let signatureFormat = printData.collections?.PAYMENT_LIST?.find(pl => pl.P_ID === documentInfo?.md?.paymentId)?.SIGNATURE_FORMAT
-        let signatureData = printData.collections?.PAYMENT_LIST?.find(pl => pl.P_ID === documentInfo?.md?.paymentId)?.SIGNATURE_DATA
-
-        let printDataSignature;
+        let signatureFormat = null;
+        let signatureData = null;
+        if (printData.collections?.PAYMENT_LIST?.length === 1) {
+            signatureFormat = printData.collections?.PAYMENT_LIST[0]?.SIGNATURE_FORMAT;
+            signatureData = printData.collections?.PAYMENT_LIST[0]?.SIGNATURE_DATA;
+        } else {
+            signatureFormat = printData.collections?.PAYMENT_LIST?.find(pl => pl.P_ID === documentInfo?.md?.paymentId)?.SIGNATURE_FORMAT;
+            signatureData = printData.collections?.PAYMENT_LIST?.find(pl => pl.P_ID === documentInfo?.md?.paymentId)?.SIGNATURE_DATA;
+        }
+        
+        let printDataSignature = null;
         if (signatureData) {
             printDataSignature = {
                 format: signatureFormat,
                 data: signatureData,
             };
         }
-        console.log('printDataSignature: ', printDataSignature)
         let signature = printDataSignature || _.get(documentInfo, 'md.signature');
         
-        if (!signature) return;
+        if (!signature) return element;
 
         let dimension = helper.getDimensionSafe(_.get(signature, 'dimension') || '300 -10 150 520');
 
