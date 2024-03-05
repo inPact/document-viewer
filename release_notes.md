@@ -3,6 +3,9 @@
 ## NEXT
 * [TAB-29182] Optima Digital Signature
 
+### 1.58.2
+* [TAB-35968] Recipt with signature crashes on documents
+
 ### 1.58.1
 * [TAB-35420] All credit slips display the signature of the first credit payment
 
