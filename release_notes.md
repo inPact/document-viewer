@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-35376] Remove the Subtotal row from the GC load document
+
 ### 1.58.2
 * [TAB-35968] Recipt with signature crashes on documents
 
