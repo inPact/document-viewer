@@ -73,6 +73,8 @@ export default class TlogDocsTranslateService {
                 "CreditSlip": "CREDIT SLIP",
                 "GiftCardCreditSlip": "GIFT CARD SLIP",
                 "TransactionType": "TRANSACTION TYPE",
+                "ACTIVATED_CARDS": "Activated Cards",
+                "CARD": "Card",
                 "CardType": "CARD TYPE",
                 "CardNumber": "CARD NO.",
                 "CardHolder": "CARD HOLDER",
@@ -394,7 +396,6 @@ export default class TlogDocsTranslateService {
                 "BN_OR_SN": "ח.פ / ת.ז",
                 "ALL_ORDER_OTH": "הזמנה על חשבון הבית",
                 "CHARGE_TRANSACTION": "עסקת חיוב הקפה",
-
                 "CHECK": "חשבון",
                 "billText": "חשבון",
                 "TOTAL_TIPS": "תשר",
@@ -586,6 +587,10 @@ export default class TlogDocsTranslateService {
                 "card_no": "מספר כרטיס",
                 "REMAINING_BALANCE": "יתרת הכרטיס",
                 "REFERENCE": "מספר הפניה",
+                "ACTIVATED_CARDS": "כרטיסים פעילים",
+                "CARD": "כרטיס",
+                "CardType": "שם הסדרה",
+                "CardNumber": "מספר כרטיס",
             }
         };
 
