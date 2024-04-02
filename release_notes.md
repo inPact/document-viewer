@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-36203] Add series name & rewards numbers
+
 ### 1.58.2
 * [TAB-35968] Recipt with signature crashes on documents
 
