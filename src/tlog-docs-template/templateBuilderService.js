@@ -337,6 +337,13 @@ export default class TemplateBuilderService {
                     tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
                     tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
 
+                    if (this.$localization.allowByRegions(['us', 'au']) && this._printData.collections.REWARD_CARDS) {
+                        var tplRewardCards = this.createRewardCardsData(this._printData);
+                        tplRewardCards.id = 'tplRewardCards';
+                        tplRewardCards.hasChildNodes() ? tplRewardCards.classList += ' body-div tpl-body-div' : '';
+                        docTemplate.appendChild(tplRewardCards);
+                    }
+
                     /// ADD Balance Section to tempalte.
                     if ((docObjChosen.isFullOrderBill || this._docObj.type === 'check') &&
                         this._printData.variables.BAL_DUE &&
@@ -939,6 +946,36 @@ export default class TemplateBuilderService {
         return tplOrderPaymentsDiv;
     }
 
+    createRewardCardsData(printData) {
+        var tplRewardCards = this._doc.createElement('div');
+        tplRewardCards.id = 'tplRewardCards';
+
+        var rewardCardsDiv = this._doc.createElement('div');
+        rewardCardsDiv.id = "rewardCardsDiv";
+        rewardCardsDiv.classList += ' padding-top border-bottom tpl-body-div';
+        rewardCardsDiv.innerHTML = "<div class='bold'>" + this.$translate.getText('ACTIVATED_CARDS') + "</div>";
+
+
+        if (printData.collections.REWARD_CARDS.length > 0) {
+            const cardNoLabel = this.$translate.getText('card_no');
+            const cardTypeLabel = this.$translate.getText('CardType');
+
+            printData.collections.REWARD_CARDS.forEach(rewardCard => {
+                const rewardCardDiv = "<div class='padding-top bold flex j-sb'>" +
+                                      "  <div>" + this.$translate.getText('CARD') + "</div>" +
+                                      "</div>";
+                const cardNumberDiv = "<div class='m-inline-start-5'>" + cardNoLabel + " " + rewardCard.MASKED_CARD_NUMBER + "</div>";
+                const cardTypeDiv = "<div class='m-inline-start-5'>" + cardTypeLabel + " " + rewardCard.TYPE + "</div>";
+
+                rewardCardsDiv.innerHTML += rewardCardDiv + cardNumberDiv + cardTypeDiv;
+            });
+
+            tplRewardCards.appendChild(rewardCardsDiv);
+        }
+
+        return tplRewardCards;
+    }
+
     createCurrencyPaymentSection(payment, isRefund) {
         var currencyDiv = this._doc.createElement('div');
         currencyDiv.id = 'currencyDiv'
@@ -1033,10 +1070,17 @@ export default class TemplateBuilderService {
                     "<div>"+  this.$utils.twoDecimals(_.get(payment, 'P_AMOUNT', '')) +"</div>" +
                     "</div>";
 
-                const cardNumberDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('card_no') + " " + cardNumber + "</div>"
+                const cardNoLabel = this.$translate.getText('card_no');
+                const cardNumberDiv = "<div class='m-inline-start-5'>" + cardNoLabel + " " + cardNumber + "</div>";
+                let cardSeriesName = '';
+
+                if (payment.PROVIDER_CARD_SERIES_NAME) {
+                    cardSeriesName = "<div class='m-inline-start-5'>" + this.$translate.getText('CardType') + " " + payment.PROVIDER_CARD_SERIES_NAME + "</div>";
+                }
+
                 const balanceDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(_.get(payment, 'BALANCE_AMOUNT', '')) + "</div>"
                 const referenceDiv =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + _.get(payment, 'PROVIDER_TRANS_ID', '') + "</div>"
-                contentDiv.innerHTML = pAmountDiv + cardNumberDiv + balanceDiv + referenceDiv;
+                contentDiv.innerHTML = pAmountDiv + cardNumberDiv + cardSeriesName + balanceDiv + referenceDiv;
                 contentDiv.style.padding = '10px';
 
                 mediaExchangeDiv.appendChild(contentDiv);

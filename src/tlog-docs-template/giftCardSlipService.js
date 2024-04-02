@@ -66,7 +66,17 @@ export default class GiftCardSlipService {
                 "<div class='total-name'>" + (cardNumText ? cardNumText : '') + ": " + (giftCardSlipDoc.DISPLAY_CARD_NUMBER || '') +
                 "</div></div>"
 
-            giftCardSlipDiv.appendChild(cardNumDiv)
+            giftCardSlipDiv.appendChild(cardNumDiv);
+
+            if (giftCardSlipDoc.PROVIDER_CARD_SERIES_NAME) {
+                const cardSeriesNameDiv = this._doc.createElement('div');
+                cardSeriesNameDiv.id = 'cardSeriesNameDiv';
+                cardSeriesNameDiv.innerHTML = "<div class='itemDiv'>" +
+                    "<div class='total-name'>" + this.$translate.getText('CardType') + ": " + giftCardSlipDoc.PROVIDER_CARD_SERIES_NAME +
+                    "</div></div>"
+
+                giftCardSlipDiv.appendChild(cardSeriesNameDiv);
+            }
 
             if (giftCardSlipDoc.CUSTOMER_NAME) {
                 let cardHolderDiv = this._doc.createElement('div');

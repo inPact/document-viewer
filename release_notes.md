@@ -1,8 +1,8 @@
 # Document Viewer release notes
 
 ## NEXT
-* [TAB-29182] Optima Digital Signature
 * [TAB-35376] Remove the Subtotal row from the GC load document
+* [TAB-36203] Add series name & rewards numbers
 
 ### 1.58.2
 * [TAB-35968] Recipt with signature crashes on documents
