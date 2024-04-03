@@ -964,7 +964,7 @@ export default class TemplateBuilderService {
                 const rewardCardDiv = "<div class='padding-top bold flex j-sb'>" +
                                       "  <div>" + this.$translate.getText('CARD') + "</div>" +
                                       "</div>";
-                const cardNumberDiv = "<div class='m-inline-start-5'>" + cardNoLabel + " " + rewardCard.MASKED_CARD_NUMBER + "</div>";
+                const cardNumberDiv = "<div class='m-inline-start-5'>" + cardNoLabel + " " + rewardCard.DISPLAY_CARD_NUMBER + "</div>";
                 const cardTypeDiv = "<div class='m-inline-start-5'>" + cardTypeLabel + " " + rewardCard.TYPE + "</div>";
 
                 rewardCardsDiv.innerHTML += rewardCardDiv + cardNumberDiv + cardTypeDiv;
