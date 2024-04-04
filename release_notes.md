@@ -2,6 +2,8 @@
 
 ## NEXT
 * [TAB-35376] Remove the Subtotal row from the GC load document
+
+## 1.59.0
 * [TAB-36203] Add series name & rewards numbers
 
 ### 1.58.2
