@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.59.0
 * [TAB-36203] Add series name & rewards numbers
 
 ### 1.58.2
