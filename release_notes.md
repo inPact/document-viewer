@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.60.0
 * [TAB-35376] Remove the Subtotal row from the GC load document
 
 ## 1.59.0
