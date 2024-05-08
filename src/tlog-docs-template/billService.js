@@ -335,24 +335,28 @@ export default class BillService {
             || (this.$localization.allowByRegions(['us']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0)) ||
             (this.$localization.allowByRegions(['us']) && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
 
-            /**
-             * SUBTOTAL (TOTAL_ORDER) :
-             *  in US is 'TOTAL_BEFORE_EXCLUDED_TAX_BEFORE_DISCOUNTS'.
-             *  in IL is 'TOTAL_SALES_AMOUNT'.
-             *  Backward compatibility - default is 'TOTAL_SALES_AMOUNT'
-             */
-            let TOTAL_SALES = 0;
-            if (this.$localization.allowByRegions(['us', 'au'])) {
-                TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
 
-            } else {
-                TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
+            const orderType = _.get(variables, 'ORDER_TYPE', '');
+            if (orderType.toUpperCase() !== 'MEDIAEXCHANGE') {
+                /**
+                 * SUBTOTAL (TOTAL_ORDER) :
+                 *  in US is 'TOTAL_BEFORE_EXCLUDED_TAX_BEFORE_DISCOUNTS'.
+                 *  in IL is 'TOTAL_SALES_AMOUNT'.
+                 *  Backward compatibility - default is 'TOTAL_SALES_AMOUNT'
+                 */
+                let TOTAL_SALES = 0;
+                if (this.$localization.allowByRegions(['us', 'au'])) {
+                    TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
+
+                } else {
+                    TOTAL_SALES = variables.TOTAL_SALES_AMOUNT;
+                }
+
+                totals.push({
+                    name: this.$translate.getText('TOTAL_ORDER'),
+                    amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
+                });
             }
-
-            totals.push({
-                name: this.$translate.getText('TOTAL_ORDER'),
-                amount: this.$utils.toFixedSafe(TOTAL_SALES, 2)
-            });
         }
         if (this.$localization.allowByRegions(['il'])) {
             if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
