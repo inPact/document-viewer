@@ -2,6 +2,7 @@
 
 ## NEXT
 * [TAB-37005] Add issuer country indication to the taxInvoice
+* [TAB-37126] Return transaction showing wrong day
 
 ## 1.60.0
 * [TAB-35376] Remove the Subtotal row from the GC load document
