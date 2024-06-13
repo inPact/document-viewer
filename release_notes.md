@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.61.0
 * [TAB-37126] Return transaction showing wrong day
 
 ## 1.60.0
