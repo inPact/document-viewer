@@ -312,6 +312,7 @@ export default class TlogDocsTranslateService {
                 "REST_INSTALLMENTS":"And other {{restInstallmentsCount}} payments of {{installmentAmount}} each",
                 "EQUAL_INSTALLMENTS": "{{installmentsCount}} payments of {{installmentAmount}} each",
                 "REFERENCE": "Reference",
+                "INTERNATIONAL_ISSUER":"International Card Issuer",
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",

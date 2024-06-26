@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-37005] Add issuer country indication to the taxInvoice
+
 ## 1.61.0
 * [TAB-37126] Return transaction showing wrong day
 

@@ -402,4 +402,10 @@
 #payment-section #payment-container:not(:first-child) {
   margin-top: 15px; }
 
+.international-issuer-indication {
+  font-size: 11px;
+  margin-top: 5px;
+  font-weight: 600;
+  padding: 1px 10px; }
+
 /*# sourceMappingURL=main.css.map*/
