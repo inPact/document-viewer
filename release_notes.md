@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-37449] Show dual pricing and added processing fee on previewed order bill
+
 ## 1.62.0
 * [TAB-37005] Add issuer country indication to the taxInvoice
 
