@@ -185,12 +185,11 @@ export default class TemplateBuilderService {
     }
 
     createDocTemplate(docObjChosen, options = {}) {
-
         let logoUrl = _.get(options, 'logoUrl') || undefined;
         let tabitLogo = _.get(options, 'tabitLogo') || undefined;
         let excludeHeader = _.get(options, 'excludeHeader') || false;
         let excludeFooter = _.get(options, 'excludeFooter') || false;
-
+        const isDualPricingStrategy = !!(this._printData.variables.CARD_BAL_DUE || this._printData.variables.CASH_BAL_DUE);
         this._doc = DocumentFactory.get();
 
         var docTemplate = this._doc.createElement('div');
@@ -347,7 +346,7 @@ export default class TemplateBuilderService {
                     /// ADD Balance Section to tempalte.
                     if ((docObjChosen.isFullOrderBill || this._docObj.type === 'check') &&
                         this._printData.variables.BAL_DUE &&
-                        this._printData.collections.PAYMENT_LIST.length > 0
+                        this._printData.collections.PAYMENT_LIST.length && !isDualPricingStrategy
                     ) {
 
                         let balanceSection = this.$balanceSection.get({
