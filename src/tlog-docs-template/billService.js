@@ -552,11 +552,13 @@ export default class BillService {
             });
         }
 
-        payments.push({
-            type: 'change',
-            name: this.$translate.getText('CHANGE'),
-            amount: variables.CHANGE
-        });
+        if (variables.CHANGE) {
+            payments.push({
+                type: 'change',
+                name: this.$translate.getText('CHANGE'),
+                amount: variables.CHANGE
+            });
+        }
 
         // In case of orderBill (without variables.DOCUMENT_TYPE) and variables.BAL_DUE - Show it
         if (!variables.DOCUMENT_TYPE && variables.BAL_DUE) {
