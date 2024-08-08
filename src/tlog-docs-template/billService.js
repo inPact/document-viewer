@@ -388,12 +388,14 @@ export default class BillService {
 
         if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
             collections.EXCLUSIVE_TAXES.forEach(tax => {
-                totals.push({
-                    type: 'exclusive_tax',
-                    name: tax.NAME ? tax.NAME : this.$translate.getText('ECVLUSIVE_TAX'),
-                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
-                    rate: this.$utils.toFixedSafe(tax.RATE, 3)
-                })
+                if (tax.AMOUNT) {
+                    totals.push({
+                        type: 'exclusive_tax',
+                        name: tax.NAME ? tax.NAME : this.$translate.getText('ECVLUSIVE_TAX'),
+                        amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
+                        rate: this.$utils.toFixedSafe(tax.RATE, 3)
+                    })
+                }
             })
         }
 
