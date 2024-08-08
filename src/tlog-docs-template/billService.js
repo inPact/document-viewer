@@ -379,10 +379,12 @@ export default class BillService {
         if (this.$localization.allowByRegions(['au'])) {
             const fees = _.get(collections, 'FEES', []);
             fees.forEach(fee => {
-                totals.push({
-                    name: fee.NAME,
-                    amount: this.$utils.toFixedSafe(fee.AMOUNT, 2)
-                });
+                if (fee.AMOUNT) {
+                    totals.push({
+                        name: fee.NAME,
+                        amount: this.$utils.toFixedSafe(fee.AMOUNT, 2)
+                    });
+                }
             });
         }
 
@@ -481,7 +483,7 @@ export default class BillService {
         }
 
         if(this.$localization.allowByRegions(['us'])) {
-            if(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS !== undefined) {
+            if(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS) {
                 totals.push({
                     name: this.$translate.getText('TOTAL_AMOUNT_AFTER_CASH_BONUS'),
                     amount: this.$utils.toFixedSafe(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS, 2)
