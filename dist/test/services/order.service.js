@@ -4,7 +4,7 @@ angular.module('app')
     .constant("ENV", {
         // ep: 'https://ros-rp.tabit.cloud',
         // ep: 'https://il-int-ros.tabit-stage.com',
-        ep: 'https://au-int-ros.tabit-stage.com',
+        ep: 'https://us-int-ros.tabit-stage.com',
         // ep: 'https://au-ros.tabit-stage.com',
         // org: '64a66b305f56a25a0a4b298f',
         // tlog: '64d1047e38a00042d453ba9b',

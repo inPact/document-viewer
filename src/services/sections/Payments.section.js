@@ -52,7 +52,7 @@ export default class PaymentSection {
                 elementText.appendChild(temp);
             }
 
-            let classListContainer = [];
+            let classListContainer = [].concat(payment.classList || []);
 
             switch (payment.type){
                 case 'change':
