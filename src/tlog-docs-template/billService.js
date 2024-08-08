@@ -379,12 +379,10 @@ export default class BillService {
         if (this.$localization.allowByRegions(['au'])) {
             const fees = _.get(collections, 'FEES', []);
             fees.forEach(fee => {
-                if (fee.AMOUNT) {
                     totals.push({
                         name: fee.NAME,
                         amount: this.$utils.toFixedSafe(fee.AMOUNT, 2)
                     });
-                }
             });
         }
 
