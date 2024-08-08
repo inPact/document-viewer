@@ -711,15 +711,6 @@ export default class BillService {
 
         RESULT_TEXT += _TEXT_WAITER_N_DINERS;
 
-        // if (TABLE_NO !== "") {
-        //     let _TEXT_TABLE = $translate.getText('TABLE_NUM',
-        //         ["table"],
-        //         [TABLE_NO]
-        //     );
-
-        //     RESULT_TEXT += ` ${_TEXT_TABLE}`;
-        // }
-
         return RESULT_TEXT;
 
     }
