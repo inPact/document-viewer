@@ -399,8 +399,11 @@
     flex-direction: column;
     gap: 2px; }
 
-#payment-section #payment-container:not(:first-child) {
+#payment-section #payment-container:not(:first-child):not(.dual-pricing-cash) {
   margin-top: 15px; }
+
+#payment-section .dual-pricing-cash {
+  margin-top: 0; }
 
 .international-issuer-indication {
   font-size: 11px;

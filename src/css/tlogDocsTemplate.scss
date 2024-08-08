@@ -299,7 +299,7 @@
 }
 
 #payment-section {
-  #payment-container:not(:first-child) {
+  #payment-container:not(:first-child):not(.dual-pricing-cash) {
     margin-top: 15px;
   }
 }
