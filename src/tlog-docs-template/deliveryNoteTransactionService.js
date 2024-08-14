@@ -40,7 +40,7 @@ export default class DeliveryNoteTransactionDataService {
         deliveryVat.id = 'deliveryVat';
 
         deliveryVat.classList += ' padding-bottom';
-        deliveryVat.classList += ' border-top';
+        deliveryVat.classList += ' border-bottom';
         deliveryVat.classList += ' tpl-body-div';
 
         deliveryNoteTransactionDiv.appendChild(deliveryVat);
