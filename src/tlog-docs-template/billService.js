@@ -514,7 +514,7 @@ export default class BillService {
             if (variables.TOTAL_FOR_CASH) {
                 payments.push({
                     name: this.$translate.getText('CASH_TOTAL'),
-                    classList: ['dual-pricing-cash'],
+                    classList: ['dual-pricing-cash', 'border-bottom'],
                     amount: this.$utils.toFixedSafe(variables.TOTAL_FOR_CASH || 0, 2)
                 })
             }
@@ -570,7 +570,8 @@ export default class BillService {
                 if (variables.TOTAL_FOR_CARD !== variables.CARD_BAL_DUE) {
                     payments.push({
                         name: this.$translate.getText('CARD_BAL_DUE_FOR_DUAL_PRICING'),
-                        amount: variables.CARD_BAL_DUE
+                        amount: variables.CARD_BAL_DUE,
+                        classList: ['border-top']
                     });
                 }
 
