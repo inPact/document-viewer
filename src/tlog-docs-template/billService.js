@@ -570,7 +570,8 @@ export default class BillService {
                 if (variables.TOTAL_FOR_CARD !== variables.CARD_BAL_DUE) {
                     payments.push({
                         name: this.$translate.getText('CARD_BAL_DUE_FOR_DUAL_PRICING'),
-                        amount: variables.CARD_BAL_DUE
+                        amount: variables.CARD_BAL_DUE,
+                        classList: ['border-top']
                     });
                 }
 
