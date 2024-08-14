@@ -514,7 +514,7 @@ export default class BillService {
             if (variables.TOTAL_FOR_CASH) {
                 payments.push({
                     name: this.$translate.getText('CASH_TOTAL'),
-                    classList: ['dual-pricing-cash'],
+                    classList: ['dual-pricing-cash', 'border-bottom'],
                     amount: this.$utils.toFixedSafe(variables.TOTAL_FOR_CASH || 0, 2)
                 })
             }
