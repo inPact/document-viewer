@@ -228,6 +228,16 @@ export default class PaymentSection {
                     paymentSection.append(elementSurcharge);
                 }
 
+                if (payment.P_ISSUER_COUNTRY !== 'AU' && payment.PAYMENT_TYPE !== 'REFUND') {
+                    const elementSurcharge = this.$htmlCreator.create({
+                        id: 'international-issuer',
+                        classList: ['international-issuer-indication'],
+                        value: `&nbsp;${this.$translate.getText('INTERNATIONAL_ISSUER')}`
+                    });
+
+                    paymentSection.append(elementSurcharge);
+                }
+
             } else if (payment.PROVIDER_TRANS_ID) {
                 let elementProviderTransId = this.$htmlCreator.create({
                     id: 'reference-id',

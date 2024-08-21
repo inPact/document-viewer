@@ -26,25 +26,25 @@ export default class ReturnTransactionSection {
 
         elementChildren.push(elementReturnTransactionText);
 
-        let originalOrderDate = this.$utils.toDate({
-            date: variables.CREATED_AT,
-            realRegion: this.realRegion,
-            timezone: this.timezone,
-            withoutTime: true
-        });
-
-        let originalOrderReferenceElementValue = this.$translate.getText(
-            "RETURN_TRANSACTION_REFERENCE",
-            ['orderID', 'orderDate'],
-            [variables.SOURCE_ORDER_NUMBER, originalOrderDate]);
-
-        let elementReturnTransactionOriginalOrderReference = this.$htmlCreator.create({
-            id: 'return-transaction-original-order',
-            classList: ['flex'],
-            value: originalOrderReferenceElementValue
-        });
-
         if (!!variables.SOURCE_ORDER_NUMBER && !!variables.SOURCE_ORDER_BUSINESS_DATE && options.showOriginalOrderReference) {
+            const originalOrderDate = this.$utils.toDate({
+                date: variables.SOURCE_ORDER_BUSINESS_DATE,
+                realRegion: this.realRegion,
+                timezone: this.timezone,
+                withoutTime: true
+            });
+
+            const originalOrderReferenceElementValue = this.$translate.getText(
+                "RETURN_TRANSACTION_REFERENCE",
+                ['orderID', 'orderDate'],
+                [variables.SOURCE_ORDER_NUMBER, originalOrderDate]);
+
+            const elementReturnTransactionOriginalOrderReference = this.$htmlCreator.create({
+                id: 'return-transaction-original-order',
+                classList: ['flex'],
+                value: originalOrderReferenceElementValue
+            });
+
             elementChildren.push(elementReturnTransactionOriginalOrderReference);
         }
 
