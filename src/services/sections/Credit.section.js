@@ -5,7 +5,7 @@ import DocumentFactory from '../../helpers/documentFactory.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 import EmvService from '../../tlog-docs-template/emvService';
 import CreditTransaction from '../../services/creditTransaction.service';
-import { InstallmentsSection } from './Installments';
+import {InstallmentsSection} from './Installments';
 
 export default class CreaditSection {
     constructor(options) {
@@ -45,7 +45,7 @@ export default class CreaditSection {
                 classList: ['creadit-section']
             });
 
-            const elementCreaditCardText = this.$htmlCreator.create({
+            if (this.$localization.allowByRegions(['il', 'au'])) {const elementCreaditCardText = this.$htmlCreator.create({
                 id: 'creadit-card-text',
                 classList: ['total-name'],
                 value: getCreditCardText({
@@ -77,6 +77,7 @@ export default class CreaditSection {
             });
 
             creditContainer.append(elementCreaditCardContainer);
+        }
 
 
         const P_CHANGE = _.get(payment, 'P_CHANGE');
