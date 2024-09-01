@@ -7,8 +7,8 @@ angular.module('app')
         ep: 'https://us-ros.tabit-stage.com',
         // ep: 'https://au-ros.tabit-stage.com',
         org: '665469db4df04b008105d379',
-        tlog: '66cc577b26c3cb38da4ae7c2',
-        // tlog: '66cc575626c3cbc9dd4ae77c',228
+        // tlog: '66cc577b26c3cb38da4ae7c2',
+        tlog: '66cc575626c3cbc9dd4ae77c',//228
         // tlog: '660bb4e497ac6d725ef58e08',
         // locale: 'he-IL',
         locale: 'en-US',

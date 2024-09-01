@@ -335,7 +335,8 @@ export default class BillService {
 
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
             variables.TOTAL_TIPS !== undefined || (this.$localization.allowByRegions(['au']) && subtotalDiffersFromTotal)
-            || (this.$localization.allowByRegions(['us']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0)) ||
+            || (this.$localization.allowByRegions(['us']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0))
+            || (this.$localization.allowByRegions(['us']) && _.get(collections, 'RETURNED_FEES', []).length) ||
             (this.$localization.allowByRegions(['us']) && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
 
 
