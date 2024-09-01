@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-38671] Refund Transaction Order Bills Should Show a Full Breakdown in the Totaling Section
+
 ## 1.62.0
 * [TAB-37005] Add issuer country indication to the taxInvoice
 
