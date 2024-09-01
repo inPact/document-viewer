@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-38713] Return Transaction Order Bill Should Show the Business Date for the Source Order
+
 ## 1.62.0
 * [TAB-37005] Add issuer country indication to the taxInvoice
 
