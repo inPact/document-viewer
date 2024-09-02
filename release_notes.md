@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-38725] EU Region Setup & Permissions Architect
+
 ## 1.62.0
 * [TAB-37005] Add issuer country indication to the taxInvoice
 
