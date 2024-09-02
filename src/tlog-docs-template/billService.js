@@ -69,7 +69,7 @@ export default class BillService {
         }
 
         let isTaxExempt = false;
-        if ((collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au']))) {
+        if ((collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au', 'eu']))) {
             isTaxExempt = true;
         }
 
@@ -314,7 +314,7 @@ export default class BillService {
         let totals = [];
         const subtotalDiffersFromTotal = variables.TOTAL_AMOUNT !== variables.INCLUSIVE_NET_AMOUNT;
      
-        if(this.$localization.allowByRegions(['us', 'au'])) {
+        if(this.$localization.allowByRegions(['us', 'au', 'eu'])) {
             let INCLUSIVE_GROSS_AMOUNT = _.get(variables, 'INCLUSIVE_GROSS_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             let totalSales = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
             if(INCLUSIVE_GROSS_AMOUNT !== totalSales) {
@@ -334,10 +334,10 @@ export default class BillService {
         }
 
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
-            variables.TOTAL_TIPS !== undefined || (this.$localization.allowByRegions(['au']) && subtotalDiffersFromTotal)
-            || (this.$localization.allowByRegions(['us']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0))
-            || (this.$localization.allowByRegions(['us']) && _.get(collections, 'RETURNED_FEES', []).length) ||
-            (this.$localization.allowByRegions(['us']) && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
+            variables.TOTAL_TIPS !== undefined || (this.$localization.allowByRegions(['au', 'eu']) && subtotalDiffersFromTotal)
+            || (this.$localization.allowByRegions(['us', 'eu']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0))
+            || (this.$localization.allowByRegions(['us', 'eu']) && _.get(collections, 'RETURNED_FEES', []).length) ||
+            (this.$localization.allowByRegions(['us', 'eu']) && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
 
 
             const orderType = _.get(variables, 'ORDER_TYPE', '');
@@ -349,7 +349,7 @@ export default class BillService {
                  *  Backward compatibility - default is 'TOTAL_SALES_AMOUNT'
                  */
                 let TOTAL_SALES = 0;
-                if (this.$localization.allowByRegions(['us', 'au'])) {
+                if (this.$localization.allowByRegions(['us', 'au', 'eu'])) {
                     TOTAL_SALES = _.get(variables, 'INCLUSIVE_NET_AMOUNT', variables.TOTAL_SALES_AMOUNT);
 
                 } else {
@@ -381,7 +381,7 @@ export default class BillService {
             })
         }
 
-        if (this.$localization.allowByRegions(['au'])) {
+        if (this.$localization.allowByRegions(['au', 'eu'])) {
             const fees = _.get(collections, 'FEES', []);
             fees.forEach(fee => {
                     totals.push({
@@ -391,7 +391,7 @@ export default class BillService {
             });
         }
 
-        if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
+        if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au', 'eu'])) {
             collections.EXCLUSIVE_TAXES.forEach(tax => {
                 if (tax.AMOUNT) {
                     totals.push({
@@ -412,7 +412,7 @@ export default class BillService {
             if (autoGratuityTips && autoGratuityTips.length > 0) {
 
                 //Service charge
-                if (autoGratuityTips && autoGratuityTips.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
+                if (autoGratuityTips && autoGratuityTips.length > 0 && this.$localization.allowByRegions(['us', 'au', 'eu'])) {
                     autoGratuityTips.forEach(tip => {
 
                         let _name = tip.NAME ? tip.NAME : this.$translate.getText('SERVICE_CHARGE')
@@ -483,7 +483,7 @@ export default class BillService {
             })
         }
 
-        if (this.$localization.allowByRegions(['us', 'au'])) {
+        if (this.$localization.allowByRegions(['us', 'au', 'eu'])) {
             totals.push({
                 name: this.$translate.getText('TOTAL_INC_VAT'),
                 amount: this.$utils.toFixedSafe(variables.TOTAL_AMOUNT || 0, 2)
@@ -609,7 +609,7 @@ export default class BillService {
             ExemptedTaxData: []
         };
 
-        if (collections.INCLUSIVE_TAXES && collections.INCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
+        if (collections.INCLUSIVE_TAXES && collections.INCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au', 'eu'])) {
 
             taxes.InclusiveTaxes.push({
                 type: 'title',
@@ -627,7 +627,7 @@ export default class BillService {
             })
         }
 
-        if (collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
+        if (collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au', 'eu'])) {
 
             taxes.ExemptedTaxes.push({
                 type: 'title',
@@ -667,7 +667,7 @@ export default class BillService {
         }
 
         if (payment.P_TENDER_TYPE === 'creditCard') {
-            const card = this.$localization.allowByRegions(['au']) ?  payment.ISSUER : payment.CARD_TYPE;
+            const card = this.$localization.allowByRegions(['au', 'eu']) ?  payment.ISSUER : payment.CARD_TYPE;
 
             if (card && payment.LAST_4) {
                 paymentName = refund !== '' ? `${refund} (${card} ${payment.LAST_4})` : `${card} ${payment.LAST_4}`;
@@ -676,7 +676,7 @@ export default class BillService {
             }
 
         } else {
-            if (this.$localization.allowByRegions(['us', 'au'])) {
+            if (this.$localization.allowByRegions(['us', 'au', 'eu'])) {
                 paymentName = `${payment.P_NAME} ${refund}`;
             } else {
                 paymentName = `${refund} ${payment.P_NAME}`;

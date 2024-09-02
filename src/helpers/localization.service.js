@@ -2,7 +2,8 @@ export default class Localization {
     currencyByRegion = {
         us: 'USD',
         il: 'ILS',
-        au: 'AUD'
+        au: 'AUD',
+        eu: 'EUR',
     };
 
     constructor(options) {

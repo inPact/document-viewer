@@ -151,7 +151,7 @@ export default class TlogDocsService {
 
 
 
-            if (this.$localization.allowByRegions(['us', 'au'])) {
+            if (this.$localization.allowByRegions(['us', 'au', 'eu'])) {
                 if (tlog.order) {
                     if (tlog.order[0].allDocuments && tlog.order[0].allDocuments.length > 0) {
                         var _tlog = tlog;
