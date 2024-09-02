@@ -30,7 +30,7 @@ export default class CreaditSection {
         }
 
         var payment;
-        if(this.$localization.allowByRegions(['us', 'au'])) {
+        if(this.$localization.allowByRegions(['us', 'au', 'eu'])) {
             payment = options.creditSlipDoc ? options.creditSlipDoc : _.get(options, 'collections.PAYMENT_LIST[0]');
         } else {
             payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
