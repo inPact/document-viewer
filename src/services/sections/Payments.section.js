@@ -1,7 +1,7 @@
 import HtmlCreator from '../../helpers/htmlCreator.service';
 import Utils from '../../helpers/utils.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
-import { InstallmentsSection } from "./Installments";
+import {InstallmentsSection} from "./Installments";
 import Localization from "../../helpers/localization.service";
 
 export default class PaymentSection {
@@ -54,7 +54,7 @@ export default class PaymentSection {
 
             let classListContainer = [].concat(payment.classList || []);
 
-            switch (payment.type){
+            switch (payment.type) {
                 case 'change':
                     classListContainer.push('changeDiv')
                     break;
@@ -203,6 +203,16 @@ export default class PaymentSection {
                 });
 
                 paymentSection.append(elementHotelRoomChargePayment);
+            }
+
+            if (this.$localization.allowByRegions(['au', 'us']) && _.get(payment, 'HOUSE_ACCOUNT_NAME')) {
+                const elementHouseAccountName = this.$htmlCreator.create({
+                    id: 'house-account-name',
+                    classList: ['hotel-item', 'hotel-details'],
+                    value: `&nbsp;${_.get(payment, 'HOUSE_ACCOUNT_NAME')}`
+                });
+
+                paymentSection.append(elementHouseAccountName);
             }
 
             if (this.$localization.allowByRegions(['au', 'eu']) && payment.P_TENDER_TYPE === 'creditCard') {

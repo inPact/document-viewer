@@ -6,6 +6,7 @@
 * [TAB-38671] Refund Transaction Order Bills Should Show a Full Breakdown in the Totaling Section
 * [TAB-38713] Return Transaction Order Bill Should Show the Business Date for the Source Order
 * [TAB-38725] EU Region Setup
+* [TAB-38838] Add the House Account name to the order bill when there is a House Account payment
 
 ## 1.62.0
 * [TAB-37005] Add issuer country indication to the taxInvoice
