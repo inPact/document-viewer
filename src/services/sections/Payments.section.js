@@ -205,6 +205,16 @@ export default class PaymentSection {
                 paymentSection.append(elementHotelRoomChargePayment);
             }
 
+            if (this.$localization.allowByRegions(['au', 'us']) && _.get(payment, 'HOUSE_ACCOUNT_NAME')) {
+                const elementHouseAccountName = this.$htmlCreator.create({
+                    id: 'house-account-name',
+                    classList: ['hotel-item', 'hotel-details'],
+                    value: `&nbsp;${_.get(payment, 'HOUSE_ACCOUNT_NAME')}`
+                });
+
+                paymentSection.append(elementHouseAccountName);
+            }
+
             if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'creditCard') {
 
                 if (payment.CONFIRMATION_NUMBER) {
