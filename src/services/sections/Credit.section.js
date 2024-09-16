@@ -5,7 +5,7 @@ import DocumentFactory from '../../helpers/documentFactory.service';
 import TlogDocsTranslateService from '../../tlog-docs-template/tlogDocsTranslate';
 import EmvService from '../../tlog-docs-template/emvService';
 import CreditTransaction from '../../services/creditTransaction.service';
-import { InstallmentsSection } from './Installments';
+import {InstallmentsSection} from './Installments';
 
 export default class CreaditSection {
     constructor(options) {
@@ -30,7 +30,7 @@ export default class CreaditSection {
         }
 
         var payment;
-        if(this.$localization.allowByRegions(['us', 'au'])) {
+        if (this.$localization.allowByRegions(['us', 'au'])) {
             payment = options.creditSlipDoc ? options.creditSlipDoc : _.get(options, 'collections.PAYMENT_LIST[0]');
         } else {
             payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
@@ -42,38 +42,40 @@ export default class CreaditSection {
             classList: ['creadit-section']
         });
 
-        const elementCreaditCardText = this.$htmlCreator.create({
-            id: 'creadit-card-text',
-            classList: ['total-name'],
-            value: getCreditCardText({
-                isRefund: options.isRefund,
-                issuer: payment.ISSUER
-            })
-        });
+        if (this.$localization.allowByRegions(['il', 'au'])) {
+            const elementCreaditCardText = this.$htmlCreator.create({
+                id: 'creadit-card-text',
+                classList: ['total-name'],
+                value: getCreditCardText({
+                    isRefund: options.isRefund,
+                    issuer: payment.ISSUER
+                })
+            });
 
-        const classList = ['total-amount'];
-        const negativeClass = this.$utils.isNegative(payment.P_AMOUNT);
+            const classList = ['total-amount'];
+            const negativeClass = this.$utils.isNegative(payment.P_AMOUNT);
 
-        if (negativeClass !== "") {
-            classList.push(negativeClass);
+            if (negativeClass !== "") {
+                classList.push(negativeClass);
+            }
+
+            const elementCreaditCardValue = this.$htmlCreator.create({
+                id: 'creadit-card-value',
+                classList: classList,
+                value: this.$utils.toFixedSafe(payment.P_AMOUNT || 0, 2) || ''
+            });
+
+            const elementCreaditCardContainer = this.$htmlCreator.create({
+                id: 'creadit-card-container',
+                classList: ['itemDiv', 'bold'],
+                children: [
+                    elementCreaditCardText,
+                    elementCreaditCardValue
+                ]
+            });
+
+            creditContainer.append(elementCreaditCardContainer);
         }
-
-        const elementCreaditCardValue = this.$htmlCreator.create({
-            id: 'creadit-card-value',
-            classList: classList,
-            value: this.$utils.toFixedSafe(payment.P_AMOUNT || 0, 2) || ''
-        });
-
-        const elementCreaditCardContainer = this.$htmlCreator.create({
-            id: 'creadit-card-container',
-            classList: ['itemDiv', 'bold'],
-            children: [
-                elementCreaditCardText,
-                elementCreaditCardValue
-            ]
-        });
-
-        creditContainer.append(elementCreaditCardContainer);
 
         const P_CHANGE = _.get(payment, 'P_CHANGE');
 
