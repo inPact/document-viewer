@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## 1.63.0
+* [TAB-37740] Remove Paid in credit line from Credit slip documents (US only)
 
 ## 1.62.0
 * [TAB-37005] Add issuer country indication to the taxInvoice
