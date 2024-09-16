@@ -1,5 +1,7 @@
 # Document Viewer release notes
 
+## 1.63.0
+
 ## 1.62.0
 * [TAB-37005] Add issuer country indication to the taxInvoice
 
