@@ -189,7 +189,7 @@ export default class TemplateBuilderService {
         let tabitLogo = _.get(options, 'tabitLogo') || undefined;
         let excludeHeader = _.get(options, 'excludeHeader') || false;
         let excludeFooter = _.get(options, 'excludeFooter') || false;
-        const isDualPricingStrategy = !!(this._printData.variables.CARD_BAL_DUE || this._printData.variables.CASH_BAL_DUE);
+        const isDualPricingStrategy = !!(this._printData.variables.CARD_BAL_DUE && this._printData.variables.CASH_BAL_DUE);
         this._doc = DocumentFactory.get();
 
         var docTemplate = this._doc.createElement('div');

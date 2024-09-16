@@ -509,7 +509,7 @@ export default class BillService {
 
     resolvePayments(variables, collections) {
         let payments = [];
-        const isDualPricingStrategy = !!(variables.CARD_BAL_DUE || variables.CASH_BAL_DUE);
+        const isDualPricingStrategy = !!(variables.CARD_BAL_DUE && variables.CASH_BAL_DUE);
 
         if (isDualPricingStrategy && this.$localization.allowByRegions(['us']) && variables.BAL_DUE) {
 
