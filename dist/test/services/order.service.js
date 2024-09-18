@@ -13,7 +13,7 @@ angular.module('app')
         // tlog: '660bb4e497ac6d725ef58e08',
         locale: 'he-IL',
         // locale: 'en-US',
-        // locale: 'en-AU',
+        locale: 'en-AU',
         realRegion: 'IL',
         // realRegion: 'US',
         // realRegion: 'AU',

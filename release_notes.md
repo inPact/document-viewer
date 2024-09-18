@@ -2,6 +2,7 @@
 
 ## NEXT
 * [TAB-37740] Remove Paid in credit line from Credit slip documents (US only)
+* [TAB-38838] Add the House Account name to the order bill when there is a House Account payment
 
 ## 1.62.0
 * [TAB-37005] Add issuer country indication to the taxInvoice
