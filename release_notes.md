@@ -1,5 +1,7 @@
 # Document Viewer release notes
 
+## 1.64.0
+
 ## 1.63.0
 * [TAB-37740] Remove Paid in credit line from Credit slip documents (US only)
 * [TAB-38838] Add the House Account name to the order bill when there is a House Account payment
