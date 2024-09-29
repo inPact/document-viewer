@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-37449] Show dual pricing and added processing fee on previewed order bill
+
 ## 1.63.0
 * [TAB-37740] Remove Paid in credit line from Credit slip documents (US only)
 * [TAB-38838] Add the House Account name to the order bill when there is a House Account payment

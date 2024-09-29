@@ -385,12 +385,6 @@ export default class HeaderService {
                     value: printData.variables.TAX_EXEMPTION_COMMENT
                 });
 
-                // var isTaxExemptCodeDiv = this._doc.createElement('div');
-
-                // isTaxExemptCodeDiv.id = "isTaxExemptCodeDiv";
-
-                // isTaxExemptCodeDiv.innerHTML = printData.variables.TAX_EXEMPTION_COMMENT;
-
                 tplOrderInfoText.appendChild(elementTaxExemptComment);
             }
         }

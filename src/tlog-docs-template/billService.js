@@ -379,21 +379,23 @@ export default class BillService {
         if (this.$localization.allowByRegions(['au'])) {
             const fees = _.get(collections, 'FEES', []);
             fees.forEach(fee => {
-                totals.push({
-                    name: fee.NAME,
-                    amount: this.$utils.toFixedSafe(fee.AMOUNT, 2)
-                });
+                    totals.push({
+                        name: fee.NAME,
+                        amount: this.$utils.toFixedSafe(fee.AMOUNT, 2)
+                    });
             });
         }
 
         if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au'])) {
             collections.EXCLUSIVE_TAXES.forEach(tax => {
-                totals.push({
-                    type: 'exclusive_tax',
-                    name: tax.NAME ? tax.NAME : this.$translate.getText('ECVLUSIVE_TAX'),
-                    amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
-                    rate: this.$utils.toFixedSafe(tax.RATE, 3)
-                })
+                if (tax.AMOUNT) {
+                    totals.push({
+                        type: 'exclusive_tax',
+                        name: tax.NAME ? tax.NAME : this.$translate.getText('ECVLUSIVE_TAX'),
+                        amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
+                        rate: this.$utils.toFixedSafe(tax.RATE, 3)
+                    })
+                }
             })
         }
 
@@ -481,7 +483,7 @@ export default class BillService {
         }
 
         if(this.$localization.allowByRegions(['us'])) {
-            if(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS !== undefined) {
+            if(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS) {
                 totals.push({
                     name: this.$translate.getText('TOTAL_AMOUNT_AFTER_CASH_BONUS'),
                     amount: this.$utils.toFixedSafe(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS, 2)
@@ -498,10 +500,29 @@ export default class BillService {
     }
 
     resolvePayments(variables, collections) {
+        let payments = [];
+        const isDualPricingStrategy = !!(variables.CARD_BAL_DUE && variables.CASH_BAL_DUE);
+
+        if (isDualPricingStrategy && this.$localization.allowByRegions(['us']) && variables.BAL_DUE) {
+
+            if (variables.TOTAL_FOR_CARD) {
+                payments.push({
+                    name: this.$translate.getText('CARD_TOTAL'),
+                    amount: this.$utils.toFixedSafe(variables.TOTAL_FOR_CARD || 0, 2)
+                })
+            }
+            if (variables.TOTAL_FOR_CASH) {
+                payments.push({
+                    name: this.$translate.getText('CASH_TOTAL'),
+                    classList: ['dual-pricing-cash', 'border-bottom'],
+                    amount: this.$utils.toFixedSafe(variables.TOTAL_FOR_CASH || 0, 2)
+                })
+            }
+        }
+
         // filter payments by ommitted property removes cancelled and refund payments once the order goes shva offline
 
         let filteredPayments = this.filterOmittedPayments(collections.PAYMENT_LIST);
-        let payments = [];
 
         filteredPayments.forEach(payment => {
             let paymentData = Object.assign(payment, {
@@ -534,18 +555,39 @@ export default class BillService {
             });
         }
 
-        payments.push({
-            type: 'change',
-            name: this.$translate.getText('CHANGE'),
-            amount: variables.CHANGE
-        });
+        if (variables.CHANGE) {
+            payments.push({
+                type: 'change',
+                name: this.$translate.getText('CHANGE'),
+                amount: variables.CHANGE
+            });
+        }
 
         // In case of orderBill (without variables.DOCUMENT_TYPE) and variables.BAL_DUE - Show it
         if (!variables.DOCUMENT_TYPE && variables.BAL_DUE) {
-            payments.push({
-                name: this.$translate.getText('Balance'),
-                amount: variables.BAL_DUE
-            });
+
+            if (this.$localization.allowByRegions(['us']) && isDualPricingStrategy) {
+                if (variables.TOTAL_FOR_CARD !== variables.CARD_BAL_DUE) {
+                    payments.push({
+                        name: this.$translate.getText('CARD_BAL_DUE_FOR_DUAL_PRICING'),
+                        amount: variables.CARD_BAL_DUE,
+                        classList: ['border-top']
+                    });
+                }
+
+                if (variables.TOTAL_FOR_CASH !== variables.CASH_BAL_DUE) {
+                    payments.push({
+                        name: this.$translate.getText('CASH_BAL_DUE_FOR_DUAL_PRICING'),
+                        classList: ['dual-pricing-cash'],
+                        amount: variables.CASH_BAL_DUE
+                    });
+                }
+            } else {
+                payments.push({
+                    name: this.$translate.getText('Balance'),
+                    amount: variables.BAL_DUE
+                });
+            }
         }
 
         return payments;
@@ -669,15 +711,6 @@ export default class BillService {
         );
 
         RESULT_TEXT += _TEXT_WAITER_N_DINERS;
-
-        // if (TABLE_NO !== "") {
-        //     let _TEXT_TABLE = $translate.getText('TABLE_NUM',
-        //         ["table"],
-        //         [TABLE_NO]
-        //     );
-
-        //     RESULT_TEXT += ` ${_TEXT_TABLE}`;
-        // }
 
         return RESULT_TEXT;
 
