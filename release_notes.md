@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## 1.64.0
+* [TAB-37449] Show dual pricing and added processing fee on previewed order bill
 
 ## 1.63.0
 * [TAB-37740] Remove Paid in credit line from Credit slip documents (US only)
