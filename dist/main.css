@@ -377,8 +377,8 @@
   border-bottom: solid #E8E8E8 1px; }
 
 .border-top {
-  padding-top: 5px;
-  border-bottom: solid #E8E8E8 1px; }
+  padding-top: 10px;
+  border-top: solid #E8E8E8 1px; }
 
 .emv-div {
   display: flex; }
@@ -399,7 +399,7 @@
     flex-direction: column;
     gap: 2px; }
 
-#payment-section #payment-container:not(:first-child) {
+#payment-section #payment-container:not(:first-child):not(.dual-pricing-cash) {
   margin-top: 15px; }
 
 .international-issuer-indication {
