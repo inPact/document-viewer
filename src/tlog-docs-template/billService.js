@@ -48,7 +48,8 @@ export default class BillService {
             },
             TransTypes: {
                 Reversal: "Reversal",
-                Return: "Return"
+                Return: "Return",
+                Refund: "Refund",
             },
             Sources: {
                 TabitPay: "tabitPay"
@@ -308,6 +309,8 @@ export default class BillService {
     }
 
     resolveTotals(variables, collections) {
+        console.log('variables: ', variables)
+        console.log('collections: ', collections)
         let totals = [];
         const subtotalDiffersFromTotal = variables.TOTAL_AMOUNT !== variables.INCLUSIVE_NET_AMOUNT;
      
@@ -332,7 +335,8 @@ export default class BillService {
 
         if (variables.TOTAL_SALES_AMOUNT !== undefined && ((collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) ||
             variables.TOTAL_TIPS !== undefined || (this.$localization.allowByRegions(['au']) && subtotalDiffersFromTotal)
-            || (this.$localization.allowByRegions(['us']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0)) ||
+            || (this.$localization.allowByRegions(['us']) && collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0))
+            || (this.$localization.allowByRegions(['us']) && _.get(collections, 'RETURNED_FEES', []).length) ||
             (this.$localization.allowByRegions(['us']) && collections.EXEMPTED_TAXES && collections.EXEMPTED_TAXES.length > 0 ) && _.get(variables,'TOTAL_FEES', null)) {
 
 
@@ -358,6 +362,7 @@ export default class BillService {
                 });
             }
         }
+
         if (this.$localization.allowByRegions(['il'])) {
             if (collections.ORDER_DISCOUNTS_LIST && collections.ORDER_DISCOUNTS_LIST.length > 0) {
                 collections.ORDER_DISCOUNTS_LIST.forEach(discount => {
@@ -438,12 +443,14 @@ export default class BillService {
                 name: this.$translate.getText('TIP'),
                 amount: this.$utils.toFixedSafe(variables.TOTAL_TIPS_ON_PAYMENTS, 2)
             });
-        }
-        else if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined || variables.TOTAL_TIPS !== undefined) {
+        } else if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined || variables.TOTAL_TIPS !== undefined) {
 
             let tipAmount = 0;
-            if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined && variables.TOTAL_TIPS_ON_PAYMENTS !== 0) { tipAmount = variables.TOTAL_TIPS_ON_PAYMENTS; }
-            else if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS !== 0) { tipAmount = variables.TOTAL_TIPS; }
+            if (variables.TOTAL_TIPS_ON_PAYMENTS !== undefined && variables.TOTAL_TIPS_ON_PAYMENTS !== 0) {
+                tipAmount = variables.TOTAL_TIPS_ON_PAYMENTS;
+            } else if (variables.TOTAL_TIPS !== undefined && variables.TOTAL_TIPS !== 0) {
+                tipAmount = variables.TOTAL_TIPS;
+            }
 
             if (tipAmount > 0 || this.$localization.allowByRegions(['il'])) {
 
@@ -457,7 +464,8 @@ export default class BillService {
             }
 
             //if it is a returned order, the tip is negative and needs to be presented
-            if (_.get(collections, 'PAYMENT_LIST[0].TRANS_TYPE') === this.Enums().TransTypes.Return) {
+            const TRANS_TYPE = _.get(collections, 'PAYMENT_LIST[0].TRANS_TYPE');
+            if ([this.Enums().TransTypes.Return, this.Enums().TransTypes.Refund].includes(TRANS_TYPE)) {
                 if (collections.PAYMENT_LIST[0].TIP_AMOUNT !== 0) {
                     totals.push({
                         type: 'tips',
