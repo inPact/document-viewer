@@ -2,6 +2,7 @@
 
 ## NEXT
 * [TAB-37449] Show dual pricing and added processing fee on previewed order bill
+* [TAB-38856] Lead item is not displayed when adding modifier with extra charge
 
 ## 1.63.0
 * [TAB-37740] Remove Paid in credit line from Credit slip documents (US only)
