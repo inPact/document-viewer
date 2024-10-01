@@ -1,5 +1,7 @@
 # Document Viewer release notes
 
+## 1.65.0
+
 ## 1.64.0
 * [TAB-37449] Show dual pricing and added processing fee on previewed order bill
 
