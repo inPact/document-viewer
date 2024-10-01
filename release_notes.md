@@ -5,6 +5,7 @@
 * [TAB-38671] Refund Transaction Order Bills Should Show a Full Breakdown in the Totaling Section
 * [TAB-38713] Return Transaction Order Bill Should Show the Business Date for the Source Order
 * [TAB-38725] EU Region Setup
+* [TAB-38856] Lead item is not displayed when adding modifier with extra charge
 
 ## 1.63.0
 * [TAB-37740] Remove Paid in credit line from Credit slip documents (US only)
