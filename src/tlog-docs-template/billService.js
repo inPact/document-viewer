@@ -235,19 +235,18 @@ export default class BillService {
                                     amount: null
                                 })
                             });
-                    }
-
-                    if (!isReturnOrder) {
 
                         if (offer.EXTRA_CHARGE_LIST && offer.EXTRA_CHARGE_LIST.length > 0) {
                             offer.EXTRA_CHARGE_LIST.forEach(item => {
 
-                                items.push({
-                                    isItem: true,
-                                    name: item.ITEM_NAME,
-                                    qty: null,
-                                    amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(item.ITEM_PRICE, 2)
-                                })
+                                if (item.ITEM_PRICE !== 0) {
+                                    items.push({
+                                        isItem: true,
+                                        name: item.ITEM_NAME,
+                                        qty: null,
+                                        amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(item.ITEM_PRICE, 2)
+                                    })
+                                }
 
                                 if (item.EXTRA_CHARGE_MODIFIERS_LIST && item.EXTRA_CHARGE_MODIFIERS_LIST.length > 0) {
                                     item.EXTRA_CHARGE_MODIFIERS_LIST.forEach(modifier => {
@@ -278,15 +277,6 @@ export default class BillService {
                                         })
                                     }
                                 }
-                                else {
-                                    items.push({
-                                        isItem: true,
-                                        name: item.ITEM_NAME,
-                                        qty: null,
-                                        amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(item.ITEM_AMOUNT, 2)
-                                    })
-                                }
-
                             });
                         }
                     }
