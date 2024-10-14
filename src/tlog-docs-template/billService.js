@@ -173,6 +173,7 @@ export default class BillService {
 
                                 })
                             }
+
                             if (extraCharge.ITEM_DISCOUNTS && extraCharge.ITEM_DISCOUNTS.length > 0) {
                                 extraCharge.ITEM_DISCOUNTS.forEach(discount => {
                                     items.push({
@@ -234,12 +235,18 @@ export default class BillService {
                                     amount: null
                                 })
                             });
-                    }
-
-                    if (!isReturnOrder) {
 
                         if (offer.EXTRA_CHARGE_LIST && offer.EXTRA_CHARGE_LIST.length > 0) {
                             offer.EXTRA_CHARGE_LIST.forEach(item => {
+
+                                if (item.ITEM_PRICE !== 0) {
+                                    items.push({
+                                        isItem: true,
+                                        name: item.ITEM_NAME,
+                                        qty: null,
+                                        amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(item.ITEM_PRICE, 2)
+                                    })
+                                }
 
                                 if (item.EXTRA_CHARGE_MODIFIERS_LIST && item.EXTRA_CHARGE_MODIFIERS_LIST.length > 0) {
                                     item.EXTRA_CHARGE_MODIFIERS_LIST.forEach(modifier => {
@@ -250,8 +257,7 @@ export default class BillService {
                                             amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(modifier.MODIFIER_PRICE, 2)
                                         })
                                     })
-                                }
-                                else if (item.ITEM_DISCOUNTS && item.ITEM_DISCOUNTS.length > 0) {
+                                } else if (item.ITEM_DISCOUNTS && item.ITEM_DISCOUNTS.length > 0) {
 
                                     items.push({
                                         isItem: true,
@@ -271,15 +277,6 @@ export default class BillService {
                                         })
                                     }
                                 }
-                                else {
-                                    items.push({
-                                        isItem: true,
-                                        name: item.ITEM_NAME,
-                                        qty: null,
-                                        amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(item.ITEM_AMOUNT, 2)
-                                    })
-                                }
-
                             });
                         }
                     }
