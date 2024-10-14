@@ -1,6 +1,10 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.65.0
+* [TAB-38671] Refund Transaction Order Bills Should Show a Full Breakdown in the Totaling Section
+* [TAB-38713] Return Transaction Order Bill Should Show the Business Date for the Source Order
+
+## 1.64.0
 * [TAB-37449] Show dual pricing and added processing fee on previewed order bill
 * [TAB-38856] Lead item is not displayed when adding modifier with extra charge
 
