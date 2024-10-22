@@ -3,6 +3,7 @@
 ## NEXT
 * [TAB-38725] EU Region Setup
 * [TAB-38856] Lead item is not displayed when adding modifier with extra charge
+* [TAB-39333] add the order reference to the return transaction document header (IL)
 
 ## 1.65.0
 * [TAB-38671] Refund Transaction Order Bills Should Show a Full Breakdown in the Totaling Section
