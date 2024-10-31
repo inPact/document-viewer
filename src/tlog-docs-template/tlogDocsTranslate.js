@@ -543,6 +543,7 @@ export default class TlogDocsTranslateService {
                 "waiter": " מלצר/ית",
                 "Diners": "סועדים",
                 "RETURN_TRANSACTION": "החזרת עסקה",
+                "RETURN_TRANSACTION_REFERENCE": "על הזמנה #{{orderID}} מתאריך {{orderDate}}",
                 "BUSINESS_MEAL": "ארוחה עסקית",
                 "VAT_FREE_AMOUNT": "לא חייב במע\"מ",
                 "BEFORE_VAT": "חייב במע\"מ",
