@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## 1.66.0
+* [TAB-39333] add the order reference to the return transaction document header (IL)
 
 ## 1.65.0
 * [TAB-38671] Refund Transaction Order Bills Should Show a Full Breakdown in the Totaling Section
