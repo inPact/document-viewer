@@ -1,15 +1,15 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.66.0
 * [TAB-39333] add the order reference to the return transaction document header (IL)
 
 ## 1.65.0
 * [TAB-38671] Refund Transaction Order Bills Should Show a Full Breakdown in the Totaling Section
 * [TAB-38713] Return Transaction Order Bill Should Show the Business Date for the Source Order
+* [TAB-38856] Lead item is not displayed when adding modifier with extra charge
 
 ## 1.64.0
 * [TAB-37449] Show dual pricing and added processing fee on previewed order bill
-* [TAB-38856] Lead item is not displayed when adding modifier with extra charge
 
 ## 1.63.0
 * [TAB-37740] Remove Paid in credit line from Credit slip documents (US only)
