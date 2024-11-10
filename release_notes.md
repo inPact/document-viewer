@@ -2,7 +2,6 @@
 
 ## NEXT
 * [TAB-38725] EU Region Setup
-* [TAB-38856] Lead item is not displayed when adding modifier with extra charge
 
 ## 1.66.0
 * [TAB-39333] add the order reference to the return transaction document header (IL)
