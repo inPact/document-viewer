@@ -76,6 +76,8 @@ export default class Utils {
 
         if (options.timezone) {
             result = moment.utc(date).tz(`${options.timezone}`).format(format);
+        } else if (options.noTimeZone) {
+            result = moment.utc(date).format(format);
         } else {
             result = moment(date).format(format);
         }
