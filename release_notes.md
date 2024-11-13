@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.67.0
 * [TAB-39679] Return Transaction Order Bill Should Show the Business Date for the Source Order regardless of the user's timezone
 
 ## 1.66.0
