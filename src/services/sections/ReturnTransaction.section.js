@@ -30,7 +30,8 @@ export default class ReturnTransactionSection {
             const originalOrderDate = this.$utils.toDate({
                 date: variables.SOURCE_ORDER_BUSINESS_DATE,
                 realRegion: this.realRegion,
-                withoutTime: true
+                withoutTime: true,
+                noTimeZone: true
             });
 
             const originalOrderReferenceElementValue = this.$translate.getText(
