@@ -25,7 +25,6 @@ import ReturnTransactionSection from '../services/sections/ReturnTransaction.sec
 import _ from 'lodash';
 import QRCode from "qrcode";
 
-
 export default class TemplateBuilderService {
     constructor(options) {
         this.realRegion = options.realRegion || 'il';
@@ -55,11 +54,11 @@ export default class TemplateBuilderService {
         this.$paymentSection = new PaymentSection(options);
         this.$creaditSection = new CreaditSection(options);
         this.$returnTransactionSection = new ReturnTransactionSection(options);
-
     }
 
     _configure(options) {
         if (options.locale) this._locale = options.locale;
+        this.timezone = options.timezone;
     }
 
     createHTMLFromPrintDATA(documentInfo, printData, options = {}) {
@@ -1044,13 +1043,91 @@ export default class TemplateBuilderService {
 
         // Print Message
         var printMessageDiv = this._doc.createElement('div');
-        var printMessage = printData.collections.GIFT_CARD_PAYMENTS[0].PRINT_MESSAGE;
-        printMessageDiv.innerHTML = "<div class='itemDiv'>" +
-            "<div class='print-message'>" + printMessage + "</div>" + "</div>";
-        printMessageDiv.style['white-space'] = 'pre-line';
+        const printMessage = _.get(printData.collections, 'GIFT_CARD_PAYMENTS[0].PRINT_MESSAGE');
 
-        giftCardDiv.appendChild(printMessageDiv);
+        if (printMessage) {
+            printMessageDiv.innerHTML = "<div class='itemDiv'>" +
+                "<div class='print-message'>" + printMessage + "</div>" + "</div>";
+            printMessageDiv.style['white-space'] = 'pre-line';
+            giftCardDiv.appendChild(printMessageDiv);
+        } else {
+            const giftCardPayment = _.get(printData.collections, 'GIFT_CARD_PAYMENTS[0]', {});
 
+            const paymentSection = this.$htmlCreator.createSection({
+                id: 'payment-section',
+                classList: ['payment-section']
+            });
+
+            const elementText = this.$htmlCreator.create({
+                id: 'payment-text',
+                classList: ['total-name'],
+                value: _.get(giftCardPayment, 'P_NAME', '')
+            });
+
+            const paymentValueClassList = ['total-amount'];
+            const paymentAmount = _.get(giftCardPayment, 'P_AMOUNT', 0);
+            const negativeClass = this.$utils.isNegative(paymentAmount);
+            if (negativeClass !== '') {
+                paymentValueClassList.push(negativeClass);
+            }
+
+            let elementValue = this.$htmlCreator.create({
+                id: 'payment-value',
+                classList: paymentValueClassList,
+                value: this.$utils.toFixedSafe(paymentAmount, 2) || ''
+            });
+
+            const elementPaymentContainer = this.$htmlCreator.create({
+                id: 'payment-container',
+                classList: ['itemDiv'],
+                children: [
+                    elementText,
+                    elementValue
+                ]
+            });
+            paymentSection.append(elementPaymentContainer);
+
+            const transactionId = _.get(giftCardPayment, 'PROVIDER_TRANS_ID', '');
+            const elementProviderTransId = this.$htmlCreator.create({
+                id: 'reference-id',
+                classList: ['hotel-item', 'hotel-details'],
+                value: `&nbsp;${this.$translate.getText('PROVIDER_TRANS_ID')} ${transactionId}&nbsp;`
+            });
+            paymentSection.append(elementProviderTransId);
+
+            const elementProviderPaymentDateText = this.$htmlCreator.create({
+                type: 'div',
+                id: 'provider-payment-date-text',
+                classList: ['total-name'],
+                value: this.$translate.getText('TRANSACTION_TIME')
+            });
+
+            const providerPaymentDate = this.$utils.toDate({
+                timezone: this.timezone,
+                realRegion: this.realRegion,
+                date: _.get(giftCardPayment, 'PROVIDER_PAYMENT_DATE', 0)
+            });
+            const elementProviderPaymentDateValue = this.$htmlCreator.create({
+                type: 'div',
+                id: 'provider-payment-date-value',
+                classList: ['number-data'],
+                value: providerPaymentDate || ''
+            });
+
+            const elementProviderPaymentDate = this.$htmlCreator.create({
+                type: 'div',
+                id: 'provider-payment-date',
+                classList: ['itemDiv'],
+                value: undefined,
+                children: [
+                    elementProviderPaymentDateText,
+                    elementProviderPaymentDateValue
+                ]
+            });
+            paymentSection.append(elementProviderPaymentDate);
+
+            giftCardDiv.appendChild(paymentSection);
+        }
 
         return giftCardDiv;
 
