@@ -2,6 +2,7 @@
 
 ## NEXT
 * [TAB-38725] EU Region Setup
+* [TAB-39903] Adjustments for prepaid account payment when there is no print message
 
 ## 1.67.0
 * [TAB-39679] Return Transaction Order Bill Should Show the Business Date for the Source Order regardless of the user's timezone
