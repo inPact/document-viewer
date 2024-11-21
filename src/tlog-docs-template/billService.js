@@ -306,8 +306,6 @@ export default class BillService {
     }
 
     resolveTotals(variables, collections) {
-        console.log('variables: ', variables)
-        console.log('collections: ', collections)
         let totals = [];
         const subtotalDiffersFromTotal = variables.TOTAL_AMOUNT !== variables.INCLUSIVE_NET_AMOUNT;
      
