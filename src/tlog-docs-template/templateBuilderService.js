@@ -279,7 +279,7 @@ export default class TemplateBuilderService {
                 var isMediaExchange = (this._printData.variables.ORDER_TYPE === "MEDIAEXCHANGE");
                 var isCreditSlip = ((docObjChosen.md && docObjChosen.type === 'creditCard' && !docObjChosen.isFullOrderBill && !docObjChosen.md.checkNumber && !checkInIL) || docObjChosen.documentType === 'creditSlip')
 
-                var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this.$localization.allowByRegions(['us', 'au', 'eu']));
+                var isGiftCardSlip = (docObjChosen.type === 'giftCard' && this.$localization.allowByRegions(['us', 'au', 'eu', 'cy']));
 
                 if (isMediaExchange && !isCreditSlip && !isGiftCardSlip) {
                     var mediaExchangeDiv = this.createMediaExchange(this._printData, docObjChosen);
@@ -335,7 +335,7 @@ export default class TemplateBuilderService {
                     tplOrderTotals.hasChildNodes() ? docTemplate.appendChild(tplOrderTotals) : null;
                     tplOrderPayments.hasChildNodes() ? docTemplate.appendChild(tplOrderPayments) : null;
 
-                    if (this.$localization.allowByRegions(['us', 'au', 'eu']) && this._printData.collections.REWARD_CARDS) {
+                    if (this.$localization.allowByRegions(['us', 'au', 'eu', 'cy']) && this._printData.collections.REWARD_CARDS) {
                         var tplRewardCards = this.createRewardCardsData(this._printData);
                         tplRewardCards.id = 'tplRewardCards';
                         tplRewardCards.hasChildNodes() ? tplRewardCards.classList += ' body-div tpl-body-div' : '';
@@ -359,7 +359,7 @@ export default class TemplateBuilderService {
 
                     //if gift card
                     if (this._isGiftCardBill) {
-                        if (this.$localization.allowByRegions(['us', 'au', 'eu'])) {
+                        if (this.$localization.allowByRegions(['us', 'au', 'eu', 'cy'])) {
                             var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
                             var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
 
@@ -370,14 +370,14 @@ export default class TemplateBuilderService {
 
                     //if tax exempt
                     if (this._isTaxExempt) {
-                        if (this.$localization.allowByRegions(['us', 'au', 'eu'])) {
+                        if (this.$localization.allowByRegions(['us', 'au', 'eu', 'cy'])) {
                             var exmemptTaxesDiv = this.$addTaxData.createTaxExemptFunc(this._printData, this._doc);
                             if (exmemptTaxesDiv !== null) docTemplate.appendChild(exmemptTaxesDiv)
                         }
                     }
 
                     if (this._printData.data.taxes.InclusiveTaxes && this._printData.data.taxes.InclusiveTaxes.length > 0) {
-                        if (this.$localization.allowByRegions(['us', 'au', 'eu'])) {
+                        if (this.$localization.allowByRegions(['us', 'au', 'eu', 'cy'])) {
                             var inclusiveTaxesDiv = this.$addTaxData.createInclusiveTaxFunc(this._printData, this._doc);
                             if (inclusiveTaxesDiv !== null) docTemplate.appendChild(inclusiveTaxesDiv)
                         }
@@ -636,11 +636,11 @@ export default class TemplateBuilderService {
 
                         var calcWeight = isGram ? item.units * 1000 : item.units;
                         var weightCalculatedUnit = isGram ? this.$translate.getText('gram') : this.$translate.getText('kg');
-                        var weightPerUnitTranslate = this.$localization.allowByRegions(['us', 'au', 'eu']) ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
-                        var weightTranslate = this.$localization.allowByRegions(['us', 'au', 'eu']) ? this.$translate.getText('lb') : weightCalculatedUnit;
+                        var weightPerUnitTranslate = this.$localization.allowByRegions(['us', 'au', 'eu', 'cy']) ? this.$translate.getText('dlrPerlb') : this.$translate.getText('ilsToKg')
+                        var weightTranslate = this.$localization.allowByRegions(['us', 'au', 'eu', 'cy']) ? this.$translate.getText('lb') : weightCalculatedUnit;
 
                         var weightText = '';
-                        if (this.$localization.allowByRegions(['us', 'au', 'eu'])) {
+                        if (this.$localization.allowByRegions(['us', 'au', 'eu', 'cy'])) {
                             weightText = `${calcWeight}[${weightTranslate}] @ ${this.$localization.getSymbol()}${item.weightAmount}/${weightTranslate}`;
                         } else {
                             weightText = `${calcWeight} ${weightTranslate} @ ${item.weightAmount} ${weightPerUnitTranslate}`;

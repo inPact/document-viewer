@@ -4,6 +4,7 @@ export default class Localization {
         il: 'ILS',
         au: 'AUD',
         eu: 'EUR',
+        cy: 'EUR',
     };
 
     constructor(options) {
