@@ -215,7 +215,7 @@ export default class PaymentSection {
                 paymentSection.append(elementHouseAccountName);
             }
 
-            if (this.$localization.allowByRegions(['au']) && payment.P_TENDER_TYPE === 'creditCard') {
+            if (this.$localization.allowByRegions(['au', 'eu']) && payment.P_TENDER_TYPE === 'creditCard') {
 
                 if (payment.CONFIRMATION_NUMBER) {
                     const elementConfirmationNo = this.$htmlCreator.create({
