@@ -41,7 +41,7 @@ export default class HeaderService {
             'ORGANIZATION_TEL'
         ];
 
-        if (this.$localization.allowByRegions(['au'])) {
+        if (this.$localization.allowByRegions(['au', 'eu', 'cy'])) {
             headerKeys.splice(1, 0, 'ORGANIZATION_BN_NUMBER');
         }
 
@@ -247,7 +247,7 @@ export default class HeaderService {
                 break;
             }
             case 'tplOrderTitle': {
-                const orderTitle = this.$localization.allowByRegions(['au']) ? this.$translate.getText('TAX_INVOICE') : this._docObj.title;
+                const orderTitle = this.$localization.allowByRegions(['au', 'eu', 'cy']) ? this.$translate.getText('TAX_INVOICE') : this._docObj.title;
                 if (this._docObj.title) {
                     htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + orderTitle + "</div>"
                 }
@@ -311,7 +311,7 @@ export default class HeaderService {
                 const isSplitCheck = _.get(printData, 'variables.CHECKS_COUNT', 0) > 1;
                 const checkNumber = _.get(printData, 'variables.CHECK_NO', '');
 
-                if (this.$localization.allowByRegions(['au']) && isSplitCheck && checkNumber) {
+                if (this.$localization.allowByRegions(['au', 'eu', 'cy']) && isSplitCheck && checkNumber) {
 
                     htmlElement.innerHTML = `<span> ${this.$translate.getText('CHECK')} ${checkNumber} </span>` ;
                 }
@@ -405,7 +405,7 @@ export default class HeaderService {
 
     orderWordsByLocale(input1, input2, input3) {
         let htmlString;
-        if (this.$localization.allowByRegions(['us', 'au'])) {
+        if (this.$localization.allowByRegions(['us', 'au', 'eu', 'cy'])) {
             htmlString = "<span>" + input2 + "</span>" + "&nbsp;" + "<span>" + input1 + "</span>" + "&nbsp;" + " <span> #" + input3 + "</span >"
         } else {
             htmlString = "<span>" + input1 + "</span>" + "&nbsp;" + "<span>" + input2 + "</span> " + "&nbsp;" + " <span> #" + input3 + "</span >"

@@ -30,7 +30,7 @@ export default class CreaditSection {
         }
 
         var payment;
-        if (this.$localization.allowByRegions(['us', 'au'])) {
+        if (this.$localization.allowByRegions(['us', 'au', 'eu', 'cy'])) {
             payment = options.creditSlipDoc ? options.creditSlipDoc : _.get(options, 'collections.PAYMENT_LIST[0]');
         } else {
             payment = _.get(options, 'collections.CREDIT_PAYMENTS[0]');
@@ -42,7 +42,7 @@ export default class CreaditSection {
             classList: ['creadit-section']
         });
 
-        if (this.$localization.allowByRegions(['il', 'au'])) {
+        if (this.$localization.allowByRegions(['il', 'au', 'eu', 'cy'])) {
             const elementCreaditCardText = this.$htmlCreator.create({
                 id: 'creadit-card-text',
                 classList: ['total-name'],

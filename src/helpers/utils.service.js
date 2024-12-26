@@ -61,7 +61,9 @@ export default class Utils {
         const formatByRegion = {
             il: 'DD/MM/YYYY H:mm',
             us: 'MM/DD/YYYY h:mm A',
-            au: 'DD/MM/YYYY h:mm A'
+            au: 'DD/MM/YYYY h:mm A',
+            eu: 'MM/DD/YYYY h:mm A',
+            cy: 'MM/DD/YYYY h:mm A',
         }
 
         let result = '[DATE]';

@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## 1.68.0
+* [TAB-39595] EU Infrastructure
+
 ## 1.67.0
 * [TAB-39679] Return Transaction Order Bill Should Show the Business Date for the Source Order regardless of the user's timezone
 * [TAB-39903] Adjustments for prepaid account payment when there is no print message
