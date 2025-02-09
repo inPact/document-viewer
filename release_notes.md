@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-40088] Items in item groups in the order should appear regardless of catalog changes
+
 ## 1.68.0
 * [TAB-39595] EU Infrastructure
 
