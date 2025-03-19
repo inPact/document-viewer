@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-38572] Display Error with Card Slip Numbers in the DCV
+
 ## 1.68.0
 * [TAB-39595] EU Infrastructure
 
