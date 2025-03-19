@@ -1,5 +1,7 @@
 # Document Viewer release notes
 
+## 1.69.0
+
 ## 1.68.0
 * [TAB-39595] EU Infrastructure
 
