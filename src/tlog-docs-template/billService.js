@@ -98,58 +98,53 @@ export default class BillService {
                     offerQty = offer.OFFER_QTY;
                 }
 
-                if (offer.OFFER_TYPE === this.Enums().OfferTypes.Simple) {
+                let item = {
+                    isOffer: true,
+                    name: offer.OFFER_NAME,
+                    qty: offerQty,
+                    isOTH: !!offer.ON_THE_HOUSE,
+                    amount:  this._getOfferAmount(offer, isWeight, isSplitCheck, isReturnOrder)
+                };
+                if (isWeight) {
+                    item.isWeight = isWeight;
+                    item.weightAmount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
+                    item.units = offer.OFFER_UNITS;
+                }
+                items.push(item);
 
-                    let item = {
-                        isOffer: true,
-                        name: offer.OFFER_NAME,
-                        qty: offerQty
-                    };
-
-                    if (offer.ON_THE_HOUSE) {
-                        item.isOTH = true;
-                    }
-
-                    if (isReturnOrder) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
-                            items.push(item);
-                    } else if (isWeight) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
-                            item.isWeight = isWeight;
-                            item.weightAmount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
-                            item.units = offer.OFFER_UNITS;
-                            items.push(item);
-                    }
-                    else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false && !offer.OPEN_PRICE) { // if the offer amount is 0 not need to show
-
-                            if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
-                                item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
-                                items.push(item);
-                            }
-
-                    } else if (isSplitCheck === true) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
-                            items.push(item);
-                    }
-                    else if (offer.OPEN_PRICE) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2)
-                            items.push(item);
-                    }
+                if (offer.ORDERED_OFFER_DISCOUNTS && offer.ORDERED_OFFER_DISCOUNTS.length > 0) {
+                    offer.ORDERED_OFFER_DISCOUNTS.forEach(discount => {
+                        items.push({
+                            isOfferDiscount: true,
+                            name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('MANUAL_ITEM_DISCOUNT'),
+                            qty: null,
+                            amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
+                        })
+                    });
+                }
 
 
-                    if (offer.ORDERED_OFFER_DISCOUNTS && offer.ORDERED_OFFER_DISCOUNTS.length > 0) {
-                        offer.ORDERED_OFFER_DISCOUNTS.forEach(discount => {
+                    if (offer.ORDERED_ITEMS_LIST && offer.ORDERED_ITEMS_LIST.length > 0) {
+                        offer.ORDERED_ITEMS_LIST.forEach(item => {
                             items.push({
-                                isOfferDiscount: true,
-                                name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('MANUAL_ITEM_DISCOUNT'),
+                                isItem: true,
+                                name: item.ITEM_NAME,
                                 qty: null,
-                                amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
+                                amount: null
                             })
                         });
                     }
-
                     if (offer.EXTRA_CHARGE_LIST && offer.EXTRA_CHARGE_LIST.length > 0) {
                         offer.EXTRA_CHARGE_LIST.forEach(extraCharge => {
+
+                            if (extraCharge.ITEM_PRICE) {
+                                items.push({
+                                    isItem: true,
+                                    name: extraCharge.ITEM_NAME,
+                                    qty: null,
+                                    amount: extraCharge.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(extraCharge.ITEM_PRICE, 2)
+                                })
+                            }
 
                             if (extraCharge.EXTRA_CHARGE_MODIFIERS_LIST && extraCharge.EXTRA_CHARGE_MODIFIERS_LIST.length > 0) {
                                 extraCharge.EXTRA_CHARGE_MODIFIERS_LIST.forEach(modifier => {
@@ -187,111 +182,6 @@ export default class BillService {
 
                         });
                     }
-
-                }
-
-                if ([this.Enums().OfferTypes.ComplexOne, this.Enums().OfferTypes.Combo,
-                    this.Enums().OfferTypes.ComplexMulti,
-                    this.Enums().OfferTypes.Single].indexOf(offer.OFFER_TYPE) > -1) {
-
-
-                    let item = {
-                        isOffer: true,
-                        name: offer.OFFER_NAME,
-                        qty: offerQty
-                    }
-
-                    if (offer.ON_THE_HOUSE) {
-                        item.isOTH = true;
-                    }
-
-                    if (isReturnOrder) {
-                            item.amount = this.$utils.toFixedSafe(isReturnOrder ? offer.OFFER_AMOUNT : offer.OFFER_AMOUNT, 2);
-                            items.push(item);
-                    } else if (offer.OFFER_CALC_AMT !== null && isSplitCheck === false) { // if the offer amount is 0 not need to show
-                        if (!(offer.OFFER_CALC_AMT === 0 && offer.OFFER_AMOUNT === 0)) {
-                                item.amount = this.$utils.toFixedSafe(offer.OFFER_CALC_AMT, 2);
-                                items.push(item);
-                        }
-
-                    } else if (isSplitCheck === true) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
-                            items.push(item);
-                    }
-
-                    if (offer.OPEN_PRICE) {
-                            item.amount = this.$utils.toFixedSafe(offer.OFFER_AMOUNT, 2);
-                            items.push(item);
-                    }
-
-
-                    if (!isReturnOrder) {
-                        if (offer.ORDERED_ITEMS_LIST && offer.ORDERED_ITEMS_LIST.length > 0)
-                            offer.ORDERED_ITEMS_LIST.forEach(item => {
-                                items.push({
-                                    isItem: true,
-                                    name: item.ITEM_NAME,
-                                    qty: null,
-                                    amount: null
-                                })
-                            });
-
-                        if (offer.EXTRA_CHARGE_LIST && offer.EXTRA_CHARGE_LIST.length > 0) {
-                            offer.EXTRA_CHARGE_LIST.forEach(item => {
-
-                                if (item.ITEM_PRICE !== 0) {
-                                    items.push({
-                                        isItem: true,
-                                        name: item.ITEM_NAME,
-                                        qty: null,
-                                        amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(item.ITEM_PRICE, 2)
-                                    })
-                                }
-
-                                if (item.EXTRA_CHARGE_MODIFIERS_LIST && item.EXTRA_CHARGE_MODIFIERS_LIST.length > 0) {
-                                    item.EXTRA_CHARGE_MODIFIERS_LIST.forEach(modifier => {
-                                        items.push({
-                                            isItem: true,
-                                            name: modifier.MODIFIER_NAME,
-                                            qty: null,
-                                            amount: item.ON_THE_HOUSE ? this.$translate.getText('OTH') : this.$utils.toFixedSafe(modifier.MODIFIER_PRICE, 2)
-                                        })
-                                    })
-                                } else if (item.ITEM_DISCOUNTS && item.ITEM_DISCOUNTS.length > 0) {
-
-                                    items.push({
-                                        isItem: true,
-                                        name: item.ITEM_NAME,
-                                        qty: null,
-                                        amount: this.$utils.toFixedSafe(item.ITEM_AMOUNT, 2)
-                                    })
-
-                                    if (item.ITEM_DISCOUNTS && item.ITEM_DISCOUNTS.length > 0) {
-                                        item.ITEM_DISCOUNTS.forEach(discount => {
-                                            items.push({
-                                                isItem: true,
-                                                name: discount.DISCOUNT_NAME,
-                                                qty: null,
-                                                amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
-                                            })
-                                        })
-                                    }
-                                }
-                            });
-                        }
-                    }
-
-                    if (offer.ORDERED_OFFER_DISCOUNTS && offer.ORDERED_OFFER_DISCOUNTS.length > 0) {
-                        offer.ORDERED_OFFER_DISCOUNTS.forEach(discount => {
-                            items.push({
-                                isOfferDiscount: true,
-                                name: discount.DISCOUNT_NAME ? discount.DISCOUNT_NAME : this.$translate.getText('MANUAL_ITEM_DISCOUNT'),
-                                qty: null,
-                                amount: this.$utils.toFixedSafe(discount.DISCOUNT_AMOUNT * -1, 2)
-                            })
-                        })
-                    }
-                }
             });
         }
 
@@ -921,6 +811,14 @@ export default class BillService {
         let waiterDiners = this.resolveWaiterDiners(variables);
 
         return new DataBill(collections, variables, data, printByOrder, waiterDiners);
+    }
+
+    _getOfferAmount(offer, isWeight, isSplitCheck, isReturnOrder) {
+        let offerAmount = offer.OFFER_AMOUNT;
+        if (offer.OFFER_CALC_AMT && !isSplitCheck && !offer.OPEN_PRICE && !isReturnOrder) {
+            offerAmount = offer.OFFER_CALC_AMT;
+        }
+        return offerAmount ? this.$utils.toFixedSafe(offerAmount, 2) : null;
     }
 
 }

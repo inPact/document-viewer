@@ -163,12 +163,12 @@ export default class TlogDocsService {
                                     if (payment.tenderType === 'creditCard') typeTitle = this.$translate.getText('CreditSlip');
                                     if (payment.tenderType === 'giftCard') { typeTitle = this.$translate.getText('GiftCardCreditSlip'); }
                                     if (payment.tenderType === 'creditCard' || payment.tenderType === 'giftCard') {
-                                        payment.number = `${tlog.order[0].number}/${payment.number}`;
+                                        const paymentNumber = `${tlog.order[0].number}/${payment.number}`;
                                         orderSelection.push({
                                             tlogId: tlog._id,
                                             id: this.$utils.generateGuid({ count: 3 }),
                                             type: payment.tenderType,
-                                            title: this.$slipService.getTitle({ type: payment.tenderType, number: payment.number }),
+                                            title: this.$slipService.getTitle({ type: payment.tenderType, number: paymentNumber }),
                                             ep: `documents/v2/${payment._id}/printdata`,
                                             md: {
                                                 paymentId: payment._id,
