@@ -83,6 +83,7 @@ export default class TlogDocsTranslateService {
                 "CardType": "CARD TYPE",
                 "CardNumber": "CARD NO.",
                 "CardHolder": "CARD HOLDER",
+                "REWARD_AMOUNT": "Reward Amount",
                 "Date": "DATE/TIME",
                 "Merchant": "MERCHANT CODE",
                 "Sequence": "SEQUENCE NO.",
@@ -599,6 +600,7 @@ export default class TlogDocsTranslateService {
                 "CARD": "כרטיס",
                 "CardType": "שם הסדרה",
                 "CardNumber": "מספר כרטיס",
+                "REWARD_AMOUNT": "שווי כרטיס מתנה",
             }
         };
 

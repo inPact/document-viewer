@@ -3,6 +3,7 @@
 ## NEXT
 * [TAB-38572] Display Error with Card Slip Numbers in the DCV
 * [TAB-40088] Items in item groups in the order should appear regardless of catalog changes
+* [TAB-40551] Add the rewardAmount to the order bill of Media Exchange orders
 
 ## 1.68.0
 * [TAB-39595] EU Infrastructure
