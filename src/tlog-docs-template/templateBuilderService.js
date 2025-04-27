@@ -957,6 +957,7 @@ export default class TemplateBuilderService {
         if (printData.collections.REWARD_CARDS.length > 0) {
             const cardNoLabel = this.$translate.getText('card_no');
             const cardTypeLabel = this.$translate.getText('CardType');
+            const rewardAmountLabel = this.$translate.getText('REWARD_AMOUNT');
 
             printData.collections.REWARD_CARDS.forEach(rewardCard => {
                 const rewardCardDiv = "<div class='padding-top bold flex j-sb'>" +
@@ -964,8 +965,10 @@ export default class TemplateBuilderService {
                                       "</div>";
                 const cardNumberDiv = "<div class='m-inline-start-5'>" + cardNoLabel + " " + rewardCard.DISPLAY_CARD_NUMBER + "</div>";
                 const cardTypeDiv = "<div class='m-inline-start-5'>" + cardTypeLabel + " " + rewardCard.TYPE + "</div>";
+                const rewardDiv = rewardCard.AMOUNT ? "<div class='m-inline-start-5'>" + rewardAmountLabel + " " + this.$localization.getSymbol() + this.$utils.twoDecimals(rewardCard.AMOUNT) + "</div>": "";
 
-                rewardCardsDiv.innerHTML += rewardCardDiv + cardNumberDiv + cardTypeDiv;
+
+                rewardCardsDiv.innerHTML += rewardCardDiv + cardNumberDiv + cardTypeDiv + rewardDiv;
             });
 
             tplRewardCards.appendChild(rewardCardsDiv);
