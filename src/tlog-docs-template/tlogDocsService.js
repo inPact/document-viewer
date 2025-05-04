@@ -121,7 +121,7 @@ export default class TlogDocsService {
                     let hasPaymentList = check.payments.length > 0 ? true : false;
                     let paymentId = hasPaymentList ? check.payments[0].paymentId : '';
                     const closed = !!_.get(tlog.order, '[0].closed', '');
-                    console.log('zohar -- tlog.order 2', tlog.order, closed)
+                    console.log('zohar -- tlog.order 2', _.cloneDeep(tlog.order), closed)
                     orderSelection.push({
                         tlogId: tlog._id,
                         id: check._id,
@@ -133,6 +133,7 @@ export default class TlogDocsService {
                             checkNumber: check.number
                         }
                     });
+                    console.log('zohar -- orderSelection 1', _.cloneDeep(orderSelection))
                 });
             }
 
@@ -293,6 +294,7 @@ export default class TlogDocsService {
                 });
             }
         }
+        console.log('zohar -- orderSelection 2', _.cloneDeep(orderSelection))
         return orderSelection;
 
     }

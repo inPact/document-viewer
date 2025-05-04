@@ -15,12 +15,15 @@ angular.module('app')
 
             let id = options.id;
             let status = options.status;
+            console.log('zohar -- status', status)
 
             if (status === 'closed') {
+                console.log('zohar -- status 1', status)
                 return $http.get(`${EP}${URL_TLOGS}/${id}${URL_CHECKS}`)
                     .then(result => result.data);
             }
             else {
+                console.log('zohar -- status 2', status)
                 return $http.get(`${EP}${URL_ORDER}/${id}${URL_CHECKS}${URL_SLIPS}`)
                     .then(result => result.data);;
             }
