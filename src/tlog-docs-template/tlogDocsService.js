@@ -120,8 +120,8 @@ export default class TlogDocsService {
                 tlog.order[0].checks.forEach(check => {
                     let hasPaymentList = check.payments.length > 0 ? true : false;
                     let paymentId = hasPaymentList ? check.payments[0].paymentId : '';
-                    const closed = !!_.get(tlog.order, '[0]'.closed, '');
-                    console.log('zohar -- tlog.order', tlog.order)
+                    const closed = !!_.get(tlog.order, '[0].closed', '');
+                    console.log('zohar -- tlog.order 2', tlog.order, closed)
                     orderSelection.push({
                         tlogId: tlog._id,
                         id: check._id,
