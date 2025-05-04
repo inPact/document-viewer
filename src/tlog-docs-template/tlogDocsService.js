@@ -127,7 +127,7 @@ export default class TlogDocsService {
                         type: 'check',
                         title: this.$slipService.getTitle({ type: 'check', number: check.number }),
                         ep: closed? `tlogs/${tlog._id}/checks` : `orders/${tlog._id}/checks/slips`,
-                        closed,
+                        status: closed ? 'closed' : 'open',
                         md: {
                             paymentId: paymentId,
                             checkNumber: check.number
