@@ -54,6 +54,7 @@ export default class TemplateBuilderService {
         this.$paymentSection = new PaymentSection(options);
         this.$creaditSection = new CreaditSection(options);
         this.$returnTransactionSection = new ReturnTransactionSection(options);
+        this.currencySymbol = this.$localization.getSymbol();
     }
 
     _configure(options) {
@@ -965,7 +966,7 @@ export default class TemplateBuilderService {
                                       "</div>";
                 const cardNumberDiv = "<div class='m-inline-start-5'>" + cardNoLabel + " " + rewardCard.DISPLAY_CARD_NUMBER + "</div>";
                 const cardTypeDiv = "<div class='m-inline-start-5'>" + cardTypeLabel + " " + rewardCard.TYPE + "</div>";
-                const rewardDiv = rewardCard.AMOUNT ? "<div class='m-inline-start-5'>" + rewardAmountLabel + " " + this.$localization.getSymbol() + this.$utils.twoDecimals(rewardCard.AMOUNT) + "</div>": "";
+                const rewardDiv = rewardCard.AMOUNT ? "<div class='m-inline-start-5'>" + rewardAmountLabel + " " + this.currencySymbol + this.$utils.twoDecimals(rewardCard.AMOUNT) + "</div>": "";
 
 
                 rewardCardsDiv.innerHTML += rewardCardDiv + cardNumberDiv + cardTypeDiv + rewardDiv;
