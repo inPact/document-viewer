@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.70.0
 * [TAB-38399] Enable opening a check on an open order
 * [TAB-40551] Add the rewardAmount to the order bill of Media Exchange orders
 
