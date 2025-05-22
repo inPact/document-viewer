@@ -1,8 +1,11 @@
 # Document Viewer release notes
 
+## NEXT
+* [TAB-38399] Enable opening a check on an open order
+* [TAB-40551] Add the rewardAmount to the order bill of Media Exchange orders
+
 ## 1.69.0
 * [TAB-38572] Display Error with Card Slip Numbers in the DCV
-* [TAB-40551] Add the rewardAmount to the order bill of Media Exchange orders
 * [TAB-40088] Items in item groups in the order should appear regardless of catalog changes
 
 ## 1.68.0

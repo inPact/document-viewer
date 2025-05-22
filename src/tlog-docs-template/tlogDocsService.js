@@ -120,12 +120,14 @@ export default class TlogDocsService {
                 tlog.order[0].checks.forEach(check => {
                     let hasPaymentList = check.payments.length > 0 ? true : false;
                     let paymentId = hasPaymentList ? check.payments[0].paymentId : '';
+                    const closed = !!_.get(tlog.order, '[0].closed', '');
                     orderSelection.push({
                         tlogId: tlog._id,
                         id: check._id,
                         type: 'check',
                         title: this.$slipService.getTitle({ type: 'check', number: check.number }),
-                        ep: `tlogs/${tlog._id}/checks`,
+                        ep: closed? `tlogs/${tlog._id}/checks` : `orders/${tlog._id}/checks/slips`,
+                        status: closed ? 'closed' : 'open',
                         md: {
                             paymentId: paymentId,
                             checkNumber: check.number
