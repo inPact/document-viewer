@@ -219,9 +219,12 @@ export default class TemplateBuilderService {
         }
 
         const mediaExchangeDiv = this.createMediaExchange(this._printData, documentInfo);
+        mediaExchangeDiv.classList += ' border-bottom';
         docTemplate.appendChild(mediaExchangeDiv);
 
-        const paymentDataDiv = this.createInTakePaymentTemplate();
+        const paymentDataDiv = this.createPaymentsData(this._printData);
+
+        paymentDataDiv.classList += ' border-bottom';
         paymentDataDiv.hasChildNodes() ? docTemplate.appendChild(paymentDataDiv) : null;
 
         const footer = this.createFooter(options);
@@ -341,8 +344,6 @@ export default class TemplateBuilderService {
     }
 
     createDocTemplate(docObjChosen, options = {}) {
-        console.log('zohar -- createDocTemplate docObjChosen', docObjChosen);
-        console.log('zohar -- createDocTemplate options', options);
         const isDualPricingStrategy = !!(this._printData.variables.CARD_BAL_DUE && this._printData.variables.CASH_BAL_DUE);
 
         const docTemplate = this.createTemplateBase();
@@ -966,7 +967,7 @@ export default class TemplateBuilderService {
 
         if (this._docObj && this._docData.documentType === "deliveryNote") {
             return tplOrderPaymentsDiv;
-        } else if (this._docObj && ["invoice", "refundInvoice", 'refundDeliveryNote'].indexOf(this._docData.documentType) > -1) {
+        } else if (this._docObj && ["invoice", "refundInvoice", 'refundDeliveryNote', ''].indexOf(this._docData.documentType) > -1) {
 
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);

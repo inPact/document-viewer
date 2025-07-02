@@ -25,7 +25,9 @@ export default class TlogDocsService {
         return {
             DOC_TYPES: {
                 INVOICE: "invoice",
-                REFUND_INVOICE: "refundInvoice"
+                REFUND_INVOICE: "refundInvoice",
+                IN_TAKE_RECEIPT: "inTakeReceipt",
+                IN_TAKE_REFUND: "refundInTakeReceipt"
             },
             PaymentTypes: {
                 OTH: 'OTH',
@@ -212,11 +214,23 @@ export default class TlogDocsService {
                                         title: this.$slipService.getTitle({ type: this.Enums().DOC_TYPES.INVOICE, number: doc.number }),
                                         ep: `documents/v2/${doc._id}/printdata`,
                                         docPaymentType: (doc.payments[0]._type ? doc.payments[0]._type : ''),
-                                        isRefund: false
+                                        isRefund: false,
                                     });
                                     break;
                                 }
-
+                                case this.Enums().DOC_TYPES.IN_TAKE_RECEIPT || this.Enums().DOC_TYPES.IN_TAKE_REFUND: {
+                                    const type = doc._type;
+                                    orderSelection.push({
+                                        Id: tlog._id,
+                                        id: doc._id,
+                                        type,
+                                        title: this.$slipService.getTitle({ type, number: doc.number }),
+                                        ep: `documents/v2/${doc._id}/printdata`,
+                                        docPaymentType: (doc.payments[0]._type ? doc.payments[0]._type : ''),
+                                        isRefund: type === 'refundInTakeReceipt',
+                                    });
+                                    break;
+                                }
                                 case this.Enums().DOC_TYPES.REFUND_INVOICE: {
                                     if (doc.payments[0]._type === 'ChequeRefund' ||
                                         doc.payments[0]._type === 'CashRefund' ||
@@ -289,23 +303,6 @@ export default class TlogDocsService {
                     fiscalSignature: _.cloneDeep(_.get(tlog, 'order[0].fiscal.transmissions[0]', null))
                 });
             }
-             const inTakeReceipts = _.get(tlog, 'order[0].inTakeReceipts', []);
-            if (inTakeReceipts.length) {
-                inTakeReceipts.forEach((inTakeReceipt) => {
-                    const type = inTakeReceipt._type;
-                    orderSelection.push({
-                        tlogId: tlog._id,
-                        id: inTakeReceipt._id,
-                        type: type,
-                        title: this.$slipService.getTitle({ type, number: inTakeReceipt.number }),
-                        isRefund: type === 'refundInTakeReceipt',
-                        ep: `tlogs/${tlog._id}/bill`,
-                        isFullOrderBill: true,
-                        inTakeReceipt
-                    });
-                });
-
-            }
         }
         return orderSelection;
 
@@ -353,7 +350,6 @@ export default class TlogDocsService {
         let _billService = new BillService(this._options);
 
         docsArray = this.orderTypesListCreator(tlog, options);
-        console.log('zohar -- docsArray', docsArray);
 
         return docsArray;
 
