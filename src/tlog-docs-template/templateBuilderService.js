@@ -185,6 +185,8 @@ export default class TemplateBuilderService {
     }
 
     createDocTemplate(docObjChosen, options = {}) {
+        console.log('zohar -- createDocTemplate docObjChosen', docObjChosen);
+        console.log('zohar -- createDocTemplate options', options);
         let logoUrl = _.get(options, 'logoUrl') || undefined;
         let tabitLogo = _.get(options, 'tabitLogo') || undefined;
         let excludeHeader = _.get(options, 'excludeHeader') || false;

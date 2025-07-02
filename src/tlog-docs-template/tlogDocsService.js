@@ -59,10 +59,6 @@ export default class TlogDocsService {
         var checkGiftcardExists = tlog.order &&
             tlog.order.length > 0 &&
             tlog.order[0].allDocuments.length === 0
-        //&&
-        //tlog.order[0].allDocuments[0].payments.length > 0
-        //&& tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false; /// TODO : is gift card only in index 0 ?????
-
 
         if (checkGiftcardExists) {
             orderSelection.push({
@@ -86,6 +82,7 @@ export default class TlogDocsService {
                 ep: `tlogs/${tlog._id}/bill`,
                 isRefund: false,
                 isFullOrderBill: true,
+                tlog: _.cloneDeep(tlog)
             });
 
             if (tlog && tlog.order && tlog.order[0].billText && tlog.order[0].billText.length > 0) {
@@ -97,7 +94,7 @@ export default class TlogDocsService {
                     ep: `tlogs/${tlog._id}/bill`,
                     isRefund: false,
                     isFullOrderBill: true,
-                    billText: _.cloneDeep(tlog.order[0].billText)
+                    billText: _.cloneDeep(tlog.order[0].billText),
                 });
             }
 
@@ -209,7 +206,7 @@ export default class TlogDocsService {
 
                                 case this.Enums().DOC_TYPES.INVOICE: {
                                     orderSelection.push({
-                                        tlogId: tlog._id,
+                                        Id: tlog._id,
                                         id: doc._id,
                                         type: doc._type,
                                         title: this.$slipService.getTitle({ type: this.Enums().DOC_TYPES.INVOICE, number: doc.number }),
@@ -292,6 +289,23 @@ export default class TlogDocsService {
                     fiscalSignature: _.cloneDeep(_.get(tlog, 'order[0].fiscal.transmissions[0]', null))
                 });
             }
+             const inTakeReceipts = _.get(tlog, 'order[0].inTakeReceipts', []);
+            if (inTakeReceipts.length) {
+                inTakeReceipts.forEach((inTakeReceipt) => {
+                    const type = inTakeReceipt._type;
+                    orderSelection.push({
+                        tlogId: tlog._id,
+                        id: tlog._id,
+                        type: type,
+                        title: this.$slipService.getTitle({ type, number: inTakeReceipt.number }),
+                        isRefund: type === 'refundInTakeReceipt',
+                        ep: `tlogs/${tlog._id}/bill`,
+                        isFullOrderBill: true,
+                        tlog
+                    });
+                });
+
+            }
         }
         return orderSelection;
 
@@ -336,10 +350,11 @@ export default class TlogDocsService {
 
     getDocs(tlog, options) {
         let docsArray;
-
+        console.log('zohar -- get docs', tlog, options);
         let _billService = new BillService(this._options);
 
         docsArray = this.orderTypesListCreator(tlog, options);
+        console.log('zohar -- docsArray', docsArray);
 
         return docsArray;
 
