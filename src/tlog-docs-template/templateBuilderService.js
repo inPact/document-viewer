@@ -73,12 +73,19 @@ export default class TemplateBuilderService {
             this._doc.body.appendChild(this.createTextTemplate(documentInfo))
         } else  if (documentInfo.hasOwnProperty('fiscalSignature')) {
             this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature))
+        } else if (_.toLower(documentInfo.type).includes('intake')) {
+            this._docObj = documentInfo;
+            this._docData = printData;
+            this._printData = this.$billService.resolvePrintData(printData.printData, this.realRegion);
+            this._printData.isRefund = documentInfo.isRefund;
+            const template = this.createInTakeReceiptTemplate(documentInfo, options);
+            this._doc.body.appendChild(template);
         } else {
             this._docObj = documentInfo;
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this.realRegion);
             this._printData.isRefund = documentInfo.isRefund;
-            let template = this.createDocTemplate(documentInfo, options);
+            const template = this.createDocTemplate(documentInfo, options);
             this._doc.body.appendChild(template);
         }
 
@@ -184,14 +191,30 @@ export default class TemplateBuilderService {
         return docTemplate;
     }
 
-    createDocTemplate(docObjChosen, options = {}) {
-        console.log('zohar -- createDocTemplate docObjChosen', docObjChosen);
-        console.log('zohar -- createDocTemplate options', options);
-        let logoUrl = _.get(options, 'logoUrl') || undefined;
-        let tabitLogo = _.get(options, 'tabitLogo') || undefined;
-        let excludeHeader = _.get(options, 'excludeHeader') || false;
-        let excludeFooter = _.get(options, 'excludeFooter') || false;
-        const isDualPricingStrategy = !!(this._printData.variables.CARD_BAL_DUE && this._printData.variables.CASH_BAL_DUE);
+    createInTakeReceiptTemplate(documentInfo, options) {
+        const docTemplate = this.createTemplateBase();
+        const headerLogo = this.createHeaderLogo(options);
+        if (headerLogo) {
+            docTemplate.appendChild(headerLogo);
+        }
+
+        const templateHeader = this.createHeader(options);
+        if (templateHeader) {
+            docTemplate.appendChild(templateHeader);
+        }
+
+        const mediaExchangeDiv = this.createMediaExchange(this._printData, documentInfo);
+        docTemplate.appendChild(mediaExchangeDiv);
+
+        const footer = this.createFooter(options);
+        if (footer) {
+            docTemplate.appendChild(footer);
+        }
+
+        return docTemplate;
+    }
+
+    createTemplateBase() {
         this._doc = DocumentFactory.get();
 
         var docTemplate = this._doc.createElement('div');
@@ -215,41 +238,106 @@ export default class TemplateBuilderService {
             value: VERSION
         });
 
-
         docTemplate.appendChild(elementVersion);
+        return docTemplate;
+    }
 
+    createHeaderLogo(options = {}) {
+        let logoUrl = _.get(options, 'logoUrl') || undefined;
+        if (_.isEmpty(logoUrl)) {
+            return;
+        }
+            const elementImage = this.$htmlCreator.create({
+                type: 'img',
+                id: 'logo',
+                classList: ['logo-image'],
+                attributes: [
+                    {key: 'src', value: logoUrl}
+                ]
+            });
 
-        if (!excludeHeader) {
+            const elementImageContainer = this.$htmlCreator.create({
+                type: 'div',
+                id: 'container-logo',
+                classList: ['flex', 'a-center', 'j-center'],
+                children: [
+                    elementImage
+                ]
+            });
 
-            if (!_.isEmpty(logoUrl)) {
+            return elementImageContainer;
+    }
 
-                let elementImage = this.$htmlCreator.create({
-                    type: 'img',
-                    id: 'logo',
-                    classList: ['logo-image'],
-                    attributes: [
-                        {key: 'src', value: logoUrl}
-                    ]
-                });
+    createHeader(options) {
+        let excludeHeader = _.get(options, 'excludeHeader') || false;
+        if (excludeHeader) {
+            return;
+        }
+        const templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
+        templateHeader.classList += ' text-center';
+        return templateHeader;
+    }
 
-                let elementImageContainer = this.$htmlCreator.create({
-                    type: 'div',
-                    id: 'container-logo',
-                    classList: ['flex', 'a-center', 'j-center'],
-                    children: [
-                        elementImage
-                    ]
-                });
+    createFooter(options) {
+        let tabitLogo = _.get(options, 'tabitLogo') || undefined;
+        let excludeFooter = _.get(options, 'excludeFooter') || false;
+        if (excludeFooter || !tabitLogo) {
+            return;
+        }
+        let elementFooterText = this.$htmlCreator.create({
+            type: 'div',
+            id: 'element-footer-text',
+            classList: ['text'],
+            value: 'Powered by'
+        });
 
-                docTemplate.appendChild(elementImageContainer);
-            }
+        let elementFooterImage = this.$htmlCreator.create({
+            type: 'img',
+            id: 'element-footer-image',
+            classList: ['tabit-logo'],
+            attributes: [
+                {key: 'src', value: tabitLogo}
+            ]
+        });
 
-            var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
-            templateHeader.classList += ' text-center';
+        let elementFooter = this.$htmlCreator.create({
+            type: 'div',
+            id: 'element-footer',
+            classList: ['flex', 'a-center', 'j-center', 'footer'],
+            children: [
+                elementFooterImage,
+                elementFooterText
+            ]
+        });
 
-            docTemplate.appendChild(templateHeader);
+        let elementFooterContainer = this.$htmlCreator.create({
+            type: 'div',
+            id: 'container-footer',
+            classList: ['flex', 'a-center', 'j-center'],
+            children: [
+                elementFooter
+            ]
+        });
+
+        return elementFooterContainer;
+    }
+
+    createDocTemplate(docObjChosen, options = {}) {
+        console.log('zohar -- createDocTemplate docObjChosen', docObjChosen);
+        console.log('zohar -- createDocTemplate options', options);
+        const isDualPricingStrategy = !!(this._printData.variables.CARD_BAL_DUE && this._printData.variables.CASH_BAL_DUE);
+
+        const docTemplate = this.createTemplateBase();
+
+        const headerLogo = this.createHeaderLogo(options);
+        if (headerLogo) {
+            docTemplate.appendChild(headerLogo);
         }
 
+        const templateHeader = this.createHeader(options);
+        if (templateHeader) {
+            docTemplate.appendChild(templateHeader);
+        }
 
         var checkInIL;
         if (this._locale == 'he-IL' && docObjChosen.documentType === 'check') {
@@ -264,7 +352,8 @@ export default class TemplateBuilderService {
             });
 
             docTemplate.appendChild(elementClubMember);
-        } else {
+        }
+        else {
 
             if (docObjChosen.type === "refundDeliveryNote" || docObjChosen.documentType === "refundDeliveryNote") {
 
@@ -486,46 +575,9 @@ export default class TemplateBuilderService {
 
 
         // Footer Element
-
-        if (!excludeFooter && tabitLogo !== undefined) {
-
-            let elementFooterText = this.$htmlCreator.create({
-                type: 'div',
-                id: 'element-footer-text',
-                classList: ['text'],
-                value: 'Powered by'
-            });
-
-            let elementFooterImage = this.$htmlCreator.create({
-                type: 'img',
-                id: 'element-footer-image',
-                classList: ['tabit-logo'],
-                attributes: [
-                    {key: 'src', value: tabitLogo}
-                ]
-            });
-
-            let elementFooter = this.$htmlCreator.create({
-                type: 'div',
-                id: 'element-footer',
-                classList: ['flex', 'a-center', 'j-center', 'footer'],
-                children: [
-                    elementFooterImage,
-                    elementFooterText
-                ]
-            });
-
-            let elemenFooterContainer = this.$htmlCreator.create({
-                type: 'div',
-                id: 'container-footer',
-                classList: ['flex', 'a-center', 'j-center'],
-                children: [
-                    elementFooter
-                ]
-            });
-
-            docTemplate.appendChild(elemenFooterContainer);
-
+        const footer = this.createFooter(options);
+        if (footer) {
+            docTemplate.appendChild(footer);
         }
 
         return docTemplate;
@@ -1138,7 +1190,7 @@ export default class TemplateBuilderService {
         return giftCardDiv;
 
     }
-    createMediaExchange(printData) {
+    createMediaExchange(printData, docObjChosen) {
         const giftCardLoads =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload');
         const mediaExchangeDiv = this._doc.createElement('div');
         mediaExchangeDiv.id = 'mediaExchangeDiv';
@@ -1162,7 +1214,10 @@ export default class TemplateBuilderService {
 
                 const balanceDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(_.get(payment, 'BALANCE_AMOUNT', '')) + "</div>"
                 const referenceDiv =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + _.get(payment, 'PROVIDER_TRANS_ID', '') + "</div>"
-                contentDiv.innerHTML = pAmountDiv + cardNumberDiv + cardSeriesName + balanceDiv + referenceDiv;
+                const contentParts = _.get(docObjChosen, 'type','').includes('inTake') ? [pAmountDiv] :
+                    [pAmountDiv, cardNumberDiv, cardSeriesName, balanceDiv, referenceDiv];
+
+                contentDiv.innerHTML = contentParts.join('');
                 contentDiv.style.padding = '10px';
 
                 mediaExchangeDiv.appendChild(contentDiv);

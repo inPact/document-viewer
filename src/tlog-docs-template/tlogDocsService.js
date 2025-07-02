@@ -350,7 +350,6 @@ export default class TlogDocsService {
 
     getDocs(tlog, options) {
         let docsArray;
-        console.log('zohar -- get docs', tlog, options);
         let _billService = new BillService(this._options);
 
         docsArray = this.orderTypesListCreator(tlog, options);
