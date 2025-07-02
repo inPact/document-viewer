@@ -295,13 +295,13 @@ export default class TlogDocsService {
                     const type = inTakeReceipt._type;
                     orderSelection.push({
                         tlogId: tlog._id,
-                        id: tlog._id,
+                        id: inTakeReceipt._id,
                         type: type,
                         title: this.$slipService.getTitle({ type, number: inTakeReceipt.number }),
                         isRefund: type === 'refundInTakeReceipt',
                         ep: `tlogs/${tlog._id}/bill`,
                         isFullOrderBill: true,
-                        tlog
+                        inTakeReceipt
                     });
                 });
 

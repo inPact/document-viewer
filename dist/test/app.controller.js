@@ -110,6 +110,7 @@ angular.module('app')
                     };
 
                     if (isDocumentType(doc.type)) {
+                        console.log('zohar -- create document request for doc: ', doc);
 
                         if (!doc.isFakeDocument) {
                             OrderService.getPrintData(doc.id, {

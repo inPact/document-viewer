@@ -191,6 +191,21 @@ export default class TemplateBuilderService {
         return docTemplate;
     }
 
+    createInTakePaymentTemplate() {
+        const tplOrderPaymentsDiv = this._doc.createElement('div');
+        tplOrderPaymentsDiv.id = 'tplOrderPayments';
+        let paymentSection = this.$paymentSection.get({
+            variables: this._printData.variables,
+            collections: this._printData.collections,
+            payments: this._printData.data.payments,
+            documentInfo: this._docData
+        });
+
+        tplOrderPaymentsDiv.appendChild(paymentSection);
+        tplOrderPaymentsDiv.hasChildNodes() ? tplOrderPaymentsDiv.classList += ' body-div tpl-body-div' : '';
+        return tplOrderPaymentsDiv;
+    }
+
     createInTakeReceiptTemplate(documentInfo, options) {
         const docTemplate = this.createTemplateBase();
         const headerLogo = this.createHeaderLogo(options);
@@ -205,6 +220,9 @@ export default class TemplateBuilderService {
 
         const mediaExchangeDiv = this.createMediaExchange(this._printData, documentInfo);
         docTemplate.appendChild(mediaExchangeDiv);
+
+        const paymentDataDiv = this.createInTakePaymentTemplate();
+        paymentDataDiv.hasChildNodes() ? docTemplate.appendChild(paymentDataDiv) : null;
 
         const footer = this.createFooter(options);
         if (footer) {
@@ -412,12 +430,10 @@ export default class TemplateBuilderService {
 
                     tplOrderReturnItems.id = 'tplOrderReturnItems';
                     tplOrderTotals.id = 'tplOrderTotals';
-                    tplOrderPayments.id = 'tplOrderPayments';
 
                     //adding styling to the template divs
                     tplOrderReturnItems.hasChildNodes() ? tplOrderReturnItems.classList += ' body-div tpl-body-div' : '';
                     tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' body-div tpl-body-div' : '';
-                    tplOrderPayments.hasChildNodes() ? tplOrderPayments.classList += ' body-div tpl-body-div' : '';
 
                     //set body main divs
 
@@ -995,7 +1011,7 @@ export default class TemplateBuilderService {
 
             tplOrderPaymentsDiv.appendChild(paymentSection);
         }
-
+        tplOrderPaymentsDiv.hasChildNodes() ? tplOrderPaymentsDiv.classList += ' body-div tpl-body-div' : '';
         return tplOrderPaymentsDiv;
     }
 
