@@ -1209,6 +1209,7 @@ export default class TemplateBuilderService {
     createMediaExchange(printData, docObjChosen) {
         const giftCardLoads =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload');
         const mediaExchangeDiv = this._doc.createElement('div');
+        const docType = _.get(docObjChosen, 'type','')
         mediaExchangeDiv.id = 'mediaExchangeDiv';
 
         giftCardLoads.forEach((payment)=> {
@@ -1230,7 +1231,7 @@ export default class TemplateBuilderService {
 
                 const balanceDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(_.get(payment, 'BALANCE_AMOUNT', '')) + "</div>"
                 const referenceDiv =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + _.get(payment, 'PROVIDER_TRANS_ID', '') + "</div>"
-                const contentParts = _.get(docObjChosen, 'type','').includes('inTake') ? [pAmountDiv] :
+                const contentParts = _.toLower(docType).includes('intake') ? [pAmountDiv] :
                     [pAmountDiv, cardNumberDiv, cardSeriesName, balanceDiv, referenceDiv];
 
                 contentDiv.innerHTML = contentParts.join('');
