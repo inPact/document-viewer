@@ -73,19 +73,17 @@ export default class TemplateBuilderService {
             this._doc.body.appendChild(this.createTextTemplate(documentInfo))
         } else  if (documentInfo.hasOwnProperty('fiscalSignature')) {
             this._doc.body.appendChild(this.createFiscalSignatureTemplate(documentInfo.fiscalSignature))
-        } else if (_.toLower(documentInfo.type).includes('intake')) {
-            this._docObj = documentInfo;
-            this._docData = printData;
-            this._printData = this.$billService.resolvePrintData(printData.printData, this.realRegion);
-            this._printData.isRefund = documentInfo.isRefund;
-            const template = this.createInTakeReceiptTemplate(documentInfo, options);
-            this._doc.body.appendChild(template);
         } else {
             this._docObj = documentInfo;
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this.realRegion);
             this._printData.isRefund = documentInfo.isRefund;
-            const template = this.createDocTemplate(documentInfo, options);
+            let template;
+            if (_.toLower(documentInfo.type).includes('intake')) {
+                template = this.createInTakeReceiptTemplate(documentInfo, options);
+            } else {
+               template = this.createDocTemplate(documentInfo, options);
+            }
             this._doc.body.appendChild(template);
         }
 

@@ -205,7 +205,6 @@ export default class TlogDocsService {
                         filteredInvoices.forEach(doc => {
 
                             switch (doc._type) {
-
                                 case this.Enums().DOC_TYPES.INVOICE: {
                                     orderSelection.push({
                                         Id: tlog._id,
@@ -218,9 +217,12 @@ export default class TlogDocsService {
                                     });
                                     break;
                                 }
-                                case this.Enums().DOC_TYPES.IN_TAKE_RECEIPT || this.Enums().DOC_TYPES.IN_TAKE_REFUND: {
+                                case this.Enums().DOC_TYPES.IN_TAKE_RECEIPT:
+                                    case this.Enums().DOC_TYPES.IN_TAKE_REFUND: {
                                     const type = doc._type;
                                     orderSelection.push({
+                                        tlogId: tlog._id,
+                                        tlog: _.cloneDeep(tlog),
                                         Id: tlog._id,
                                         id: doc._id,
                                         type,
