@@ -200,6 +200,8 @@
 
 .basicTemplate .body-div {
   padding: 15px; }
+  .basicTemplate .body-div.in-take-payments {
+    padding: 10px; }
 
 .basicTemplate .itemDiv {
   display: flex;
@@ -398,6 +400,13 @@
     display: flex;
     flex-direction: column;
     gap: 2px; }
+
+.in-take-payments .total-name {
+  margin: 0; }
+
+.in-take-payments .total-amount {
+  flex: none;
+  padding: 0; }
 
 #payment-section #payment-container:not(:first-child):not(.dual-pricing-cash) {
   margin-top: 15px; }

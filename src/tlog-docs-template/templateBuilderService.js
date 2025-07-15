@@ -221,8 +221,7 @@ export default class TemplateBuilderService {
         docTemplate.appendChild(mediaExchangeDiv);
 
         const paymentDataDiv = this.createPaymentsData(this._printData);
-
-        paymentDataDiv.classList += ' border-bottom';
+        paymentDataDiv.classList += ' in-take-payments';
         paymentDataDiv.hasChildNodes() ? docTemplate.appendChild(paymentDataDiv) : null;
 
         const footer = this.createFooter(options);
@@ -1010,7 +1009,7 @@ export default class TemplateBuilderService {
 
             tplOrderPaymentsDiv.appendChild(paymentSection);
         }
-        tplOrderPaymentsDiv.hasChildNodes() ? tplOrderPaymentsDiv.classList += ' body-div tpl-body-div' : '';
+        tplOrderPaymentsDiv.hasChildNodes() ? tplOrderPaymentsDiv.classList += 'body-div tpl-body-div' : '';
         return tplOrderPaymentsDiv;
     }
 
@@ -1206,12 +1205,25 @@ export default class TemplateBuilderService {
 
     }
     createMediaExchange(printData, docObjChosen) {
-        const giftCardLoads =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload');
-        const mediaExchangeDiv = this._doc.createElement('div');
         const docType = _.get(docObjChosen, 'type','')
+        const isInTakeReceipt = _.toLower(docType).includes('intake');
+        const mediaExchangeDiv = this._doc.createElement('div');
         mediaExchangeDiv.id = 'mediaExchangeDiv';
 
-        giftCardLoads.forEach((payment)=> {
+        if (isInTakeReceipt) {
+            printData.collections.PAYMENT_LIST.forEach(payment => {
+                const contentDiv = this._doc.createElement('div');
+                const pAmountDiv = "<div class='padding-top bold flex j-sb'>" +
+                    " <div>"+ this.$translate.getText('card_load') + "</div>" +
+                    "<div>"+  this.$utils.twoDecimals(_.get(payment, 'P_AMOUNT', '')) +"</div>" +
+                    "</div>";
+                contentDiv.innerHTML = pAmountDiv;
+                  contentDiv.style.padding = '10px';
+                mediaExchangeDiv.appendChild(contentDiv);
+            });
+        } else {
+            const giftCardLoads =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload');
+            giftCardLoads.forEach((payment)=> {
                 const contentDiv = this._doc.createElement('div');
                 const cardNumber = payment.DISPLAY_CARD_NUMBER || '';
 
@@ -1230,14 +1242,13 @@ export default class TemplateBuilderService {
 
                 const balanceDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(_.get(payment, 'BALANCE_AMOUNT', '')) + "</div>"
                 const referenceDiv =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + _.get(payment, 'PROVIDER_TRANS_ID', '') + "</div>"
-                const contentParts = _.toLower(docType).includes('intake') ? [pAmountDiv] :
-                    [pAmountDiv, cardNumberDiv, cardSeriesName, balanceDiv, referenceDiv];
 
-                contentDiv.innerHTML = contentParts.join('');
+                contentDiv.innerHTML = pAmountDiv + cardNumberDiv + cardSeriesName + balanceDiv + referenceDiv;
                 contentDiv.style.padding = '10px';
 
                 mediaExchangeDiv.appendChild(contentDiv);
-        });
+            });
+        }
 
         return mediaExchangeDiv;
     }

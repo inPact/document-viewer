@@ -32,6 +32,10 @@
 
 .basicTemplate .body-div {
   padding: 15px;
+
+  &.in-take-payments {
+    padding: 10px;
+  }
 }
 
 .basicTemplate .itemDiv {
@@ -294,6 +298,17 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+  }
+}
+
+.in-take-payments {
+  .total-name {
+    margin: 0;
+  }
+
+  .total-amount {
+    flex: none;
+    padding: 0;
   }
 }
 
