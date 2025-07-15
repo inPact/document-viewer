@@ -78,7 +78,12 @@ export default class TemplateBuilderService {
             this._docData = printData;
             this._printData = this.$billService.resolvePrintData(printData.printData, this.realRegion);
             this._printData.isRefund = documentInfo.isRefund;
-            let template = this.createDocTemplate(documentInfo, options);
+            let template;
+            if (_.toLower(documentInfo.type).includes('intake')) {
+                template = this.createInTakeReceiptTemplate(documentInfo, options);
+            } else {
+               template = this.createDocTemplate(documentInfo, options);
+            }
             this._doc.body.appendChild(template);
         }
 
@@ -184,12 +189,50 @@ export default class TemplateBuilderService {
         return docTemplate;
     }
 
-    createDocTemplate(docObjChosen, options = {}) {
-        let logoUrl = _.get(options, 'logoUrl') || undefined;
-        let tabitLogo = _.get(options, 'tabitLogo') || undefined;
-        let excludeHeader = _.get(options, 'excludeHeader') || false;
-        let excludeFooter = _.get(options, 'excludeFooter') || false;
-        const isDualPricingStrategy = !!(this._printData.variables.CARD_BAL_DUE && this._printData.variables.CASH_BAL_DUE);
+    createInTakePaymentTemplate() {
+        const tplOrderPaymentsDiv = this._doc.createElement('div');
+        tplOrderPaymentsDiv.id = 'tplOrderPayments';
+        let paymentSection = this.$paymentSection.get({
+            variables: this._printData.variables,
+            collections: this._printData.collections,
+            payments: this._printData.data.payments,
+            documentInfo: this._docData
+        });
+
+        tplOrderPaymentsDiv.appendChild(paymentSection);
+        tplOrderPaymentsDiv.hasChildNodes() ? tplOrderPaymentsDiv.classList += ' body-div tpl-body-div' : '';
+        return tplOrderPaymentsDiv;
+    }
+
+    createInTakeReceiptTemplate(documentInfo, options) {
+        const docTemplate = this.createTemplateBase();
+        const headerLogo = this.createHeaderLogo(options);
+        if (headerLogo) {
+            docTemplate.appendChild(headerLogo);
+        }
+
+        const templateHeader = this.createHeader(options);
+        if (templateHeader) {
+            docTemplate.appendChild(templateHeader);
+        }
+
+        const mediaExchangeDiv = this.createMediaExchange(this._printData, documentInfo);
+        mediaExchangeDiv.classList += ' border-bottom';
+        docTemplate.appendChild(mediaExchangeDiv);
+
+        const paymentDataDiv = this.createPaymentsData(this._printData);
+        paymentDataDiv.classList += ' in-take-payments';
+        paymentDataDiv.hasChildNodes() ? docTemplate.appendChild(paymentDataDiv) : null;
+
+        const footer = this.createFooter(options);
+        if (footer) {
+            docTemplate.appendChild(footer);
+        }
+
+        return docTemplate;
+    }
+
+    createTemplateBase() {
         this._doc = DocumentFactory.get();
 
         var docTemplate = this._doc.createElement('div');
@@ -213,41 +256,104 @@ export default class TemplateBuilderService {
             value: VERSION
         });
 
-
         docTemplate.appendChild(elementVersion);
+        return docTemplate;
+    }
 
+    createHeaderLogo(options = {}) {
+        let logoUrl = _.get(options, 'logoUrl') || undefined;
+        if (_.isEmpty(logoUrl)) {
+            return;
+        }
+            const elementImage = this.$htmlCreator.create({
+                type: 'img',
+                id: 'logo',
+                classList: ['logo-image'],
+                attributes: [
+                    {key: 'src', value: logoUrl}
+                ]
+            });
 
-        if (!excludeHeader) {
+            const elementImageContainer = this.$htmlCreator.create({
+                type: 'div',
+                id: 'container-logo',
+                classList: ['flex', 'a-center', 'j-center'],
+                children: [
+                    elementImage
+                ]
+            });
 
-            if (!_.isEmpty(logoUrl)) {
+            return elementImageContainer;
+    }
 
-                let elementImage = this.$htmlCreator.create({
-                    type: 'img',
-                    id: 'logo',
-                    classList: ['logo-image'],
-                    attributes: [
-                        {key: 'src', value: logoUrl}
-                    ]
-                });
+    createHeader(options) {
+        let excludeHeader = _.get(options, 'excludeHeader') || false;
+        if (excludeHeader) {
+            return;
+        }
+        const templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
+        templateHeader.classList += ' text-center';
+        return templateHeader;
+    }
 
-                let elementImageContainer = this.$htmlCreator.create({
-                    type: 'div',
-                    id: 'container-logo',
-                    classList: ['flex', 'a-center', 'j-center'],
-                    children: [
-                        elementImage
-                    ]
-                });
+    createFooter(options) {
+        let tabitLogo = _.get(options, 'tabitLogo') || undefined;
+        let excludeFooter = _.get(options, 'excludeFooter') || false;
+        if (excludeFooter || !tabitLogo) {
+            return;
+        }
+        let elementFooterText = this.$htmlCreator.create({
+            type: 'div',
+            id: 'element-footer-text',
+            classList: ['text'],
+            value: 'Powered by'
+        });
 
-                docTemplate.appendChild(elementImageContainer);
-            }
+        let elementFooterImage = this.$htmlCreator.create({
+            type: 'img',
+            id: 'element-footer-image',
+            classList: ['tabit-logo'],
+            attributes: [
+                {key: 'src', value: tabitLogo}
+            ]
+        });
 
-            var templateHeader = this.$headerService.createHeader(this._printData, this._doc, this._docObj, this._docData);
-            templateHeader.classList += ' text-center';
+        let elementFooter = this.$htmlCreator.create({
+            type: 'div',
+            id: 'element-footer',
+            classList: ['flex', 'a-center', 'j-center', 'footer'],
+            children: [
+                elementFooterImage,
+                elementFooterText
+            ]
+        });
 
-            docTemplate.appendChild(templateHeader);
+        let elementFooterContainer = this.$htmlCreator.create({
+            type: 'div',
+            id: 'container-footer',
+            classList: ['flex', 'a-center', 'j-center'],
+            children: [
+                elementFooter
+            ]
+        });
+
+        return elementFooterContainer;
+    }
+
+    createDocTemplate(docObjChosen, options = {}) {
+        const isDualPricingStrategy = !!(this._printData.variables.CARD_BAL_DUE && this._printData.variables.CASH_BAL_DUE);
+
+        const docTemplate = this.createTemplateBase();
+
+        const headerLogo = this.createHeaderLogo(options);
+        if (headerLogo) {
+            docTemplate.appendChild(headerLogo);
         }
 
+        const templateHeader = this.createHeader(options);
+        if (templateHeader) {
+            docTemplate.appendChild(templateHeader);
+        }
 
         var checkInIL;
         if (this._locale == 'he-IL' && docObjChosen.documentType === 'check') {
@@ -262,7 +368,8 @@ export default class TemplateBuilderService {
             });
 
             docTemplate.appendChild(elementClubMember);
-        } else {
+        }
+        else {
 
             if (docObjChosen.type === "refundDeliveryNote" || docObjChosen.documentType === "refundDeliveryNote") {
 
@@ -321,12 +428,10 @@ export default class TemplateBuilderService {
 
                     tplOrderReturnItems.id = 'tplOrderReturnItems';
                     tplOrderTotals.id = 'tplOrderTotals';
-                    tplOrderPayments.id = 'tplOrderPayments';
 
                     //adding styling to the template divs
                     tplOrderReturnItems.hasChildNodes() ? tplOrderReturnItems.classList += ' body-div tpl-body-div' : '';
                     tplOrderTotals.hasChildNodes() ? tplOrderTotals.classList += ' body-div tpl-body-div' : '';
-                    tplOrderPayments.hasChildNodes() ? tplOrderPayments.classList += ' body-div tpl-body-div' : '';
 
                     //set body main divs
 
@@ -484,46 +589,9 @@ export default class TemplateBuilderService {
 
 
         // Footer Element
-
-        if (!excludeFooter && tabitLogo !== undefined) {
-
-            let elementFooterText = this.$htmlCreator.create({
-                type: 'div',
-                id: 'element-footer-text',
-                classList: ['text'],
-                value: 'Powered by'
-            });
-
-            let elementFooterImage = this.$htmlCreator.create({
-                type: 'img',
-                id: 'element-footer-image',
-                classList: ['tabit-logo'],
-                attributes: [
-                    {key: 'src', value: tabitLogo}
-                ]
-            });
-
-            let elementFooter = this.$htmlCreator.create({
-                type: 'div',
-                id: 'element-footer',
-                classList: ['flex', 'a-center', 'j-center', 'footer'],
-                children: [
-                    elementFooterImage,
-                    elementFooterText
-                ]
-            });
-
-            let elemenFooterContainer = this.$htmlCreator.create({
-                type: 'div',
-                id: 'container-footer',
-                classList: ['flex', 'a-center', 'j-center'],
-                children: [
-                    elementFooter
-                ]
-            });
-
-            docTemplate.appendChild(elemenFooterContainer);
-
+        const footer = this.createFooter(options);
+        if (footer) {
+            docTemplate.appendChild(footer);
         }
 
         return docTemplate;
@@ -896,7 +964,7 @@ export default class TemplateBuilderService {
 
         if (this._docObj && this._docData.documentType === "deliveryNote") {
             return tplOrderPaymentsDiv;
-        } else if (this._docObj && ["invoice", "refundInvoice", 'refundDeliveryNote'].indexOf(this._docData.documentType) > -1) {
+        } else if (this._docObj && ["invoice", "refundInvoice", 'refundDeliveryNote', ''].indexOf(this._docData.documentType) > -1) {
 
             if (this._docObj.docPaymentType === "CreditCardPayment" || this._docObj.docPaymentType === "CreditCardRefund") {
                 var creditPaymentDiv = this.createCreditTemplate(printData);
@@ -941,7 +1009,7 @@ export default class TemplateBuilderService {
 
             tplOrderPaymentsDiv.appendChild(paymentSection);
         }
-
+        tplOrderPaymentsDiv.hasChildNodes() ? tplOrderPaymentsDiv.classList += 'body-div tpl-body-div' : '';
         return tplOrderPaymentsDiv;
     }
 
@@ -1136,12 +1204,26 @@ export default class TemplateBuilderService {
         return giftCardDiv;
 
     }
-    createMediaExchange(printData) {
-        const giftCardLoads =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload');
+    createMediaExchange(printData, docObjChosen) {
+        const docType = _.get(docObjChosen, 'type','')
+        const isInTakeReceipt = _.toLower(docType).includes('intake');
         const mediaExchangeDiv = this._doc.createElement('div');
         mediaExchangeDiv.id = 'mediaExchangeDiv';
 
-        giftCardLoads.forEach((payment)=> {
+        if (isInTakeReceipt) {
+            printData.collections.PAYMENT_LIST.forEach(payment => {
+                const contentDiv = this._doc.createElement('div');
+                const pAmountDiv = "<div class='padding-top bold flex j-sb'>" +
+                    " <div>"+ this.$translate.getText('card_load') + "</div>" +
+                    "<div>"+  this.$utils.twoDecimals(_.get(payment, 'P_AMOUNT', '')) +"</div>" +
+                    "</div>";
+                contentDiv.innerHTML = pAmountDiv;
+                  contentDiv.style.padding = '10px';
+                mediaExchangeDiv.appendChild(contentDiv);
+            });
+        } else {
+            const giftCardLoads =  printData.collections.PAYMENT_LIST.filter(payment => payment.P_TENDER_TYPE === 'giftCard' && payment.TRANS_TYPE === 'Reload');
+            giftCardLoads.forEach((payment)=> {
                 const contentDiv = this._doc.createElement('div');
                 const cardNumber = payment.DISPLAY_CARD_NUMBER || '';
 
@@ -1160,11 +1242,13 @@ export default class TemplateBuilderService {
 
                 const balanceDiv = "<div class='m-inline-start-5'>" + this.$translate.getText('REMAINING_BALANCE') + " " + this.$utils.twoDecimals(_.get(payment, 'BALANCE_AMOUNT', '')) + "</div>"
                 const referenceDiv =  "<div class='m-inline-start-5'>" + this.$translate.getText('REFERENCE') + " " + _.get(payment, 'PROVIDER_TRANS_ID', '') + "</div>"
+
                 contentDiv.innerHTML = pAmountDiv + cardNumberDiv + cardSeriesName + balanceDiv + referenceDiv;
                 contentDiv.style.padding = '10px';
 
                 mediaExchangeDiv.appendChild(contentDiv);
-        });
+            });
+        }
 
         return mediaExchangeDiv;
     }

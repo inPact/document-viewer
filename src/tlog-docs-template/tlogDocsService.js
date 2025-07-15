@@ -25,7 +25,9 @@ export default class TlogDocsService {
         return {
             DOC_TYPES: {
                 INVOICE: "invoice",
-                REFUND_INVOICE: "refundInvoice"
+                REFUND_INVOICE: "refundInvoice",
+                IN_TAKE_RECEIPT: "inTakeReceipt",
+                IN_TAKE_REFUND: "refundInTakeReceipt"
             },
             PaymentTypes: {
                 OTH: 'OTH',
@@ -59,10 +61,6 @@ export default class TlogDocsService {
         var checkGiftcardExists = tlog.order &&
             tlog.order.length > 0 &&
             tlog.order[0].allDocuments.length === 0
-        //&&
-        //tlog.order[0].allDocuments[0].payments.length > 0
-        //&& tlog.order[0].allDocuments[0].payments[0]._type === "GiftCard" ? true : false; /// TODO : is gift card only in index 0 ?????
-
 
         if (checkGiftcardExists) {
             orderSelection.push({
@@ -86,6 +84,7 @@ export default class TlogDocsService {
                 ep: `tlogs/${tlog._id}/bill`,
                 isRefund: false,
                 isFullOrderBill: true,
+                tlog: _.cloneDeep(tlog)
             });
 
             if (tlog && tlog.order && tlog.order[0].billText && tlog.order[0].billText.length > 0) {
@@ -97,7 +96,7 @@ export default class TlogDocsService {
                     ep: `tlogs/${tlog._id}/bill`,
                     isRefund: false,
                     isFullOrderBill: true,
-                    billText: _.cloneDeep(tlog.order[0].billText)
+                    billText: _.cloneDeep(tlog.order[0].billText),
                 });
             }
 
@@ -206,20 +205,34 @@ export default class TlogDocsService {
                         filteredInvoices.forEach(doc => {
 
                             switch (doc._type) {
-
                                 case this.Enums().DOC_TYPES.INVOICE: {
                                     orderSelection.push({
-                                        tlogId: tlog._id,
+                                        Id: tlog._id,
                                         id: doc._id,
                                         type: doc._type,
                                         title: this.$slipService.getTitle({ type: this.Enums().DOC_TYPES.INVOICE, number: doc.number }),
                                         ep: `documents/v2/${doc._id}/printdata`,
                                         docPaymentType: (doc.payments[0]._type ? doc.payments[0]._type : ''),
-                                        isRefund: false
+                                        isRefund: false,
                                     });
                                     break;
                                 }
-
+                                case this.Enums().DOC_TYPES.IN_TAKE_RECEIPT:
+                                    case this.Enums().DOC_TYPES.IN_TAKE_REFUND: {
+                                    const type = doc._type;
+                                    orderSelection.push({
+                                        tlogId: tlog._id,
+                                        tlog: _.cloneDeep(tlog),
+                                        Id: tlog._id,
+                                        id: doc._id,
+                                        type,
+                                        title: this.$slipService.getTitle({ type, number: doc.number }),
+                                        ep: `documents/v2/${doc._id}/printdata`,
+                                        docPaymentType: (doc.payments[0]._type ? doc.payments[0]._type : ''),
+                                        isRefund: type === 'refundInTakeReceipt',
+                                    });
+                                    break;
+                                }
                                 case this.Enums().DOC_TYPES.REFUND_INVOICE: {
                                     if (doc.payments[0]._type === 'ChequeRefund' ||
                                         doc.payments[0]._type === 'CashRefund' ||
@@ -336,7 +349,6 @@ export default class TlogDocsService {
 
     getDocs(tlog, options) {
         let docsArray;
-
         let _billService = new BillService(this._options);
 
         docsArray = this.orderTypesListCreator(tlog, options);
