@@ -207,7 +207,7 @@ export default class TlogDocsService {
                             switch (doc._type) {
                                 case this.Enums().DOC_TYPES.INVOICE: {
                                     orderSelection.push({
-                                        Id: tlog._id,
+                                        tlogId: tlog._id,
                                         id: doc._id,
                                         type: doc._type,
                                         title: this.$slipService.getTitle({ type: this.Enums().DOC_TYPES.INVOICE, number: doc.number }),
@@ -223,7 +223,6 @@ export default class TlogDocsService {
                                     orderSelection.push({
                                         tlogId: tlog._id,
                                         tlog: _.cloneDeep(tlog),
-                                        Id: tlog._id,
                                         id: doc._id,
                                         type,
                                         title: this.$slipService.getTitle({ type, number: doc.number }),

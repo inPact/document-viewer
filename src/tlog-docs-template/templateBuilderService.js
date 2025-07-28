@@ -261,7 +261,7 @@ export default class TemplateBuilderService {
     }
 
     createHeaderLogo(options = {}) {
-        let logoUrl = _.get(options, 'logoUrl') || undefined;
+        const logoUrl = _.get(options, 'logoUrl');
         if (_.isEmpty(logoUrl)) {
             return;
         }
@@ -287,7 +287,7 @@ export default class TemplateBuilderService {
     }
 
     createHeader(options) {
-        let excludeHeader = _.get(options, 'excludeHeader') || false;
+        const excludeHeader = _.get(options, 'excludeHeader', false);
         if (excludeHeader) {
             return;
         }
@@ -297,7 +297,7 @@ export default class TemplateBuilderService {
     }
 
     createFooter(options) {
-        let tabitLogo = _.get(options, 'tabitLogo') || undefined;
+        const tabitLogo = _.get(options, 'tabitLogo');
         let excludeFooter = _.get(options, 'excludeFooter') || false;
         if (excludeFooter || !tabitLogo) {
             return;
