@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## 1.80.0
+## 1.71.0
 * [TAB-43180] Document Viewer should show the new inTakeReceipts correctly
 
 ## 1.70.0
