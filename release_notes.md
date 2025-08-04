@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## 1.71.0
+* [TAB-43180] Document Viewer should show the new inTakeReceipts correctly
+
 ## 1.70.0
 * [TAB-38399] Enable opening a check on an open order
 * [TAB-40551] Add the rewardAmount to the order bill of Media Exchange orders

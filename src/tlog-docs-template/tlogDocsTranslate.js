@@ -319,6 +319,8 @@ export default class TlogDocsTranslateService {
                 "EQUAL_INSTALLMENTS": "{{installmentsCount}} payments of {{installmentAmount}} each",
                 "REFERENCE": "Reference",
                 "INTERNATIONAL_ISSUER":"International Card Issuer",
+                "IN_TAKE_RECEIPT": "Receipt {{number}}",
+                "IN_TAKE_REFUND": "Receipt {{number}} Refund",
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -601,6 +603,8 @@ export default class TlogDocsTranslateService {
                 "CardType": "שם הסדרה",
                 "CardNumber": "מספר כרטיס",
                 "REWARD_AMOUNT": "שווי כרטיס מתנה",
+                "IN_TAKE_RECEIPT": "קבלה מס׳ ",
+                "IN_TAKE_REFUND": "קבלה זיכוי מס׳ ",
             }
         };
 
