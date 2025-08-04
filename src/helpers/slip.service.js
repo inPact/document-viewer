@@ -49,6 +49,12 @@ export default class SlipService {
             case "fiscalSignature": {
                 return `${this.$translate.getText('fiscalSignature')} ${number}`;
             }
+            case "inTakeReceipt": {
+                return `${this.$translate.getText('IN_TAKE_RECEIPT')} ${number}`;
+            }
+            case "refundInTakeReceipt": {
+                return `${this.$translate.getText('IN_TAKE_REFUND')} ${number}`;
+            }
         }
 
     }
