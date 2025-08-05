@@ -116,6 +116,7 @@ export default class CreaditSection {
 
         const len = _.get(payment, 'EMV.length', 0);
         const documentType = _.get(options, 'documentInfo.documentType');
+        const documentInfo = _.get(options, 'documentInfo');
         const hasInstallmentsPayment = !!payment.INSTALLMENTS_COUNT;
 
         if (hasInstallmentsPayment) {
