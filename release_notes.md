@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## 1.73.0
+* [TAB-44603] Only show initial 6 digits even when ROS returns 8
+
 ## 1.72.0
 * [TAB-43812] Fails To Present Invoice with CC Installments
 
