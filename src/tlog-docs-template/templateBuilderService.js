@@ -651,7 +651,21 @@ export default class TemplateBuilderService {
 
         if (!printData.isRefund) {
 
-            data.items.forEach((item, index) => {
+          const itemsOrderedByCourseType = data.items
+            .reduce(
+              (acc, curr) => {
+                if (typeof curr.courseOrder === 'undefined') {
+                  const { length, [length - 1]: last} = acc;
+                  return [...acc.slice(0, -1), [...last, curr]];
+                }
+                return [...acc, [curr]];
+              },
+              [],
+            )
+            .sort(([a], [b]) => a.courseOrder - b.courseOrder)
+            .flat();
+
+            itemsOrderedByCourseType.forEach((item, index) => {
 
                 //in case it is return order, we don't want to show return of item the did not cost anything
                 if (!(data.isReturnOrder && this._docObj.isFullOrderBill && (!item.amount || item.amount === '0.00'))) {

@@ -57,6 +57,15 @@ export default class BillService {
         }
     }
 
+    courseOrderMap = ['beverages', 'entrees', 'mains', 'hot', 'desserts', 'other'].reduce(
+      (acc, curr, index) => ({ ...acc, [curr]: index }),
+      {},
+    );
+
+    getCourseOrder(courseType) {
+      return this.courseOrderMap[courseType?.toLowerCase() ?? ''] ?? this.courseOrderMap['other'];
+    }
+
     resolveItems(variables, collections) {
         let isReturnOrder = false;
         if (variables.RETURN_TYPE === this.Enums().ReturnTypes.TransactionBased) {
@@ -103,7 +112,8 @@ export default class BillService {
                     name: offer.OFFER_NAME,
                     qty: offerQty,
                     isOTH: !!offer.ON_THE_HOUSE,
-                    amount:  this._getOfferAmount(offer, isWeight, isSplitCheck, isReturnOrder)
+                    amount:  this._getOfferAmount(offer, isWeight, isSplitCheck, isReturnOrder),
+                    courseOrder: this.getCourseOrder(offer.PRINT_GROUP ?? offer.OFFER_COURSE),
                 };
                 if (isWeight) {
                     item.isWeight = isWeight;
