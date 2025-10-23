@@ -139,7 +139,7 @@ angular.module('app')
 
                             CheckService.get({
                                 id: doc.tlogId,
-                                status: status
+                                status: doc.status
                             }).then(checks => {
 
                                 checks.forEach(printData => {
