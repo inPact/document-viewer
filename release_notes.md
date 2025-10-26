@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
-## 1.73.0
+## NEXT
+* [TAB-42530] Invoice weighted items price
 * [TAB-43341] Display order items by course type
 
 ## 1.72.0

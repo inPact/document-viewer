@@ -825,10 +825,10 @@ export default class BillService {
 
     _getOfferAmount(offer, isWeight, isSplitCheck, isReturnOrder) {
         let offerAmount = offer.OFFER_AMOUNT;
-        if (offer.OFFER_CALC_AMT && !isSplitCheck && !offer.OPEN_PRICE && !isReturnOrder) {
-            offerAmount = offer.OFFER_CALC_AMT;
+        if (isWeight && !isSplitCheck && !offer.OPEN_PRICE && !isReturnOrder) {
+            offerAmount = offer.OFFER_MILLI_UNITS / 1000 * offer.OFFER_PRICE;
         }
-        return offerAmount ? this.$utils.toFixedSafe(offerAmount, 2) : null;
+        return !!offerAmount ? this.$utils.toFixedSafe(offerAmount, 2) : null;
     }
 
 }
