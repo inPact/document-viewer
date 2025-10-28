@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+## 1.73.0
+* [TAB-44731] Show 'pending' status for tip adjust before settlement
+
 ## 1.72.0
 * [TAB-43812] Fails To Present Invoice with CC Installments
 
