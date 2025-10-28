@@ -3,6 +3,8 @@
 ## NEXT
 * [TAB-42530] Invoice weighted items price
 * [TAB-43341] Display order items by course type
+* [TAB-44731] Show 'pending' status for tip adjust before settlement
+## 1.73.0
 
 ## 1.72.0
 * [TAB-43812] Fails To Present Invoice with CC Installments

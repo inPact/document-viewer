@@ -64,6 +64,11 @@ export default class HeaderService {
         var tplOrderInfoText = this.createOrderInfoText(printData);
         tplOrderInfoText.id = 'tplOrderInfoText';
 
+        const tipStatusPending = printData.collections.PAYMENT_LIST.some(({ TIP_STATUS: tipStatus }) => tipStatus === 'pending');
+        if (tipStatusPending) {
+          tplHeader.appendChild(this.createPendingHeader());
+        }
+
         tplHeader.appendChild(tplHeaderConstants);
         tplHeader.appendChild(orderHeader);
         tplHeader.appendChild(tplOrderInfoText);
@@ -128,6 +133,14 @@ export default class HeaderService {
         }
         return tplHeaderLine;
 
+    }
+
+    createPendingHeader() {
+      const pendingHeader = this._doc.createElement('strong');
+      pendingHeader.setAttribute('class', 'rowPadding');
+      pendingHeader.setAttribute('style', 'display: block; color: red;');
+      pendingHeader.innerText = 'PAYMENT PENDING - TIP ADJUSTMENT';
+      return pendingHeader;
     }
 
 
