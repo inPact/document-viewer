@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## 1.73.0
+* [TAB-42530] Invoice weighted items price
 
 ## 1.72.0
 * [TAB-43812] Fails To Present Invoice with CC Installments
