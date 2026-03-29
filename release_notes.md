@@ -1,6 +1,9 @@
 # Document Viewer release notes
 
 ## NEXT
+* [TAB-47453] Refund invoice is missing when the tender type is gift card
+
+## 1.73.0
 * [TAB-42530] Invoice weighted items price
 
 ## 1.72.0
