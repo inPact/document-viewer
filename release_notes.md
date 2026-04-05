@@ -1,6 +1,9 @@
 # Document Viewer release notes
 
 ## NEXT
+* [TAB-47453] Refund invoice is missing when the tender type is gift card
+
+## 1.73.0
 * [TAB-42530] Invoice weighted items price
 * [TAB-43341] Display order items by course type
 * [TAB-44731] Show 'pending' status for tip adjust before settlement
