@@ -2,6 +2,7 @@
 
 ## NEXT
 * [TAB-42530] Invoice weighted items price
+* [TAB-48766] Remove cash discount line on totals on order bills (US)
 
 ## 1.72.0
 * [TAB-43812] Fails To Present Invoice with CC Installments
