@@ -391,10 +391,15 @@ export default class BillService {
                     name: this.$translate.getText('TOTAL_AMOUNT_AFTER_CASH_BONUS'),
                     amount: this.$utils.toFixedSafe(variables.TOTAL_AMOUNT_AFTER_CASH_BONUS, 2)
                 });
-                totals.push({
-                    name: this.$translate.getText('MAX_CASH_DISCOUNT'),
-                    amount: this.$utils.toFixedSafe(variables.MAX_CASH_DISCOUNT * -1, 2)
-                });
+
+                //Do not show the Cash Discount line on open order bills
+                const isOpenOrderBill = !variables.DOCUMENT_TYPE && variables.BAL_DUE;
+                if (!isOpenOrderBill) {
+                    totals.push({
+                        name: this.$translate.getText('MAX_CASH_DISCOUNT'),
+                        amount: this.$utils.toFixedSafe(variables.MAX_CASH_DISCOUNT * -1, 2)
+                    });
+                }
             }
         }
         
