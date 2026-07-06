@@ -259,11 +259,23 @@ export default class BillService {
             }
         }
 
-        if (this.$localization.allowByRegions(['us']) && _.get(variables,'TOTAL_FEES', null)) {
-            totals.push({
-                name: this.$translate.getText('FEE'),
-                amount: this.$utils.toFixedSafe(variables.TOTAL_FEES , 2)
-            })
+        if (this.$localization.allowByRegions(['us'])) {
+            // Fees rendering follows the PAD DETAILED_FEES_SUMMARY template tag:
+            // tag configured -> each fee on its own line; otherwise a single summarized total.
+            if (_.get(variables, 'DETAILED_FEES_SUMMARY', false)) {
+                const fees = _.get(collections, 'FEES', []);
+                fees.forEach(fee => {
+                    totals.push({
+                        name: fee.NAME,
+                        amount: this.$utils.toFixedSafe(fee.AMOUNT, 2)
+                    });
+                });
+            } else if (_.get(variables, 'TOTAL_FEES', null)) {
+                totals.push({
+                    name: this.$translate.getText('FEE'),
+                    amount: this.$utils.toFixedSafe(variables.TOTAL_FEES, 2)
+                })
+            }
         }
 
         if (this.$localization.allowByRegions(['au', 'eu', 'cy'])) {
@@ -276,16 +288,29 @@ export default class BillService {
             });
         }
 
-        if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0 && this.$localization.allowByRegions(['us', 'au', 'eu', 'cy'])) {
-            collections.EXCLUSIVE_TAXES.forEach(tax => {
-                if (tax.AMOUNT) {
-                    totals.push({
-                        type: 'exclusive_tax',
-                        name: tax.NAME ? tax.NAME : this.$translate.getText('ECVLUSIVE_TAX'),
-                        amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
-                        rate: this.$utils.toFixedSafe(tax.RATE, 3)
-                    })
-                }
+        // Excluded (exclusive) taxes. US follows the PAD DETAILED_EXCLUDED_TAX_SUMMARY tag:
+        // tag configured -> each tax on its own line; otherwise a single summarized total.
+        // AU/EU/CY keep the previous behavior of always splitting taxes.
+        const splitTaxes = this.$localization.allowByRegions(['au', 'eu', 'cy']) ||
+            (this.$localization.allowByRegions(['us']) && _.get(variables, 'DETAILED_EXCLUDED_TAX_SUMMARY', false));
+
+        if (splitTaxes) {
+            if (collections.EXCLUSIVE_TAXES && collections.EXCLUSIVE_TAXES.length > 0) {
+                collections.EXCLUSIVE_TAXES.forEach(tax => {
+                    if (tax.AMOUNT) {
+                        totals.push({
+                            type: 'exclusive_tax',
+                            name: tax.NAME ? tax.NAME : this.$translate.getText('ECVLUSIVE_TAX'),
+                            amount: this.$utils.toFixedSafe(tax.AMOUNT, 2),
+                            rate: this.$utils.toFixedSafe(tax.RATE, 3)
+                        })
+                    }
+                })
+            }
+        } else if (this.$localization.allowByRegions(['us']) && _.get(variables, 'TOTAL_EXCLUDED_TAX', null)) {
+            totals.push({
+                name: this.$translate.getText('EXCLUDED_TAX_TOTAL'),
+                amount: this.$utils.toFixedSafe(variables.TOTAL_EXCLUDED_TAX, 2)
             })
         }
 
