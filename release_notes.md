@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## NEXT
+* [TAB-48857] Align Fee and Tax Display to PAD Template Tag Configuration
 
 ## 1.74.0
 * [TAB-48766] Remove cash discount line on totals on order bills (US)
