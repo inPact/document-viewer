@@ -4,6 +4,7 @@
 * [TAB-43341] Display order items by course type
 * [TAB-44731] Show 'pending' status for tip adjust before settlement
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
+* [TAB-48857] Align Fee and Tax Display to PAD Template Tag Configuration
 
 ## 1.74.0
 * [TAB-48766] Remove cash discount line on totals on order bills (US)
