@@ -263,7 +263,10 @@ export default class BillService {
             // Fees rendering follows the PAD DETAILED_FEES_SUMMARY template tag:
             // tag configured -> each fee on its own line; otherwise a single summarized total.
             if (_.get(variables, 'DETAILED_FEES_SUMMARY', false)) {
-                const fees = _.get(collections, 'FEES', []);
+                // Refund/return orders carry the per-fee breakdown in RETURNED_FEES
+                // (FEES is empty); fall back to it so refund fees are not dropped.
+                const orderFees = _.get(collections, 'FEES', []);
+                const fees = orderFees.length ? orderFees : _.get(collections, 'RETURNED_FEES', []);
                 fees.forEach(fee => {
                     totals.push({
                         name: fee.NAME,
