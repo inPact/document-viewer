@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## NEXT
+* [TAB-48986] Full Refund Orders are Missing Tip in Bill
 
 ## 1.74.0
 * [TAB-48766] Remove cash discount line on totals on order bills (US)
