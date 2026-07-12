@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.75.0
 
 ## 1.74.0
 * [TAB-48766] Remove cash discount line on totals on order bills (US)
