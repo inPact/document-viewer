@@ -1,5 +1,7 @@
 # Document Viewer release notes
 
+## NEXT
+
 ## 1.75.0
 * [TAB-48857] Align Fee and Tax Display to PAD Template Tag Configuration
 
