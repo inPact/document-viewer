@@ -266,7 +266,7 @@ export default class HeaderService {
                         value = this.$translate.getText('IL_TAX_ALLOCATION_PENDING');
                     }
                     htmlElement.setAttribute('style', 'margin: 10px 0;');
-                    htmlElement.innerHTML = "<div class='centralize med-chars' style='justify-content:center;'>" + value + "</div>";
+                    htmlElement.innerHTML = "<div class='centralize med-chars' style='justify-content:center; font-size:17px'>" + value + "</div>";
                 }
                 break;
             }
