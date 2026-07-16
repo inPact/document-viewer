@@ -322,6 +322,8 @@ export default class TlogDocsTranslateService {
                 "INTERNATIONAL_ISSUER":"International Card Issuer",
                 "IN_TAKE_RECEIPT": "Receipt {{number}}",
                 "IN_TAKE_REFUND": "Receipt {{number}} Refund",
+                "IL_TAX_ALLOCATION_NUMBER": "Allocation #",
+                "IL_TAX_ALLOCATION_PENDING": "Pending Allocation",
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -607,6 +609,8 @@ export default class TlogDocsTranslateService {
                 "REWARD_AMOUNT": "שווי כרטיס מתנה",
                 "IN_TAKE_RECEIPT": "קבלה מס׳ ",
                 "IN_TAKE_REFUND": "קבלה זיכוי מס׳ ",
+                "IL_TAX_ALLOCATION_NUMBER": "מספר הקצאה",
+                "IL_TAX_ALLOCATION_PENDING": "בהמתנה למספר הקצאה",
             }
         };
 

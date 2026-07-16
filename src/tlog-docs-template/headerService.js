@@ -150,6 +150,8 @@ export default class HeaderService {
 
         var tplOrderTitle = this._doc.createElement('div');
         tplOrderTitle.id = "tplOrderTitle";
+        var tplTaxAllocation = this._doc.createElement('div');
+        tplTaxAllocation.id = "tplTaxAllocation";
         var tplOrderType = this._doc.createElement('div');
         tplOrderType.id = "tplOrderType";
         tplOrderType.setAttribute('style', 'text-align:center;')
@@ -161,7 +163,7 @@ export default class HeaderService {
         tplcCheckNumber.id = "tplcCheckNumber";
 
         //create array for the appendChildren function
-        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber, tplOriginDateTime];
+        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplTaxAllocation, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber, tplOriginDateTime];
 
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
@@ -250,6 +252,21 @@ export default class HeaderService {
                 const orderTitle = this.$localization.allowByRegions(['au', 'eu', 'cy']) ? this.$translate.getText('TAX_INVOICE') : this._docObj.title;
                 if (this._docObj.title) {
                     htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + orderTitle + "</div>"
+                }
+                break;
+            }
+
+            case 'tplTaxAllocation': {
+                const status = printData.variables.IL_TAX_ALLOCATION_STATUS;
+                if (this.$localization.allowByRegions(['il']) && status && status !== 'not_required') {
+                    let value;
+                    if (status === 'approved') {
+                        value = `${this.$translate.getText('IL_TAX_ALLOCATION_NUMBER')}:<span class='bold' style='margin-inline-start:8px;'>${printData.variables.IL_TAX_ALLOCATION_FULL_NUMBER}</span>`;
+                    } else {
+                        value = this.$translate.getText('IL_TAX_ALLOCATION_PENDING');
+                    }
+                    htmlElement.setAttribute('style', 'margin: 10px 0;');
+                    htmlElement.innerHTML = "<div class='centralize med-chars' style='justify-content:center;'>" + value + "</div>";
                 }
                 break;
             }
