@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## NEXT
+* [TAB-49184] Cash Bill Displays Empty CC Details
 
 ## 1.75.0
 * [TAB-48857] Align Fee and Tax Display to PAD Template Tag Configuration
