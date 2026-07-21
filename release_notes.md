@@ -7,6 +7,9 @@
 * [TAB-48269] Support Israel Tax Allocation Compliance
 * [TAB-48986] Full Refund Orders are Missing Tip in Bill
 
+### 1.75.1
+* [TAB-49194] Summarized Tax View Displays EXCLUDED_TAX_TOTAL Placeholder Instead Of TAXES Label
+
 ## 1.75.0
 * [TAB-48857] Align Fee and Tax Display to PAD Template Tag Configuration
 
