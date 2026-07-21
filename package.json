@@ -6,7 +6,7 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:prod": "webpack",
+    "build:prod": "webpack && node about.js",
     "push:verification": "git tag -d testing && git push origin :refs/tags/testing && git tag testing && git push origin tag testing"
   },
   "keywords": [],

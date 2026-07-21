@@ -5,6 +5,7 @@
 * [TAB-44731] Show 'pending' status for tip adjust before settlement
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
 * [TAB-48269] Support Israel Tax Allocation Compliance
+* [TAB-49201] Add Public Version Route
 * [TAB-48986] Full Refund Orders are Missing Tip in Bill
 
 ### 1.75.1
