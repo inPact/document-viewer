@@ -312,7 +312,7 @@ export default class BillService {
             }
         } else if (this.$localization.allowByRegions(['us']) && _.get(variables, 'TOTAL_EXCLUDED_TAX', null)) {
             totals.push({
-                name: this.$translate.getText('EXCLUDED_TAX_TOTAL'),
+                name: this.$translate.getText('TAX'),
                 amount: this.$utils.toFixedSafe(variables.TOTAL_EXCLUDED_TAX, 2)
             })
         }
