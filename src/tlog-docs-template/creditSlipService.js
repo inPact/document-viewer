@@ -32,7 +32,10 @@ export default class CreditSlipService {
 
         let creditSlipDoc;
         if (!_.get(docObjChosen, 'md.paymentId') && printData.collections.PAYMENT_LIST.length === 1) {
-            creditSlipDoc = printData.collections.PAYMENT_LIST[0];
+            const singlePayment = printData.collections.PAYMENT_LIST[0];
+            if (singlePayment.P_TENDER_TYPE === 'creditCard') {
+                creditSlipDoc = singlePayment;
+            }
         } else if (printData.collections.PAYMENT_LIST && printData.collections.PAYMENT_LIST.length) {
             printData.collections.PAYMENT_LIST.forEach(payment => {
                 if (payment.P_TENDER_TYPE === 'creditCard' && payment.P_ID === docObjChosen.md.paymentId) {
