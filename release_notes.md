@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ### 1.75.2
+* [TAB-49201] Add Public Version Route
 
 ### 1.75.1
 * [TAB-49194] Summarized Tax View Displays EXCLUDED_TAX_TOTAL Placeholder Instead Of TAXES Label
