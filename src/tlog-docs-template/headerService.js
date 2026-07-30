@@ -133,33 +133,37 @@ export default class HeaderService {
 
     createOrderHeader(printData) {
         //Bring the tplOrderHeader for appending other divs to it
-        var tplOrderHeader = this._doc.createElement('div');
+        const tplOrderHeader = this._doc.createElement('div');
         tplOrderHeader.id = 'tplOrderHeader';
         //all order header needed Divs
-        var tplOrderCustomer = this._doc.createElement('div');
+        const tplOrderCustomer = this._doc.createElement('div');
         tplOrderCustomer.id = "tplOrderCustomer";
 
-        var tplOrderDateTime = this._doc.createElement('div');
+        const tplOrderDateTime = this._doc.createElement('div');
         tplOrderDateTime.id = "tplOrderDateTime";
         tplOrderDateTime.classList.add('mystyle');
 
-        var tplOriginDateTime = this._doc.createElement('div');
+        const tplOriginDateTime = this._doc.createElement('div');
         tplOriginDateTime.id = "tplOriginDateTime";
         tplOriginDateTime.classList.add('mystyle');
 
-
-        var tplOrderTitle = this._doc.createElement('div');
+        const tplOrderTitle = this._doc.createElement('div');
         tplOrderTitle.id = "tplOrderTitle";
-        var tplTaxAllocation = this._doc.createElement('div');
+
+        const tplTaxAllocation = this._doc.createElement('div');
         tplTaxAllocation.id = "tplTaxAllocation";
-        var tplOrderType = this._doc.createElement('div');
+
+        const tplOrderType = this._doc.createElement('div');
         tplOrderType.id = "tplOrderType";
         tplOrderType.setAttribute('style', 'text-align:center;')
-        var tplOrderTable = this._doc.createElement('div');
+
+        const tplOrderTable = this._doc.createElement('div');
         tplOrderTable.id = "tplOrderTable";
-        var tplOrderServerClients = this._doc.createElement('div');
+
+        const tplOrderServerClients = this._doc.createElement('div');
         tplOrderServerClients.id = "tplOrderServerClients";
-        var tplcCheckNumber = this._doc.createElement('div');
+
+        const tplcCheckNumber = this._doc.createElement('div');
         tplcCheckNumber.id = "tplcCheckNumber";
 
         //create array for the appendChildren function
