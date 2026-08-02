@@ -133,35 +133,41 @@ export default class HeaderService {
 
     createOrderHeader(printData) {
         //Bring the tplOrderHeader for appending other divs to it
-        var tplOrderHeader = this._doc.createElement('div');
+        const tplOrderHeader = this._doc.createElement('div');
         tplOrderHeader.id = 'tplOrderHeader';
         //all order header needed Divs
-        var tplOrderCustomer = this._doc.createElement('div');
+        const tplOrderCustomer = this._doc.createElement('div');
         tplOrderCustomer.id = "tplOrderCustomer";
 
-        var tplOrderDateTime = this._doc.createElement('div');
+        const tplOrderDateTime = this._doc.createElement('div');
         tplOrderDateTime.id = "tplOrderDateTime";
         tplOrderDateTime.classList.add('mystyle');
 
-        var tplOriginDateTime = this._doc.createElement('div');
+        const tplOriginDateTime = this._doc.createElement('div');
         tplOriginDateTime.id = "tplOriginDateTime";
         tplOriginDateTime.classList.add('mystyle');
 
-
-        var tplOrderTitle = this._doc.createElement('div');
+        const tplOrderTitle = this._doc.createElement('div');
         tplOrderTitle.id = "tplOrderTitle";
-        var tplOrderType = this._doc.createElement('div');
+
+        const tplTaxAllocation = this._doc.createElement('div');
+        tplTaxAllocation.id = "tplTaxAllocation";
+
+        const tplOrderType = this._doc.createElement('div');
         tplOrderType.id = "tplOrderType";
         tplOrderType.setAttribute('style', 'text-align:center;')
-        var tplOrderTable = this._doc.createElement('div');
+
+        const tplOrderTable = this._doc.createElement('div');
         tplOrderTable.id = "tplOrderTable";
-        var tplOrderServerClients = this._doc.createElement('div');
+
+        const tplOrderServerClients = this._doc.createElement('div');
         tplOrderServerClients.id = "tplOrderServerClients";
-        var tplcCheckNumber = this._doc.createElement('div');
+
+        const tplcCheckNumber = this._doc.createElement('div');
         tplcCheckNumber.id = "tplcCheckNumber";
 
         //create array for the appendChildren function
-        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber, tplOriginDateTime];
+        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplTaxAllocation, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber, tplOriginDateTime];
 
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
@@ -250,6 +256,21 @@ export default class HeaderService {
                 const orderTitle = this.$localization.allowByRegions(['au', 'eu', 'cy']) ? this.$translate.getText('TAX_INVOICE') : this._docObj.title;
                 if (this._docObj.title) {
                     htmlElement.innerHTML = "<div class='centralize med-chars bold' style='justify-content:center;'>" + orderTitle + "</div>"
+                }
+                break;
+            }
+
+            case 'tplTaxAllocation': {
+                const status = printData.variables.IL_TAX_ALLOCATION_STATUS;
+                if (this.$localization.allowByRegions(['il']) && status && status !== 'not_required') {
+                    let value;
+                    if (status === 'approved') {
+                        value = `${this.$translate.getText('IL_TAX_ALLOCATION_NUMBER')}:<span class='bold' style='margin-inline-start:8px;'>${printData.variables.IL_TAX_ALLOCATION_FULL_NUMBER}</span>`;
+                    } else {
+                        value = this.$translate.getText('IL_TAX_ALLOCATION_PENDING');
+                    }
+                    htmlElement.setAttribute('style', 'margin: 10px 0;');
+                    htmlElement.innerHTML = "<div class='centralize med-chars' style='justify-content:center; font-size:17px'>" + value + "</div>";
                 }
                 break;
             }
