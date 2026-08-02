@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## 1.76.0
+* [TAB-48269] Support Israel Tax Allocation Compliance
 
 ### 1.75.2
 * [TAB-49201] Add Public Version Route
