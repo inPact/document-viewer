@@ -6,6 +6,7 @@
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
 * [TAB-48269] Support Israel Tax Allocation Compliance
 * [TAB-48986] Full Refund Orders are Missing Tip in Bill
+* [TAB-49540] IL TAX authority print data naming changes due to code review of TAB-48266
 
 ### 1.75.2
 * [TAB-49201] Add Public Version Route
