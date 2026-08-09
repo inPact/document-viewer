@@ -606,7 +606,6 @@ export default class TlogDocsTranslateService {
                 "REWARD_AMOUNT": "שווי כרטיס מתנה",
                 "IN_TAKE_RECEIPT": "קבלה מס׳ ",
                 "IN_TAKE_REFUND": "קבלה זיכוי מס׳ ",
-                "PAYMENT_PENDING_TIP_ADJUSTMENT": "PAYMENT PENDING - TIP ADJUSTMENT",
             }
         };
 
