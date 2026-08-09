@@ -321,6 +321,7 @@ export default class TlogDocsTranslateService {
                 "INTERNATIONAL_ISSUER":"International Card Issuer",
                 "IN_TAKE_RECEIPT": "Receipt {{number}}",
                 "IN_TAKE_REFUND": "Receipt {{number}} Refund",
+                "PAYMENT_PENDING_TIP_ADJUSTMENT": "PAYMENT PENDING - TIP ADJUSTMENT",
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -605,6 +606,7 @@ export default class TlogDocsTranslateService {
                 "REWARD_AMOUNT": "שווי כרטיס מתנה",
                 "IN_TAKE_RECEIPT": "קבלה מס׳ ",
                 "IN_TAKE_REFUND": "קבלה זיכוי מס׳ ",
+                "PAYMENT_PENDING_TIP_ADJUSTMENT": "PAYMENT PENDING - TIP ADJUSTMENT",
             }
         };
 
