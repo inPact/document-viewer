@@ -1,9 +1,11 @@
 # Document Viewer release notes
 
+## 1.77.0
+* [TAB-49540] IL TAX authority print data naming changes due to code review of TAB-48266
+
 ## 1.76.0
 
 * [TAB-48269] Support Israel Tax Allocation Compliance
-* [TAB-49540] IL TAX authority print data naming changes due to code review of TAB-48266
 
 ### 1.75.2
 
