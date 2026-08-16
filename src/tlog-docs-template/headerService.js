@@ -261,13 +261,13 @@ export default class HeaderService {
             }
 
             case 'tplTaxAllocation': {
-                const status = printData.variables.IL_TAX_ALLOCATION_STATUS;
+                const status = printData.variables.TAX_ALLOCATION_STATUS;
                 if (this.$localization.allowByRegions(['il']) && status && status !== 'not_required') {
                     let value;
                     if (status === 'approved') {
-                        value = `${this.$translate.getText('IL_TAX_ALLOCATION_NUMBER')}:<span class='bold' style='margin-inline-start:8px;'>${printData.variables.IL_TAX_ALLOCATION_FULL_NUMBER}</span>`;
+                        value = `${this.$translate.getText('TAX_ALLOCATION_NUMBER')}:<span class='bold' style='margin-inline-start:8px;'>${printData.variables.TAX_ALLOCATION_FULL_NUMBER}</span>`;
                     } else {
-                        value = this.$translate.getText('IL_TAX_ALLOCATION_PENDING');
+                        value = this.$translate.getText('TAX_ALLOCATION_PENDING');
                     }
                     htmlElement.setAttribute('style', 'margin: 10px 0;');
                     htmlElement.innerHTML = "<div class='centralize med-chars' style='justify-content:center; font-size:17px'>" + value + "</div>";
