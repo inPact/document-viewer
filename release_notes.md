@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+### 1.77.1
+* [TAB-44731] Show 'pending' status for tip adjust before settlement
+
 ## 1.77.0
 * [TAB-49540] IL TAX authority print data naming changes due to code review of TAB-48266
 
