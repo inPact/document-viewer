@@ -1,5 +1,8 @@
 # Document Viewer release notes
 
+### 1.77.2
+* [TAB-50167] v1.77.1 Regression - Summarized tax row displays `[TAX]` instead of the TAX label
+
 ### 1.77.1
 * [TAB-44731] Show 'pending' status for tip adjust before settlement
 
