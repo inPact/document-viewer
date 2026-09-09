@@ -1,5 +1,7 @@
 # Document Viewer release notes
 
+## 1.78.0
+
 ## 1.77.0
 * [TAB-49540] IL TAX authority print data naming changes due to code review of TAB-48266
 
