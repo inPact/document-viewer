@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
-### 1.77.2
+## NEXT
+* [TAB-47453] Refund invoice is missing when the tender type is gift card
 * [TAB-50167] v1.77.1 Regression - Summarized tax row displays `[TAX]` instead of the TAX label
 
 ### 1.77.1
@@ -30,7 +31,6 @@
 * [TAB-48766] Remove cash discount line on totals on order bills (US)
 
 ## 1.73.0
-
 * [TAB-42530] Invoice weighted items price
 
 ## 1.72.0
