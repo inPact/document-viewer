@@ -3,6 +3,7 @@
 ## NEXT
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
 * [TAB-50167] v1.77.1 Regression - Summarized tax row displays `[TAX]` instead of the TAX label
+* [TAB-50212] Fix missing headers for allocation number and the header text for missing allocation number
 
 ### 1.77.1
 * [TAB-44731] Show 'pending' status for tip adjust before settlement
