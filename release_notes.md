@@ -2,6 +2,10 @@
 
 ## 1.78.0
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
+* [TAB-50167] v1.77.1 Regression - Summarized tax row displays `[TAX]` instead of the TAX label
+
+### 1.77.1
+* [TAB-44731] Show 'pending' status for tip adjust before settlement
 
 ## 1.77.0
 * [TAB-49540] IL TAX authority print data naming changes due to code review of TAB-48266
