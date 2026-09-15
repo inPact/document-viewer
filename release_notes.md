@@ -1,5 +1,7 @@
 # Document Viewer release notes
 
+## NEXT
+
 ## 1.78.0
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
 * [TAB-50167] v1.77.1 Regression - Summarized tax row displays `[TAX]` instead of the TAX label
