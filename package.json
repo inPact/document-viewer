@@ -1,12 +1,12 @@
 {
   "name": "document-viewer",
-  "version": "1.74.0",
+  "version": "1.78.0",
   "description": "",
   "private": true,
   "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:prod": "webpack"
+    "build:prod": "webpack && node about.js"
   },
   "keywords": [],
   "author": "",
