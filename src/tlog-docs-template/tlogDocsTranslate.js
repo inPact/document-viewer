@@ -19,6 +19,7 @@ export default class TlogDocsTranslateService {
                 "ORDER_DISCOUNT_US": "DISCOUNT",
                 "ECVLUSIVE_TAX": "EXCLUSIVE TAX",
                 "SERVICE_CHARGE": "SERVICE CHARGE",
+                "TAX": 'TAX',
                 "TIP": "TIP",
                 "TOTAL_INC_VAT": "CHECK TOTAL",
                 "CARD_TOTAL": "CARD TOTAL",
@@ -322,6 +323,8 @@ export default class TlogDocsTranslateService {
                 "IN_TAKE_RECEIPT": "Receipt {{number}}",
                 "IN_TAKE_REFUND": "Receipt {{number}} Refund",
                 "PAYMENT_PENDING_TIP_ADJUSTMENT": "PAYMENT PENDING - TIP ADJUSTMENT",
+                "TAX_ALLOCATION_NUMBER": "Allocation #",
+                "TAX_ALLOCATION_PENDING": "Missing Allocation",
             },
             "he-IL": {
                 "POINTS_REDEMPTION": "מימוש נקודות",
@@ -335,6 +338,7 @@ export default class TlogDocsTranslateService {
                 "ORDER_DISCOUNT_US": "הנחת חשבון",
                 "ECVLUSIVE_TAX": "מס שנוסף להזמנה",
                 "SERVICE_CHARGE": "Service Charge",
+                "TAX": 'TAX',
                 "TIP": "תשר",
                 "TOTAL_INC_VAT": "סה\"כ לתשלום",
                 "CASH_DISCOUNT_TOTAL": "סה\"כ מזומן",
@@ -606,6 +610,8 @@ export default class TlogDocsTranslateService {
                 "REWARD_AMOUNT": "שווי כרטיס מתנה",
                 "IN_TAKE_RECEIPT": "קבלה מס׳ ",
                 "IN_TAKE_REFUND": "קבלה זיכוי מס׳ ",
+                "TAX_ALLOCATION_NUMBER": "מספר הקצאה",
+                "TAX_ALLOCATION_PENDING": "חסר מספר הקצאה",
             }
         };
 
