@@ -2,9 +2,15 @@
 
 ## NEXT
 * [TAB-43341] Display order items by course type
-* [TAB-44731] Show 'pending' status for tip adjust before settlement
-* [TAB-47453] Refund invoice is missing when the tender type is gift card
 * [TAB-48986] Full Refund Orders are Missing Tip in Bill
+
+## 1.78.0
+* [TAB-47453] Refund invoice is missing when the tender type is gift card
+* [TAB-50167] v1.77.1 Regression - Summarized tax row displays `[TAX]` instead of the TAX label
+* [TAB-50212] Fix missing headers for allocation number and the header text for missing allocation number
+
+### 1.77.1
+* [TAB-44731] Show 'pending' status for tip adjust before settlement
 
 ## 1.77.0
 * [TAB-49540] IL TAX authority print data naming changes due to code review of TAB-48266
@@ -29,7 +35,6 @@
 * [TAB-48766] Remove cash discount line on totals on order bills (US)
 
 ## 1.73.0
-
 * [TAB-42530] Invoice weighted items price
 
 ## 1.72.0
