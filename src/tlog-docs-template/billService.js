@@ -376,10 +376,12 @@ export default class BillService {
                 }
             }
 
-            //if it is a returned order, the tip is negative and needs to be presented
-            //a 100% refund is a Reversal; include it so the reversed tip is shown (TAB-48986)
-            const TRANS_TYPE = _.get(collections, 'PAYMENT_LIST[0].TRANS_TYPE');
-            if ([this.Enums().TransTypes.Reversal, this.Enums().TransTypes.Return, this.Enums().TransTypes.Refund].includes(TRANS_TYPE)) {
+            //if it is a returned order, the tip is negative and needs to be presented.
+            //TRANS_TYPE is only set for credit-card/gift-card transactions, so key off
+            //PAYMENT_TYPE, which is set for every refund tender - credit card, room charge,
+            //house account, cash and so on (TAB-48986)
+            const PAYMENT_TYPE = _.get(collections, 'PAYMENT_LIST[0].PAYMENT_TYPE');
+            if (PAYMENT_TYPE === 'REFUND') {
                 if (collections.PAYMENT_LIST[0].TIP_AMOUNT !== 0) {
                     totals.push({
                         type: 'tips',
