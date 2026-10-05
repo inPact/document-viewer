@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## NEXT
+* [TAB-48986] Full Refund Orders are Missing Tip in Bill
 
 ## 1.78.0
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
