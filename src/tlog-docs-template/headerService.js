@@ -179,8 +179,11 @@ export default class HeaderService {
         const tplcCheckNumber = this._doc.createElement('div');
         tplcCheckNumber.id = "tplcCheckNumber";
 
+        const tplRefundedInvoiceReference = this._doc.createElement('div');
+        tplRefundedInvoiceReference.id = "tplRefundedInvoiceReference";
+
         //create array for the appendChildren function
-        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplTaxAllocation, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber, tplOriginDateTime];
+        var orderBasicInfoArray = [tplOrderCustomer, tplOrderTitle, tplRefundedInvoiceReference, tplTaxAllocation, tplOrderDateTime, tplOrderType, tplOrderTable, tplOrderServerClients, tplcCheckNumber, tplOriginDateTime];
 
         var filledInfoArray = [];
         this.placeOrderHeaderData(printData, orderBasicInfoArray, filledInfoArray)
@@ -192,6 +195,11 @@ export default class HeaderService {
         orderBasicInfoArray.forEach(basicInfoElement => {
             filledInfoArray.push(this.fillOrderHeaderData(printData, basicInfoElement));
         });
+    }
+
+    isRefundInvoice() {
+        const docType = _.get(this._docObj, 'type') || _.get(this._docObj, 'documentType');
+        return docType === 'refundInvoice';
     }
 
     isOrderTypeTAB(options) {
@@ -284,6 +292,24 @@ export default class HeaderService {
                     }
                     htmlElement.setAttribute('style', 'margin: 10px 0;');
                     htmlElement.innerHTML = "<div class='centralize med-chars' style='justify-content:center; font-size:17px'>" + value + "</div>";
+                }
+                break;
+            }
+
+            case 'tplRefundedInvoiceReference': {
+                const refundedNumber = _.get(printData, 'variables.REFUNDED_INVOICE_NUMBER');
+                const refundedIssuedAt = _.get(printData, 'variables.REFUNDED_INVOICE_ISSUED_AT');
+                if (this.$localization.allowByRegions(['il']) && this.isRefundInvoice() && refundedNumber && refundedIssuedAt) {
+                    const refundedDate = this.$utils.toDate({
+                        timezone: this.timezone,
+                        realRegion: this.realRegion,
+                        date: refundedIssuedAt,
+                        withoutTime: true
+                    });
+
+                    htmlElement.innerHTML = "<div class='centralize' style='justify-content:center;'>" +
+                        this.$translate.getText('REFUNDED_INVOICE_REFERENCE', ['number', 'date'], [refundedNumber, refundedDate]) +
+                        "</div>";
                 }
                 break;
             }
