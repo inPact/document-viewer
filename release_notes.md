@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## NEXT
+* [TAB-50650] IL - Original Invoice Reference on Digital Refund Tax Invoice
 
 ## 1.78.0
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
