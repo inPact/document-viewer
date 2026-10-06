@@ -3,6 +3,7 @@
 ## NEXT
 * [TAB-43341] Display order items by course type
 * [TAB-48986] Full Refund Orders are Missing Tip in Bill
+* [TAB-50650] IL - Original Invoice Reference on Digital Refund Tax Invoice
 
 ## 1.78.0
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
