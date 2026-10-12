@@ -1,6 +1,6 @@
 # Document Viewer release notes
 
-## NEXT
+## 1.79.0
 
 ## 1.78.0
 * [TAB-47453] Refund invoice is missing when the tender type is gift card
