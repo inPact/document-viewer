@@ -1,6 +1,7 @@
 # Document Viewer release notes
 
 ## 1.80.0
+* [TAB-51106] AU - Remove International Card Issuer Caption From Credit Payments on Bills
 
 ## 1.79.0
 * [TAB-48986] Full Refund Orders are Missing Tip in Bill
