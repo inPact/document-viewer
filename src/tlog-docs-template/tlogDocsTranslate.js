@@ -319,7 +319,6 @@ export default class TlogDocsTranslateService {
                 "REST_INSTALLMENTS":"And other {{restInstallmentsCount}} payments of {{installmentAmount}} each",
                 "EQUAL_INSTALLMENTS": "{{installmentsCount}} payments of {{installmentAmount}} each",
                 "REFERENCE": "Reference",
-                "INTERNATIONAL_ISSUER":"International Card Issuer",
                 "IN_TAKE_RECEIPT": "Receipt {{number}}",
                 "IN_TAKE_REFUND": "Receipt {{number}} Refund",
                 "PAYMENT_PENDING_TIP_ADJUSTMENT": "PAYMENT PENDING - TIP ADJUSTMENT",
